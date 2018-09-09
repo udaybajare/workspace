@@ -1,0 +1,4 @@
+#Tomcat publish data
+#Mon Sep 10 00:00:42 IST 2018
+org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\Uday\\workspace\\InventoryWeb\\WebContent\\WEB-INF\\lib\\spring-web-5.0.6.RELEASE.jar=C\:\\Softwares\\apache-tomcat-9.0.8-windows-x64\\apache-tomcat-9.0.8\\wtpwebapps\\InventoryWeb\\WEB-INF\\lib\\spring-web-5.0.6.RELEASE.jar
+org.eclipse.jst.jee.server\:InventoryWeb=C\:\\Softwares\\apache-tomcat-9.0.8-windows-x64\\apache-tomcat-9.0.8\\wtpwebapps\\InventoryWeb

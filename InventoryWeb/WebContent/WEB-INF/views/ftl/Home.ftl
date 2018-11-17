@@ -179,7 +179,7 @@
                   <img src="./loginPage/img/2.png" alt="" width="100" height="100">
                 </em>
                 <h4>
-                  <b>Search Porject</b>
+                  <b class="searchProjectForm" >Search Porject</b>
                 </h4>
               </div>
               <p class="text-center">
@@ -195,9 +195,9 @@
                   <b>Update Inventory</b>
                 </h4>
               </div>
-              <p class="text-center">
+              <a class="text-center" href="/InventoryWeb/updateInventoryForm">
                 Please Click Here if you want to update the inventory in the system.    
-              </p>
+              </a>
             </div>
           </div>
 
@@ -228,7 +228,17 @@
 
 </div>
 
+ <div id="textOverlaySearch">
+<form action="searchProject" modelAttribute="createProjrctForm" class="textForm" method="POST">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
+                  <label for="exampleInputPassword1">OR</label>
+                  <input type="text" class="form-control" placeholder="Type in the project id here" name="projectDesc">
+                </div>                
+                <button type="submit" class="btn btn-default">Search</button>
+</form>
 
+</div>
 
     <!--container end-->
 
@@ -334,6 +344,16 @@
 		toggle = !toggle;
 		});
 
+        var searchToggle = true;    
+		$(".searchProjectForm").click(function(){
+		if(searchToggle){
+		document.getElementById("textOverlaySearch").style.display = "block";
+		}else{
+		document.getElementById("textOverlaySearch").style.display = "none";
+		}
+		searchToggle = !searchToggle;
+		});
+		
       });
 
 

@@ -791,55 +791,54 @@
             </aside>			  
             </div>
             <br>
-			<form action="updateProject" method="POST">
+            <form action="generate" method="POST">
             <div class="row">
-              <div class="col-md-4 ">
-                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                  <div class="form-group has-feedback">
-                    <label>PO Date</label>
-                    <input type="text" name="poDate" class="form-control" >                   
+              <div class="col-md-12 ">
+				
+				<div class="table-responsive">                
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th>Standard Type</th>
+                    <th>Grade</th>
+                    <th>Schedule</th>
+                    <th>Material Spec</th>
+                    <th>Ends</th>
+                    <th>Size</th>
+                    <th>Available Quantity</th>
+					<th>Required Quantity</th>
+                    <th>Net Quantity</th>
+                    <th>Purchase Rate</th>
+                    <th>Supply Rate</th>
+                  </tr>
+                </thead>
+                
+                <tbody id="tableContent">
+                </tbody>
+                
+              </table>
                   </div>
+                  
                 </div>
               </div>
-              <div class="col-md-4 ">
-                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                  <label>PO Number</label>
-                    <input type="text" name="poNumber" class="form-control" >
-                </div>
-              </div>
-              <div class="col-md-4 ">
-                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                 <label>Contact Person Name</label>
-                    <input type="text" name="contactName" class="form-control" >
-                </div>
-              </div>
-            </div>
             <br>
             <div class="row">
               <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                  <label>Contact Email</label>
-                    <input type="text" name="contactEmail" class="form-control">
                 </div>
               </div>
               <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                   <label>Contact Phone</label>
-                    <input type="text" name="contactPhone" class="form-control">
                 </div>
               </div>
               <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                   <label>GST Number</label>
-                    <input type="text" name="gstNumber" class="form-control">
                 </div>
               </div>
             </div>
 			<div class="form-row">
 				<div class="col-md-4 ">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-					<label>Address</label>
-						<input type="text" name="address" class="form-control">
 					</div>
 				</div>
 				<div class="col-md-4 ">
@@ -848,15 +847,21 @@
 						
 					</div>					
 				</div>
-				<div class="col-md-4 ">
+				<div class="col-md-2" id="importBoq">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label></label>
 						<br>
-						<button type="submit" class="btn btn-default">Update Project</button>		
+						<button type="button" onClick="captureFileLocation()" class="btn btn-default">Import BOQ/BOM</button>
+					</div>					
+				</div>
+				<div class="col-md-2" id="generate" style="display:none">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<br>
+						<button type="Submit" class="btn btn-default">Generate BOQ</button>		
 					</div>					
 				</div>							
 			</div>
-			
 			</form>
             <br>
           </div>
@@ -911,5 +916,54 @@
     <!-- Custom Scripts -->
     <script src="js/custom.js"></script>
 
+<script>
+function captureFileLocation() {
+    var fileLocation;
+    var entrerLocationRequest = prompt("Please Enter the file location", "BOQ File Location");
+    if (entrerLocationRequest == null || entrerLocationRequest == "") {
+        fileLocation = "User cancelled the prompt.";
+    } else {
+        fileLocation = entrerLocationRequest;
+    }
+console.log("File Location : "+fileLocation);
+
+if(fileLocation != "User cancelled the prompt.")
+{
+	$.ajax({
+			type : 'POST',
+			data : {'location' : fileLocation},
+            url : 'import',
+            success : function(data) {
+                $('#tableContent').html(data);
+            }
+        });
+        
+        var imp = document.getElementById("importBoq");
+        imp.style.display = "none";
+        
+        var generate = document.getElementById("generate");
+        generate.style.display = "block";
+}
+}
+</script>
+<script>
+function myFunction(value, tagName, nextTagName) {
+    
+    var tag = '#'+nextTagName;
+    
+    $.ajax({
+			type : 'POST',
+			data :  {'value' : value,'currentTag' : tagName,'nextTagName' : nextTagName},
+            url : 'getDropdown',
+            success : function(data) {
+            
+            console.log(data);
+            console.log($(tag));
+            
+						$(tag).append(data);
+                        }
+        });
+}
+</script>
 </body>
 </html>

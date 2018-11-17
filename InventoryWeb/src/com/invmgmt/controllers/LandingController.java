@@ -3,6 +3,7 @@ package com.invmgmt.controllers;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,24 +26,11 @@ public class LandingController extends AbstractController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		ExcelReader rEx = new ExcelReader();
-		StringBuffer names = new StringBuffer();
-
-		/*Set inventorySet = rEx.readFile();
-
-		Iterator itr = inventorySet.iterator();
-
-		while (itr.hasNext()) {
-			names.append(((String) itr.next()).trim()).append(", ");
-		}*/
-
 		ModelAndView modelAndView = new ModelAndView(VIEW);
 		modelAndView.addObject(PLACE_HOLDER, WELCOME_MESSAGE);
 
-		/*ExcelWriter writer = new ExcelWriter();
+		
 
-		writer.writeExcel();
-*/
 		return modelAndView;
 	}
 

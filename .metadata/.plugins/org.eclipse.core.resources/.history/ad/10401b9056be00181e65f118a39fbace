@@ -1,0 +1,92 @@
+package com.invmgmt.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import com.invmgmt.dao.ProjectDao;
+import com.invmgmt.dao.ProjectDetailsDao;
+import com.invmgmt.entity.Project;
+import com.invmgmt.entity.ProjectDetails;
+
+@Controller
+@EnableWebMvc
+public class ProjectController {
+
+	@Autowired
+	private ProjectDao projectDao;
+
+	@Autowired
+	private ProjectDetailsDao projectDetailsDao;
+
+	private static final String updateProjectviewName = "updatedDetails";
+	private static final String createProjectviewName = "projectDetails";
+
+	@RequestMapping(value = "/createProject", method = RequestMethod.POST)
+	protected ModelAndView saveProject(Project project) throws Exception {
+		// TODO Auto-generated method stub
+
+		int projId = projectDao.addProject(project);
+
+		System.out.println("New project created with ID : " + projId);
+
+		ModelAndView mav = new ModelAndView(createProjectviewName);
+
+		mav.addObject("projectName", project.getProjectName());
+		mav.addObject("projectDesc", project.getProjectDesc());
+		mav.addObject("projectId", project.getProjectId());
+		return mav;
+	}
+
+	@RequestMapping(value = "/updateProject", method = RequestMethod.POST)
+	protected ModelAndView updateProject(ProjectDetails projectDetails) throws Exception {
+		projectDetailsDao.updateProjet(projectDetails);
+
+		Project project = projectDao.getProject(projectDetails.getProjectId());
+
+		ModelAndView mav = new ModelAndView(updateProjectviewName);
+
+		mav.addObject("projectName", project.getProjectName());
+		mav.addObject("projectDesc", project.getProjectDesc());
+		mav.addObject("address", projectDetails.getAddress());
+		mav.addObject("contactEmail", projectDetails.getContactEmail());
+		mav.addObject("contactName", projectDetails.getContactName());
+		mav.addObject("contactPhone", projectDetails.getContactPhone());
+		mav.addObject("gstNumber", projectDetails.getGstNumber());
+		mav.addObject("poDate", projectDetails.getPoDate());
+		mav.addObject("poNumber", projectDetails.getPoNumber());
+
+		return mav;
+	}
+	
+	@RequestMapping(value = "/searchProject", method = RequestMethod.POST)
+	protected ModelAndView searchProject(String projectName) throws Exception {
+		
+		Project project = new Project();
+		
+		project.setProjectName(projectName);
+		project = projectDetailsDao.searchProject(project);
+
+		
+		projectDetailsDao
+		
+
+		ModelAndView mav = new ModelAndView(updateProjectviewName);
+
+		mav.addObject("projectName", project.getProjectName());
+		mav.addObject("projectDesc", project.getProjectDesc());
+		mav.addObject("address", projectDetails.getAddress());
+		mav.addObject("contactEmail", projectDetails.getContactEmail());
+		mav.addObject("contactName", projectDetails.getContactName());
+		mav.addObject("contactPhone", projectDetails.getContactPhone());
+		mav.addObject("gstNumber", projectDetails.getGstNumber());
+		mav.addObject("poDate", projectDetails.getPoDate());
+		mav.addObject("poNumber", projectDetails.getPoNumber());
+
+		return mav;
+	}
+
+}

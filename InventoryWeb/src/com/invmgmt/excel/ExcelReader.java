@@ -2,69 +2,157 @@ package com.invmgmt.excel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.ManagedBean;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.CellAddress;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.invmgmt.dao.InventoryDao;
+import com.invmgmt.entity.Inventory;
+import com.invmgmt.entity.InventorySpec;
+
+@ManagedBean
 public class ExcelReader {
 
-	public static String fileToBeRead = "C:\\Users\\Uday\\Downloads\\ToDoList_24022018.xlsx";
+	@Autowired(required = true)
+	private InventoryDao inventoryDao;
+
+	// public static String fileToBeRead =
+	// "C:\\Users\\Uday\\Desktop\\Projects\\Humdule\\Piping_BOQ_for_Thermic_Fluid.xls";
 	public static String OWNERSHIP = "Ownership";
 	public static String sheetName = "WebSite Contain-Working Plan";
 	int columnNumber = 0;
 	boolean isColumnFound = false;
-	
-	public Set readFile() throws EncryptedDocumentException, InvalidFormatException, IOException
-	{
-		Workbook workbook = WorkbookFactory.create(new File(fileToBeRead));
 
-		DataFormatter dataFormatter = new DataFormatter();
-		
+	DataFormatter dataFormatter = new DataFormatter();
+
+	public ArrayList readFile(String fileToBeRead) throws EncryptedDocumentException, InvalidFormatException, IOException {
+	
+	Workbook workbook = null;
+	ArrayList invList = new ArrayList();
+	
+	try
+	{
+		workbook = WorkbookFactory.create(new File(fileToBeRead));
+
+		CellAddress sellAddress = null;
 		Set inventorySet = new HashSet<String>();
 		
-		workbook.forEach(sheet -> {
-			sheet.forEach(row -> {
-				row.forEach(cell -> {
-					String cellValue = dataFormatter.formatCellValue(cell);
-					
-					if(sheet.getSheetName().trim().equals(sheetName) && !isColumnFound)
-					{
-						columnNumber++;
-					}
-					
-					if (sheet.getSheetName().trim().equals(sheetName) && cellValue.equalsIgnoreCase(OWNERSHIP)) 
-					{
-						isColumnFound = true;
-						System.out.println("#############" + sheet.getSheetName().trim());
-						System.out.println("#############" + cellValue);
-						
-					}
-				});
-			});
-		});
-		
-		System.out.println("################ "+columnNumber);
-		
-		workbook.forEach(sheet -> {
-			sheet.forEach(row -> {
-				if(sheet.getSheetName().trim().equals(sheetName))
-				{
-					Cell cell = row.getCell(columnNumber-1);
-					String cellValue = dataFormatter.formatCellValue(cell);
-					System.out.println(cellValue);
-					if(cellValue!=null && !cellValue.equals("") && !cellValue.equals("Ownership"))
-						inventorySet.add(cellValue);	
-				}
-				
-			});
-		});
+		Iterator<Sheet> sheet = workbook.sheetIterator();
 
-		return inventorySet;
+		String column;
+		int columnIndex=0;
+		int rowIndex=0;
+		while (sheet.hasNext()) {
+			Sheet sheet1 = sheet.next();
+			System.out.println("Working on sheet : "+sheet1.getSheetName());
+			if (sheet1.getSheetName().equalsIgnoreCase("150NB Header")) {
+				Iterator<Row> row = sheet1.rowIterator();
+				while (row.hasNext()) {
+					Iterator<Cell> cell = row.next().cellIterator();
+					while (cell.hasNext()) {
+						Cell cell1 = cell.next();
+						
+						String cellValue = dataFormatter.formatCellValue(cell1);
+
+						if (cellValue.trim().equalsIgnoreCase("IDs")) {
+							String srPosition = cell1.getAddress().formatAsString();
+							column = Character.toString(srPosition.charAt(0));
+							columnIndex = cell1.getColumnIndex();
+							rowIndex = cell1.getRowIndex();
+							
+							for(int i=1;i<100;i++)
+							{
+								Row rowI = sheet1.getRow(rowIndex + i);
+								Cell celli = null;
+								if (rowI != null)
+									celli = rowI.getCell(columnIndex);
+								else
+									break;
+								
+								String cellValue1 = dataFormatter.formatCellValue(celli);
+								
+								if (!(cellValue1.equals(""))) {
+									System.out.println("Cell value is : " + cellValue1);
+									System.out.println("inventoryDao is : " + inventoryDao);
+									invList.add(mapToInventory(cellValue1));
+								}
+							}
+							
+						}
+					}
+				}
+			}
+		}
 	}
+	catch(Exception ex)
+	{
+		ex.printStackTrace();
+	}
+	finally
+	{
+		workbook.close();
+	}
+		return invList;
+	}
+
+	public Inventory mapToInventory(String rawString) {
+		String[] values = rawString.split(",");
+
+		InventorySpec invSprc = new InventorySpec(values[0], values[1], values[2], values[3], values[4],
+				Integer.valueOf(values[5]));
+
+		Inventory inv = new Inventory();
+
+		inv.setInventorySpec(invSprc);
+		inv.setQuantity(Integer.valueOf(values[6]));
+
+		return inv;
+	}
+
+	public Map readColumn(Workbook workbook, int columnIndex, int rowIndex) {
+		Map<String, String> columnData = new HashMap<>();
+		Iterator<Sheet> sheet = workbook.sheetIterator();
+		while (sheet.hasNext()) {
+			Sheet sheet1 = sheet.next();
+			System.out.println("Working on sheet : " + sheet1.getSheetName());
+			if (sheet1.getSheetName().equalsIgnoreCase("150NB Header")) {
+				Iterator<Row> row = sheet1.rowIterator();
+				while (row.hasNext()) {
+					Iterator<Cell> cell = row.next().cellIterator();
+					while (cell.hasNext()) {
+						Cell cell1 = cell.next();
+						String cellValue = dataFormatter.formatCellValue(cell1);
+
+						if (cell1.getColumnIndex() == columnIndex && cell1.getRowIndex() > rowIndex
+								&& !cellValue.equals("")) {
+							System.out.println(cell1.getColumnIndex());
+							System.out.println(cell1.getRowIndex());
+							System.out.println("Value is  : " + cellValue);
+						}
+					}
+				}
+			}
+
+		}
+
+		return columnData;
+	}
+
 }

@@ -1,0 +1,128 @@
+package com.invmgmt.excel;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.CellAddress;
+
+public class ExcelReader {
+
+	public static String fileToBeRead = "C:\\Users\\Uday\\Desktop\\Projects\\Humdule\\Piping_BOQ_for_Thermic_Fluid.xls";
+	public static String OWNERSHIP = "Ownership";
+	public static String sheetName = "WebSite Contain-Working Plan";
+	int columnNumber = 0;
+	boolean isColumnFound = false;
+
+	DataFormatter dataFormatter = new DataFormatter();
+	
+	public Set readFile() throws EncryptedDocumentException, InvalidFormatException, IOException {
+		Workbook workbook = WorkbookFactory.create(new File(fileToBeRead));
+
+		CellAddress sellAddress = null;
+		Set inventorySet = new HashSet<String>();
+
+		/*
+		 * workbook.forEach(sheet -> { System.out.println("Working on Sheet : "
+		 * + sheet.getSheetName()); if
+		 * (sheet.getSheetName().equalsIgnoreCase("New Tappings")) {
+		 * sheet.forEach(row -> { row.forEach(cell -> { String cellValue =
+		 * dataFormatter.formatCellValue(cell);
+		 * 
+		 * if (cellValue.equalsIgnoreCase("Sr.No")) { String srPosition =
+		 * cell.getAddress().formatAsString(); String column =
+		 * Character.toString(srPosition.charAt(0));
+		 * System.out.println("Sr.No found at : " + srPosition);
+		 * System.out.println("Sr.No column at : " + column); }
+		 * 
+		 * }); }); }
+		 * 
+		 * });
+		 */
+
+		Iterator<Sheet> sheet = workbook.sheetIterator();
+
+		String column;
+		int columnIndex=0;
+		while (sheet.hasNext()) {
+			Sheet sheet1 = sheet.next();
+			System.out.println("Working on sheet : "+sheet1.getSheetName());
+			if (sheet1.getSheetName().equalsIgnoreCase("New Tappings")) {
+				Iterator<Row> row = sheet1.rowIterator();
+				while (row.hasNext()) {
+					Iterator<Cell> cell = row.next().cellIterator();
+					while (cell.hasNext()) {
+						Cell cell1 = cell.next();
+						
+						
+						
+						String cellValue = dataFormatter.formatCellValue(cell1);
+
+						if (cellValue.trim().equalsIgnoreCase("Sr.No")) {
+							String srPosition = cell1.getAddress().formatAsString();
+							column = Character.toString(srPosition.charAt(0));
+							columnIndex = cell1.getColumnIndex();
+							System.out.println("Sr.No found at : " + srPosition);
+							System.out.println("Sr.No column at : " + column);
+							System.out.println("Column index : " + cell1.getColumnIndex());
+						}
+					}
+				}
+			}
+		}
+		
+		readColumn(workbook,columnIndex);
+		return inventorySet;
+	}
+
+	public Map readColumn(Workbook workbook, int columnIndex)
+	{
+		Map<String,String> columnData = new HashMap<>();
+		Iterator<Sheet> sheet = workbook.sheetIterator();
+		while(sheet.hasNext())
+		{
+			Sheet sheet1 = sheet.next();
+			System.out.println("Working on sheet : "+sheet1.getSheetName());
+			if (sheet1.getSheetName().equalsIgnoreCase("New Tappings")) {
+				Iterator<Row> row = sheet1.rowIterator();
+				while (row.hasNext()) {
+					Iterator<Cell> cell = row.next().cellIterator();
+					while (cell.hasNext()) {
+						Cell cell1 = cell.next();
+						String cellValue = dataFormatter.formatCellValue(cell1);
+
+						if (cell1.getColumnIndex() == columnIndex && !cellValue.equals("")) {
+							
+							System.out.println("Value is  : " + cellValue);
+						}
+					}
+				}
+			}
+		
+			
+		}
+		
+		return columnData;
+	}
+	public static void main(String[] args) {
+		try {
+			new ExcelReader().readFile();
+		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}

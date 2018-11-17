@@ -1,0 +1,5 @@
+package com.invmgmt.entity;
+
+public class StandartType {
+
+}

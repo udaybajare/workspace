@@ -1,0 +1,24 @@
+package com.invmgmt.entity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="standards")
+public class Standards {
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="Id")
+	private int id;
+	
+	@Column(name="Standard")
+	private String standard;
+	
+	@Column(name="StandardDesc")
+	private String standardDesc;
+}

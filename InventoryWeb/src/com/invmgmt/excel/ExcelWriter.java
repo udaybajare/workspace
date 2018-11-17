@@ -1,67 +1,85 @@
 package com.invmgmt.excel;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
+import javax.annotation.ManagedBean;
+
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import com.invmgmt.model.QuotationExcelModel;
+import com.invmgmt.entity.BOQInventoryDetails;
+import com.invmgmt.entity.Inventory;
+import com.invmgmt.entity.InventorySpec;
 
+@ManagedBean
 public class ExcelWriter {
 
-	public String[] columnNames = { "Sr#", "Invetory Name", "Description", "Quantity", "Available Quantity" };
 
-	public void writeExcel() throws IOException {
-		List<QuotationExcelModel> quotationExcel = new ArrayList<QuotationExcelModel>();
+	public static void writeExcel(ArrayList<BOQInventoryDetails> boqInventoryDetails) throws IOException {
 
-		quotationExcel = populateData(quotationExcel);
+		Workbook workbook = null;
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(new File("C:\\Users\\Uday\\Desktop\\Projects\\Humdule\\BOQ_Template.xls"));
+			workbook = WorkbookFactory.create(inputStream);
+		} catch (EncryptedDocumentException | InvalidFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		Workbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.getSheetAt(0);
 
-		Sheet sheet = workbook.createSheet("Quotation");
+		int nextRow = 9;
+		for (BOQInventoryDetails inventory : boqInventoryDetails)
+		{
+			
+				Cell cellToUpdate = sheet.getRow(nextRow).getCell(1);
+				cellToUpdate.setCellValue("Standard/Type : "+inventory.getStandardType());
+				
+				Cell cellToUpdate0 = sheet.getRow(nextRow).getCell(2);
+				cellToUpdate0.setCellValue(inventory.getSize());
 
-		Font headerFont = workbook.createFont();
-		headerFont.setBold(true);
-		headerFont.setColor(IndexedColors.BLUE.getIndex());
+				Cell cellToUpdate5 = sheet.getRow(nextRow).getCell(3);
+				cellToUpdate5.setCellValue(inventory.getNetQuantity());
+				
+				Cell cellToUpdate6 = sheet.getRow(nextRow).getCell(4);
+				cellToUpdate6.setCellValue(inventory.getSupplyRate());
+				
+				Cell cellToUpdate1 = sheet.getRow(++nextRow).getCell(1);
+				cellToUpdate1.setCellValue("Grade/Class : "+inventory.getGrade());
+				
+				Cell cellToUpdate2 = sheet.getRow(++nextRow).getCell(1);
+				cellToUpdate2.setCellValue("Schedule : "+inventory.getSchedule());
+		
+				Cell cellToUpdate3 = sheet.getRow(++nextRow).getCell(1);
+				cellToUpdate3.setCellValue("Material Spec : "+inventory.getMaterialSpec());
+				
+				Cell cellToUpdate4 = sheet.getRow(++nextRow).getCell(1);
+				cellToUpdate4.setCellValue("Ends : "+inventory.getEnds());
+				
+				nextRow = nextRow+2;
+		}
+		
+		
+		
+		/*Font headerFont = workbook.createFont();
+		headerFont.setColor(IndexedColors.BLACK.getIndex());
 
 		CellStyle cellStyle = workbook.createCellStyle();
-		cellStyle.setFillBackgroundColor(IndexedColors.PINK.getIndex());
 		cellStyle.setFont(headerFont);
-
-		Row headerRow = sheet.createRow(0);
-
-		for (int i = 0; i < columnNames.length; i++) {
-			Cell cell = headerRow.createCell(i);
-			cell.setCellValue(columnNames[i]);
-			cell.setCellStyle(cellStyle);
-		}
-
-		int rowNum = 1;
-
-		for (QuotationExcelModel qExcel : quotationExcel) {
-			Row otherRow = sheet.createRow(rowNum++);
-
-			otherRow.createCell(0).setCellValue(qExcel.getSrNumber());
-			otherRow.createCell(1).setCellValue(qExcel.getInvetoryName());
-			otherRow.createCell(2).setCellValue(qExcel.getDescription());
-			otherRow.createCell(3).setCellValue(qExcel.getQuantity());
-			otherRow.createCell(4).setCellValue(qExcel.getAvailableQuantity());
-		}
-
-		for (int i = 0; i < columnNames.length; i++) {
-			sheet.autoSizeColumn(i);
-		}
-
-		FileOutputStream fileOut = new FileOutputStream("C:\\humdule\\Quotation.xlsx");
+		*/
+		
+		inputStream.close();
+		
+		FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Uday\\Desktop\\Projects\\Humdule\\BOQs\\BOQ_For_ABC.xls");
 		workbook.write(fileOut);
 		fileOut.close();
 
@@ -69,13 +87,13 @@ public class ExcelWriter {
 		workbook.close();
 	}
 
-	public List populateData(List quotationExcel) {
-		for (int i = 0; i < 5; i++) {
-			QuotationExcelModel quotationExcelModel = new QuotationExcelModel(i, "invetoryName" + i, "description" + i,
-					"quantity" + i, 15 + i);
-			quotationExcel.add(quotationExcelModel);
+	/*public static void main(String[] args) {
+		
+		try {
+			//writeExcel();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		return quotationExcel;
-	}
+	}*/
 }

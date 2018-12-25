@@ -12,13 +12,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.invmgmt.dao.BOQDetailsDao;
+import com.invmgmt.dao.BOQLineDataDao;
 import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.dao.InventoryDefinitionDao;
-import com.invmgmt.entity.BOQInventoryDetails;
+import com.invmgmt.dao.MappingsDao;
+import com.invmgmt.dao.ProjectDao;
+import com.invmgmt.entity.BOQDetails;
+import com.invmgmt.entity.BOQLineData;
 import com.invmgmt.entity.Inventory;
+import com.invmgmt.entity.Project;
 import com.invmgmt.excel.ExcelReader;
 import com.invmgmt.excel.ExcelWriter;
 
@@ -34,10 +40,22 @@ public class BOQController {
 	
 	@Autowired
 	InventoryDefinitionDao inventoryDefinitionDao;
+
+	@Autowired
+	MappingsDao mappingsDao;
 	
 	@Autowired
-	InventoryDao inventoryDao; 
+	InventoryDao inventoryDao;
+	
+	@Autowired
+	BOQDetailsDao boqDao;
 
+	@Autowired
+	ProjectDao projectDao;
+	
+	@Autowired
+	BOQLineDataDao boqLineDataDao;
+	
 	@RequestMapping(value = "/import", method = RequestMethod.POST)
 	public @ResponseBody String getBOQLine(@RequestParam(value = "location", required = true) String location) {
 
@@ -68,53 +86,178 @@ public class BOQController {
 		String tableContent = createInvtTable(inventoryList);
 		return tableContent;
 	}
-	@RequestMapping(value = "/generate", method = RequestMethod.POST)
-	protected ModelAndView generateBOQ(String[] standardType, String[] grade, String[] schedule, String[] materialSpec,
-			String[] ends, String[] size, String[] availableQuantity, String[] requiredQuantity, String[] netQuantity,
-			String[] purchaseRate, String[] supplyRate) 
+	
+	@RequestMapping(value = "/downloadBoq", method = RequestMethod.GET)
+	protected @ResponseBody void downloadBOQ(String boqName)
 	{
-		ArrayList<BOQInventoryDetails> boqInventoryDetails = getBOQDetailsList(standardType,
+		ArrayList<BOQDetails> boqDetails = boqDao.getBOQFromName(boqName);
+
+		try 
+		{
+			writer.writeExcel(boqDetails);
+		} 
+		catch (Exception ex) 
+		{
+			ex.printStackTrace();
+		}
+	}
+	
+	@RequestMapping(value = "/generate", method = RequestMethod.POST)
+	protected String generateBOQ(String projectId, String boqName, String[] standardType, String[] grade, String[] schedule, String[] materialSpec,
+			String[] ends, String[] size, String[] quantity, String[] supplyRate, String[] erectionRate,
+			String[] supplyAmount, String[] erectionAmount, RedirectAttributes redirectAttributes) 
+	{
+		ArrayList<String> boqRevisions = boqDao.getMatchingBOQNames(boqName+"_R");
+
+		String boqNameRevisionStr = "";
+		
+		for(int i=1;i<20;i++)
+		{
+			boqNameRevisionStr = boqName+"_R"+String.valueOf(i);
+			if(boqRevisions.contains(boqNameRevisionStr))
+				continue;
+			else
+				break;
+		}
+		
+		System.out.println("Saving BOQ with name : "+boqNameRevisionStr);
+		
+		ArrayList<BOQDetails> boqInventoryDetails = getBOQDetailsList(projectId,
+				boqNameRevisionStr,
+				standardType,
 				grade,
 				schedule,
 				materialSpec,
 				ends,
 				size,
-				availableQuantity,
-				requiredQuantity,
-				netQuantity,
-				purchaseRate,
-				supplyRate);
+				quantity,
+				supplyRate,
+				erectionRate,
+				supplyAmount,
+				erectionAmount);
 		
 		try {
 			writer.writeExcel(boqInventoryDetails);
+			
+			for(BOQDetails boqDetails : boqInventoryDetails)
+			{				
+				boqDao.saveBOQ(boqDetails);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new ModelAndView("dummy");
+		
+		Project project = projectDao.getProject(Integer.valueOf(projectId));
+		
+		redirectAttributes.addAttribute("projectId",projectId);
+		redirectAttributes.addAttribute("projectName",project.getProjectName());
+		redirectAttributes.addAttribute("projectDesc",project.getProjectDesc());
+		
+		return "redirect:/projectDetails";
 	}
 
-	
-	private ArrayList<BOQInventoryDetails> getBOQDetailsList(String[] standardType, String[] grade, String[] schedule,
-			String[] materialSpec, String[] ends, String[] size, String[] availableQuantity, String[] requiredQuantity,
-			String[] netQuantity, String[] purchaseRate, String[] supplyRate) 
+	@RequestMapping(value = "/generateNew", method = RequestMethod.POST)
+	protected String generateBOQ(String projectId, String boqName, String[] inventoryName, String[] material, String[] type, String[] manifacturingMethod,
+			String[] classOrGrade, String[] ends, String[] size, String[] quantity, String[] supplyRate, String[] erectionRate,
+			String[] supplyAmount, String[] erectionAmount, RedirectAttributes redirectAttributes) 
 	{
-		int noOfEntries = standardType.length;
-		ArrayList<BOQInventoryDetails> boqInventoryDetails = new ArrayList<>();
+		ArrayList<String> boqRevisions = boqDao.getMatchingBOQNames(boqName+"_R");
+
+		String boqNameRevisionStr = "";
+		projectId = "73";
+		for(int i=1;i<20;i++)
+		{
+			boqNameRevisionStr = boqName+"_R"+String.valueOf(i);
+			if(boqRevisions.contains(boqNameRevisionStr))
+				continue;
+			else
+				break;
+		}
+		
+		System.out.println("Saving BOQ with name : "+boqNameRevisionStr);
+		
+		ArrayList<BOQLineData> boqInventoryDetails = getBOQLineDataList(material,type,ends,classOrGrade);
+		
+		try {
+			writer.writeExcel(boqInventoryDetails, size, quantity, supplyRate, erectionRate);
+			
+			for(BOQLineData boqDetails : boqInventoryDetails)
+			{				
+				//boqDao.saveBOQ(boqDetails);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Project project = projectDao.getProject(Integer.valueOf(projectId));
+		
+		redirectAttributes.addAttribute("projectId",projectId);
+		redirectAttributes.addAttribute("projectName",project.getProjectName());
+		redirectAttributes.addAttribute("projectDesc",project.getProjectDesc());
+		
+		return "redirect:/projectDetails";
+	}
+	
+	private ArrayList<BOQLineData> getBOQLineDataList(String[] material, String[] type,String[] ends, String[] classOrGrade)
+	{
+		ArrayList<BOQLineData> boqInventoryDetails = new ArrayList<>();
+		int noOfEntries = material.length;
 		
 		for (int i = 0; i < noOfEntries; i++) 
 		{
-			boqInventoryDetails.add(new BOQInventoryDetails(standardType[i],
+			boqInventoryDetails.add(getBOQLineData(material[i], type[i], classOrGrade[i], ends[i]));
+		}
+		
+		return boqInventoryDetails;
+	}
+	
+	
+	private BOQLineData getBOQLineData(String material, String type, String classOrGrade, String ends)
+	{
+		switch(classOrGrade)
+		{
+		case "C":
+			classOrGrade = "Heavy";
+		case "B":
+			classOrGrade = "Medium";
+		case "A":
+			classOrGrade = "Light";
+		default:
+			break;
+		}
+		
+		BOQLineData boqLineData = boqLineDataDao.getLineData(material);
+		
+		boqLineData.setEndsLine(boqLineData.getEndsLine().replaceAll("ENDS_VAL", ends));
+		boqLineData.setGrdLine(boqLineData.getGrdLine().replaceAll("CLASS_VAL", classOrGrade));
+		boqLineData.setGrdLine(boqLineData.getGrdLine().replaceAll("TYPE_VAL", type));
+		
+		return boqLineData;
+	}
+	private ArrayList<BOQDetails> getBOQDetailsList(String projectId, String boqName, String[] standardType, String[] grade, String[] schedule,
+			String[] materialSpec, String[] ends, String[] size, String[] quantity, String[] supplyRate,
+			String[] erectionRate, String[] supplyAmount, String[] erectionAmount) 
+	{
+		int noOfEntries = standardType.length;
+		ArrayList<BOQDetails> boqInventoryDetails = new ArrayList<>();
+		
+		for (int i = 0; i < noOfEntries; i++) 
+		{
+			boqInventoryDetails.add(new BOQDetails(projectId,
+					boqName,
+					standardType[i],
 					grade[i],
 					schedule[i],
 					materialSpec[i],
 					ends[i],
 					size[i],
-					availableQuantity[i],
-					requiredQuantity[i],
-					netQuantity[i],
-					purchaseRate[i],
-					supplyRate[i]));
+					quantity[i],
+					supplyRate[i],
+					erectionRate[i],
+					supplyAmount[i],
+					erectionAmount[i]));
 		System.out.println(boqInventoryDetails.get(i).toString());		
 		}
 		
@@ -130,7 +273,7 @@ public class BOQController {
 
 		try {
 
-			ArrayList<String> results = (ArrayList<String>) inventoryDefinitionDao.getAssociatedOptions(currentTag,
+			ArrayList<String> results = (ArrayList<String>) mappingsDao.getAssociatedOptions(currentTag,
 					value, nextTagName);
 
 			for (int i = 0; i < results.size(); i++) {
@@ -168,11 +311,11 @@ public class BOQController {
 				+ "    <td><input type=\"text\" name=\"materialSpec\" value=\"materialSpec\" /></td>"
 				+ "    <td><input type=\"text\" name=\"ends\" value=\"ends\" /></td>"
 				+ "    <td><input type=\"text\" name=\"size\" value=\"size\" /></td>"
-				+ "    <td><input type=\"text\" name=\"availableQuantity\" value=\"availableQuantity\" /></td>"
-				+ "    <td><input type=\"text\" name=\"requiredQuantity\" value=\"requiredQuantity\" /></td>"
-				+ "    <td><input type=\"text\" name=\"netQuantity\" value=\"netQuantity\" /></td>"
-				+ "    <td><input type=\"text\" name=\"purchaseRate\" value=\"purchaseRate\" /></td>"
-				+ "    <td><input type=\"text\" name=\"supplyRate\" value=\"65\" /></td>" + "</tr>";
+				+ "    <td><input type=\"text\" name=\"quantity\" value=\"quantity\" /></td>"
+				+ "    <td><input type=\"text\" name=\"supplyRate\" value=\"\" /></td>"
+				+ "    <td><input type=\"text\" name=\"erectionRate\" value=\"\" /></td>"
+				+ "    <td><input type=\"text\" name=\"supplyAmount\" value=\"\" /></td>"
+				+ "    <td><input type=\"text\" name=\"erectionAmount\" value=\"\" /></td>" + "</tr>";
 
 		String rowToReturn = template;
 		rowToReturn = rowToReturn.replace("value=\"standardType", "value=\""+inv.getInventorySpec().getStandardType());
@@ -182,19 +325,9 @@ public class BOQController {
 		rowToReturn = rowToReturn.replace("value=\"ends", "value=\""+inv.getInventorySpec().getEnds());
 		rowToReturn = rowToReturn.replace("value=\"size", "value=\""+Integer.toString(inv.getInventorySpec().getSize()));
 		
-		//check available quantity		
-		int availableQuantity = inventoryDao.getAvailableQuantity(inv);
-		
-		String netQuantity = Integer.toString(inv.getQuantity()- availableQuantity);
-		
 		String requiredQuantity = Integer.toString(inv.getQuantity());
-		rowToReturn = rowToReturn.replace("value=\"availableQuantity", "value=\""+Integer.toString(availableQuantity));
-		rowToReturn = rowToReturn.replace("value=\"requiredQuantity", "value=\""+requiredQuantity);
+		rowToReturn = rowToReturn.replace("value=\"quantity", "value=\""+requiredQuantity);
 			
-		rowToReturn = rowToReturn.replace("value=\"netQuantity", "value=\""+netQuantity);
-		
-		//Purchse Rate
-		rowToReturn = rowToReturn.replace("value=\"purchaseRate", "value=\""+Integer.toString(inventoryDao.getPurchaseRate(inv)));
 		return rowToReturn;
 	}
 

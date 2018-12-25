@@ -1,5 +1,6 @@
 package com.invmgmt.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.invmgmt.dao.BOQDetailsDao;
 import com.invmgmt.dao.ProjectDao;
 import com.invmgmt.dao.ProjectDetailsDao;
+import com.invmgmt.entity.BOQDetails;
 import com.invmgmt.entity.Project;
 import com.invmgmt.entity.ProjectDetails;
 import com.invmgmt.excel.ExcelReader;
@@ -24,6 +27,9 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectDetailsDao projectDetailsDao;
+	
+	@Autowired
+	private BOQDetailsDao boqDao;
 
 	@Autowired
 	ExcelReader reader;
@@ -54,10 +60,15 @@ public class ProjectController {
 		projectDetailsDao.updateProjet(projectDetails);
 
 		Project project = projectDao.getProject(projectDetails.getProjectId());
+		
+		ArrayList<String> boqNames = boqDao.getAssociatedBOQNames(String.valueOf(project.getProjectId()));
+		
 		String tableContent = "";
 
 		ModelAndView mav = new ModelAndView(updateProjectviewName);
 
+		mav.addObject("boqNameList", String.join(",", boqNames));
+		mav.addObject("projectId", project.getProjectId());
 		mav.addObject("projectName", project.getProjectName());
 		mav.addObject("projectDesc", project.getProjectDesc());
 		mav.addObject("address", projectDetails.getAddress());
@@ -95,14 +106,19 @@ public class ProjectController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/projectDetails", method = RequestMethod.POST)
+	@RequestMapping(value = "/projectDetails", method = {RequestMethod.POST,RequestMethod.GET})
 	protected ModelAndView projectDetails(Project project) throws Exception {
 
 		ProjectDetails projectDetails = projectDetailsDao.getProjectDetails(project.getProjectId());
+		
+		ArrayList<String> boqNames = boqDao.getAssociatedBOQNames(String.valueOf(project.getProjectId()));
+				
 		String tableContent = "";
 
 		ModelAndView mav = new ModelAndView(updateProjectviewName);
 
+		mav.addObject("boqNameList", String.join(",", boqNames));
+		mav.addObject("projectId", project.getProjectId());
 		mav.addObject("projectName", project.getProjectName());
 		mav.addObject("projectDesc", project.getProjectDesc());
 		mav.addObject("address", projectDetails.getAddress());

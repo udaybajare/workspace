@@ -18,6 +18,13 @@ public class Inventory {
 	@Column(name="quantity")
 	private int quantity;
 	
+	public Inventory(InventorySpec inventorySpec, String purchaseRate, int quantity) {
+		super();
+		this.inventorySpec = inventorySpec;
+		this.purchaseRate = purchaseRate;
+		this.quantity = quantity;
+	}
+
 	public Inventory() 
 	{
 

@@ -758,7 +758,7 @@
 
       <!-- main-container start -->
       <!-- ================ -->
-      <form action="updateInventory" method="POST">
+      <form action="generateNew" method="POST">
       <section class="main-container padding-bottom-clear">
       <!-- section -->
         <!-- ================ -->
@@ -767,73 +767,96 @@
             <div class="row">
               <div class="col-md-12 ">
 				<div class="table-responsive">                
-
+				<form action="generate" method="POST">
 				<table class="table inventoryDetails" style="display:none;">
                 <thead>
                   <tr>
-                    <th>Standard Type</th>
-                    <th>Grade</th>
-                    <th>Schedule</th>
-                    <th>Material Spec</th>
-                    <th>Size</th>
+                    <th>Inventory</th>
+                    <th>Material</th>
+                    <th>Type</th>
+                    <th>Manifacturing Method</th>
+                    <th>Class/Schedule</th>
                     <th>Ends</th>
+                    <th>Size</th>
                     <th>Quantity</th>
-                    <th>Purchase Rate</th>
+                    <th>Supply Rate</th>
+                    <th>Erection Rate</th>
                   </tr>
                 </thead>
                 <tbody id="tableContentDetails">
 				</tbody>
 				</table>
+				<div class="form-row">
+	<div class="col-md-4 ">
+	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+	</div>
+	</div>
+	<div class="col-md-4 ">
+	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+	</div>	
+	</div>
+	<div class="col-md-4 ">
+	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+	<label></label>
+	<br>
+		<button type="submit" class="btn btn-default">Gnerate BOQ</button>
+		</div>	
+	</div>	
+	</div>
+	
+	</form>
+				
                 <table class="table">
                 <thead>
                   <tr>
-                    <th>Standard Type</th>
-                    <th>Grade</th>
-                    <th>Schedule</th>
-                    <th>Material Spec</th>
-                    <th>Size</th>
+                    <th>Inventory</th>
+                    <th>Material</th>
+                    <th>Type</th>
+                    <th>Manifacturing Method</th>
+                    <th>Class/Schedule</th>
                     <th>Ends</th>
-                    <th>Quantity</th>
-                    <th>Purchase Rate</th>
+                    <th>Size</th>
                   </tr>
                 </thead>
                 <tbody id="tableContent">
                  <tr>
 <td>
 <div class="form-group">
-  <select class="form-control" name="standardType" id="standardType" onChange="myFunction(this.value,'standardType','grade');">
+  <select class="form-control" name="inventoryName" id="inventoryName" onChange="myFunction(this.value,'inventoryName','material');">
     <option></option>
-    <option value="ASME B-31.1">ASME B-31.1</option>
-    <option value="ASME B-31.2">ASME B-31.2</option>
-    <option value="ASME B-31.3">ASME B-31.3</option>
-    <option value="ASME B-31.4">ASME B-31.4</option>
+    <option value="Pipe">Pipe</option>
+    <option value="Fittings">Fittings</option>
+    <option value="Accesories">Accesories</option>
   </select>
 </div>
 </td>
 <td>
 <div class="form-group">
-  <select class="form-control" name="grade" id="grade" onChange="myFunction(this.value,'grade','schedule');">
-    <option></option>
-  </select>
-</div>
-</td>
-<td>
-<div class="form-group">
-  <select class="form-control" name="schedule" id="schedule" onChange="myFunction(this.value,'schedule','materialSpec');">
+  <select class="form-control" name="material" id="material" onChange="myFunction(this.value,'material','type');">
     <option></option>
   </select>
 </div>
 </td>
 <td>
 <div class="form-group">
-  <select class="form-control" name="materialSpec" id="materialSpec" onChange="myFunction(this.value,'materialSpec','size');">
+  <select class="form-control" name="type" id="type" onChange="myFunction($('#material').val(),'material','classOrGrade');">
     <option></option>
   </select>
 </div>
 </td>
 <td>
 <div class="form-group">
-  <select class="form-control" name="size" id="size" onChange="myFunction(this.value,'size','ends');">
+  <select class="form-control" name="manifacturingMethod" id="manifacturingMethod">
+    <option></option>
+    <option>Seamless</option>
+    <option>ERW</option>
+    <option>Centrifuge</option>
+  </select>
+</div>
+</td>
+<td>
+<div class="form-group">
+  <select class="form-control" name="classOrGrade" id="classOrGrade">
     <option></option>
   </select>
 </div>
@@ -842,17 +865,23 @@
 <div class="form-group">
   <select class="form-control" name="ends" id="ends">
     <option></option>
+    <option>Buttweld</option>
+    <option>Socket Weld/Threaded</option>
+    <option>Threaded</option>
+    <option>Plain End</option>
   </select>
 </div>
 </td>
 <td>
 <div class="form-group">
-  <input type="text" name="quantity" />
-</div>
-</td>
-<td>
-<div class="form-group">
-  <input type="text" name="purchaseRate" />
+  <select class="form-control" name="size" id="size">
+    <option></option>
+    <option>1</option>
+    <option>1.25</option>
+    <option>1.5</option>
+    <option>2</option>
+    <option>2.5</option>
+  </select>
 </div>
 </td>
 </tr>                 
@@ -861,7 +890,6 @@
                   </div>
                 </div>
               </div>
-            </div>
             <br>
             <div class="row">
               <div class="col-md-4 ">
@@ -890,11 +918,11 @@
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label></label>
 						<br>
-						<button type="submit" class="btn btn-default">Add Inventory</button>		
+						<button type="button" class="btn btn-default" onClick="appendInventory();">Add Inventory</button>		
 					</div>					
 				</div>							
 			</div>
-</form>			
+		</form>			
 			<div class="form-row">
 				<div class="col-md-4 ">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
@@ -908,7 +936,7 @@
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label></label>
 						<br>
-						<button type="button" class="btn btn-default" onClick="captureFileLocation();">Show Available Inventory</button>		
+						<button type="button" class="btn btn-default" onClick="showInventory();">Show Available Inventory</button>		
 					</div>					
 				</div>
 			</div>
@@ -966,7 +994,7 @@
     <script src="js/custom.js"></script>
 
 <script>
-function captureFileLocation() 
+function showInventory() 
 {
 	$.ajax({
 			type : 'POST',
@@ -991,11 +1019,43 @@ function myFunction(value, tagName, nextTagName) {
             
             console.log(data);
             console.log($(tag));
-            
+            			$(tag).html("<option></option>");
 						$(tag).append(data);
                         }
         });
 }
+</script>
+<script>
+function appendInventory() 
+{
+
+var inventoryName = $('#inventoryName').children("option:selected").val();
+var material = $('#material').children("option:selected").val();
+var type = $('#type').children("option:selected").val();
+var manifacturingMethod = $('#manifacturingMethod').children("option:selected").val();
+var classOrGrade = $('#classOrGrade').children("option:selected").val();
+var ends = $('#ends').children("option:selected").val();
+var size = $('#size').val();
+
+console.log(type);
+	
+	var	template = "<tr>" 
+	+ "    <td> <input type='hidden' name='inventoryName' value='"+inventoryName+"'></input>"+inventoryName+"</td>"
+	+ "    <td>  <input type='hidden' name='material' value='"+material+"'></input>"+material+"</td>"
+	+ "    <td> <input type='hidden' name='type' value='"+type+"'></input>"+type+"</td>"
+	+ "    <td> <input type='hidden' name='manifacturingMethod' value='"+manifacturingMethod+"'></input>"+manifacturingMethod+"</td>"
+	+ "    <td> <input type='hidden' name='classOrGrade' value='"+classOrGrade+"'></input>"+classOrGrade+"</td>"
+	+ "    <td> <input type='hidden' name='ends' value='"+ends+"'></input>"+ends+"</td>"
+	+ "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
+	+ "	   <td><input type='text' name='quantity' value=''></input></td>"
+	+ "	   <td><input type='text' name='supplyRate' value=''></input></td>"
+	+ "	   <td><input type='text' name='erectionRate' value=''></input></td>";
+	
+	console.log(template);
+            	$('.inventoryDetails').css("display","block");          	
+                $('#tableContentDetails').append(template);
+}
+
 </script>
 </body>
 </html>

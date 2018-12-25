@@ -792,12 +792,13 @@
             </div>
             <br>
             <form action="generate" method="POST">
+            <input type="hidden" name="projectId" value="${projectId}" />
             <div class="row">
               <div class="col-md-12 ">
 				
 				<div class="table-responsive">                
                 <table class="table">
-                <thead>
+                <thead id="tableHeader">
                   <tr>
                     <th>Standard Type</th>
                     <th>Grade</th>
@@ -805,11 +806,24 @@
                     <th>Material Spec</th>
                     <th>Ends</th>
                     <th>Size</th>
-                    <th>Available Quantity</th>
-					<th>Required Quantity</th>
-                    <th>Net Quantity</th>
-                    <th>Purchase Rate</th>
-                    <th>Supply Rate</th>
+                    <th>Quantity</th>
+					<th>Supply Rate</th>
+                    <th>Erection Rate</th>
+                    <th>Supply Amount</th>
+                    <th>Erection Amount</th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+					<th><input type="text" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
+                    <th><input type="text" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 
@@ -838,7 +852,9 @@
             </div>
 			<div class="form-row">
 				<div class="col-md-4 ">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+					
+					<div id="revisionSection" class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+					<h4>BOQ Revisions</h4>
 					</div>
 				</div>
 				<div class="col-md-4 ">
@@ -856,8 +872,11 @@
 				</div>
 				<div class="col-md-2" id="generate" style="display:none">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label></label>
-						<br>
+						<label>BOQ Name : 
+						<input type="text" name="boqName" value=${projectName}/>
+						<input type="hidden" name="boqNameList" value=${boqNameList}>
+						</label>
+						</br>
 						<button type="Submit" class="btn btn-default">Generate BOQ</button>		
 					</div>					
 				</div>							
@@ -962,6 +981,107 @@ function myFunction(value, tagName, nextTagName) {
             
 						$(tag).append(data);
                         }
+        });
+}
+</script>
+<script>
+function updateSupplyRate(thisObj)
+{
+
+var rate = [];
+var quantity = [];
+
+$("input[name='supplyRate']").each(function() {
+    console.log($(this).val());
+    console.log(parseFloat($(this).val()) + parseFloat($("[name='supplyPrsnt']").val()*$(this).val()/100));
+    var sRate = parseFloat($(this).val()) + parseFloat($("[name='supplyPrsnt']").val()*$(this).val()/100);
+    $(this).val(sRate);
+    rate.push(sRate);
+});
+
+$("input[name='quantity']").each(function() {
+	quantity.push($(this).val());
+});
+
+var i = 0;
+
+$("input[name='supplyAmount']").each(function() {
+	console.log(rate[i]);
+	console.log(quantity[i]);
+	$(this).val(rate[i]*quantity[i]);
+	i++;
+});
+
+}
+</script>        
+<script>
+function updateErectionRate(thisObj)
+{
+
+var rate = [];
+var quantity = [];
+
+$("input[name='erectionRate']").each(function() {
+    console.log($(this).val());
+    console.log(parseFloat($(this).val()) + parseFloat($("[name='erectionPrsnt']").val()*$(this).val()/100));
+    
+    var eRate = parseFloat($(this).val()) + parseFloat($("[name='erectionPrsnt']").val()*$(this).val()/100);
+    $(this).val(eRate);
+    rate.push(eRate);
+});
+
+$("input[name='quantity']").each(function() {
+	quantity.push($(this).val());
+});
+
+var i = 0;
+
+$("input[name='erectionAmount']").each(function() {
+	console.log(rate[i]);
+	console.log(quantity[i]);
+	$(this).val(rate[i]*quantity[i]);
+	i++;
+});
+}
+</script>
+<script>
+
+$(document).ready(function(){
+   // we define and invoke a function
+   (function(){
+     $("input[name='boqNameList']").each(function(){
+     
+     var names = $(this).val().split(",");
+     var dummy = "<h5 onClick=\"download('BOQRevisions');\">BOQRevisions</h5> <div class=\"separator clearfix\"></div>";
+     
+    $.each(names,function(i){
+   			console.log(names[i]);
+   			
+   			var dummy1 = dummy.replace("BOQRevisions",names[i]);
+   			
+   			var tags = dummy1.replace("BOQRevisions",names[i]);
+   			
+   			$('#revisionSection').append(tags);
+   			
+		});
+     
+     });
+   })();
+});
+
+</script>
+
+<script>
+function download(name) {
+        
+    $.ajax({
+			type : 'GET',
+			data :  {'boqName' : name},
+            url : 'downloadBoq',
+            success : function(data) {
+            
+            console.log('Download Successful..!!');
+                         }
         });
 }
 </script>

@@ -26,7 +26,7 @@ public class InventoryDao {
 
 		System.out.println("Saving in db : " + inventory);
 		try {
-			session.save(inventory);
+			session.saveOrUpdate(inventory);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -60,12 +60,13 @@ public class InventoryDao {
 
 		Session session = null;
 		String selectHql = "SELECT invD.quantity FROM Inventory invD where "
-				+ "invD.inventorySpec.standardType = '" + inventorySpec.getStandardType() + "' and  "
-				+ "invD.inventorySpec.grade = '" + inventorySpec.getGrade() + "' and  "
-				+ "invD.inventorySpec.schedule = '" + inventorySpec.getSchedule() + "' and  "
-				+ "invD.inventorySpec.materialSpec = '" + inventorySpec.getMaterialSpec() + "' and  "
-				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
-				+ inventorySpec.getEnds() + "'";
+				+ "invD.inventorySpec.inventory = '" + inventorySpec.getInventoryName() + "' and  "
+				+ "invD.inventorySpec.material = '" + inventorySpec.getMaterial() + "' and  "
+				+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
+				+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
+				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
+				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " 
+				+ "invD.inventorySpec.ends = '"	+ inventorySpec.getEnds() + "'";
 		try {
 			session = sessionFactory.openSession();
 			Query query = session.createQuery(selectHql);
@@ -86,12 +87,13 @@ public class InventoryDao {
 
 		Session session = null;
 		String selectHql = "SELECT invD.purchaseRate FROM Inventory invD where "
-				+ "invD.inventorySpec.standardType = '" + inventorySpec.getStandardType() + "' and  "
-				+ "invD.inventorySpec.grade = '" + inventorySpec.getGrade() + "' and  "
-				+ "invD.inventorySpec.schedule = '" + inventorySpec.getSchedule() + "' and  "
-				+ "invD.inventorySpec.materialSpec = '" + inventorySpec.getMaterialSpec() + "' and  "
-				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
-				+ inventorySpec.getEnds() + "'";
+				+ "invD.inventorySpec.inventory = '" + inventorySpec.getInventoryName() + "' and  "
+				+ "invD.inventorySpec.material = '" + inventorySpec.getMaterial() + "' and  "
+				+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
+				+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
+				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
+				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " 
+				+ "invD.inventorySpec.ends = '"	+ inventorySpec.getEnds() + "'";
 		try {
 			session = sessionFactory.openSession();
 			Query query = session.createQuery(selectHql);

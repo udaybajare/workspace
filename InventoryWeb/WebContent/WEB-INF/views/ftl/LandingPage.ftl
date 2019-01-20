@@ -218,34 +218,27 @@
               <div class="main object-non-visible animated object-visible fadeInUpSmall" data-animation-effect="fadeInUpSmall" data-effect-delay="100">
                 <div class="form-block p-30 light-gray-bg border-clear">
                   <h2 class="title">Login</h2>
-                  <form class="form-horizontal" action="home" method="POST">
+                  <form class="form-horizontal" action="login" method="POST">
                     <div class="form-group has-feedback row">
                       <label for="inputUserName" class="col-md-3 text-md-right control-label col-form-label">User Name</label>
                       <div class="col-md-8">
-                        <input type="text" class="form-control" id="inputUserName" placeholder="User Name" required="">
+                        <input name ="userName" type="text" class="form-control" id="inputUserName" placeholder="User Name" required="">
                         <i class="fa fa-user form-control-feedback pr-4"></i>
                       </div>
                     </div>
                     <div class="form-group has-feedback row">
                       <label for="inputPassword" class="col-md-3 text-md-right control-label col-form-label">Password</label>
                       <div class="col-md-8">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Password" required="">
+                        <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password" required="">
                         <i class="fa fa-lock form-control-feedback pr-4"></i>
                       </div>
                     </div>
                     <div class="form-group row">
-                      <div class="ml-md-auto col-md-9">
-                        <div class="checkbox form-check">
-                          <input class="form-check-input" type="checkbox" required="">
-                          <label class="form-check-label">
-                            Remember me.
-                          </label>
-                        </div>
+                      <div class="ml-md-auto col-md-9">                        
                         <button type="submit" class="btn btn-group btn-default btn-animated">Log In <i class="fa fa-user"></i></button>
                         <ul class="space-top">
                           <li><a href="file:///C:/Users/Uday/Desktop/Humdule/WB0F82581/the_project_v.2.1.0/html/html/template/page-login.html#">Forgot your password?</a></li>
                         </ul>
-                        ${welcomeMessage}
                       </div>
                     </div>
                   </form>

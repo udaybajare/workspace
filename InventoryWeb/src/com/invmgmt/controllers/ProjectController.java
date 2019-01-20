@@ -49,6 +49,7 @@ public class ProjectController {
 
 		ModelAndView mav = new ModelAndView(createProjectviewName);
 
+		mav.addObject("boqNameList", String.join(",", ""));
 		mav.addObject("projectName", project.getProjectName());
 		mav.addObject("projectDesc", project.getProjectDesc());
 		mav.addObject("projectId", project.getProjectId());
@@ -111,23 +112,40 @@ public class ProjectController {
 
 		ProjectDetails projectDetails = projectDetailsDao.getProjectDetails(project.getProjectId());
 		
+		System.out.println("projectDetails Address is : " +projectDetails.getAddress());
+		
 		ArrayList<String> boqNames = boqDao.getAssociatedBOQNames(String.valueOf(project.getProjectId()));
 				
 		String tableContent = "";
 
 		ModelAndView mav = new ModelAndView(updateProjectviewName);
 
+		if(projectDetails.getAddress() == null)
+		{
+		    	mav.addObject("address", "No Details");
+			mav.addObject("contactEmail", "No Details");
+			mav.addObject("contactName", "No Details");
+			mav.addObject("contactPhone", "No Details");
+			mav.addObject("gstNumber", "No Details");
+			mav.addObject("poDate", "No Details");
+			mav.addObject("poNumber", "No Details");    
+		}
+		else
+		{
+			mav.addObject("address", projectDetails.getAddress());
+			mav.addObject("contactEmail", projectDetails.getContactEmail());
+			mav.addObject("contactName", projectDetails.getContactName());
+			mav.addObject("contactPhone", projectDetails.getContactPhone());
+			mav.addObject("gstNumber", projectDetails.getGstNumber());
+			mav.addObject("poDate", projectDetails.getPoDate());
+			mav.addObject("poNumber", projectDetails.getPoNumber());
+		}
+		
 		mav.addObject("boqNameList", String.join(",", boqNames));
 		mav.addObject("projectId", project.getProjectId());
 		mav.addObject("projectName", project.getProjectName());
 		mav.addObject("projectDesc", project.getProjectDesc());
-		mav.addObject("address", projectDetails.getAddress());
-		mav.addObject("contactEmail", projectDetails.getContactEmail());
-		mav.addObject("contactName", projectDetails.getContactName());
-		mav.addObject("contactPhone", projectDetails.getContactPhone());
-		mav.addObject("gstNumber", projectDetails.getGstNumber());
-		mav.addObject("poDate", projectDetails.getPoDate());
-		mav.addObject("poNumber", projectDetails.getPoNumber());
+
 
 		return mav;
 	}

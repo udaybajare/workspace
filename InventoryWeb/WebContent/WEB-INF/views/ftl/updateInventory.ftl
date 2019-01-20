@@ -758,7 +758,7 @@
 
       <!-- main-container start -->
       <!-- ================ -->
-      <form action="generateNew" method="POST">
+      
       <section class="main-container padding-bottom-clear">
       <!-- section -->
         <!-- ================ -->
@@ -767,7 +767,7 @@
             <div class="row">
               <div class="col-md-12 ">
 				<div class="table-responsive">                
-				<form action="generate" method="POST">
+				<form action="updateInventory" method="POST">
 				<table class="table inventoryDetails" style="display:none;">
                 <thead>
                   <tr>
@@ -779,8 +779,9 @@
                     <th>Ends</th>
                     <th>Size</th>
                     <th>Quantity</th>
-                    <th>Supply Rate</th>
-                    <th>Erection Rate</th>
+                    <th>Purchase Rate</th>
+                    <th>Project</th>
+                    <th>Location</th>
                   </tr>
                 </thead>
                 <tbody id="tableContentDetails">
@@ -799,7 +800,7 @@
 	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 	<label></label>
 	<br>
-		<button type="submit" class="btn btn-default">Gnerate BOQ</button>
+		<button type="submit" class="btn btn-default">Update Inventory</button>
 		</div>	
 	</div>	
 	</div>
@@ -922,7 +923,7 @@
 					</div>					
 				</div>							
 			</div>
-		</form>			
+					
 			<div class="form-row">
 				<div class="col-md-4 ">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
@@ -1043,13 +1044,15 @@ console.log(type);
 	+ "    <td> <input type='hidden' name='inventoryName' value='"+inventoryName+"'></input>"+inventoryName+"</td>"
 	+ "    <td>  <input type='hidden' name='material' value='"+material+"'></input>"+material+"</td>"
 	+ "    <td> <input type='hidden' name='type' value='"+type+"'></input>"+type+"</td>"
-	+ "    <td> <input type='hidden' name='manifacturingMethod' value='"+manifacturingMethod+"'></input>"+manifacturingMethod+"</td>"
-	+ "    <td> <input type='hidden' name='classOrGrade' value='"+classOrGrade+"'></input>"+classOrGrade+"</td>"
+	+ "    <td> <input type='hidden' name='manifMethod' value='"+manifacturingMethod+"'></input>"+manifacturingMethod+"</td>"
+	+ "    <td> <input type='hidden' name='gradeOrClass' value='"+classOrGrade+"'></input>"+classOrGrade+"</td>"
 	+ "    <td> <input type='hidden' name='ends' value='"+ends+"'></input>"+ends+"</td>"
 	+ "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
 	+ "	   <td><input type='text' name='quantity' value=''></input></td>"
-	+ "	   <td><input type='text' name='supplyRate' value=''></input></td>"
-	+ "	   <td><input type='text' name='erectionRate' value=''></input></td>";
+	+ "	   <td><input type='text' name='purchaseRate' value=''></input></td>"
+	+ "	   <td><input type='text' name='project' value=''></input></td>"
+	+ "	   <td><input type='text' name='location' value=''></input></td>";
+
 	
 	console.log(template);
             	$('.inventoryDetails').css("display","block");          	

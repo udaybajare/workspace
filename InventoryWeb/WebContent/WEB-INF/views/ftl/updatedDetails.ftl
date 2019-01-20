@@ -791,7 +791,7 @@
             </aside>			  
             </div>
             <br>
-            <form action="generate" method="POST">
+            <form name="generateBOQ" id="generateBOQ" action="generate" method="POST">
             <input type="hidden" name="projectId" value="${projectId}" />
             <div class="row">
               <div class="col-md-12 ">
@@ -800,10 +800,12 @@
                 <table class="table">
                 <thead id="tableHeader">
                   <tr>
-                    <th>Standard Type</th>
-                    <th>Grade</th>
-                    <th>Schedule</th>
-                    <th>Material Spec</th>
+                  	<th>Select</th>
+                    <th>Inventory</th>
+                    <th>Material</th>
+                    <th>Type</th>
+                    <th>Manifacturing Method</th>
+                    <th>Grade/Class</th>
                     <th>Ends</th>
                     <th>Size</th>
                     <th>Quantity</th>
@@ -813,6 +815,8 @@
                     <th>Erection Amount</th>
                   </tr>
                   <tr>
+                    <th>A</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -860,7 +864,8 @@
 				<div class="col-md-4 ">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label></label>
-						
+						<br>
+						<button type="button" onClick="generatePO();" class="btn btn-default">Generate PO</button>
 					</div>					
 				</div>
 				<div class="col-md-2" id="importBoq">
@@ -873,11 +878,11 @@
 				<div class="col-md-2" id="generate" style="display:none">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label>BOQ Name : 
-						<input type="text" name="boqName" value=${projectName}/>
+						<input type="text" name="boqName" value=${projectName}>
 						<input type="hidden" name="boqNameList" value=${boqNameList}>
 						</label>
 						</br>
-						<button type="Submit" class="btn btn-default">Generate BOQ</button>		
+						<button type="button" onClick="createInquiry();" class="btn btn-default">Generate Offer</button>		
 					</div>					
 				</div>							
 			</div>
@@ -916,6 +921,9 @@
     </div>
     <!-- page-wrapper end -->
 
+	<form action="generateOrder" id="generateOffer" method="POST" style="display:none;">
+	
+	</form>
     <!-- JavaScript files placed at the end of the document so the pages load faster -->
     <!-- ================================================== -->
     <!-- Jquery and Bootstap core js files -->
@@ -1079,11 +1087,205 @@ function download(name) {
 			data :  {'boqName' : name},
             url : 'downloadBoq',
             success : function(data) {
-            
+            $('#tableContent').html(data);
             console.log('Download Successful..!!');
                          }
         });
 }
 </script>
+
+
+<script>
+function createInquiry() 
+{
+
+	console.log("calling createInquiry()...")
+	var CheckeleCount = document.forms["generateBOQ"].getElementsByClassName("checkbox").length;
+
+	var selectedElements = [];
+	var i;
+
+	for(i=0; i < CheckeleCount; i++)
+	{
+		if(document.forms["generateBOQ"].getElementsByClassName("checkbox")[i].checked)
+		{
+			selectedElements[i] = i;
+		}
+	}
+
+	var eleCount = document.forms["generateBOQ"].getElementsByTagName("input").length;
+
+	
+	var inventoryName       = [];
+	var material            = [];
+	var type                = [];
+	var manifacturingMethod = [];
+	var classOrGrade        = [];
+	var ends                = [];
+	var size                = [];
+	var quantity            = [];
+	var supplyRate          = [];
+	var erectionRate        = [];
+	var supplyAmount        = [];
+	var erectionAmount      = [];
+
+	var j;
+	var k = 0;
+	var n = 1;
+	for(k=0;k<selectedElements.length;k++)
+	{
+	
+	if(selectedElements[k] != undefined)
+	{
+		var start = 3 + 12*parseFloat(selectedElements[k]) + n+k;
+				
+				
+				inventoryName[k] 	  = $('#generateBOQ input')[start++].value;
+							      
+				material[k]      	  = $('#generateBOQ input')[start++].value;     
+				type[k]               = $('#generateBOQ input')[start++].value;
+				manifacturingMethod[k]= $('#generateBOQ input')[start++].value;
+				classOrGrade[k]       = $('#generateBOQ input')[start++].value;
+				ends[k]               = $('#generateBOQ input')[start++].value;
+				size[k]               = $('#generateBOQ input')[start++].value;
+				quantity[k]           = $('#generateBOQ input')[start++].value;
+				supplyRate[k]         = $('#generateBOQ input')[start++].value;
+				erectionRate[k]       = $('#generateBOQ input')[start++].value;
+				supplyAmount[k]       = $('#generateBOQ input')[start++].value;
+				erectionAmount[k]     = $('#generateBOQ input')[start++].value;
+	}	
+	}
+	
+	
+	var l = 0;
+	var m = 1;
+	for(l=0;l<selectedElements.length;l++)
+	{
+	
+	if(selectedElements[l] != undefined)
+	{
+		var start = 3 + 12*parseFloat(selectedElements[l]) + m+l;				
+				
+				$('#generateBOQ input')[3 + 12*parseFloat(selectedElements[l]) + l].checked = false;
+				$('#generateBOQ input')[3 + 12*parseFloat(selectedElements[l]) + l].disabled = true;
+				for(var a=0;a <12;a++)
+				{
+					$('#generateBOQ input')[start++].disabled = true;
+				}				
+				
+	}	
+	}
+	
+	var lastArray = 3 + 12*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
+	
+	
+		var formData = $(this).serializeArray();
+		
+		formData.push({name: 'projectId', value: $('#generateBOQ input')[0].value});
+		formData.push({name: 'boqName', value: $('#generateBOQ input')[$('#generateBOQ input').length - 2].value});
+		
+		
+		var inventoryName_string = cleanArray(inventoryName);
+		formData.push({name: 'inventoryName', value: inventoryName_string});
+		var material_string = cleanArray(material);
+		formData.push({name: 'material', value: material_string});
+		var type_string = cleanArray(type);
+		formData.push({name: 'type', value: type_string});
+		var manifacturingMethod_string = cleanArray(manifacturingMethod);
+		formData.push({name: 'manifMetod', value: manifacturingMethod_string});
+		var classOrGrade_string = cleanArray(classOrGrade);
+		formData.push({name: 'classOrGrade', value: classOrGrade_string});
+		var ends_string = cleanArray(ends);
+		formData.push({name: 'ends', value: ends_string});
+		var size_string = cleanArray(size);
+		formData.push({name: 'size', value: size_string});
+		var quantity_string = cleanArray(quantity);
+		formData.push({name: 'quantity', value: quantity_string});
+		var supplyRate_string = cleanArray(supplyRate);
+		formData.push({name: 'supplyRate', value: supplyRate_string});
+		var erectionRate_string = cleanArray(erectionRate);
+		formData.push({name: 'erectionRate', value: erectionRate_string});
+		var supplyAmount_string = cleanArray(supplyAmount);
+		formData.push({name: 'supplyAmount', value: supplyAmount_string});
+		var erectionAmount_string = cleanArray(erectionAmount);
+		formData.push({name: 'erectionAmount', value: erectionAmount_string});
+				
+		$.ajax({
+			url: "generate",
+			data: formData,
+			type: 'post',
+			success: function(data) {
+				console.log(data);
+			}
+		});
+}
+
+function cleanArray(actual)
+{
+    var newArray = new Array();
+    for(var i = 0; i<actual.length; i++)
+    {
+        if (actual[i])
+        {
+            newArray.push(actual[i]);
+        }
+    }
+    return newArray;
+}
+</script>
+
+<script>
+
+function generatePO()
+	{	
+		var length = $('#generateBOQ input').length;
+					
+		var line;
+		var i;
+		for(i=4;i<length;i++)
+		{
+			if($('#generateBOQ input')[i].name == "inventoryName")
+			{
+				var temp = $('#generateBOQ input')[i];
+				line = $(temp).clone();
+			} 
+			else if($('#generateBOQ input')[i].name == "material")
+			{
+				var temp = $('#generateBOQ input')[i];
+				line = $(temp).clone();
+			}
+			else if($('#generateBOQ input')[i].name == "type")
+			{
+				var temp = $('#generateBOQ input')[i];
+				line = $(temp).clone();
+			}
+			else if($('#generateBOQ input')[i].name == "manifMethod")
+			{
+				var temp = $('#generateBOQ input')[i];
+				line = $(temp).clone();
+			}
+			else if($('#generateBOQ input')[i].name == "classOrGrade")
+			{
+				var temp = $('#generateBOQ input')[i];
+				line = $(temp).clone();
+			}
+			else if ($('#generateBOQ input')[i].name == "quantity")
+			{
+				var temp = $('#generateBOQ input')[i];
+				line = $(temp).clone();
+			}
+			else if ($('#generateBOQ input')[i].name == "supplyRate")
+			{
+				var temp = $('#generateBOQ input')[i];
+				line = $(temp).clone();
+			}
+							
+			$('#generateOffer').append($(line));		
+		}
+		
+		$('#generateOffer').submit();
+	}
+</script>
+
 </body>
 </html>

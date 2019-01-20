@@ -22,7 +22,7 @@ import com.invmgmt.entity.BOQLineData;
 public class ExcelWriter {
 
 
-	public static void writeExcel(ArrayList<BOQDetails> boqInventoryDetails) throws IOException {
+	public void writeExcel(ArrayList<BOQDetails> boqInventoryDetails) throws IOException {
 
 		Workbook workbook = null;
 		FileInputStream inputStream = null;
@@ -38,7 +38,7 @@ public class ExcelWriter {
 
 		int nextRow = 9;
 		for (BOQDetails inventory : boqInventoryDetails)
-		{			
+		{/*			
 				Cell cellToUpdate = sheet.getRow(nextRow).getCell(1);
 				cellToUpdate.setCellValue("Standard/Type : "+inventory.getStandardType());
 				
@@ -61,7 +61,7 @@ public class ExcelWriter {
 				cellToUpdate4.setCellValue("Ends : "+inventory.getEnds());
 				
 				nextRow = nextRow+2;
-		}
+		*/}
 		
 		
 		
@@ -82,8 +82,8 @@ public class ExcelWriter {
 		workbook.close();
 	}
 
-	public static void writeExcel(ArrayList<BOQLineData> boqLineDataDetails, String[] size,
-			String[] quantity, String[] supplyRate, String[] erectionRate) throws IOException {
+	public void writeExcel(ArrayList<BOQLineData> boqLineDataDetails, String[] size,
+			String[] quantity, String[] supplyRate, String[] erectionRate, String[] sypplyAmount, String[] erectionAmount) throws IOException {
 
 		Workbook workbook = null;
 		FileInputStream inputStream = null;
@@ -115,6 +115,12 @@ public class ExcelWriter {
 
 				Cell cellToUpdate8 = sheet.getRow(nextRow).getCell(5);
 				cellToUpdate8.setCellValue(erectionRate[index]);
+				
+				Cell cellToUpdate9 = sheet.getRow(nextRow).getCell(6);
+				cellToUpdate9.setCellValue(sypplyAmount[index]);
+				
+				Cell cellToUpdate10 = sheet.getRow(nextRow).getCell(7);
+				cellToUpdate10.setCellValue(erectionAmount[index]);
 
 				Cell cellToUpdate3 = sheet.getRow(++nextRow).getCell(1);
 				cellToUpdate3.setCellValue(inventory.getSpecLine());
@@ -129,6 +135,7 @@ public class ExcelWriter {
 				cellToUpdate7.setCellValue(inventory.getMakesLine());
 				
 				nextRow = nextRow+2;
+				index++;
 		}
 		
 		inputStream.close();

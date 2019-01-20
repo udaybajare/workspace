@@ -71,7 +71,7 @@ public class ExcelReader {
 						
 						String cellValue = dataFormatter.formatCellValue(cell1);
 
-						if (cellValue.trim().equalsIgnoreCase("IDs")) {
+						if (cellValue.trim().equalsIgnoreCase("Details")) {
 							String srPosition = cell1.getAddress().formatAsString();
 							column = Character.toString(srPosition.charAt(0));
 							columnIndex = cell1.getColumnIndex();
@@ -116,12 +116,12 @@ public class ExcelReader {
 		String[] values = rawString.split(",");
 
 		InventorySpec invSprc = new InventorySpec(values[0], values[1], values[2], values[3], values[4],
-				Integer.valueOf(values[5]));
+				values[5], values[6]);
 
 		Inventory inv = new Inventory();
 
 		inv.setInventorySpec(invSprc);
-		inv.setQuantity(Integer.valueOf(values[6]));
+		inv.setQuantity(Integer.valueOf(values[7]));
 
 		return inv;
 	}

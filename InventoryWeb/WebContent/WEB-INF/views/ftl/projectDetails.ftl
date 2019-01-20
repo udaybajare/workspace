@@ -845,33 +845,20 @@
             </div>
             </form>
             
+                        <!-- Start -->
+            
+            <form action="generate" method="POST" class="importBOQ" style="display:none;">
             <div class="row">
             <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label></label>
-						<br>
-						<button type="button" class="btn btn-default" onClick="toggleCreateBOQSec();">Create BOQ</button>
-					</div>
-            </div>
             
-            <div class="col-md-4 ">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label></label>
-						<br>
-						<button type="button" class="btn btn-default" onClick="toggleImportBOQSec();">Import Existing BOQ</button>
-					</div>					
-			</div>
-			<div class="col-md-4 ">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label></label>
-						<br>
-						<button type="button" class="btn btn-default" onClick="toggleProjSec();">Project Details Section</button>
-					</div>					
-			</div>
+            			<label>BOQ Name : 
+						<input type="text" name="boqName" value=${projectName} />
+						<input type="hidden" name="boqNameList" value=${boqNameList}>
+						</label>
+				</div>
             </div>
-            <!-- Start -->
-            
-            <form action="generate" method="POST" class="importBOQ" style="display:none;">
+            </div>
             <input type="hidden" name="projectId" value="${projectId}"/>
             <div class="row">
               <div class="col-md-12 ">
@@ -880,10 +867,12 @@
                 <table class="table">
                 <thead>
                   <tr>
-                    <th>Standard Type</th>
-                    <th>Grade</th>
-                    <th>Schedule</th>
-                    <th>Material Spec</th>
+                    <th>Select</th>
+                    <th>Inventory</th>
+                    <th>Material</th>
+                    <th>Type</th>
+                    <th>Manifacturing Method</th>
+                    <th>Grade/Class</th>
                     <th>Ends</th>
                     <th>Size</th>
                     <th>Quantity</th>
@@ -893,6 +882,8 @@
                     <th>Erection Amount</th>
                   </tr>
                   <tr>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -917,22 +908,19 @@
               </div>
             <br>
             <div class="form-row">
-				<div class="col-md-4 ">
+				<div class="col-md-4 " id="offer">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<button type="button" class="btn btn-default">Generate Offer</button>		
 					</div>
 				</div>
 				
 				<div class="col-md-4" id="importBoq">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label></label>
-						<br>
 						<button type="button" onClick="captureFileLocation()" class="btn btn-default">Import BOQ/BOM</button>
 					</div>					
 				</div>
 				<div class="col-md-4" id="generate" style="display:none">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label></label>
-						<br>
 						<button type="Submit" class="btn btn-default">Generate BOQ</button>		
 					</div>					
 				</div>							
@@ -942,11 +930,22 @@
          </form>   
             <!-- Start Create BOQ -->
             
-<form action="generateNew" class="createBOQ" style="display:none;" method="POST">
+			<form action="generateNew" class="createBOQ" style="display:none;" method="POST">
+			<div class="row">
+			<div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+            
+            			<label>BOQ Name : 
+						<input type="text" name="boqName" value=${projectName} />
+						<input type="hidden" name="boqNameList" value=${boqNameList}>
+						</label>
+				</div>
+            </div>
+            </div>
+			<input type="hidden" name="projectId" value="${projectId}"/>
             <div class="row">
               <div class="col-md-12 ">
 				<div class="table-responsive">                
-				<form action="generate" method="POST">
 				<table class="table inventoryDetails" style="display:none;">
                 <thead>
                   <tr>
@@ -960,11 +959,16 @@
                     <th>Quantity</th>
                     <th>Supply Rate</th>
                     <th>Erection Rate</th>
+                    <th>Supply Amount</th>
+                    <th>Erection Amount</th>
                   </tr>
                 </thead>
                 <tbody id="tableContentDetails">
 				</tbody>
 				</table>
+				</div>
+				</div>
+				</div>
 				<div class="form-row">
 	<div class="col-md-4 ">
 	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
@@ -985,7 +989,7 @@
 	
 	</form>
 				
-                <table class="table">
+                <table class="table createBOQ" style="display:none;">
                 <thead>
                   <tr>
                     <th>Inventory</th>
@@ -1066,7 +1070,7 @@
 </tr>                 
                 </tbody>
               </table>
-                  </div>
+                  
                 </div>
               
             <br>
@@ -1084,7 +1088,7 @@
                 </div>
               </div>
             </div>
-			<div class="form-row">
+			<div class="form-row createBOQ" style="display:none;">
 				<div class="col-md-4 ">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 					</div>
@@ -1102,10 +1106,65 @@
 				</div>
 			</div>
 			</div>				
-			</form>		
-		
+					
             <!-- End Create BOQ -->
+            
+            <div class="row">
+            <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<br>
+						<button type="button" class="btn btn-default" onClick="toggleCreateBOQSec();">Create BOQ</button>
+					</div>
+            </div>
+            
+            <div class="col-md-4 ">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<br>
+						<button type="button" class="btn btn-default" onClick="toggleImportBOQSec();">Import Existing BOQ</button>
+					</div>					
+			</div>
+			<div class="col-md-4 ">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<br>
+						<button type="button" class="btn btn-default" onClick="toggleProjSec();">Project Details Section</button>
+					</div>					
+			</div>
+            </div>
+            <div class="row">
+
+            <div class="col-md-4 ">
+                <div  class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100" style="width:50%;padding-left:50px;">
+					
+						<br>
+					</div>
+            </div>
+                        
+            <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100" style="width:50%;padding-left:50px;">
+						<h4>BOQ Revisions</h4>
+						<select class="form-control" id="revisionSection" onSelect="download('BOQRevisions');">
+    						<option></option>
+						</select>
+						<br>
+					</div>
+            </div>
+            
+            <div class="col-md-4 ">
+                <div id="offersSection" class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100" style="width:50%;padding-left:50px;">
+						<h4>Offers List</h4>
+						<select class="form-control" id="offerRevisionSection">
+    						<option></option>
+						</select>
+						<br>
+					</div>
+            </div>     
+
+            </div>
             <br>
+          </div>
           </div>
         </section>
        
@@ -1200,12 +1259,13 @@ if(fileLocation != "User cancelled the prompt.")
 			data : {'location' : fileLocation},
             url : 'import',
             success : function(data) {
+            
                 $('#tableContent').html(data);
             }
         });
         
         var imp = document.getElementById("importBoq");
-        imp.style.display = "none";
+        //imp.style.display = "none";
         
         var generate = document.getElementById("generate");
         generate.style.display = "block";
@@ -1313,19 +1373,82 @@ console.log(type);
 	+ "    <td> <input type='hidden' name='inventoryName' value='"+inventoryName+"'></input>"+inventoryName+"</td>"
 	+ "    <td>  <input type='hidden' name='material' value='"+material+"'></input>"+material+"</td>"
 	+ "    <td> <input type='hidden' name='type' value='"+type+"'></input>"+type+"</td>"
-	+ "    <td> <input type='hidden' name='manifacturingMethod' value='"+manifacturingMethod+"'></input>"+manifacturingMethod+"</td>"
+	+ "    <td> <input type='hidden' name='manifMetod' value='"+manifacturingMethod+"'></input>"+manifacturingMethod+"</td>"
 	+ "    <td> <input type='hidden' name='classOrGrade' value='"+classOrGrade+"'></input>"+classOrGrade+"</td>"
 	+ "    <td> <input type='hidden' name='ends' value='"+ends+"'></input>"+ends+"</td>"
 	+ "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
 	+ "	   <td><input type='text' name='quantity' value=''></input></td>"
 	+ "	   <td><input type='text' name='supplyRate' value=''></input></td>"
-	+ "	   <td><input type='text' name='erectionRate' value=''></input></td>";
+	+ "	   <td><input type='text' name='erectionRate' value=''></input></td>"
+	+ "	   <td><input type='text' name='supplyAmount' value=''></input></td>"
+	+ "	   <td><input type='text' name='erectionAmount' value=''></input></td>";
 	
 	console.log(template);
             	$('.inventoryDetails').css("display","block");          	
                 $('#tableContentDetails').append(template);
 }
 
+</script>
+
+<script>
+
+$(document).ready(function(){
+   // we define and invoke a function
+   (function(){
+          
+     var inputArray = $("input[name='boqNameList']")[0].value.split(",");
+     
+     var names = [];
+		$.each(inputArray, function(i, el){
+    		if($.inArray(el, names) === -1) 
+    		{
+    		names.push(el);
+    		}
+		});
+
+     var dummy = "<option value="BOQRevisions"><h5>BOQRevisions</h5></option>";
+     
+    $.each(names,function(i){
+   			
+   			var dummy1 = dummy.replace("BOQRevisions",names[i]);
+   			
+   			var tags = dummy1.replace("BOQRevisions",names[i]);
+   			
+   			$('#revisionSection').append(tags);
+   			
+		});
+     
+   })();
+});
+
+</script>
+
+<script>
+function download(name) 
+{
+        
+    $.ajax({
+			type : 'GET',
+			data :  {'boqName' : name},
+            url : 'downloadBoq',
+            success : function(data)
+            {            
+            	console.log(data);
+            	$('#tableContent').html(data);
+		    	console.log('Download Successful..!!');
+            }
+                         
+        });
+                               
+         toggleImportBOQSec();                        
+        var generate = document.getElementById("offer");
+        generate.style.display = "block";
+
+
+		var generateBOQ = document.getElementById("generate");
+        generateBOQ.style.display = "block";
+
+}
 </script>
 
 </body>

@@ -18,11 +18,22 @@ public class Inventory {
 	@Column(name="quantity")
 	private int quantity;
 	
-	public Inventory(InventorySpec inventorySpec, String purchaseRate, int quantity) {
-		super();
-		this.inventorySpec = inventorySpec;
-		this.purchaseRate = purchaseRate;
-		this.quantity = quantity;
+	@Column(name="assignedProject")
+	private String assignedProject;
+	
+	@Column(name="location")
+	private String location;
+	
+	
+
+	public Inventory(InventorySpec inventorySpec, String purchaseRate, int quantity, String assignedProject,
+		String location) {
+	    super();
+	    this.inventorySpec = inventorySpec;
+	    this.purchaseRate = purchaseRate;
+	    this.quantity = quantity;
+	    this.assignedProject = assignedProject;
+	    this.location = location;
 	}
 
 	public Inventory() 
@@ -56,4 +67,19 @@ public class Inventory {
 		this.quantity = quantity;
 	}
 
+	public String getAssignedProject() {
+	    return assignedProject;
+	}
+
+	public void setAssignedProject(String assignedProject) {
+	    this.assignedProject = assignedProject;
+	}
+
+	public String getLocation() {
+	    return location;
+	}
+
+	public void setLocation(String location) {
+	    this.location = location;
+	}	
 }

@@ -11,50 +11,50 @@ import javax.persistence.Table;
 @Table(name="BOQDetails")
 public class BOQDetails {
 
-	private String boqName;
-	private String standardType;
-	private String grade;
-	private String schedule;
-	private String materialSpec;
-	private String ends;
-	private String size;
-	private String quantity;
-	private String supplyRate;
-	private String erectionRate;
-	private String supplyAmount;
-	private String erectionAmount;
+	String projectId;
+	String boqName;
+	String inventoryName;
+	String material;
+	String type;
+	String manifacturingMethod;
+	String classOrGrade;
+	String ends;
+	String size;
+	String quantity;
+	String supplyRate;
+	String erectionRate;
+	String supplyAmount;
+	String erectionAmount;
 
 	public BOQDetails()
 	{
 		
 	}
-	
-	public BOQDetails(String projectId, String boqName, String standardType, String grade, String schedule, String materialSpec, String ends,
-			String size, String quantity, String supplyRate, String erectionRate, String supplyAmount,
-			String erectionAmount) {
+
+	public BOQDetails(String projectId, String boqName, String inventoryName, String material, String type,
+			String manifacturingMethod, String classOrGrade, String ends, String size, String quantity,
+			String supplyRate, String erectionRate, String supplyAmount, String erectionAmount) {
 		super();
 		this.projectId = projectId;
 		this.boqName = boqName;
-		this.standardType = standardType;
-		this.grade = grade;
-		this.schedule = schedule;
-		this.materialSpec = materialSpec;
+		this.inventoryName = inventoryName;
+		this.material = material;
+		this.type = type;
+		this.manifacturingMethod = manifacturingMethod;
+		this.classOrGrade = classOrGrade;
 		this.ends = ends;
 		this.size = size;
 		this.quantity = quantity;
-		this.erectionAmount = erectionAmount;
-		this.supplyAmount = supplyAmount;
-		this.erectionRate = erectionRate;
 		this.supplyRate = supplyRate;
+		this.erectionRate = erectionRate;
+		this.supplyAmount = supplyAmount;
+		this.erectionAmount = erectionAmount;
 	}
-
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private int id;
-
-	private String projectId;
 
 	public int getId() {
 		return id;
@@ -64,14 +64,6 @@ public class BOQDetails {
 		this.id = id;
 	}
 
-	public String getBoqName() {
-		return boqName;
-	}
-
-	public void setBoqName(String boqName) {
-		this.boqName = boqName;
-	}
-	
 	public String getProjectId() {
 		return projectId;
 	}
@@ -80,71 +72,76 @@ public class BOQDetails {
 		this.projectId = projectId;
 	}
 
-	public String getErectionAmount() {
-		return erectionAmount;
+	public String getBoqName() {
+		return boqName;
 	}
 
-	public void setErectionAmount(String erectionAmount) {
-		this.erectionAmount = erectionAmount;
+	public void setBoqName(String boqName) {
+		this.boqName = boqName;
 	}
 
-	public String getStandardType() {
-		return standardType;
-	}
-	
-
-	public void setStandardType(String standardType) {
-		this.standardType = standardType;
+	public String getInventoryName() {
+		return inventoryName;
 	}
 
-
-	public String getGrade() {
-		return grade;
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
 	}
 
-
-	public void setGrade(String grade) {
-		this.grade = grade;
+	public String getMaterial() {
+		return material;
 	}
 
-
-	public String getSchedule() {
-		return schedule;
+	public void setMaterial(String material) {
+		this.material = material;
 	}
 
-
-	public void setSchedule(String schedule) {
-		this.schedule = schedule;
+	public String getType() {
+		return type;
 	}
 
-
-	public String getMaterialSpec() {
-		return materialSpec;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-
-	public void setMaterialSpec(String materialSpec) {
-		this.materialSpec = materialSpec;
+	public String getManifacturingMethod() {
+		return manifacturingMethod;
 	}
 
+	public void setManifacturingMethod(String manifacturingMethod) {
+		this.manifacturingMethod = manifacturingMethod;
+	}
+
+	public String getClassOrGrade() {
+		return classOrGrade;
+	}
+
+	public void setClassOrGrade(String classOrGrade) {
+		this.classOrGrade = classOrGrade;
+	}
 
 	public String getEnds() {
 		return ends;
 	}
 
-
 	public void setEnds(String ends) {
 		this.ends = ends;
 	}
-
 
 	public String getSize() {
 		return size;
 	}
 
-
 	public void setSize(String size) {
 		this.size = size;
+	}
+
+	public String getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
 	}
 
 	public String getSupplyRate() {
@@ -153,14 +150,6 @@ public class BOQDetails {
 
 	public void setSupplyRate(String supplyRate) {
 		this.supplyRate = supplyRate;
-	}
-	
-	public String getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(String quantity) {
-		this.quantity = quantity;
 	}
 
 	public String getErectionRate() {
@@ -179,11 +168,11 @@ public class BOQDetails {
 		this.supplyAmount = supplyAmount;
 	}
 
-	public String getErecionAmount() {
+	public String getErectionAmount() {
 		return erectionAmount;
 	}
 
-	public void setErecionAmount(String erectionAmount) {
+	public void setErectionAmount(String erectionAmount) {
 		this.erectionAmount = erectionAmount;
-	}	
+	}		
 }

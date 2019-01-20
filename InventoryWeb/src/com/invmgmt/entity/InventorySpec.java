@@ -12,46 +12,46 @@ import javax.persistence.Table;
 @Embeddable
 public class InventorySpec implements Serializable {
 		
-	@Column(name="standard_type")
-	public String standardType;
+	@Column(name="inventoryName")
+	public String inventoryName;
 	
-	@Column(name="grade")
-	public String grade;
+	@Column(name="material")
+	public String material;
 	
-	@Column(name="schedule")
-	public String schedule;
+	@Column(name="type")
+	public String type;
 	
-	@Column(name="material_spec")
-	public String materialSpec;
+	@Column(name="manifMethod")
+	public String manifMethod;
 	
+	@Column(name="gradeOrClass")
+	public String gradeOrClass;
+	
+	@Column(name="size")
+	public String size;
+
 	@Column(name="ends")
 	public String ends;
 	
-	@Column(name="size")
-	public int size;
-
 	public InventorySpec()
 	{
 		
 	}
 	
-	public InventorySpec(
-			String standardType,
-			String grade,
-			String schedule,
-			String materialSpec,
-			String ends,
-			int size
-			)
-	{
-		this.standardType = standardType;
-		this.grade = grade;
-		this.schedule = schedule;
-		this.materialSpec = materialSpec;
+	public InventorySpec(String inventoryName, String material, String type, String manifMethod, String gradeOrClass,
+			 String ends, String size) {
+		super();
+		this.inventoryName = inventoryName;
+		this.material = material;
+		this.type = type;
+		this.manifMethod = manifMethod;
+		this.gradeOrClass = gradeOrClass;
 		this.ends = ends;
 		this.size = size;
 	}
-	
+
+
+
 	@Override
 	public boolean equals(Object o)
 	{
@@ -62,48 +62,65 @@ public class InventorySpec implements Serializable {
 		
 		InventorySpec inv = (InventorySpec) o;
 		
-		return Objects.equals(getStandardType(), inv.getMaterialSpec())
-				&& Objects.equals(getGrade(), inv.getGrade())
-				&& Objects.equals(getMaterialSpec(), inv.getMaterialSpec())
-				&& Objects.equals(getSchedule(), inv.getSchedule());
+		return Objects.equals(getInventoryName(), inv.getInventoryName())
+				&& Objects.equals(getMaterial(), inv.getMaterial())
+				&& Objects.equals(getType(), inv.getType())
+				&& Objects.equals(getGradeOrClass(), inv.getGradeOrClass())
+				&& Objects.equals(getSize(),inv.getSize());
 	}
 	
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(getGrade(), getMaterialSpec(), getSchedule(), getStandardType());
+		return Objects.hash(getInventoryName(), getMaterial(), getGradeOrClass(), getType());
 	}
 	
-	public String getStandardType() {
-		return standardType;
+	public String getSize() {
+		return size;
 	}
 
-	public void setStandardType(String standardType) {
-		this.standardType = standardType;
+	public void setSize(String size) {
+		this.size = size;
 	}
 
-	public String getGrade() {
-		return grade;
+	public String getInventoryName() {
+		return inventoryName;
 	}
 
-	public void setGrade(String grade) {
-		this.grade = grade;
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
 	}
 
-	public String getSchedule() {
-		return schedule;
+	public String getMaterial() {
+		return material;
 	}
 
-	public void setSchedule(String schedule) {
-		this.schedule = schedule;
+	public void setMaterial(String material) {
+		this.material = material;
 	}
 
-	public String getMaterialSpec() {
-		return materialSpec;
+	public String getType() {
+		return type;
 	}
 
-	public void setMaterialSpec(String materialSpec) {
-		this.materialSpec = materialSpec;
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getGradeOrClass() {
+		return gradeOrClass;
+	}
+
+	public void setGradeOrClass(String gradeOrClass) {
+		this.gradeOrClass = gradeOrClass;
+	}
+
+	public String getManifMethod() {
+		return manifMethod;
+	}
+
+	public void setManifMethod(String manifMethod) {
+		this.manifMethod = manifMethod;
 	}
 
 	public String getEnds() {
@@ -113,12 +130,6 @@ public class InventorySpec implements Serializable {
 	public void setEnds(String ends) {
 		this.ends = ends;
 	}
-	
-	public int getSize() {
-		return size;
-	}
 
-	public void setSize(int size) {
-		this.size = size;
-	}
+	
 }

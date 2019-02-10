@@ -847,14 +847,15 @@
             
                         <!-- Start -->
             
-            <form action="generate" method="POST" class="importBOQ" style="display:none;">
+            <form name="generateBOQ" action="generate" method="POST" class="importBOQ" id="generateBOQ" style="display:none;">
             <div class="row">
             <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
             
             			<label>BOQ Name : 
 						<input type="text" name="boqName" value=${projectName} />
-						<input type="hidden" name="boqNameList" value=${boqNameList}>
+						<input type="hidden" name="boqNameList" value=${boqNameList} >
+						<input type="hidden" name="quotationNamesList" value=${quotationNamesList} >
 						</label>
 				</div>
             </div>
@@ -910,7 +911,7 @@
             <div class="form-row">
 				<div class="col-md-4 " id="offer">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<button type="button" class="btn btn-default">Generate Offer</button>		
+						<button type="button" class="btn btn-default" onClick="createInquiry();">Generate Quotation</button>		
 					</div>
 				</div>
 				
@@ -930,19 +931,20 @@
          </form>   
             <!-- Start Create BOQ -->
             
-			<form action="generateNew" class="createBOQ" style="display:none;" method="POST">
+			<form name="generateBOQ" action="generateNew" class="createBOQ" style="display:none;" method="POST">
 			<div class="row">
 			<div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
             
             			<label>BOQ Name : 
 						<input type="text" name="boqName" value=${projectName} />
-						<input type="hidden" name="boqNameList" value=${boqNameList}>
+						<input type="hidden" name="boqNameList" value=${boqNameList} >
+						<input type="hidden" name="quotationNamesList" value=${quotationNamesList} >
 						</label>
 				</div>
             </div>
             </div>
-			<input type="hidden" name="projectId" value="${projectId}"/>
+			<input type="hidden" id="projectId" name="projectId" value="${projectId}"/>
             <div class="row">
               <div class="col-md-12 ">
 				<div class="table-responsive">                
@@ -1145,7 +1147,7 @@
             <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100" style="width:50%;padding-left:50px;">
 						<h4>BOQ Revisions</h4>
-						<select class="form-control" id="revisionSection" onSelect="download('BOQRevisions');">
+						<select class="form-control" id="revisionSection" onChange="download($('#revisionSection').val());">
     						<option></option>
 						</select>
 						<br>
@@ -1153,9 +1155,9 @@
             </div>
             
             <div class="col-md-4 ">
-                <div id="offersSection" class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100" style="width:50%;padding-left:50px;">
-						<h4>Offers List</h4>
-						<select class="form-control" id="offerRevisionSection">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100" style="width:50%;padding-left:50px;">
+						<h4>Quotation List</h4>
+						<select class="form-control" onChange="download($('#offerRevisionSection').val());" id="offerRevisionSection">
     						<option></option>
 						</select>
 						<br>
@@ -1406,7 +1408,7 @@ $(document).ready(function(){
     		}
 		});
 
-     var dummy = "<option value="BOQRevisions"><h5>BOQRevisions</h5></option>";
+     var dummy = "<option value=\"BOQRevisions\"><h5>BOQRevisions</h5></option>";
      
     $.each(names,function(i){
    			
@@ -1421,15 +1423,51 @@ $(document).ready(function(){
    })();
 });
 
+$(document).ready(function(){
+   // we define and invoke a function
+   (function(){
+          
+     var inputArray = $("input[name='quotationNamesList']")[0].value.split(",");
+     
+     var names = [];
+		$.each(inputArray, function(i, el){
+    		if($.inArray(el, names) === -1) 
+    		{
+    		names.push(el);
+    		}
+		});
+
+     var dummy = "<option value=\"QuotationRevisions\"><h5>QuotationRevisions</h5></option>";
+     
+    $.each(names,function(i){
+   			
+   			var dummy1 = dummy.replace("QuotationRevisions",names[i]);
+   			
+   			var tags = dummy1.replace("QuotationRevisions",names[i]);
+   			
+   			$('#offerRevisionSection').append(tags);
+   			
+		});
+     
+   })();
+});
 </script>
 
 <script>
 function download(name) 
 {
-        
+	console.log("Download being called.");
+    
+    var projectId = $('#projectId').val();  
+                
+    var formData = $(this).serializeArray();
+
+	formData.push({name: 'projectId', value: $('#projectId').val()});
+	formData.push({name: 'boqName', value: name});
+		
     $.ajax({
 			type : 'GET',
-			data :  {'boqName' : name},
+			data :  formData,
             url : 'downloadBoq',
             success : function(data)
             {            
@@ -1440,7 +1478,11 @@ function download(name)
                          
         });
                                
-         toggleImportBOQSec();                        
+        toggleImportBOQSec();
+                       
+		var importSec = document.getElementById("generateBOQ");                                         
+        importSec.style.display = "block";
+        
         var generate = document.getElementById("offer");
         generate.style.display = "block";
 
@@ -1448,6 +1490,146 @@ function download(name)
 		var generateBOQ = document.getElementById("generate");
         generateBOQ.style.display = "block";
 
+}
+</script>
+<script>
+function createInquiry() 
+{
+
+	console.log("calling createInquiry()...")
+	var CheckeleCount = document.forms["generateBOQ"].getElementsByClassName("checkbox").length;
+
+	var selectedElements = [];
+	var i;
+
+	for(i=0; i < CheckeleCount; i++)
+	{
+		if(document.forms["generateBOQ"].getElementsByClassName("checkbox")[i].checked)
+		{
+			selectedElements[i] = i;
+		}
+	}
+
+	var eleCount = document.forms["generateBOQ"].getElementsByTagName("input").length;
+
+	
+	var inventoryName       = [];
+	var material            = [];
+	var type                = [];
+	var manifacturingMethod = [];
+	var classOrGrade        = [];
+	var ends                = [];
+	var size                = [];
+	var quantity            = [];
+	var supplyRate          = [];
+	var erectionRate        = [];
+	var supplyAmount        = [];
+	var erectionAmount      = [];
+
+	var j;
+	var k = 0;
+	var n = 1;
+	for(k=0;k<selectedElements.length;k++)
+	{
+	
+	if(selectedElements[k] != undefined)
+	{
+		var start = 7 + 13*parseFloat(selectedElements[k]) ;
+				
+				
+				inventoryName[k] 	  = $('#generateBOQ input')[start++].value;
+							      
+				material[k]      	  = $('#generateBOQ input')[start++].value;     
+				type[k]               = $('#generateBOQ input')[start++].value;
+				manifacturingMethod[k]= $('#generateBOQ input')[start++].value;
+				classOrGrade[k]       = $('#generateBOQ input')[start++].value;
+				ends[k]               = $('#generateBOQ input')[start++].value;
+				size[k]               = $('#generateBOQ input')[start++].value;
+				quantity[k]           = $('#generateBOQ input')[start++].value;
+				supplyRate[k]         = $('#generateBOQ input')[start++].value;
+				erectionRate[k]       = $('#generateBOQ input')[start++].value;
+				supplyAmount[k]       = $('#generateBOQ input')[start++].value;
+				erectionAmount[k]     = $('#generateBOQ input')[start++].value;
+	}	
+	}
+	
+	
+	var l = 0;
+	var m = 1;
+	for(l=0;l<selectedElements.length;l++)
+	{
+	
+	if(selectedElements[l] != undefined)
+	{
+		var start = 3 + 12*parseFloat(selectedElements[l]) + m+l;				
+				
+				$('#generateBOQ input')[3 + 12*parseFloat(selectedElements[l]) + l].checked = false;
+				$('#generateBOQ input')[3 + 12*parseFloat(selectedElements[l]) + l].disabled = true;
+				for(var a=0;a <12;a++)
+				{
+					$('#generateBOQ input')[start++].disabled = true;
+				}				
+				
+	}	
+	}
+	
+	var lastArray = 3 + 12*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
+	
+	
+		var formData = $(this).serializeArray();
+		
+		
+		formData.push({name: 'projectId', value: $('#generateBOQ input')[3].value});
+		formData.push({name: 'boqName', value: $('#generateBOQ input')[0].value});
+		
+		var inventoryName_string = cleanArray(inventoryName);
+		formData.push({name: 'inventoryName', value: inventoryName_string});
+		var material_string = cleanArray(material);
+		formData.push({name: 'material', value: material_string});
+		var type_string = cleanArray(type);
+		formData.push({name: 'type', value: type_string});
+		var manifacturingMethod_string = cleanArray(manifacturingMethod);
+		formData.push({name: 'manifMetod', value: manifacturingMethod_string});
+		var classOrGrade_string = cleanArray(classOrGrade);
+		formData.push({name: 'classOrGrade', value: classOrGrade_string});
+		var ends_string = cleanArray(ends);
+		formData.push({name: 'ends', value: ends_string});
+		var size_string = cleanArray(size);
+		formData.push({name: 'size', value: size_string});
+		var quantity_string = cleanArray(quantity);
+		formData.push({name: 'quantity', value: quantity_string});
+		var supplyRate_string = cleanArray(supplyRate);
+		formData.push({name: 'supplyRate', value: supplyRate_string});
+		var erectionRate_string = cleanArray(erectionRate);
+		formData.push({name: 'erectionRate', value: erectionRate_string});
+		var supplyAmount_string = cleanArray(supplyAmount);
+		formData.push({name: 'supplyAmount', value: supplyAmount_string});
+		var erectionAmount_string = cleanArray(erectionAmount);
+		formData.push({name: 'erectionAmount', value: erectionAmount_string});
+				
+		formData.push({name: 'isOffer', value: 'true'});
+				
+		$.ajax({
+			url: "generate",
+			data: formData,
+			type: 'post',
+			success: function(data) {
+				console.log(data);
+			}
+		});
+}
+
+function cleanArray(actual)
+{
+    var newArray = new Array();
+    for(var i = 0; i<actual.length; i++)
+    {
+        if (actual[i])
+        {
+            newArray.push(actual[i]);
+        }
+    }
+    return newArray;
 }
 </script>
 

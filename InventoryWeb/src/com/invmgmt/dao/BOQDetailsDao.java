@@ -33,14 +33,14 @@ public class BOQDetailsDao {
 	}
 
 	@Transactional
-	public ArrayList<BOQDetails> getBOQFromName(String boqName) {
+	public ArrayList<BOQDetails> getBOQFromName(String boqName, String projectId) {
 
 		ArrayList<BOQDetails> boqDetailsList = new ArrayList<BOQDetails>();
 
 		Session session = sessionFactory.getCurrentSession();
 		String selectHql = " FROM BOQDetails boqD where boqD.boqName='";
 
-		Query query = session.createQuery(selectHql + boqName + "'");
+		Query query = session.createQuery(selectHql + boqName + "' and projectId='"+projectId+"'");
 		List results = query.getResultList();
 
 		Iterator itr = results.iterator();
@@ -73,14 +73,14 @@ public class BOQDetailsDao {
 	}
 	
 	@Transactional
-	public ArrayList<String> getMatchingBOQNames(String boqName) {
+	public ArrayList<String> getMatchingBOQNames(String boqName, String projectId) {
 
 		ArrayList<String> boqNames = new ArrayList<String>();
 
 		Session session = sessionFactory.getCurrentSession();
-		String selectHql = "SELECT boqD.boqName FROM BOQDetails boqD where boqD.boqName like '%";
+		String selectHql = "SELECT boqD.boqName FROM BOQDetails boqD where boqD.boqName like '%" ;
 
-		Query query = session.createQuery(selectHql + boqName + "%'");
+		Query query = session.createQuery(selectHql + boqName + "%' and boqD.projectId='"+projectId+"'");
 		List results = query.getResultList();
 
 		Iterator itr = results.iterator();

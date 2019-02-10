@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="lib" path="C:/Dependancies/jsoup-1.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Dependancies/commons-fileupload-1.4.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
@@ -25,10 +27,14 @@
 			<attribute name="owner.project.facets" value="jst.web;#system#"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_101">
-		<attributes>
-			<attribute name="owner.project.facets" value="java"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="C:/Dependancies/aspectj-weaver.jar"/>
+	<classpathentry kind="lib" path="C:/Dependancies/aspectjrt.jar"/>
+	<classpathentry kind="lib" path="C:/Dependancies/spring-aop-5.1.4.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Dependancies/thymeleaf-3.0.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Dependancies/thymeleaf-spring5-3.0.9.RELEASE.jar"/>
+	<classpathentry kind="lib" path="C:/Dependancies/openhtmltopdf-core-0.0.1-RC13.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Dependancies/itextpdf-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Dependancies/mail.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

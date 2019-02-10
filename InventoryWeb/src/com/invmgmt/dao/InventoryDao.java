@@ -17,93 +17,126 @@ import com.invmgmt.entity.InventorySpec;
 @Repository
 public class InventoryDao {
 
-	@Autowired
-	private SessionFactory sessionFactory;
+    @Autowired
+    private SessionFactory sessionFactory;
 
-	@Transactional
-	public boolean saveInventory(Inventory inventory) {
-		Session session = sessionFactory.getCurrentSession();
+    @Transactional
+    public int saveInventory(Inventory inventory) {
+	Session session = sessionFactory.getCurrentSession();
 
-		System.out.println("Saving in db : " + inventory);
-		try {
-			session.saveOrUpdate(inventory);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return true;
+	try {
+	    session.saveOrUpdate(inventory);
+	} catch (Exception ex) {
+	    ex.printStackTrace();
 	}
+	return inventory.getInventoryRowId();
+    }
 
-	@Transactional
-	public ArrayList<Inventory> getAvailableInventory()
-	{
-		ArrayList<Inventory> inventoryList = new ArrayList<Inventory>();
-		Session session = sessionFactory.getCurrentSession();
-		String hql = "FROM Inventory";
+    @Transactional
+    public ArrayList<Inventory> getAvailableInventory() {
+	ArrayList<Inventory> inventoryList = new ArrayList<Inventory>();
+	Session session = sessionFactory.getCurrentSession();
+	String hql = "FROM Inventory";
 
-		Query query = session.createQuery(hql);
-		List results = query.getResultList();
+	Query query = session.createQuery(hql);
+	List results = query.getResultList();
 
-		Iterator itr = results.iterator();
+	Iterator itr = results.iterator();
 
-		while (itr.hasNext()) {
+	while (itr.hasNext()) {
 
-			inventoryList.add((Inventory) itr.next());
-		}
-		return inventoryList;
+	    inventoryList.add((Inventory) itr.next());
 	}
-	
-	
-	@Transactional
-	public int getAvailableQuantity(Inventory inventory) {
-		int availableQuantity = 0;
-		InventorySpec inventorySpec = inventory.getInventorySpec();
+	return inventoryList;
+    }
 
-		Session session = null;
-		String selectHql = "SELECT invD.quantity FROM Inventory invD where "
-				+ "invD.inventorySpec.inventory = '" + inventorySpec.getInventoryName() + "' and  "
-				+ "invD.inventorySpec.material = '" + inventorySpec.getMaterial() + "' and  "
-				+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
-				+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
-				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
-				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " 
-				+ "invD.inventorySpec.ends = '"	+ inventorySpec.getEnds() + "'";
-		try {
-			session = sessionFactory.openSession();
-			Query query = session.createQuery(selectHql);
+    @Transactional
+    public int getAvailableQuantity(Inventory inventory) {
+	int availableQuantity = 0;
+	InventorySpec inventorySpec = inventory.getInventorySpec();
 
-			availableQuantity = (int) query.uniqueResult();
+	Session session = null;
+	String selectHql = "SELECT invD.quantity FROM Inventory invD where " + 
+		"invD.inventorySpec.inventory = '"+ inventorySpec.getInventoryName() + 
+		"' and  " + "invD.inventorySpec.material = '"+ inventorySpec.getMaterial() + 
+		"' and  " + "invD.inventorySpec.type = '" + inventorySpec.getType()+ 
+		"' and  " + "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + 
+		"' and  " + "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + 
+		"' and  " + "invD.inventorySpec.size = '" + inventorySpec.getSize() +
+		"' and  " + "invD.inventorySpec.ends = '" + inventorySpec.getEnds() + "'";
+	try {
+	    session = sessionFactory.openSession();
+	    Query query = session.createQuery(selectHql);
 
-			System.out.println("Available Quentity is : " + availableQuantity);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return availableQuantity;
+	    availableQuantity = (int) query.uniqueResult();
+
+	    System.out.println("Available Quentity is : " + availableQuantity);
+	} catch (Exception ex) {
+	    ex.printStackTrace();
 	}
+	return availableQuantity;
+    }
 
-	@Transactional
-	public int getPurchaseRate(Inventory inventory) {
-		int purchaseRate = 0;
-		InventorySpec inventorySpec = inventory.getInventorySpec();
+    public int isEntityPresent(Inventory inventory) {
+	int associatedRowId = 0;
+	InventorySpec inventorySpec = inventory.getInventorySpec();
 
-		Session session = null;
-		String selectHql = "SELECT invD.purchaseRate FROM Inventory invD where "
-				+ "invD.inventorySpec.inventory = '" + inventorySpec.getInventoryName() + "' and  "
-				+ "invD.inventorySpec.material = '" + inventorySpec.getMaterial() + "' and  "
-				+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
-				+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
-				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
-				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " 
-				+ "invD.inventorySpec.ends = '"	+ inventorySpec.getEnds() + "'";
-		try {
-			session = sessionFactory.openSession();
-			Query query = session.createQuery(selectHql);
+	Session session = null;
+	String selectHql = "SELECT invD.inventoryRowId FROM Inventory invD where " + "invD.inventorySpec.inventoryName = '"
+		+ inventorySpec.getInventoryName() + "' and  " + "invD.inventorySpec.material = '"
+		+ inventorySpec.getMaterial() + "' and  " + "invD.inventorySpec.type = '" + inventorySpec.getType()
+		+ "' and  " + "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
+		+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
+		+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  "
+		+ "invD.assignedProject = '" + inventory.getAssignedProject() + "' and  "
+		+ "invD.inventorySpec.ends = '" + inventorySpec.getEnds() + "'";
+	try {
+	    session = sessionFactory.openSession();
+	    Query query = session.createQuery(selectHql);
 
-			purchaseRate = Integer.valueOf((String)query.uniqueResult());
+	    associatedRowId = query.uniqueResult() != null?(int) query.uniqueResult():0;
 
-			System.out.println("PurchaseRate is : " + purchaseRate);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return purchaseRate;
+	} catch (Exception ex) {
+	    ex.printStackTrace();
 	}
+	return associatedRowId;
+
+    }
+
+    @Transactional
+    public int getPurchaseRate(Inventory inventory) {
+	int purchaseRate = 0;
+	InventorySpec inventorySpec = inventory.getInventorySpec();
+
+	Session session = null;
+	String selectHql = "SELECT invD.purchaseRate FROM Inventory invD where " + "invD.inventorySpec.inventory = '"
+		+ inventorySpec.getInventoryName() + "' and  " + "invD.inventorySpec.material = '"
+		+ inventorySpec.getMaterial() + "' and  " + "invD.inventorySpec.type = '" + inventorySpec.getType()
+		+ "' and  " + "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
+		+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
+		+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
+		+ inventorySpec.getEnds() + "'";
+	try {
+	    session = sessionFactory.openSession();
+	    Query query = session.createQuery(selectHql);
+
+	    purchaseRate = Integer.valueOf((String) query.uniqueResult());
+
+	    System.out.println("PurchaseRate is : " + purchaseRate);
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	}
+	return purchaseRate;
+    }
+
+    @Transactional
+    public int getLatestInventoryEntryNo() {
+	Session session = sessionFactory.getCurrentSession();
+
+	String selectHql = "Select max(invD.inventoryRowId) from Inventory invD";
+
+	Query query = session.createQuery(selectHql);
+	int inventoryEntryNo = query.uniqueResult() == null ? 0 : (int) query.uniqueResult();
+	return inventoryEntryNo;
+    }
 }

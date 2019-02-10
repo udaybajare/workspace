@@ -1,23 +1,29 @@
 package com.invmgmt.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="inventory")
-public class Inventory {
+public class Inventory implements Serializable{
 
 	@EmbeddedId
 	private InventorySpec inventorySpec;
-
+		
+	private int inventoryRowId;
+	
 	@Column(name="purchaseRate")
 	private String purchaseRate;
 
 	@Column(name="quantity")
 	private int quantity;
 	
+	@Id
 	@Column(name="assignedProject")
 	private String assignedProject;
 	
@@ -39,6 +45,14 @@ public class Inventory {
 	public Inventory() 
 	{
 
+	}
+
+	public int getInventoryRowId() {
+	    return inventoryRowId;
+	}
+
+	public void setInventoryRowId(int inventoryRowId) {
+	    this.inventoryRowId = inventoryRowId;
 	}
 
 	public InventorySpec getInventorySpec() {

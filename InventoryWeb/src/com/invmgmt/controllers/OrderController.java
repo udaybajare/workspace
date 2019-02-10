@@ -1,5 +1,9 @@
 package com.invmgmt.controllers;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +21,13 @@ public class OrderController {
     @Autowired
     InventoryUtils inventoryUtils;
     
-    @RequestMapping(value = "/generateOrder", method = RequestMethod.POST)
-    public ModelAndView generateOffer(String[] inventoryName, String[] material, String[] type, String[] manifMethod,
+    @RequestMapping(value = "/generateOrderForm", method = RequestMethod.POST)
+    public ModelAndView generateOfferFrom(String[] inventoryName, String[] material, String[] type, String[] manifMethod,
 	    String[] classOrGrade, String[] quantity, String[] supplyRate) 
     {
 	StringBuffer lineItemData = new StringBuffer();
 
-	ModelAndView mav = new ModelAndView("purchaseOrder");
+	ModelAndView mav = new ModelAndView("purchaseOrderForm");
 
 	int length = inventoryName.length;
 	
@@ -35,17 +39,50 @@ public class OrderController {
 	    lineItemData.append(lineItem);
 	}
 
-	mav.addObject("lineItems", lineItemData.toString());
+	mav.addObject("lineItemData", lineItemData.toString());
 	return mav;
     }
 
+    @RequestMapping(value = "/generateOrder", method = RequestMethod.POST)
+    public ModelAndView generateOffer(String companyName, String location, String contactName, String contactNumber,
+	    String contactEmail, String[] term, String lineItem) 
+    {
+
+	ModelAndView mav = new ModelAndView("purchaseOrder");
+
+	StringBuffer terms = new StringBuffer();
+	
+	for(String termLine : term)
+	{
+	    terms.append(getTermHtml(termLine));
+	}
+
+	LocalDate date = LocalDate.now();
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yy");
+	String poDate = date.format(formatter);
+	
+	mav.addObject("PONumber","HI/CSE/"+String.valueOf(Math.random()));
+	mav.addObject("PODate", poDate);
+	mav.addObject("companyName", companyName);
+	mav.addObject("location", location);
+	mav.addObject("contactName", contactName);
+	mav.addObject("contactNumber", contactNumber);
+	mav.addObject("contactEmail", contactEmail);
+	mav.addObject("terms", terms.toString());
+	
+	System.out.println(lineItem);
+	
+	mav.addObject("lineItems", lineItem);
+	return mav;
+    }
+    
     private String getInventoryDetailsRow(String sr_no, String description, String quantity, String supplyRate) 
     {
 	String template = "<TR>" + "	<TD class=\"tr8 td38\"><P class=\"p16 ft8\">sr_no</P></TD>               "
-		+ "	<TD class=\"tr8 td27\"><P class=\"p0 ft0\">&nbsp;</P></TD>               "
-		+ "	<TD class=\"tr8 td53\"><P class=\"p0 ft0\">&nbsp;</P></TD>               "
+		+ "	<TD class=\"tr8 td27\"><P class=\"p0 ft0\"></P></TD>               "
+		+ "	<TD class=\"tr8 td53\"><P class=\"p0 ft0\"></P></TD>               "
 		+ "	<TD colspan=2 class=\"tr8 td54\"><P class=\"p4 ft8\">Description</P></TD>"
-		+ "	<TD class=\"tr8 td41\"><P class=\"p0 ft0\">&nbsp;</P></TD>               "
+		+ "	<TD class=\"tr8 td41\"><P class=\"p0 ft0\"></P></TD>               "
 		+ "	<TD class=\"tr8 td42\"><P class=\"p17 ft8\">quantity</P></TD>            "
 		+ "	<TD class=\"tr8 td43\"><P class=\"p8 ft8\">NB</P></TD>                 "
 		+ "	<TD class=\"tr8 td44\"><P class=\"p18 ft8\">supplyRate</P></TD>"
@@ -57,10 +94,35 @@ public class OrderController {
 	float amount = Float.parseFloat(quantity)*Float.parseFloat(supplyRate);
 	float sgst = amount*9/100;
 	float cgst = amount*9/100;
-	
-	String stringToReturn = template.replace("sr_no", sr_no).replace("Description", description).replace("quantity",
-		quantity).replace("supplyRate",supplyRate).replace("cgst",String.valueOf(cgst)).replace("sgst",String.valueOf(sgst)).replace("amount",String.valueOf(amount));
 
+	String stringToReturn = template.replace("sr_no", sr_no).replace("Description", description)
+		.replace("quantity", quantity).replace("supplyRate", supplyRate.substring(0,supplyRate.indexOf("."))).replace("cgst", get2DecimalVal(cgst))
+		.replace("sgst", get2DecimalVal(sgst)).replace("amount", get2DecimalVal(amount));
+
+	return stringToReturn;
+    }
+    
+    public String get2DecimalVal(float val)
+    {
+	String twoDecimalVal = String.valueOf(val);
+
+	twoDecimalVal = twoDecimalVal.substring(0, twoDecimalVal.indexOf(".") + 3);
+
+	return twoDecimalVal;
+    }
+    private String getTermHtml(String termLine)
+    {
+	String template = "<TR>                                                                     "+
+		"	<TD colspan=7 class=\"tr8 td58\"><P class=\"p23 ft3\">1 TERM_TEXT.</P></TD>"+
+		"	<TD class=\"tr8 td30\"><P class=\"p0 ft0\"></P></TD>                "+
+		"	<TD class=\"tr8 td31\"><P class=\"p0 ft0\"></P></TD>                "+
+		"	<TD class=\"tr8 td16\"><P class=\"p0 ft0\"></P></TD>                "+
+		"	<TD class=\"tr8 td16\"><P class=\"p0 ft0\"></P></TD>                "+
+		"	<TD class=\"tr8 td17\"><P class=\"p0 ft0\"></P></TD>                "+
+		"</TR>                                                                    ";
+	
+	String stringToReturn = template.replace("TERM_TEXT",termLine);
+	
 	return stringToReturn;
     }
 

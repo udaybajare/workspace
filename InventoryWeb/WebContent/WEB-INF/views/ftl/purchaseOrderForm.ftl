@@ -3,7 +3,7 @@
 
   <head>
     <meta charset="utf-8">
-    <title>The Project | Icon Boxes</title>
+    <title>The Project | Forms</title>
     <meta name="description" content="The Project a Bootstrap-based, Responsive HTML5 Template">
     <meta name="author" content="author">
 
@@ -523,54 +523,7 @@
                             <li ><a href="features-grid.html">Grid</a></li>
                           </ul>
                         </li>
-                        <!-- mega-menu start -->
-                        <li class="nav-item dropdown active mega-menu mega-menu--narrow">
-                          <a href="#" class="nav-link dropdown-toggle" id="fourth-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Components</a>
-                          <ul class="dropdown-menu" aria-labelledby="fourth-dropdown">
-                            <li>
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <h4 class="title"><i class="fa fa-magic pr-2"></i> Components</h4>
-                                  <div class="row">
-                                    <div class="col-lg-6">
-                                      <div class="divider"></div>
-                                      <ul class="menu">
-                                        <li ><a href="components-social-icons.html"><i class="fa fa-share-alt pr-2"></i>Social Icons</a></li>
-                                        <li ><a href="components-buttons.html"><i class="fa fa-flask pr-2"></i>Buttons</a></li>
-                                        <li ><a href="components-forms.html"><i class="fa fa-align-justify pr-2"></i>Forms</a></li>
-                                        <li ><a href="components-tabs-and-pills.html"><i class=" fa fa-list-ul pr-2"></i>Tabs &amp; Pills</a></li>
-                                        <li ><a href="components-accordions.html"><i class="fa fa-bars pr-2"></i>Accordions</a></li>
-                                        <li ><a href="components-progress-bars.html"><i class="fa fa-line-chart pr-2"></i>Progress Bars</a></li>
-                                        <li ><a href="components-call-to-action.html"><i class="fa fa-comments-o pr-2"></i>Call to Action Blocks</a></li>
-                                        <li ><a href="components-alerts-and-callouts.html"><i class="fa fa-info-circle pr-2"></i>Alerts &amp; Callouts</a></li>
-                                        <li ><a href="components-content-sliders.html"><i class="fa fa-star pr-2"></i>Content Sliders</a></li>
-                                        <li ><a href="components-charts.html"><i class="fa fa-pie-chart pr-2"></i>Charts</a></li>
-                                        <li ><a href="components-page-loaders.html"><i class="fa fa-circle-o-notch fa-spin"></i>Page Loaders <span class="badge">v1.1</span></a></li>
-                                        <li class="active"><a href="components-icon-boxes.html"><i class="fa fa-picture-o pr-2"></i>Icon Boxes</a></li>
-                                      </ul>
-                                    </div>
-                                    <div class="col-lg-6">
-                                      <div class="divider"></div>
-                                      <ul class="menu">
-                                        <li ><a href="components-image-boxes.html"><i class="fa fa-camera pr-2"></i>Image Boxes</a></li>
-                                        <li ><a href="components-fullwidth-sections.html"><i class="fa fa-code pr-2"></i>Full Width Sections</a></li>
-                                        <li ><a href="components-animations.html"><i class="fa fa-heart pr-2"></i>Animations</a></li>
-                                        <li ><a href="components-video-and-audio.html"><i class="fa fa-play pr-2"></i>Video</a></li>
-                                        <li ><a href="components-lightbox.html"><i class="fa fa-plus pr-2"></i>Lightbox</a></li>
-                                        <li ><a href="components-counters.html"><i class="fa fa-sort-numeric-desc pr-2"></i>Counters</a></li>
-                                        <li ><a href="components-modals.html"><i class="fa fa-arrows-alt pr-2"></i>Modals</a></li>
-                                        <li ><a href="components-tables.html"><i class="fa fa-table pr-2"></i>Tables</a></li>
-                                        <li ><a href="components-text-rotators.html"><i class="fa fa-rotate-left pr-2"></i>Text Rotators</a></li>
-                                        <li ><a href="components-announcement-default.html"><i class="fa fa-bullhorn pr-2"></i>Announcements <span class="badge">v1.3</span></a></li>
-                                        <li ><a href="components-separators.html"><i class="fa fa-star pr-2"></i>Separators <span class="badge">v1.3</span></a></li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </li>
-                          </ul>
-                        </li>
+                        <!-- mega-menu start -->                        
                         <!-- mega-menu end -->
                         <li class="nav-item dropdown ">
                           <a href="portfolio-grid-2-3-col.html" class="nav-link dropdown-toggle" id="fifth-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Portfolio</a>
@@ -753,320 +706,74 @@
       <!-- header-container end -->
       <!-- breadcrumb start -->
       <!-- ================ -->
-      
       <!-- breadcrumb end -->
 
       <!-- main-container start -->
       <!-- ================ -->
-      
-      <section class="main-container padding-bottom-clear">
-      <!-- section -->
-        <!-- ================ -->
-        <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
-          <div class="container">
-            <form action="updateInventory" method="POST">
-            <div class="row">
-              <div class="col-md-12 ">
-				<div class="table-responsive">                
-				
-				<table class="table inventoryDetails" style="display:none;">
-                <thead>
-                  <tr>
-                  	<th></th>
-                    <th>Inventory</th>
-                    <th>Material</th>
-                    <th>Type</th>
-                    <th>Manifacturing Method</th>
-                    <th>Class/Schedule</th>
-                    <th>Ends</th>
-                    <th>Size</th>
-                    <th>Quantity</th>
-                    <th>Purchase Rate</th>
-                    <th>Project</th>
-                    <th>Location</th>
-                  </tr>
-                </thead>
-                <tbody id="tableContentDetails">
-				</tbody>
-				</table>
-			</div>	
-		</div>
-	</div>
- <!-- Challan Section Starts-->
-   
-   <div class="collapse" id="challan">
-   <label><h3></h3></label>
-   <div class="form-row">
+      <section class="main-container">
+
+        <div class="container">
+          <div class="row">
+
+            <!-- main start -->
+            <!-- ================ -->
+            <div class="main col-lg-8">
+
+              <!-- page-title start -->
+              <!-- ================ -->
+              <h3 class="page-title">PO Details</h3>
+              <div class="separator-2"></div>
+              <!-- page-title end -->
+
+			  <form action="generateOrder" method="POST">
+  <div class="form-row">
     <div class="form-group col-md-6">
-      <label>PO No</label>
-      <input type="text" class="form-control" placeholder="Po No" name="poNo">
+      <label>Company Name</label>
+      <input type="text" class="form-control" name="companyName" >
     </div>
     <div class="form-group col-md-6">
-      <label>PO Date</label>
-      <input type="text" class="form-control" placeholder="PO Date" name="poDate">
+      <label>Company Location</label>
+      <input type="text" class="form-control" name="location">
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
-      <label>From</label>
-      <input type="text" class="form-control" name="receivedFrom">
-    </div>
-    <div class="form-group col-md-6">
-      <label>Consignee</label>
-      <input type="text" class="form-control" name="Consignee">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-3">
-      <label>Transport Mode</label>
-      <input type="text" class="form-control" name="transportMode">
-    </div>
-    <div class="form-group col-md-3">
-      <label>LR Number & Date</label>
-      <input type="text" class="form-control" name="lrNumberDate">
-    </div>
-    <div class="form-group col-md-3">
-      <label>Vheicle Number</label>
-      <input type="text" class="form-control" name="vheicleNumber">
-    </div>
-    <div class="form-group col-md-3">
-      <label>GST No</label>
-      <input type="text" class="form-control" name="gstNo">
-    </div>
-  </div>
-  </div>
- <!-- Challan Section Ends--> 
- <br>
- <br>
-  <!-- Invoice Section Starts--> 
- 
-   <div class="collapse" id="invoice"> 
-  <label><h3></h3></label>	
-	<div class="form-row">	
-	<div class="form-group col-md-4">
-      <label>TaxInvoice No</label>
-      <input type="text" class="form-control" name="taxInvoiceNo">
-    </div>
     <div class="form-group col-md-4">
-      <label>Addressed To</label>
-      <input type="text" class="form-control" name="addressedto1">
-    </div>
-	<div class="form-group col-md-4">
-      <label>Order Date</label>
-      <input type="text" class="form-control" name="orderDate">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-3">
-      <label>Rate</label>
-      <input type="text" class="form-control" name="rate">
-    </div>
-    <div class="form-group col-md-3">
       <label>Contact Name</label>
       <input type="text" class="form-control" name="contactName">
     </div>
-    <div class="form-group col-md-3">
-      <label>Mobile No</label>
-      <input type="text" class="form-control" name="mobileNo">
+    <div class="form-group col-md-4">
+      <label>Contact Number</label>
+      <input type="text" class="form-control" name="contactNumber">
     </div>
-    <div class="form-group col-md-3">
-      <label>Hsn/Sac</label>
-      <input type="text" class="form-control" name="hsnOrSac">
+    <div class="form-group col-md-4">
+      <label>Contact Email</label>
+      <input type="text" class="form-control" name="contactEmail">
     </div>
- </div>
-<div class="form-row">
-    <div class="form-group col-md-3">
-      <label>Amount In Words</label>
-      <input type="text" class="form-control" name="amtInwrd1">
+  </div>
+  <div class="form-group form-row" id="terms">
+	<div class="form-group col-md-6">
+      <label for="inputAddress">Terms :</label>
     </div>
-    <div class="form-group col-md-3">
-      <label>Email</label>
-      <input type="text" class="form-control" name="gstNo">
+    <div class="form-group col-md-6">
+		<button type="button" onClick="addTerm();">+</button>
     </div>
-    <div class="form-group col-md-3">
-      <label>Invoice No</label>
-      <input type="text" class="form-control" name="invoiceNo">
-    </div>
-    <div class="form-group col-md-3">
-      <label>Order No</label>
-      <input type="text" class="form-control" name="orderNo">
-    </div>
- </div>
- </div>
- <!-- Invoice Section Ends-->
-            
-	<div class="form-row">
-	<div class="col-md-4 ">
-	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-	<br>
-	<button type="button" data-toggle="collapse" data-target="#challan" class="btn btn-default">Challan Details</button>
-	</div>
-	</div>
-	<div class="col-md-4 ">
-	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-	<br>
-	<button type="button" data-toggle="collapse" data-target="#invoice" class="btn btn-default">Invoice Details</button>
-	</div>	
-	</div>
-	<div class="col-md-4 ">
-	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-	<br>
-		<button type="submit" id="updateButton" class="btn btn-default" Style="display:none;">Update Inventory</button>
-	</div>	
-	</div>	
-	</div>
-	
-	</form>
-				
-                <table class="table">
-                <thead>
-                  <tr>
-                    <th>Inventory</th>
-                    <th>Material</th>
-                    <th>Type</th>
-                    <th>Manifacturing Method</th>
-                    <th>Class/Schedule</th>
-                    <th>Ends</th>
-                    <th>Size</th>
-                  </tr>
-                </thead>
-                <tbody id="tableContent">
-                 <tr>
-<td>
-<div class="form-group">
-  <select class="form-control" name="inventoryName" id="inventoryName" onChange="myFunction(this.value,'inventoryName','material');">
-    <option></option>
-    <option value="Pipe">Pipe</option>
-    <option value="Fittings">Fittings</option>
-    <option value="Accesories">Accesories</option>
-  </select>
-</div>
-</td>
-<td>
-<div class="form-group">
-  <select class="form-control" name="material" id="material" onChange="myFunction(this.value,'material','type');">
-    <option></option>
-  </select>
-</div>
-</td>
-<td>
-<div class="form-group">
-  <select class="form-control" name="type" id="type" onChange="myFunction($('#material').val(),'material','classOrGrade');">
-    <option></option>
-  </select>
-</div>
-</td>
-<td>
-<div class="form-group">
-  <select class="form-control" name="manifacturingMethod" id="manifacturingMethod">
-    <option></option>
-    <option>Seamless</option>
-    <option>ERW</option>
-    <option>Centrifuge</option>
-  </select>
-</div>
-</td>
-<td>
-<div class="form-group">
-  <select class="form-control" name="classOrGrade" id="classOrGrade">
-    <option></option>
-  </select>
-</div>
-</td>
-<td>
-<div class="form-group">
-  <select class="form-control" name="ends" id="ends">
-    <option></option>
-    <option>Buttweld</option>
-    <option>Socket Weld/Threaded</option>
-    <option>Threaded</option>
-    <option>Plain End</option>
-  </select>
-</div>
-</td>
-<td>
-<div class="form-group">
-  <select class="form-control" name="size" id="size">
-    <option></option>
-    <option>1</option>
-    <option>1.25</option>
-    <option>1.5</option>
-    <option>2</option>
-    <option>2.5</option>
-  </select>
-</div>
-</td>
-</tr>                 
-                </tbody>
-              </table>
-                  </div>
-                </div>
-              </div>
-            <br>
-            <div class="row">
-              <div class="col-md-4 ">
-                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                </div>
-              </div>
-              <div class="col-md-4 ">
-                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                </div>
-              </div>
-              <div class="col-md-4 ">
-                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                </div>
-              </div>
-            </div>
-			<div class="form-row">
-				<div class="col-md-4 ">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-					</div>
-				</div>
-				<div class="col-md-4 ">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<br>
-						<button type="button" class="btn btn-default" onClick="showInventory();">Show Available Inventory</button>
-					</div>					
-				</div>
-				<div class="col-md-4 ">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label></label>
-						<br>
-						<button type="button" class="btn btn-default" onClick="appendInventory();">Add Inventory</button>		
-					</div>					
-				</div>							
-			</div>
-					
-			<div class="form-row">
-				<div class="col-md-4 ">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-					</div>
-				</div>
-				<div class="col-md-4 ">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-					</div>					
-				</div>
-				<div class="col-md-4 ">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label></label>
-												
-					</div>					
-				</div>
-			</div>
-            <br>
-          </div>
-        </section>
-       
+	<br>    
+    <input type="text" class="form-control" id="inputAddress" name="term">
+  </div>
+  <input type="hidden" name="lineItem" value='${lineItemData}' >
+  <button type="submit" class="btn btn-primary">Generate PO</button>
+</form>
+              <!-- Forms -->
+              <!-- ============================================================================== -->
+             </div>
+		  </div>
+		</div>
       </section>
-      <!-- main-container end -->
-
-
-      
+      <div class="space"></div>
 
       <!-- footer start (Add "dark" class to #footer in order to enable dark footer) -->
       <!-- ================ -->
       <footer id="footer" class="clearfix ">
-
         <!-- .subfooter start -->
         <!-- ================ -->
         <div class="subfooter">
@@ -1107,77 +814,17 @@
     <script src="js/custom.js"></script>
 
 <script>
-function showInventory() 
-{
-	$.ajax({
-			type : 'POST',
-            url : 'showInventory',
-            success : function(data) {
-            	$('.inventoryDetails').css("display","block");
-                $('#tableContentDetails').html(data);
-            }
-        });
-}
-</script>
-<script>
-function myFunction(value, tagName, nextTagName) {
-    
-    var tag = '#'+nextTagName;
-    
-    $.ajax({
-			type : 'POST',
-			data :  {'value' : value,'currentTag' : tagName,'nextTagName' : nextTagName},
-            url : 'getDropdown',
-            success : function(data) {
-            
-            console.log(data);
-            console.log($(tag));
-            			$(tag).html("<option></option>");
-						$(tag).append(data);
-                        }
-        });
-}
-</script>
-<script>
-var i = 0;
-function appendInventory() 
+
+var i = 1;
+
+function addTerm()
 {
 
-var inventoryName = $('#inventoryName').children("option:selected").val();
-var material = $('#material').children("option:selected").val();
-var type = $('#type').children("option:selected").val();
-var manifacturingMethod = $('#manifacturingMethod').children("option:selected").val();
-var classOrGrade = $('#classOrGrade').children("option:selected").val();
-var ends = $('#ends').children("option:selected").val();
-var size = $('#size').val();
+var toAppend = "<br/><div class=\"separator-2\"></div><input type=\"text\" name=\"term\" class=\"form-control\" id=\"inputAddress\">";
 
-console.log(type);
-	
-	var	template = "<tr>"
-	+ "    <td> <input type='button' value='X' onClick='removeRow($(this));'></td>" 
-	+ "    <td> <input type='hidden' name='inventoryName' value='"+inventoryName+"'></input>"+inventoryName+"</td>"
-	+ "    <td>  <input type='hidden' name='material' value='"+material+"'></input>"+material+"</td>"
-	+ "    <td> <input type='hidden' name='type' value='"+type+"'></input>"+type+"</td>"
-	+ "    <td> <input type='hidden' name='manifMethod' value='"+manifacturingMethod+"'></input>"+manifacturingMethod+"</td>"
-	+ "    <td> <input type='hidden' name='gradeOrClass' value='"+classOrGrade+"'></input>"+classOrGrade+"</td>"
-	+ "    <td> <input type='hidden' name='ends' value='"+ends+"'></input>"+ends+"</td>"
-	+ "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
-	+ "	   <td><input type='text' name='quantity' value=''></input></td>"
-	+ "	   <td><input type='text' name='purchaseRate' value=''></input></td>"
-	+ "	   <td><input type='text' name='project' value=''></input></td>"
-	+ "	   <td><input type='text' name='location' value=''></input></td>";
+$('#terms').append(toAppend);
 
-	
-	console.log(template);
-            	$('.inventoryDetails').css("display","block");          	
-                $('#tableContentDetails').append(template);
-                
-                $('#updateButton').css("display","block");
-}
-
-function removeRow(thisObj)
-{
-	console.log(thisObj.parent().parent().remove());
+i++;
 }
 </script>
 </body>

@@ -195,7 +195,7 @@ input{width: 50%;font: 11px 'Calibri'}
 	<TD class="tr2 td12"><P class="p4 ft4">PO No.</P></TD>
 	<TD class="tr2 td13"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr2 td14"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD colspan=3 class="tr2 td15"><P class="p6 ft4"><input type="text" style="border-style:none;" placeholder="PO Number"/></P></TD>
+	<TD colspan=3 class="tr2 td15"><P class="p6 ft4">${PONumber}</P></TD>
 	<TD class="tr2 td16"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr2 td17"><P class="p0 ft0">&nbsp;</P></TD>
 </TR>
@@ -203,23 +203,23 @@ input{width: 50%;font: 11px 'Calibri'}
 	<TD colspan=2 class="tr1 td18"><P class="p4 ft3">GST No.</P></TD>
 	<TD colspan=2 class="tr1 td19"><P class="p5 ft3">27AEBPH1001B1ZM</P></TD>
 	<TD colspan=3 class="tr1 td20"><P class="p4 ft4">PO DATE</P></TD>
-	<TD colspan=2 class="tr1 td21"><P class="p6 ft4"><NOBR><input type="text" style="border-style:none;" placeholder="MM-DDD-YY" /></NOBR></P></TD>
+	<TD colspan=2 class="tr1 td21"><P class="p6 ft4"><NOBR>${PODate}</NOBR></P></TD>
 	<TD class="tr1 td22"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr1 td22"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr1 td23"><P class="p0 ft0">&nbsp;</P></TD>
 </TR>
 
 <TR>
-	<TD colspan=4 class="tr3 td24"><P class="p7 ft6"><SPAN class="ft5">To: </SPAN><input type="text" style="border-style:none;" placeholder="Company Name"/></P></TD>
+	<TD colspan=4 class="tr3 td24"><P class="p7 ft6">To: ${companyName}</P></TD>
 	<TD colspan=5 class="tr3 td25"><P class="p4 ft7">ADDRESS CORRESPONDENCE TO:</P></TD>
 	<TD class="tr3 td16"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr3 td16"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr3 td17"><P class="p0 ft0">&nbsp;</P></TD>
 </TR>
 <TR>
-	<TD class="tr4 td26"><P class="p4 ft3"><input type="text" style="border-style:none;" placeholder="Location"/></P></TD>
+	<TD class="tr4 td26"><P class="p4 ft3">${location}</P></TD>
 	<TD class="tr4 td27"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD colspan=2 rowspan=2 class="tr5 td11"><P class="p5 ft8"><input type="text" style="border-style:none;" placeholder="Contact Name"/></P></TD>
+	<TD colspan=2 rowspan=2 class="tr5 td11"><P class="p5 ft8">${contactName}</P></TD>
 	<TD class="tr4 td12"><P class="p4 ft9">Name</P></TD>
 	<TD class="tr4 td13"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD colspan=3 class="tr4 td28"><P class="p6 ft9">MEHMOOD D. HAMDULE</P></TD>
@@ -240,7 +240,7 @@ input{width: 50%;font: 11px 'Calibri'}
 <TR>
 	<TD class="tr1 td26"><P class="p4 ft9">CELL#</P></TD>
 	<TD class="tr1 td27"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD colspan=2 class="tr1 td11"><P class="p5 ft4"><input type="text" style="border-style:none;" placeholder="Contact Number"/></P></TD>
+	<TD colspan=2 class="tr1 td11"><P class="p5 ft4">${contactNumber}</P></TD>
 	<TD class="tr1 td12"><P class="p4 ft9"><NOBR>E-mail</NOBR></P></TD>
 	<TD class="tr1 td13"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD colspan=5 class="tr1 td32"><P class="p6 ft10">mdhamdule@hamduleindustries.com</P></TD>
@@ -249,9 +249,9 @@ input{width: 50%;font: 11px 'Calibri'}
 <TR>
 	<TD class="tr1 td8"><P class="p4 ft11"><NOBR>E-MAIL</NOBR></P></TD>
 	<TD class="tr1 td33"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD colspan=2 class="tr1 td19"><P class="p5 ft10"><input type="text" style="border-style:none;" placeholder="Contact Email"/></P></TD>
+	<TD colspan=2 class="tr1 td19"><P class="p5 ft10">${contactEmail}</P></TD>
 	<TD class="tr1 td34"><P class="p4 ft9">Phone</P></TD>
-	<TD colspan=2 class="tr1 td35"><P class="p5 ft12"><NOBR>020-27502200</NOBR></P></TD>
+	<TD colspan=2 class="tr1 td35"><P class="p5 ft12">020-27502200</P></TD>
 	<TD class="tr1 td36"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr1 td37"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr1 td22"><P class="p0 ft0">&nbsp;</P></TD>
@@ -373,43 +373,7 @@ ${lineItems}
 	<TD class="tr6 td16"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr6 td17"><P class="p0 ft0">&nbsp;</P></TD>
 </TR>
-<TR>
-	<TD colspan=7 class="tr8 td58"><P class="p23 ft3">1 <input type="text" style="border-style:none;" placeholder="Term 1"/></P></TD>
-	<TD class="tr8 td30"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr8 td31"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr8 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr8 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr8 td17"><P class="p0 ft0">&nbsp;</P></TD>
-</TR>
-<TR>
-	<TD colspan=9 class="tr4 td59"><P class="p23 ft9">2 <input type="text" style="border-style:none;" placeholder="Term 2"/></P></TD>
-	<TD class="tr4 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr4 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr4 td17"><P class="p0 ft0">&nbsp;</P></TD>
-</TR>
-<TR>
-	<TD colspan=9 class="tr4 td59"><P class="p23 ft9">3 <input type="text" style="border-style:none;" placeholder="Term 3"/></P></TD>
-	<TD class="tr4 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr4 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr4 td17"><P class="p0 ft0">&nbsp;</P></TD>
-</TR>
-<TR>
-	<TD colspan=4 class="tr1 td61"><P class="p23 ft3">4 <input type="text" style="border-style:none;" placeholder="Term 4"/></P></TD>
-	<TD class="tr1 td12"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr1 td13"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr1 td14"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr1 td30"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr1 td31"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr1 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr1 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr1 td17"><P class="p0 ft0">&nbsp;</P></TD>
-</TR>
-<TR>
-	<TD colspan=9 class="tr4 td59"><P class="p23 ft9">5 <input type="text" style="border-style:none;" placeholder="Term 5"/></P></TD>
-	<TD class="tr4 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr4 td16"><P class="p0 ft0">&nbsp;</P></TD>
-	<TD class="tr4 td17"><P class="p0 ft0">&nbsp;</P></TD>
-</TR>
+${terms}
 <TR>
 	<TD class="tr3 td8"><P class="p0 ft0">&nbsp;</P></TD>
 	<TD class="tr3 td33"><P class="p0 ft0">&nbsp;</P></TD>
@@ -529,12 +493,18 @@ console.log(amount);
 
 var grandTotal = parseFloat(amount) + parseFloat(totalTax);
 
+totalCgst = (totalCgst+"").substring(0,(totalCgst+"").indexOf(".")+3);
+totalSgst = (totalSgst+"").substring(0,(totalSgst+"").indexOf(".")+3);
+
 $('.tCgst').html(totalCgst);
 $('.tSgst').html(totalSgst);
 
+amount = (amount+"").substring(0,(amount+"").indexOf(".")+3);
+totalTax = (totalTax+"").substring(0,(totalTax+"").indexOf(".")+3);
+grandTotal = (grandTotal+"").substring(0,(grandTotal+"").indexOf(".")+3);
 $('.subTotal').html(amount);
 $('.totalTax').html(totalTax);
-$('.grandTotal').html((grandTotal+"").substring(0,(grandTotal+"").indexOf(".")+3));
+$('.grandTotal').html(grandTotal);
   
 </script>
 </BODY>

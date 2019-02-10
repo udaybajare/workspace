@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +24,7 @@ import com.invmgmt.dao.InventoryDefinitionDao;
 import com.invmgmt.dao.MappingsDao;
 import com.invmgmt.dao.ProjectDao;
 import com.invmgmt.entity.BOQDetails;
+import com.invmgmt.entity.BOQHeader;
 import com.invmgmt.entity.BOQLineData;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
@@ -59,31 +61,47 @@ public class BOQController {
     BOQLineDataDao boqLineDataDao;
 
     @RequestMapping(value = "/import", method = RequestMethod.POST)
-    public @ResponseBody String getBOQLine(@RequestParam(value = "location", required = true) String location) {
+    public @ResponseBody String getBOQLine(String location) {
 
 	List inventoryList = null;
+
 	try {
 	    inventoryList = reader.readFile(location);
-	} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
-	    // TODO Auto-generated catch block
+	}
+	catch (EncryptedDocumentException | InvalidFormatException | IOException e) 
+	{
 	    e.printStackTrace();
 	}
 
-	String tableContent = createBOQContent(inventoryList);
+	String tableContent = createBOQContent(inventoryList, null, null, null, null);
+	
 	return tableContent;
     }
 
     @RequestMapping(value = "/downloadBoq", method = RequestMethod.GET)
-    protected @ResponseBody String downloadBOQ(String boqName) {
-	ArrayList<BOQDetails> boqDetails = boqDao.getBOQFromName(boqName);
+    protected @ResponseBody String downloadBOQ(String boqName, String projectId) 
+    {
+	ArrayList<BOQDetails> boqDetails = boqDao.getBOQFromName(boqName, projectId);
 	List inventoryList = null;
+	List<String> supplyAmtList = new ArrayList<String>();
+	List<String> erectionAmtList = new ArrayList<String>();
+	List<String> supplyRateList = new ArrayList<String>();
+	List<String> erectionRateList = new ArrayList<String>();
 	String tableContent = "";
 	try {
 	    writer.writeExcel(boqDetails);
 
 	    inventoryList = convertBOQDetailsToInventory(boqDetails);
 
-	    tableContent = createBOQContent(inventoryList);
+	    for (BOQDetails boqDetail : boqDetails) {
+		supplyAmtList.add(boqDetail.getSupplyAmount());
+		erectionAmtList.add(boqDetail.getErectionAmount());
+		supplyRateList.add(boqDetail.getSupplyRate());
+		erectionRateList.add(boqDetail.getErectionRate());
+	    }
+
+	    tableContent = createBOQContent(inventoryList, supplyRateList, erectionRateList, supplyAmtList,
+		    erectionAmtList);
 
 	} catch (Exception ex) {
 	    ex.printStackTrace();
@@ -184,19 +202,47 @@ public class BOQController {
     protected ModelAndView generateBOQ(String projectId, String boqName, String[] inventoryName, String[] material,
 	    String[] type, String[] manifMetod, String[] classOrGrade, String[] ends, String[] size, String[] quantity,
 	    String[] supplyRate, String[] erectionRate, String[] supplyAmount, String[] erectionAmount,
-	    RedirectAttributes redirectAttributes) {
-	ArrayList<String> boqRevisions = boqDao.getMatchingBOQNames(boqName + "_R");
+	    String isOffer, RedirectAttributes redirectAttributes) 
+    {
+	
+	ArrayList<String> boqRevisions = boqDao.getMatchingBOQNames(boqName + "_R", projectId);
+
+	ArrayList<String> quorationRevisions = boqDao.getMatchingBOQNames("Quotation_"+boqName + "_R", projectId);
 
 	String boqNameRevisionStr = "";
 	ArrayList<String> boqNames = null;
-	// projectId = "73";
-	for (int i = 1; i < 20; i++) {
-	    boqNameRevisionStr = boqName + "_R" + String.valueOf(i);
-	    if (boqRevisions.contains(boqNameRevisionStr))
-		continue;
-	    else
-		break;
+	ArrayList<String> quotationNames = new ArrayList<String>();
+	
+	if(!Boolean.valueOf(isOffer))
+	{
+	    for (int i = 1; i < 20; i++) {
+		    boqNameRevisionStr = boqName + "_R" + String.valueOf(i);
+		    if (boqRevisions.contains(boqNameRevisionStr))
+			continue;
+		    else
+			break;
+		}    
 	}
+	else
+	{
+	    for (int i = 1; i < 20; i++) {
+		    boqNameRevisionStr = "Quotation_"+ boqName + "_R" + String.valueOf(i);
+		    if (quorationRevisions.contains(boqNameRevisionStr))
+			continue;
+		    else
+			break;
+		}
+	}
+	
+
+	if(boqName.endsWith("_final"))
+	{
+	    boqNameRevisionStr = boqName;
+	}	
+	/*else if(Boolean.valueOf(isOffer))
+	{
+	    boqNameRevisionStr = "Quotation_"+boqNameRevisionStr;
+	}*/
 
 	System.out.println("Saving BOQ with name : " + boqNameRevisionStr);
 
@@ -204,7 +250,7 @@ public class BOQController {
 
 	try {
 	    writer.writeExcel(boqInventoryDetails, size, quantity, supplyRate, erectionRate, supplyAmount,
-		    erectionAmount);
+		    erectionAmount,boqNameRevisionStr);
 
 	    ArrayList<BOQDetails> boqInventoryDetailsList = getBOQDetailsList(projectId, boqNameRevisionStr,
 		    inventoryName, material, type, manifMetod, classOrGrade, ends, size, quantity, supplyRate,
@@ -220,18 +266,37 @@ public class BOQController {
 	    e.printStackTrace();
 	}
 
-	
 	Project project = projectDao.getProject(Integer.valueOf(projectId));
 
-	ModelAndView mav = new ModelAndView("projectDetails");
-	if(boqNames!=null && !boqNames.equals(""))
+	ModelAndView mav = new ModelAndView("redirect:/projectDetails");
+	
+	for(int i = 0; i < boqNames.size(); i++)
 	{
-	    System.out.println("#################"+String.join(",", boqNames));
-	    mav.addObject("boqNameList", String.join(",", boqNames));    
+	    if(boqNames.get(i)!=null&&boqNames.get(i).startsWith("Quotation_"))
+	    {
+		quotationNames.add(boqNames.get(i));
+		boqNames.remove(i);
+	    }
+	    
 	}
-	else
+	
+	
+	if (boqNames != null && !boqNames.equals(""))
 	{
-	    mav.addObject("boqNameList","");
+	    mav.addObject("boqNameList", String.join(",", boqNames));
+	}
+	else 
+	{
+	    mav.addObject("boqNameList", "");
+	}
+
+	if (quotationNames != null && !quotationNames.equals(""))
+	{
+	    mav.addObject("quotationNamesList", String.join(",", quotationNames));
+	}
+	else 
+	{
+	    mav.addObject("quotationNamesList", "");
 	}
 	
 	mav.addObject("projectId", projectId);
@@ -289,8 +354,10 @@ public class BOQController {
 
 	for (int i = 0; i < noOfEntries; i++) {
 	    boqInventoryDetails.add(new BOQDetails(projectId, boqName, inventoryName[i], material[i], type[i],
-		    manifMetod[i], classOrGrade[i], ends[i], size[i], quantity[i], supplyRate[i], erectionRate[i],
-		    supplyAmount[i], erectionAmount[i]));
+		    manifMetod[i], classOrGrade[i], ends[i], size[i], quantity[i],
+		    supplyRate.length > 0 ? supplyRate[i] : "", erectionRate.length > 0 ? erectionRate[i] : "",
+		    supplyAmount.length > 0 ? supplyAmount[i] : "",
+		    erectionAmount.length > 0 ? erectionAmount[i] : ""));
 	    System.out.println(boqInventoryDetails.get(i).toString());
 	}
 
@@ -324,19 +391,35 @@ public class BOQController {
 	return dropdownContent.toString();
     }
 
-    private String createBOQContent(List<Inventory> inventoryList) {
+    private String createBOQContent(List inventoryList, List<String> supplyRateList,
+	    List<String> erectionRateList, List<String> supplyAmtList, List<String> erectionAmtList) {
 
 	StringBuilder tableContent = new StringBuilder();
+	int index = 0;
+	for (int i=0;i<inventoryList.size();i++) {
 
-	for (Inventory inv : inventoryList) {
+	    if(inventoryList.get(i) instanceof Inventory)
+	    {
+		if (erectionAmtList != null) {
+		    tableContent.append(createInventoryRow((Inventory) inventoryList.get(i), supplyRateList.get(index),
+			    erectionRateList.get(index), supplyAmtList.get(index), erectionAmtList.get(index)));
+		} else {
+		    tableContent.append(createInventoryRow((Inventory) inventoryList.get(i), "", "", "", ""));
+		}
 
-	    tableContent.append(createInventoryRow(inv));
+		index++;
+	    }
+	    else if(inventoryList.get(i) instanceof BOQHeader)
+	    {
+		tableContent.append(getBOQHeaderData((BOQHeader)inventoryList.get(i)));
+	    }
 	}
 
 	return tableContent.toString();
     }
 
-    private String createInventoryRow(Inventory inv) {
+    private String createInventoryRow(Inventory inv, String supplyRate, String erectionRate, String supplyAmt,
+	    String erectionAmt) {
 	String template = "<tr>" + "    <td><input type=\"checkbox\" name=\"checkbox\" class=\"checkbox\" /></td>"
 		+ "    <td><input type=\"text\" name=\"inventoryName\" value=\"inventory\" /></td>"
 		+ "    <td><input type=\"text\" name=\"material\" value=\"material\" /></td>"
@@ -346,10 +429,10 @@ public class BOQController {
 		+ "    <td><input type=\"text\" name=\"ends\" value=\"ends\" /></td>"
 		+ "    <td><input type=\"text\" name=\"size\" value=\"size\" /></td>"
 		+ "    <td><input type=\"text\" name=\"quantity\" value=\"quantity\" /></td>"
-		+ "    <td><input type=\"text\" name=\"supplyRate\" value=\"\" /></td>"
-		+ "    <td><input type=\"text\" name=\"erectionRate\" value=\"\" /></td>"
-		+ "    <td><input type=\"text\" name=\"supplyAmount\" value=\"\" /></td>"
-		+ "    <td><input type=\"text\" name=\"erectionAmount\" value=\"\" /></td>" + "</tr>";
+		+ "    <td><input type=\"text\" name=\"supplyRate\" value=\"supplyRate\" /></td>"
+		+ "    <td><input type=\"text\" name=\"erectionRate\" value=\"erectionRate\" /></td>"
+		+ "    <td><input type=\"text\" name=\"supplyAmount\" value=\"supplyAmount\" /></td>"
+		+ "    <td><input type=\"text\" name=\"erectionAmount\" value=\"erectionAmount\" /></td>" + "</tr>";
 
 	String rowToReturn = template;
 	rowToReturn = rowToReturn.replace("value=\"inventory", "value=\"" + inv.getInventorySpec().getInventoryName());
@@ -359,11 +442,15 @@ public class BOQController {
 	rowToReturn = rowToReturn.replace("value=\"classOrGrade",
 		"value=\"" + inv.getInventorySpec().getGradeOrClass());
 	rowToReturn = rowToReturn.replace("value=\"ends", "value=\"" + inv.getInventorySpec().getEnds());
-	rowToReturn = rowToReturn.replace("value=\"size",
-		"value=\"" + inv.getInventorySpec().getSize());
+	rowToReturn = rowToReturn.replace("value=\"size", "value=\"" + inv.getInventorySpec().getSize());
 
 	String requiredQuantity = Integer.toString(inv.getQuantity());
 	rowToReturn = rowToReturn.replace("value=\"quantity", "value=\"" + requiredQuantity);
+
+	rowToReturn = rowToReturn.replace("value=\"supplyRate", "value=\"" + supplyRate);
+	rowToReturn = rowToReturn.replace("value=\"erectionRate", "value=\"" + erectionRate);
+	rowToReturn = rowToReturn.replace("value=\"supplyAmount", "value=\"" + supplyAmt);
+	rowToReturn = rowToReturn.replace("value=\"erectionAmount", "value=\"" + erectionAmt);
 
 	return rowToReturn;
     }
@@ -403,14 +490,40 @@ public class BOQController {
 	return rowToReturn;
     }
 
+    private String getBOQHeaderData(BOQHeader boqHeaderData)
+    {
+	String template = "<input type=\"hidden\" name=\"client\" value=\"client\" />" +
+		"<input type=\"hidden\" name=\"site\" value=\"site\" />" +
+		"<input type=\"hidden\" name=\"project\" value=\"project\" />" +
+		"<input type=\"hidden\" name=\"dName\" value=\"dName\" />" +
+		"<input type=\"hidden\" name=\"utility\" value=\"utility\" />" +
+		"<input type=\"hidden\" name=\"pressure\" value=\"pressure\" />"+
+		"<input type=\"hidden\" name=\"temp\" value=\"temp\" />"+
+		"<input type=\"hidden\" name=\"dNo\" value=\"dNo\" />";
+	
+	String htmlToReturn = template;
+	
+	htmlToReturn.replace("value=\"client", "value=\""+boqHeaderData.getClient());
+	htmlToReturn.replace("value=\"site", "value=\""+boqHeaderData.getSite());
+	htmlToReturn.replace("value=\"project", "value=\""+boqHeaderData.getProject());
+	htmlToReturn.replace("value=\"dName", "value=\""+boqHeaderData.getdName());
+	htmlToReturn.replace("value=\"utility", "value=\""+boqHeaderData.getUtility());
+	htmlToReturn.replace("value=\"pressure", "value=\""+boqHeaderData.getPressure());
+	htmlToReturn.replace("value=\"temp", "value=\""+boqHeaderData.getTemp());
+	htmlToReturn.replace("value=\"dNo", "value=\""+boqHeaderData.getdNo());
+	
+	return htmlToReturn;
+    }
     private List<Inventory> convertBOQDetailsToInventory(ArrayList<BOQDetails> boqDetailsList) {
 	List<Inventory> inventoryList = new ArrayList<Inventory>();
 
 	for (BOQDetails boqDetails : boqDetailsList) {
-	    inventoryList.add(new Inventory(new InventorySpec(boqDetails.getInventoryName(), boqDetails.getMaterial(),
-		    boqDetails.getType(), boqDetails.getManifacturingMethod(), boqDetails.getClassOrGrade(),
-		    boqDetails.getEnds(), boqDetails.getSize()), "",
-		    Integer.parseInt(boqDetails.getQuantity()),"",""));
+	    inventoryList
+		    .add(new Inventory(
+			    new InventorySpec(boqDetails.getInventoryName(), boqDetails.getMaterial(),
+				    boqDetails.getType(), boqDetails.getManifacturingMethod(),
+				    boqDetails.getClassOrGrade(), boqDetails.getEnds(), boqDetails.getSize()),
+			    "", Integer.parseInt(boqDetails.getQuantity()), "", ""));
 	}
 	return inventoryList;
     }

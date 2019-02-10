@@ -792,7 +792,7 @@
             </div>
             <br>
             <form name="generateBOQ" id="generateBOQ" action="generate" method="POST">
-            <input type="hidden" name="projectId" value="${projectId}" />
+            <input type="hidden" id="projectId" name="projectId" value="${projectId}" />
             <div class="row">
               <div class="col-md-12 ">
 				
@@ -832,6 +832,7 @@
                 </thead>
                 
                 <tbody id="tableContent">
+                	
                 </tbody>
                 
               </table>
@@ -843,50 +844,71 @@
             <div class="row">
               <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                	<h4>BOQ Revisions</h4>
+					<select class="form-control" id="revisionSection" onChange="download($('#revisionSection').val());">
+    						<option></option>
+					</select>                
                 </div>
               </div>
               <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                  <h4>Quotation List</h4>
+					<select class="form-control" onChange="download($('#offerRevisionSection').val());" id="offerRevisionSection">
+    						<option></option>
+					</select>
                 </div>
               </div>
               <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                <h4>BOQ Name :</h4> 
+						<input type="text" name="boqName" value=${projectName}></input>
                 </div>
               </div>
             </div>
 			<div class="form-row">
-				<div class="col-md-4 ">
-					
-					<div id="revisionSection" class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-					<h4>BOQ Revisions</h4>
-					</div>
-				</div>
-				<div class="col-md-4 ">
+				<div class="col-md-3">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label></label>
 						<br>
 						<button type="button" onClick="generatePO();" class="btn btn-default">Generate PO</button>
 					</div>					
 				</div>
-				<div class="col-md-2" id="importBoq">
+				
+				<div class="col-md-3" id="generate" style="display:none">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+					<br>
+					<button type="Submit" class="btn btn-default">Generate BOQ</button>
+					</div>
+				</div>
+				<div class="col-md-3" id="generateQuot" style="display:none">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>
+						<input type="hidden" name="boqNameList" value=${boqNameList}>
+						<input type="hidden" name="quotationNamesList" value=${quotationNamesList}>
+						</label>
+						</br>
+						<button type="button" onClick="createInquiry();" class="btn btn-default">Generate Quotation</button>		
+					</div>					
+				</div>
+				</form>
+				<div class="col-md-3" id="importBoq">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label></label>
 						<br>
-						<button type="button" onClick="captureFileLocation()" class="btn btn-default">Import BOQ/BOM</button>
-					</div>					
-				</div>
-				<div class="col-md-2" id="generate" style="display:none">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label>BOQ Name : 
-						<input type="text" name="boqName" value=${projectName}>
-						<input type="hidden" name="boqNameList" value=${boqNameList}>
-						</label>
-						</br>
-						<button type="button" onClick="createInquiry();" class="btn btn-default">Generate Offer</button>		
 					</div>					
 				</div>							
 			</div>
-			</form>
+			
+			<div class="form-row">
+				<div class="col-md-3">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<br>
+						<button type="button" onClick="captureFileLocation()" class="btn btn-default">Import BOQ/BOM</button>    					
+					</div>					
+				</div>
+			</div>
+			
             <br>
           </div>
         </section>
@@ -921,7 +943,7 @@
     </div>
     <!-- page-wrapper end -->
 
-	<form action="generateOrder" id="generateOffer" method="POST" style="display:none;">
+	<form action="generateOrderForm" id="generateOffer" method="POST" style="display:none;">
 	
 	</form>
     <!-- JavaScript files placed at the end of the document so the pages load faster -->
@@ -943,6 +965,7 @@
     <!-- Custom Scripts -->
     <script src="js/custom.js"></script>
 
+
 <script>
 function captureFileLocation() {
     var fileLocation;
@@ -961,12 +984,13 @@ if(fileLocation != "User cancelled the prompt.")
 			data : {'location' : fileLocation},
             url : 'import',
             success : function(data) {
+            
                 $('#tableContent').html(data);
             }
         });
         
         var imp = document.getElementById("importBoq");
-        imp.style.display = "none";
+        //imp.style.display = "none";
         
         var generate = document.getElementById("generate");
         generate.style.display = "block";
@@ -1052,18 +1076,25 @@ $("input[name='erectionAmount']").each(function() {
 });
 }
 </script>
-<script>
 
+<script>
 $(document).ready(function(){
    // we define and invoke a function
    (function(){
-     $("input[name='boqNameList']").each(function(){
+          
+     var inputArray = $("input[name='boqNameList']")[0].value.split(",");
      
-     var names = $(this).val().split(",");
-     var dummy = "<h5 onClick=\"download('BOQRevisions');\">BOQRevisions</h5> <div class=\"separator clearfix\"></div>";
+     var names = [];
+		$.each(inputArray, function(i, el){
+    		if($.inArray(el, names) === -1) 
+    		{
+    		names.push(el);
+    		}
+		});
+
+     var dummy = "<option value=\"BOQRevisions\"><h5>BOQRevisions</h5></option>";
      
     $.each(names,function(i){
-   			console.log(names[i]);
    			
    			var dummy1 = dummy.replace("BOQRevisions",names[i]);
    			
@@ -1073,24 +1104,74 @@ $(document).ready(function(){
    			
 		});
      
-     });
    })();
 });
 
+$(document).ready(function(){
+   // we define and invoke a function
+   (function(){
+          
+     var inputArray = $("input[name='quotationNamesList']")[0].value.split(",");
+     
+     var names = [];
+		$.each(inputArray, function(i, el){
+    		if($.inArray(el, names) === -1) 
+    		{
+    		names.push(el);
+    		}
+		});
+
+     var dummy = "<option value=\"QuotationRevisions\"><h5>QuotationRevisions</h5></option>";
+     
+    $.each(names,function(i){
+   			
+   			var dummy1 = dummy.replace("QuotationRevisions",names[i]);
+   			
+   			var tags = dummy1.replace("QuotationRevisions",names[i]);
+   			
+   			$('#offerRevisionSection').append(tags);
+   			
+		});
+     
+   })();
+});
 </script>
 
 <script>
-function download(name) {
-        
+function download(name) 
+{
+	console.log("Download being called.");
+    
+    var projectId = $('#projectId').val();  
+                
+    var formData = $(this).serializeArray();
+
+	formData.push({name: 'projectId', value: $('#projectId').val()});
+	formData.push({name: 'boqName', value: name});
+		
     $.ajax({
 			type : 'GET',
-			data :  {'boqName' : name},
+			data :  formData,
             url : 'downloadBoq',
-            success : function(data) {
-            $('#tableContent').html(data);
-            console.log('Download Successful..!!');
-                         }
+            success : function(data)
+            {            
+            	console.log(data);
+            	$('#tableContent').html(data);
+		    	console.log('Download Successful..!!');
+            }
+                         
         });
+                                       
+		var generateQuot = document.getElementById("generateQuot");                                         
+        generateQuot.style.display = "block";
+        
+        //var generate = document.getElementById("offer");
+        //generate.style.display = "block";
+
+
+		var generateBOQ = document.getElementById("generate");
+        generateBOQ.style.display = "block";
+
 }
 </script>
 
@@ -1182,7 +1263,7 @@ function createInquiry()
 		var formData = $(this).serializeArray();
 		
 		formData.push({name: 'projectId', value: $('#generateBOQ input')[0].value});
-		formData.push({name: 'boqName', value: $('#generateBOQ input')[$('#generateBOQ input').length - 2].value});
+		formData.push({name: 'boqName', value: $('#generateBOQ input')[$('#generateBOQ input').length - 3].value});
 		
 		
 		var inventoryName_string = cleanArray(inventoryName);
@@ -1209,6 +1290,8 @@ function createInquiry()
 		formData.push({name: 'supplyAmount', value: supplyAmount_string});
 		var erectionAmount_string = cleanArray(erectionAmount);
 		formData.push({name: 'erectionAmount', value: erectionAmount_string});
+		
+		formData.push({name: 'isOffer', value: 'true'});
 				
 		$.ajax({
 			url: "generate",

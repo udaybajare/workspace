@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,6 +23,7 @@ import org.apache.poi.ss.util.CellAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.invmgmt.dao.InventoryDao;
+import com.invmgmt.entity.BOQHeader;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
 
@@ -40,16 +40,18 @@ public class ExcelReader {
 	int columnNumber = 0;
 	boolean isColumnFound = false;
 
+	BOQHeader boqHeader = new BOQHeader();
+	
 	DataFormatter dataFormatter = new DataFormatter();
 
-	public ArrayList readFile(String fileToBeRead) throws EncryptedDocumentException, InvalidFormatException, IOException {
+	public ArrayList readFile(String fileLocation) throws EncryptedDocumentException, InvalidFormatException, IOException {
 	
 	Workbook workbook = null;
 	ArrayList invList = new ArrayList();
 	
 	try
 	{
-		workbook = WorkbookFactory.create(new File(fileToBeRead));
+		workbook = WorkbookFactory.create(new File(fileLocation));
 
 		CellAddress sellAddress = null;
 		Set inventorySet = new HashSet<String>();
@@ -62,15 +64,37 @@ public class ExcelReader {
 		while (sheet.hasNext()) {
 			Sheet sheet1 = sheet.next();
 			System.out.println("Working on sheet : "+sheet1.getSheetName());
-			if (sheet1.getSheetName().equalsIgnoreCase("150NB Header")) {
+			/*if (sheet1.getSheetName().equalsIgnoreCase("150NB Header")) 
+			{*/
 				Iterator<Row> row = sheet1.rowIterator();
 				while (row.hasNext()) {
-					Iterator<Cell> cell = row.next().cellIterator();
+				    Row rowItem = row.next();
+					Iterator<Cell> cell = rowItem.cellIterator();
 					while (cell.hasNext()) {
 						Cell cell1 = cell.next();
 						
 						String cellValue = dataFormatter.formatCellValue(cell1);
 
+						
+						  if(cellValue.trim().contains("Client"))
+						      boqHeader.setClient(readValueInColumn(rowItem, cell1.getColumnIndex()+1));
+						  else if(cellValue.trim().contains("Site"))
+						      boqHeader.setSite(readValueInColumn(rowItem, cell1.getColumnIndex()+1));
+						  else if(cellValue.trim().contains("Project"))
+						      boqHeader.setProject(readValueInColumn(rowItem, cell1.getColumnIndex()+1));
+						  else if(cellValue.trim().contains("D.Name"))
+						      boqHeader.setdName(readValueInColumn(rowItem, cell1.getColumnIndex()+1));
+						  else if(cellValue.trim().contains("Utility"))
+						      boqHeader.setUtility(readValueInColumn(rowItem, cell1.getColumnIndex()+1));
+						  else if(cellValue.trim().contains("Pressure"))
+						      boqHeader.setPressure(readValueInColumn(rowItem, cell1.getColumnIndex()+1));
+						  else if(cellValue.trim().contains("Temp"))
+						      boqHeader.setTemp(readValueInColumn(rowItem, cell1.getColumnIndex()+1));
+						  else if(cellValue.trim().contains("D.No"))
+						      boqHeader.setdNo(readValueInColumn(rowItem, cell1.getColumnIndex()+1));
+						
+						  
+						  invList.add(boqHeader);
 						if (cellValue.trim().equalsIgnoreCase("Details")) {
 							String srPosition = cell1.getAddress().formatAsString();
 							column = Character.toString(srPosition.charAt(0));
@@ -96,9 +120,11 @@ public class ExcelReader {
 							}
 							
 						}
+						
+						
 					}
 				}
-			}
+			/*}*/
 		}
 	}
 	catch(Exception ex)
@@ -132,7 +158,8 @@ public class ExcelReader {
 		while (sheet.hasNext()) {
 			Sheet sheet1 = sheet.next();
 			System.out.println("Working on sheet : " + sheet1.getSheetName());
-			if (sheet1.getSheetName().equalsIgnoreCase("150NB Header")) {
+			if (sheet1.getSheetName().equalsIgnoreCase("150NB Header")) 
+			{
 				Iterator<Row> row = sheet1.rowIterator();
 				while (row.hasNext()) {
 					Iterator<Cell> cell = row.next().cellIterator();
@@ -155,4 +182,9 @@ public class ExcelReader {
 		return columnData;
 	}
 
+	public String readValueInColumn(Row row, int columnIndex)
+	{
+	    String cellVal = row.getCell(columnIndex).getStringCellValue();	    
+	    return cellVal;
+	}
 }

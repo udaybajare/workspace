@@ -13,6 +13,7 @@ public class BOQDetails {
 
 	String projectId;
 	String boqName;
+	String quotationName;
 	String inventoryName;
 	String material;
 	String type;
@@ -80,6 +81,14 @@ public class BOQDetails {
 		this.boqName = boqName;
 	}
 
+	public String getOfferName() {
+		return quotationName;
+	}
+
+	public void setOfferName(String offerName) {
+		this.quotationName = offerName;
+	}
+	
 	public String getInventoryName() {
 		return inventoryName;
 	}

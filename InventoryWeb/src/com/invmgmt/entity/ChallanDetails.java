@@ -14,6 +14,7 @@ public class ChallanDetails {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int cId;
     
+    private String projectId;
     private int inventoryRowId;
     private String poNo;
     private String poDate;
@@ -29,7 +30,7 @@ public class ChallanDetails {
     }
 
     public ChallanDetails(String poNo, String poDate, String receivedFrom, String consignee, String transportMode,
-	    String lrNumberDate, String vheicleNumber, String gstNo) {
+	    String lrNumberDate, String vheicleNumber, String gstNo, String projectId) {
 	super();
 	this.poNo = poNo;
 	this.poDate = poDate;
@@ -39,10 +40,17 @@ public class ChallanDetails {
 	this.lrNumberDate = lrNumberDate;
 	this.vheicleNumber = vheicleNumber;
 	this.gstNo = gstNo;
+	this.projectId = projectId;
     }
 
     
-    
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }    
     public int getcId() {
         return cId;
     }

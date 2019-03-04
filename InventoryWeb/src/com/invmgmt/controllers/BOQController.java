@@ -73,7 +73,7 @@ public class BOQController {
 	    e.printStackTrace();
 	}
 
-	String tableContent = createBOQContent(inventoryList, null, null, null, null);
+	String tableContent = createBOQContent(inventoryList, null, null, null, null, null, null);
 	
 	return tableContent;
     }
@@ -85,8 +85,13 @@ public class BOQController {
 	List inventoryList = null;
 	List<String> supplyAmtList = new ArrayList<String>();
 	List<String> erectionAmtList = new ArrayList<String>();
+	List<String> baseSupplyAmtList = new ArrayList<String>();
+	List<String> baseErectionAmtList = new ArrayList<String>();
+	
 	List<String> supplyRateList = new ArrayList<String>();
 	List<String> erectionRateList = new ArrayList<String>();
+	
+	
 	String tableContent = "";
 	try {
 	    writer.writeExcel(boqDetails);
@@ -98,10 +103,12 @@ public class BOQController {
 		erectionAmtList.add(boqDetail.getErectionAmount());
 		supplyRateList.add(boqDetail.getSupplyRate());
 		erectionRateList.add(boqDetail.getErectionRate());
+		baseSupplyAmtList.add(boqDetail.getBaseSupplyRate());
+		baseErectionAmtList.add(boqDetail.getBaseErectionRate());
 	    }
 
 	    tableContent = createBOQContent(inventoryList, supplyRateList, erectionRateList, supplyAmtList,
-		    erectionAmtList);
+		    erectionAmtList, baseSupplyAmtList, baseErectionAmtList);
 
 	} catch (Exception ex) {
 	    ex.printStackTrace();
@@ -202,7 +209,7 @@ public class BOQController {
     protected ModelAndView generateBOQ(String projectId, String boqName, String[] inventoryName, String[] material,
 	    String[] type, String[] manifMetod, String[] classOrGrade, String[] ends, String[] size, String[] quantity,
 	    String[] supplyRate, String[] erectionRate, String[] supplyAmount, String[] erectionAmount,
-	    String isOffer, RedirectAttributes redirectAttributes) 
+	    String[] baseErectionRate, String[] baseSupplyRate, String isOffer, RedirectAttributes redirectAttributes) 
     {
 	
 	ArrayList<String> boqRevisions = boqDao.getMatchingBOQNames(boqName + "_R", projectId);
@@ -254,7 +261,7 @@ public class BOQController {
 
 	    ArrayList<BOQDetails> boqInventoryDetailsList = getBOQDetailsList(projectId, boqNameRevisionStr,
 		    inventoryName, material, type, manifMetod, classOrGrade, ends, size, quantity, supplyRate,
-		    erectionRate, supplyAmount, erectionAmount);
+		    erectionRate, supplyAmount, erectionAmount, baseErectionRate, baseSupplyRate);
 
 	    for (BOQDetails boqDetails : boqInventoryDetailsList) {
 		boqDao.saveBOQ(boqDetails);
@@ -348,7 +355,7 @@ public class BOQController {
     private ArrayList<BOQDetails> getBOQDetailsList(String projectId, String boqName, String[] inventoryName,
 	    String[] material, String[] type, String[] manifMetod, String[] classOrGrade, String[] ends, String[] size,
 	    String[] quantity, String[] supplyRate, String[] erectionRate, String[] supplyAmount,
-	    String[] erectionAmount) {
+	    String[] erectionAmount, String[] baseErectionRate, String[] baseSupplyRate) {
 	int noOfEntries = inventoryName.length;
 	ArrayList<BOQDetails> boqInventoryDetails = new ArrayList<>();
 
@@ -357,7 +364,7 @@ public class BOQController {
 		    manifMetod[i], classOrGrade[i], ends[i], size[i], quantity[i],
 		    supplyRate.length > 0 ? supplyRate[i] : "", erectionRate.length > 0 ? erectionRate[i] : "",
 		    supplyAmount.length > 0 ? supplyAmount[i] : "",
-		    erectionAmount.length > 0 ? erectionAmount[i] : ""));
+		    erectionAmount.length > 0 ? erectionAmount[i] : "", baseErectionRate[i], baseSupplyRate[i]));
 	    System.out.println(boqInventoryDetails.get(i).toString());
 	}
 
@@ -392,7 +399,8 @@ public class BOQController {
     }
 
     private String createBOQContent(List inventoryList, List<String> supplyRateList,
-	    List<String> erectionRateList, List<String> supplyAmtList, List<String> erectionAmtList) {
+	    List<String> erectionRateList, List<String> supplyAmtList, List<String> erectionAmtList,List<String> baseSupplyRateList,
+	    List<String> baseErectionRateList) {
 
 	StringBuilder tableContent = new StringBuilder();
 	int index = 0;
@@ -402,9 +410,10 @@ public class BOQController {
 	    {
 		if (erectionAmtList != null) {
 		    tableContent.append(createInventoryRow((Inventory) inventoryList.get(i), supplyRateList.get(index),
-			    erectionRateList.get(index), supplyAmtList.get(index), erectionAmtList.get(index)));
+			    erectionRateList.get(index), supplyAmtList.get(index), erectionAmtList.get(index),
+			    baseSupplyRateList.get(index), baseErectionRateList.get(index)));
 		} else {
-		    tableContent.append(createInventoryRow((Inventory) inventoryList.get(i), "", "", "", ""));
+		    tableContent.append(createInventoryRow((Inventory) inventoryList.get(i), "", "", "", "", "", ""));
 		}
 
 		index++;
@@ -419,39 +428,55 @@ public class BOQController {
     }
 
     private String createInventoryRow(Inventory inv, String supplyRate, String erectionRate, String supplyAmt,
-	    String erectionAmt) {
-	String template = "<tr>" + "    <td><input type=\"checkbox\" name=\"checkbox\" class=\"checkbox\" /></td>"
-		+ "    <td><input type=\"text\" name=\"inventoryName\" value=\"inventory\" /></td>"
-		+ "    <td><input type=\"text\" name=\"material\" value=\"material\" /></td>"
-		+ "    <td><input type=\"text\" name=\"type\" value=\"type\" /></td>"
-		+ "    <td><input type=\"text\" name=\"manifMetod\" value=\"manifMetod\" /></td>"
-		+ "    <td><input type=\"text\" name=\"classOrGrade\" value=\"classOrGrade\" /></td>"
-		+ "    <td><input type=\"text\" name=\"ends\" value=\"ends\" /></td>"
-		+ "    <td><input type=\"text\" name=\"size\" value=\"size\" /></td>"
-		+ "    <td><input type=\"text\" name=\"quantity\" value=\"quantity\" /></td>"
+	    String erectionAmt, String baseSupplyRate, String baseErectionRate) {
+	String template = "<tr>" 
+		+ "    <td style=\"padding:0rem\"><input type=\"checkbox\" name=\"checkbox\" class=\"checkbox\" /></td>"
+		+ "    <td style=\"padding: 0px 0px;\">inventoryVal</td>"
+		+ "    <td style=\"padding: 0px 0px;\">materialVal</td>"
+		+ "    <td style=\"padding: 0px 0px;\">invenType</td>"
+		+ "    <td style=\"padding: 0px 0px;\">manifMetodVal</td>"
+		+ "    <td style=\"padding: 0px 0px;\">classOrGradeVal</td>"
+		+ "    <td style=\"padding: 0px 0px;\">endsVal</td>"
+		+ "    <td style=\"padding: 0px 0px;\">sizeVal</td>"
+		+ "    <td style=\"padding: 0px 0px;\">quantityVal</td>"
+		+ "    <td><input type=\"text\" name=\"baseSupplyRate\" value=\"baseSupplyRateVal\" id=\"baseSupplyRate\" /></td>"
 		+ "    <td><input type=\"text\" name=\"supplyRate\" value=\"supplyRate\" /></td>"
+		+ "    <td><input type=\"text\" name=\"baseErectionRate\" value=\"baseErectionRateVal\" id=\"baseErectionRate\" /></td>"
 		+ "    <td><input type=\"text\" name=\"erectionRate\" value=\"erectionRate\" /></td>"
 		+ "    <td><input type=\"text\" name=\"supplyAmount\" value=\"supplyAmount\" /></td>"
-		+ "    <td><input type=\"text\" name=\"erectionAmount\" value=\"erectionAmount\" /></td>" + "</tr>";
+		+ "    <td><input type=\"text\" name=\"erectionAmount\" value=\"erectionAmount\" /></td>" 
+		+ "    <td><input type=\"hidden\" name=\"inventoryName\" value=\"inventoryVal\" /></td>"
+		+ "    <td><input type=\"hidden\" name=\"material\" value=\"materialVal\" /></td>"
+		+ "    <td><input type=\"hidden\" name=\"type\" value=\"invenType\" /></td>"
+		+ "    <td><input type=\"hidden\" name=\"manifMetod\" value=\"manifMetodVal\" /></td>"
+		+ "    <td><input type=\"hidden\" name=\"classOrGrade\" value=\"classOrGradeVal\" /></td>"
+		+ "    <td><input type=\"hidden\" name=\"ends\" value=\"endsVal\" /></td>"
+		+ "    <td><input type=\"hidden\" name=\"size\" value=\"sizeVal\" /></td>"
+		+ "    <td><input type=\"hidden\" name=\"quantity\" value=\"quantityVal\" /></td>" 
+		+ "   </tr>";
 
 	String rowToReturn = template;
-	rowToReturn = rowToReturn.replace("value=\"inventory", "value=\"" + inv.getInventorySpec().getInventoryName());
-	rowToReturn = rowToReturn.replace("value=\"material", "value=\"" + inv.getInventorySpec().getMaterial());
-	rowToReturn = rowToReturn.replace("value=\"type", "value=\"" + inv.getInventorySpec().getType());
-	rowToReturn = rowToReturn.replace("value=\"manifMetod", "value=\"" + inv.getInventorySpec().getManifMethod());
-	rowToReturn = rowToReturn.replace("value=\"classOrGrade",
-		"value=\"" + inv.getInventorySpec().getGradeOrClass());
-	rowToReturn = rowToReturn.replace("value=\"ends", "value=\"" + inv.getInventorySpec().getEnds());
-	rowToReturn = rowToReturn.replace("value=\"size", "value=\"" + inv.getInventorySpec().getSize());
+	rowToReturn = rowToReturn.replace("inventoryVal", inv.getInventorySpec().getInventoryName());
+	rowToReturn = rowToReturn.replace("materialVal", inv.getInventorySpec().getMaterial());
+	rowToReturn = rowToReturn.replace("invenType", inv.getInventorySpec().getType());
+	rowToReturn = rowToReturn.replace("manifMetodVal", inv.getInventorySpec().getManifMethod());
+	rowToReturn = rowToReturn.replace("classOrGradeVal", inv.getInventorySpec().getGradeOrClass());
+	rowToReturn = rowToReturn.replace("endsVal", inv.getInventorySpec().getEnds());
+	rowToReturn = rowToReturn.replace("sizeVal", inv.getInventorySpec().getSize());
 
 	String requiredQuantity = Integer.toString(inv.getQuantity());
-	rowToReturn = rowToReturn.replace("value=\"quantity", "value=\"" + requiredQuantity);
+	rowToReturn = rowToReturn.replace("quantityVal", requiredQuantity);
 
 	rowToReturn = rowToReturn.replace("value=\"supplyRate", "value=\"" + supplyRate);
 	rowToReturn = rowToReturn.replace("value=\"erectionRate", "value=\"" + erectionRate);
 	rowToReturn = rowToReturn.replace("value=\"supplyAmount", "value=\"" + supplyAmt);
 	rowToReturn = rowToReturn.replace("value=\"erectionAmount", "value=\"" + erectionAmt);
 
+	rowToReturn = rowToReturn.replace("baseSupplyRateVal", baseSupplyRate);
+	rowToReturn = rowToReturn.replace("baseErectionRateVal", baseErectionRate);
+	
+	
+	System.out.println("rowToReturn is : "+rowToReturn);
 	return rowToReturn;
     }
 
@@ -468,15 +493,16 @@ public class BOQController {
     }
 
     private String createInventoryRowTable(Inventory inv) {
-	String template = "<tr>" + "    <td>Inventory</td>" + "    <td>Material</td>" + "    <td>Type</td>"
-		+ "    <td>ManifMethod</td>" + "    <td>ends</td>" + "    <td>size</td>"
-		+ "    <td>availableQuantity</td>" + "    <td>purchaseRate</td>";
+	String template = "<tr>" + "<td></td><td>Inventory</td>" + "    <td>Material</td>" + "    <td>Type</td>"
+		+ "    <td>ManifMethod</td>" +"<td>gradeOrClass</td>"+ "    <td>ends</td>" + "    <td>size</td>"
+		+ "    <td>availableQuantity</td>" + "    <td>purchaseRate</td>" + "<td>project</td>" + "<td>location</td>";
 
 	String rowToReturn = template;
 	rowToReturn = rowToReturn.replace("Inventory", inv.getInventorySpec().getInventoryName());
 	rowToReturn = rowToReturn.replace("Material", inv.getInventorySpec().getMaterial());
 	rowToReturn = rowToReturn.replace("Type", inv.getInventorySpec().getType());
 	rowToReturn = rowToReturn.replace("ManifMethod", inv.getInventorySpec().getManifMethod());
+	rowToReturn = rowToReturn.replace("gradeOrClass", inv.getInventorySpec().getGradeOrClass());
 	rowToReturn = rowToReturn.replace("ends", inv.getInventorySpec().getEnds());
 	rowToReturn = rowToReturn.replace("size", inv.getInventorySpec().getSize());
 
@@ -487,6 +513,8 @@ public class BOQController {
 
 	// Purchse Rate
 	rowToReturn = rowToReturn.replace("purchaseRate", Integer.toString(inventoryDao.getPurchaseRate(inv)));
+	rowToReturn = rowToReturn.replace("project", inv.getAssignedProject());
+	rowToReturn = rowToReturn.replace("location", inv.getLocation());
 	return rowToReturn;
     }
 

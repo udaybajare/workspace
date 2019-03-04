@@ -478,10 +478,12 @@ $('.gstState').each(function(i, obj) {
     totalSgst = parseFloat(totalSgst) + parseFloat(obj.innerHTML);
 });
 
+console.log(totalCgst);
 console.log(totalSgst);
 
 var totalTax = parseFloat(totalCgst) + parseFloat(totalSgst);
 
+console.log('totalTax is : '+totalTax);
 var amount = 0;
 
 $('.lineAmt').each(function(i, obj) {
@@ -493,15 +495,26 @@ console.log(amount);
 
 var grandTotal = parseFloat(amount) + parseFloat(totalTax);
 
+if((totalCgst+"").indexOf('.') != -1)
 totalCgst = (totalCgst+"").substring(0,(totalCgst+"").indexOf(".")+3);
+
+if((totalSgst+"").indexOf('.') != -1)
 totalSgst = (totalSgst+"").substring(0,(totalSgst+"").indexOf(".")+3);
 
 $('.tCgst').html(totalCgst);
 $('.tSgst').html(totalSgst);
 
-amount = (amount+"").substring(0,(amount+"").indexOf(".")+3);
+
+if((amount+"").indexOf('.') != -1)
+	amount = (amount+"").substring(0,(amount+"").indexOf(".")+3);
+
+if((totalTax+"").indexOf('.') > -1)
 totalTax = (totalTax+"").substring(0,(totalTax+"").indexOf(".")+3);
+
+if((grandTotal+"").indexOf('.') > -1)
 grandTotal = (grandTotal+"").substring(0,(grandTotal+"").indexOf(".")+3);
+
+
 $('.subTotal').html(amount);
 $('.totalTax').html(totalTax);
 $('.grandTotal').html(grandTotal);

@@ -727,13 +727,19 @@
 
 			  <form action="generateOrder" method="POST">
   <div class="form-row">
-    <div class="form-group col-md-6">
-      <label>Company Name</label>
-      <input type="text" class="form-control" name="companyName" >
+    <div class="form-group col-md-4">
+      <label>Vendor Name</label>
+      <select class='form-control' name='vendorName' id='vendorName' onChange='getVendorDetails($(this));'>
+      <option></option>
     </div>
-    <div class="form-group col-md-6">
-      <label>Company Location</label>
+    <div class="form-group col-md-4">
+      <label>Vendor Location</label>
       <input type="text" class="form-control" name="location">
+    </div>
+    <div class="form-group col-md-4">
+      <label>Add Vendor</label>
+      <br/>
+      <button type="button" class="addVendorForm">+</button>
     </div>
   </div>
   <div class="form-row">
@@ -769,7 +775,37 @@
 		  </div>
 		</div>
       </section>
-      <div class="space"></div>
+      
+ <div id="textOverlaySearch" style="display:none;">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label>Vendor Name</label>
+      <input type="text" class="form-control" name="vendorNameStr">	
+    </div>
+    <div class="form-group col-md-6">
+      <label>Vendor Location</label>
+      <input type="text" class="form-control" name="vendorAddress">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>Contact Name</label>
+      <input type="text" class="form-control" name="vendorContactName">
+    </div>
+    <div class="form-group col-md-4">
+      <label>Contact Number</label>
+      <input type="text" class="form-control" name="vendorNumber">
+    </div>
+    <div class="form-group col-md-4">
+      <label>Contact Email</label>
+      <input type="text" class="form-control" name="vendorEmail">
+    </div>
+  </div>                
+ <button type="button" class="btn btn-default" onClick="addVendor();">Add</button>
+ <button type="button" class="btn btn-default" onClick="closeOverlay('textOverlaySearch');" >Cancel</button>
+ </div>
+ 
+ <div class="space"></div>
 
       <!-- footer start (Add "dark" class to #footer in order to enable dark footer) -->
       <!-- ================ -->
@@ -825,6 +861,94 @@ var toAppend = "<br/><div class=\"separator-2\"></div><input type=\"text\" name=
 $('#terms').append(toAppend);
 
 i++;
+}
+</script>
+<script>
+    
+    function closeOverlay(overLayId)
+    {
+    	var idVal = overLayId;
+    	document.getElementById(overLayId).style.display = "none";
+    }
+    
+</script>
+
+
+<script>
+      jQuery(document).ready(function() {
+
+        var searchToggle = true;    
+		$(".addVendorForm").click(function(){
+		if(searchToggle){
+		document.getElementById("textOverlaySearch").style.display = "block";
+		}else{
+		document.getElementById("textOverlaySearch").style.display = "none";
+		}
+		searchToggle = !searchToggle;
+		});
+		
+      });
+
+
+</script>
+<script>
+function addVendor()
+{
+
+$.ajax({
+			type : 'POST',
+			data :  {'vendorName' : $('[name="vendorNameStr"]').val(), 'vendorAddress': $('[name="vendorAddress"]').val(), 'contactName': $('[name="vendorContactName"]').val(), 'contactNumber': $('[name="vendorNumber"]').val(), 'contactEmail': $('[name="vendorEmail"]').val()},
+            url : 'saveVendor',
+            success : function(data) 
+            {
+     			document.getElementById("textOverlaySearch").style.display = "none";       
+            }
+        });
+
+
+}
+</script>
+<script>
+
+function getCompanyDetails(thisObj)
+{
+	var vendorName = $('#vendorName').val();
+	
+	 $.ajax({
+			type : 'POST',
+			data :  {'vendorName' : vendorName},
+            url : 'getVendorDetails',
+            success : function(data) 
+            {
+     			var inputArray = data.split(":");
+     			$.each(inputArray,function(i, el)
+     			{
+     				var pair = el.split('=');
+     				var ele = pair[0].trim();
+     				var valu = pair[1].trim();
+     				
+     				console.log(ele+":"+valu);
+     				
+     				if(ele=='vendorAddress')
+					{
+					$('[name="vendorAddress"]').val(valu);
+					}
+					else if(ele=='contactName')
+					{
+					$('[name="vendorContactName"]').val(valu);
+					}
+					else if(ele=='vendorNumber')
+					{
+					$('[name="vendorNumber"]').val(valu);
+					}
+					else if(ele=='vendorEmail')
+					{
+					$('[name="vendorEmail"]').val(valu);
+					}  			
+     			
+     			});       
+            }
+        });
 }
 </script>
 </body>

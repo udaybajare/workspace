@@ -1,6 +1,10 @@
 package com.invmgmt.controllers;
 
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +35,10 @@ public class TestController {
     
     public static void main(String[] args)
     {
-	System.out.println(System.getProperty("java.io.tmpdir"));
+	//Format formatter = new SimpleDateFormat("dd/MM/yyyy");
+	DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	//String today = formatter.format();
+	
+	System.out.println(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
 }

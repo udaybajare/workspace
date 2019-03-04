@@ -89,67 +89,114 @@ public class ExcelWriter {
 	    String[] supplyRate, String[] erectionRate, String[] sypplyAmount, String[] erectionAmount,
 	    String boqNameRevisionStr) throws IOException {
 
+	ArrayList<BOQLineData> processedInventory = new ArrayList<BOQLineData>();
 	Workbook workbook = null;
 	FileInputStream inputStream = null;
-	try {
+	try 
+	{
 	    inputStream = new FileInputStream(
 		    new File("C:\\Users\\Uday\\Desktop\\Projects\\Humdule\\BOQ_Template.xls"));
 	    workbook = WorkbookFactory.create(inputStream);
-	} catch (EncryptedDocumentException | InvalidFormatException e) {
+	} 
+	catch (EncryptedDocumentException | InvalidFormatException e) 
+	{
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
 
 	Sheet sheet = workbook.getSheetAt(0);
 
+	//Sort the list
+
 	int index = 0;
 	int nextRow = 9;
+	int i = 1;
 	for (BOQLineData inventory : boqLineDataDetails) {
-	    Cell cellToUpdate = sheet.getRow(nextRow).getCell(1);
-	    cellToUpdate.setCellValue(inventory.getStdLine());
+	    
+	    int presentIndex = processedInventory.indexOf(inventory);
+	    
+	    System.out.println("presentIndex is : "+presentIndex);
+	    
+	    if(presentIndex != -1)
+	    {
+		int row = presentIndex*7 + 9 + i ;
+		
+		    Cell cellToUpdate0 = sheet.getRow(row).getCell(2);
+		    cellToUpdate0.setCellValue(size[index]);
 
-	    Cell cellToUpdate0 = sheet.getRow(nextRow).getCell(2);
-	    cellToUpdate0.setCellValue(size[index]);
+		    Cell cellToUpdate5 = sheet.getRow(row).getCell(3);
+		    cellToUpdate5.setCellValue(quantity[index]);
 
-	    Cell cellToUpdate5 = sheet.getRow(nextRow).getCell(3);
-	    cellToUpdate5.setCellValue(quantity[index]);
+		    Cell cellToUpdate6 = sheet.getRow(row).getCell(4);
 
-	    Cell cellToUpdate6 = sheet.getRow(nextRow).getCell(4);
+		    if (supplyRate.length > 0)
+			cellToUpdate6.setCellValue(supplyRate[index]);
 
-	    if (supplyRate.length > 0)
-		cellToUpdate6.setCellValue(supplyRate[index]);
+		    Cell cellToUpdate8 = sheet.getRow(row).getCell(5);
 
-	    Cell cellToUpdate8 = sheet.getRow(nextRow).getCell(5);
+		    if (erectionRate.length > 0)
+			cellToUpdate8.setCellValue(erectionRate[index]);
 
-	    if (erectionRate.length > 0)
-		cellToUpdate8.setCellValue(erectionRate[index]);
+		    Cell cellToUpdate9 = sheet.getRow(row).getCell(6);
 
-	    Cell cellToUpdate9 = sheet.getRow(nextRow).getCell(6);
+		    if (sypplyAmount.length > 0)
+			cellToUpdate9.setCellValue(sypplyAmount[index]);
 
-	    if (sypplyAmount.length > 0)
-		cellToUpdate9.setCellValue(sypplyAmount[index]);
+		    Cell cellToUpdate10 = sheet.getRow(row).getCell(7);
 
-	    Cell cellToUpdate10 = sheet.getRow(nextRow).getCell(7);
+		    if (erectionAmount.length > 0)
+			cellToUpdate10.setCellValue(erectionAmount[index]);
+		i++;
+	    }
+	    else
+	    {
+		processedInventory.add(inventory);
 
-	    if (erectionAmount.length > 0)
-		cellToUpdate10.setCellValue(erectionAmount[index]);
+		Cell cellToUpdate = sheet.getRow(nextRow).getCell(1);
+		cellToUpdate.setCellValue(inventory.getStdLine());
 
-	    Cell cellToUpdate3 = sheet.getRow(++nextRow).getCell(1);
-	    cellToUpdate3.setCellValue(inventory.getSpecLine());
+		Cell cellToUpdate0 = sheet.getRow(nextRow).getCell(2);
+		cellToUpdate0.setCellValue(size[index]);
 
-	    Cell cellToUpdate1 = sheet.getRow(++nextRow).getCell(1);
-	    cellToUpdate1.setCellValue(inventory.getGrdLine());
+		Cell cellToUpdate5 = sheet.getRow(nextRow).getCell(3);
+		cellToUpdate5.setCellValue(quantity[index]);
 
-	    Cell cellToUpdate4 = sheet.getRow(++nextRow).getCell(1);
-	    cellToUpdate4.setCellValue(inventory.getEndsLine());
+		Cell cellToUpdate6 = sheet.getRow(nextRow).getCell(4);
 
-	    System.out.println("Line 134 is " + sheet.getRow(++nextRow));
+		if (supplyRate.length > 0)
+		    cellToUpdate6.setCellValue(supplyRate[index]);
 
-	    Cell cellToUpdate7 = sheet.getRow(++nextRow).getCell(1);
-	    cellToUpdate7.setCellValue(inventory.getMakesLine());
+		Cell cellToUpdate8 = sheet.getRow(nextRow).getCell(5);
 
+		if (erectionRate.length > 0)
+		    cellToUpdate8.setCellValue(erectionRate[index]);
+
+		Cell cellToUpdate9 = sheet.getRow(nextRow).getCell(6);
+
+		if (sypplyAmount.length > 0)
+		    cellToUpdate9.setCellValue(sypplyAmount[index]);
+
+		Cell cellToUpdate10 = sheet.getRow(nextRow).getCell(7);
+
+		if (erectionAmount.length > 0)
+		    cellToUpdate10.setCellValue(erectionAmount[index]);
+
+		Cell cellToUpdate3 = sheet.getRow(++nextRow).getCell(1);
+		cellToUpdate3.setCellValue(inventory.getSpecLine());
+
+		Cell cellToUpdate1 = sheet.getRow(++nextRow).getCell(1);
+		cellToUpdate1.setCellValue(inventory.getGrdLine());
+
+		Cell cellToUpdate4 = sheet.getRow(++nextRow).getCell(1);
+		cellToUpdate4.setCellValue(inventory.getEndsLine());
+
+		Cell cellToUpdate7 = sheet.getRow(++nextRow).getCell(1);
+		cellToUpdate7.setCellValue(inventory.getMakesLine());
+	    }
 	    nextRow = nextRow + 2;
 	    index++;
+	
+	    
 	}
 
 	inputStream.close();

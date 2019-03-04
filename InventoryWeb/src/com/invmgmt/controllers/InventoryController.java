@@ -1,5 +1,8 @@
 package com.invmgmt.controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +14,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.invmgmt.dao.ChallanDao;
 import com.invmgmt.dao.InventoryDao;
+import com.invmgmt.dao.ProjectDao;
 import com.invmgmt.entity.ChallanDetails;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
+import com.invmgmt.entity.Project;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.entity.TaxInvoiceGenerator;
 import com.invmgmt.util.InventoryUtils;
@@ -29,6 +34,9 @@ public class InventoryController {
     private ChallanDao challanDao;
 
     @Autowired
+    ProjectDao projectDao;
+    
+    @Autowired
     private InventoryUtils inventoryUtils;
 
     @Autowired
@@ -40,16 +48,27 @@ public class InventoryController {
     protected ModelAndView updateInventoryForm() {
 	ModelAndView view = new ModelAndView(updateViewName);
 
+	ArrayList<Project> projectList = projectDao.getProject("");
+	StringBuffer projectNames = new StringBuffer();
+	
+	for(Project project : projectList)
+	{
+	    projectNames.append(project.getProjectName()+",");
+	}
+	
+	view.addObject("projectNames", projectNames.toString());
 	return view;
     }
 
     @RequestMapping(value = "/updateInventory", method = RequestMethod.POST)
     protected ModelAndView updateInventory(ChallanDetails challanDetails, String[] inventoryName, String[] material,
 	    String[] type, String[] manifMethod, String[] gradeOrClass, String[] ends, String[] size, int[] quantity,
-	    String[] purchaseRate, String[] project, String[] location, TaxInvoiceDetails taxInvoiceDetails) 
+	    String[] purchaseRate, String[] project, String[] location, String invoiceType, TaxInvoiceDetails taxInvoiceDetails) 
     {
-	System.out.println("Invoice Object initialized : "+taxInvoiceDetails.getAddressedto1());
 	ModelAndView view = new ModelAndView("challan");
+	
+	taxInvoiceDetails.setProjectName(project[0]);
+	
 	StringBuffer lineItemData = new StringBuffer();
 
 	List<InventorySpec> inventorySpec = inventoryUtils.createInventorySpecList(inventoryName, material, type,
@@ -90,7 +109,7 @@ public class InventoryController {
 	view.addObject("itemList", lineItemData);
 
 	view.addObject("challanNo", challanDetails.getInventoryRowId());
-	view.addObject("date", "31/12/1987");
+	view.addObject("date", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 	view.addObject("consignee", challanDetails.getConsignee());
 	view.addObject("from", challanDetails.getReceivedFrom());
 	view.addObject("gstNo", challanDetails.getGstNo());
@@ -100,9 +119,12 @@ public class InventoryController {
 	view.addObject("transportMode", challanDetails.getTransportMode());
 	view.addObject("vheicleNumber", challanDetails.getVheicleNumber());
 
-	//Generate the Invoice now
+	//Generate the Invoice if this is not a return i.e. taxInvoiceNo is null.
 	
-	taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
+	if (taxInvoiceDetails.getTaxInvoiceNo() != null && !taxInvoiceDetails.getTaxInvoiceNo().trim().equals(""))
+	{
+	    taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
+	}
 	
 	return view;
     }

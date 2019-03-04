@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -15,9 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.invmgmt.dao.BOQDetailsDao;
 import com.invmgmt.dao.ProjectDao;
 import com.invmgmt.dao.ProjectDetailsDao;
-import com.invmgmt.entity.BOQDetails;
+import com.invmgmt.dao.TaxInvoiceDetailsDao;
+import com.invmgmt.dao.VendorDetailsDao;
 import com.invmgmt.entity.Project;
 import com.invmgmt.entity.ProjectDetails;
+import com.invmgmt.entity.TaxInvoiceDetails;
+import com.invmgmt.entity.VendorDetails;
 import com.invmgmt.excel.ExcelReader;
 
 @Controller
@@ -33,6 +37,12 @@ public class ProjectController {
 	@Autowired
 	private BOQDetailsDao boqDao;
 
+	@Autowired
+	private TaxInvoiceDetailsDao taxInvoiceDao;
+	
+	@Autowired
+	VendorDetailsDao vendorDetailsDao;
+	
 	@Autowired
 	ExcelReader reader;
 
@@ -69,7 +79,8 @@ public class ProjectController {
 		ArrayList<String> quotationNames = new ArrayList<String>();
 		
 		String tableContent = "";
-
+		String taxInvoiceNames = gettaxInvoiceNames(project.getProjectName());
+		
 		ModelAndView mav = new ModelAndView(updateProjectviewName);
 		
 		for(int i = 0; i < boqNames.size(); i++)
@@ -99,7 +110,9 @@ public class ProjectController {
 		{
 		    mav.addObject("quotationNamesList", "");
 		}
-
+		
+		mav.addObject("taxInvoiceNamesList", taxInvoiceNames!=null?taxInvoiceNames:" ");
+		
 		mav.addObject("projectId", project.getProjectId());
 		mav.addObject("projectName", project.getProjectName());
 		mav.addObject("projectDesc", project.getProjectDesc());
@@ -145,6 +158,8 @@ public class ProjectController {
 
 	System.out.println("projectDetails Address is : " + projectDetails.getAddress());
 
+	String taxInvoiceNames = gettaxInvoiceNames(project.getProjectName());
+	
 	ArrayList<String> boqNames = boqDao.getAssociatedBOQNames(String.valueOf(project.getProjectId()));
 	ArrayList<String> quotationNames = new ArrayList<String>();
 
@@ -216,6 +231,7 @@ public class ProjectController {
 	    mav.addObject("quotationNamesList", "");
 	}
 
+	mav.addObject("taxInvoiceNamesList", taxInvoiceNames!=null?taxInvoiceNames:" ");
 	mav.addObject("projectId", project.getProjectId());
 	mav.addObject("projectName", project.getProjectName());
 	mav.addObject("projectDesc", project.getProjectDesc());
@@ -223,6 +239,76 @@ public class ProjectController {
 	return mav;
     }
 
+    @RequestMapping(value = "/getProjectDetails", method = { RequestMethod.POST, RequestMethod.GET })
+    protected @ResponseBody String getProjectDetails(String projectName) throws Exception 
+    {
+	int projectId = projectDao.getProjectId(projectName);	
+	
+	ProjectDetails projectDetails = projectDetailsDao.getProjectDetails(projectId);
+	
+	StringBuffer projectDetailsStr = new StringBuffer(projectDetails.toString());
+	projectDetailsStr.replace(projectDetailsStr.indexOf("]"), projectDetailsStr.indexOf("]")+1, "");
+	projectDetailsStr.replace(0, projectDetailsStr.indexOf("[")+1, "");
+	return projectDetailsStr+"";
+    }
+    
+    @RequestMapping(value="/saveVendor", method=RequestMethod.POST)
+    protected @ResponseBody void saveVendor(VendorDetails vendorDetails)
+    {
+	try
+	{
+	    vendorDetailsDao.saveVendorDetails(vendorDetails);
+	}
+	catch(Exception ex)
+	{
+	    ex.printStackTrace();
+	}
+    }
+    
+    @RequestMapping(value = "/getVendors", method = { RequestMethod.POST, RequestMethod.GET })
+    protected @ResponseBody String getVendorNames()
+    {
+	String vendorsList = "";
+	try
+	{
+	    ArrayList<String> vendors = vendorDetailsDao.getVendorList();
+	    vendorsList = vendors.toString(); 
+	}
+	catch(Exception ex)
+	{
+	    ex.printStackTrace();
+	}
+	return vendorsList;
+    }
+    
+    @RequestMapping(value = "/getVendorDetails", method = { RequestMethod.POST, RequestMethod.GET })
+    protected @ResponseBody String getVendorDetails(String vendorName)
+    {
+	String vendorsList = "";
+	try
+	{
+	    VendorDetails vendors = vendorDetailsDao.getVendorDetails(vendorName);
+	    vendorsList = vendors.toString(); 
+	}
+	catch(Exception ex)
+	{
+	    ex.printStackTrace();
+	}
+	return vendorsList;
+    }
+    
+    private String gettaxInvoiceNames(String projectName)
+    {
+	ArrayList<TaxInvoiceDetails> invoiceNames = taxInvoiceDao.getTaxIvoiceData("projectName", projectName);
+
+	StringBuffer invoiceNamesString =  new StringBuffer();
+	for(TaxInvoiceDetails invoiceDetails :  invoiceNames)
+	{
+	    invoiceNamesString.append(invoiceDetails.getInvoiceNo()+",");
+	}
+	
+	return invoiceNamesString.toString();
+    }
 	private static final String projectRow = "<form action=\"projectDetails\" onClick=\"this.submit();\" method=\"POST\"> <div class=\"row\">" + " <div class=\"col-md-12 \">"
 			+ "   <div class=\"pv-30 ph-20 feature-box bordered shadow text-center object-non-visible\" data-animation-effect=\"fadeInDownSmall\" data-effect-delay=\"100\">"
 			+ "   <h3 name=\"projectName\">projectNameVal</h3>" + "   <div class=\"separator clearfix\"></div>" + " <p name=\"projectDesc\">projectDescVal</p>"
@@ -230,4 +316,5 @@ public class ProjectController {
 			+ "<input type=\"hidden\" name=\"projectId\" value=\"projectIdVal\"/>"
 			+ "<input type=\"hidden\" name=\"projectName\" value=\"projectNameVal\"/>"
 			+ "<input type=\"hidden\" name=\"projectDesc\" value=\"projectDescVal\"/> </form>" ;
+	
 }

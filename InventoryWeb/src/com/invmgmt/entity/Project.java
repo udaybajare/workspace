@@ -23,6 +23,8 @@ public class Project implements Serializable{
 	
 	@Column(name="project_desc")
 	private String projectDesc;
+	
+	private String companyName;
 
 	public Project()
 	{
@@ -52,4 +54,12 @@ public class Project implements Serializable{
 	public void setProjectDesc(String projectDesc) {
 		this.projectDesc = projectDesc;
 	}
+
+	public String getCompanyName() {
+	    return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+	    this.companyName = companyName;
+	}	
 }

@@ -70,4 +70,42 @@ public class BOQLineData {
 		this.makesLine = makesLine;
 	}
 	
+    public boolean isSameEntry(BOQLineData obj1, BOQLineData obj2) {
+	boolean isEqual = false;
+
+	if (obj1.getStdLine().equalsIgnoreCase(obj2.getStdLine())
+		&& obj1.getEndsLine().equalsIgnoreCase(obj2.getEndsLine())
+		&& obj1.getGrdLine().equalsIgnoreCase(obj2.getGrdLine())
+		&& obj1.getMakesLine().equalsIgnoreCase(obj2.getMakesLine())
+		&& obj1.getMaterial().equalsIgnoreCase(obj2.getMaterial())
+		&& obj1.getSpecLine().equalsIgnoreCase(obj2.getSpecLine())) {
+	    isEqual = true;
+	}
+
+	return isEqual;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (obj == this)
+	    return true;
+
+	BOQLineData lineData = (BOQLineData) obj;
+
+	return lineData.getEndsLine().equals(endsLine) && lineData.getGrdLine().equals(grdLine)
+		&& lineData.getMakesLine().equals(makesLine) && lineData.getMaterial().equals(material)
+		&& lineData.getSpecLine().equals(specLine) && lineData.getStdLine().equals(stdLine);
+    }
+    
+    @Override
+    public int hashCode() {
+	int result = 17;
+	result = 31 * result + endsLine.hashCode();
+	result = 31 * result + grdLine.hashCode();
+	result = 31 * result + makesLine.hashCode();
+	result = 31 * result + material.hashCode();
+	result = 31 * result + specLine.hashCode();
+	result = 31 * result + stdLine.hashCode();
+	return result;
+    }
 }

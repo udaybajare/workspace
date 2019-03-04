@@ -60,7 +60,7 @@ public class ProjectDetailsDao {
 		ProjectDetails projectDetails = null;
 
 		try {
-			projectDetails = session.find(ProjectDetails.class, project.getProjectId());
+			projectDetails = session.find(ProjectDetails.class, project);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

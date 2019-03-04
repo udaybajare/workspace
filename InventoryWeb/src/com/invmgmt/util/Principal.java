@@ -3,7 +3,8 @@ package com.invmgmt.util;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.annotation.ManagedBean;
@@ -25,56 +26,78 @@ import com.invmgmt.entity.TaxInvoiceDetails;
 public class Principal {
     // public static final String SRC =
     // "C:/Users/Uday/Desktop/Projects/Humdule/NewFolder/Invoice_No-HI-073.pdf";
-    public static final String DESTINATION = System.getProperty("java.io.tmpdir") + "/TaxInvoice.pdf";
-
+    
+    
+    
     public boolean createInvoice(TaxInvoiceDetails taxInvoiceDetails) {
-	PDDocument document = null;
+	
+	String[] destination = { System.getProperty("java.io.tmpdir") + "/TaxInvoice.pdf",
+		System.getProperty("user.home") + "/Downloads/" + taxInvoiceDetails.getTaxInvoiceNo() + ".pdf" };
 	boolean invoiceGenerated = false;
-	try {
-	    File file = ResourceUtils.getFile("classpath:InvoiceTemplate.pdf");
-
-	    document = PDDocument.load(file);
-	    
-	    int rateInt = Integer.parseInt(taxInvoiceDetails.getRate());
-	    int cGst = rateInt*9/100;
+	
+	String[] templates = {"InvoiceTemplate","InvoiceTemplateDwnld"};
+	
+	for(int i=0;i<templates.length;i++)
+	{
+	    PDDocument document = null;
+		
+		try {
+		    //File file = ResourceUtils.getFile("classpath:InvoiceTemplate.pdf");
+		    File file = ResourceUtils.getFile("classpath:"+templates[i]+".pdf");
+		    document = PDDocument.load(file);
 		    
-	    String[] address = taxInvoiceDetails.getAddressedto1().split(",");
-	    
-	    for(int i=1;i<address.length;i++)
-	    {
-		document = replaceText(document, "addressedto"+i, address[i]);
-	    }
-	    
-	    String amtWrd1 = taxInvoiceDetails.getAmtInwrd1().substring(0, 39);
-	    String amtWrd2 = taxInvoiceDetails.getAmtInwrd1().substring(40);
-	    String total = String.valueOf(rateInt + cGst*2);
-	    String cGstString = String.valueOf(cGst);
-	    	    
-	    document = replaceText(document, "invoiceNo", taxInvoiceDetails.getInvoiceNo());
-	    document = replaceText(document, "date", new Date().toString());
-	    document = replaceText(document, "orderNo", taxInvoiceDetails.getOrderNo());
-	    document = replaceText(document, "orderDate", taxInvoiceDetails.getOrderDate());
-	    document = replaceText(document, "contactName", taxInvoiceDetails.getContactName());
-	    document = replaceText(document, "mobileNo", taxInvoiceDetails.getMobileNo());
-	    document = replaceText(document, "hsnOrSac", taxInvoiceDetails.getHsnOrSac());
-	    document = replaceText(document, "rate", taxInvoiceDetails.getRate());
-	    document = replaceText(document, "amtInwrd1", amtWrd1);
-	    document = replaceText(document, "amtInwrd2", "-" + amtWrd2);
-	    document = replaceText(document, "cGst", cGstString);
-	    document = replaceText(document, "total", total);
-	    document = replaceText(document, "gstNo", taxInvoiceDetails.getGstNo());
+		    int rateInt = Integer.parseInt(taxInvoiceDetails.getRate());
+		    int cGst = rateInt*9/100;
+			    
+		    String[] address = taxInvoiceDetails.getAddressedto1().split(",");
+		    
+		    for(int j=0;j<address.length;j++)
+		    {
+			document = replaceText(document, "addressedto"+j+1, address[j]);
+		    }		    
+		    
+		    int moreEle = 4 - address.length;
+		    
+		    for(int k=4;k<=moreEle;k++)
+		    {
+			document = replaceText(document, "addressedto"+k, " ");
+		    }
+		    
+		    
+		    String amtWrd1 = taxInvoiceDetails.getAmtInwrd1().substring(0, 39);
+		    String amtWrd2 = taxInvoiceDetails.getAmtInwrd1().substring(40);
+		    String total = String.valueOf(rateInt + cGst*2);
+		    String cGstString = String.valueOf(cGst);
+		    	    
+		    document = replaceText(document, "invoiceNo", taxInvoiceDetails.getInvoiceNo());
+		    document = replaceText(document, "date", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		    document = replaceText(document, "orderNo", taxInvoiceDetails.getOrderNo());
+		    document = replaceText(document, "orderDate", taxInvoiceDetails.getOrderDate());
+		    document = replaceText(document, "contactName", taxInvoiceDetails.getContactName());
+		    document = replaceText(document, "mobileNo", taxInvoiceDetails.getMobileNo());
+		    document = replaceText(document, "hsnOrSac", taxInvoiceDetails.getHsnOrSac());
+		    document = replaceText(document, "rate", taxInvoiceDetails.getRate());
+		    document = replaceText(document, "amtInwrd1", amtWrd1);
+		    document = replaceText(document, "amtInwrd2", "-" + amtWrd2);
+		    document = replaceText(document, "cGst", cGstString);
+		    document = replaceText(document, "total", total);
+		    document = replaceText(document, "gstNo", taxInvoiceDetails.getGstNo());
+		    document = replaceText(document, "Mahindra, Kanhe", taxInvoiceDetails.getProjectName());
+		    document = replaceText(document, "Supply", taxInvoiceDetails.getInvoiceType());		    
+		    document.save(destination[i]);
+		    document.close();
 
-	    document.save(DESTINATION);
-	    document.close();
-
-	    invoiceGenerated = true;
-	} catch (Exception ex) {
-	    ex.printStackTrace();
+		    invoiceGenerated = true;
+		} catch (Exception ex) {
+		    ex.printStackTrace();
+		}
+   
 	}
+	
 	return invoiceGenerated;
     }
 
-    private PDDocument replaceText(PDDocument document, String searchString, String replacement) throws IOException {
+    public PDDocument replaceText(PDDocument document, String searchString, String replacement) throws IOException {
 
 	for (PDPage page : document.getPages()) {
 	    System.out.println(page.getContents());

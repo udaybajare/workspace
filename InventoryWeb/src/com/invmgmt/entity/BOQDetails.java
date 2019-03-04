@@ -22,7 +22,9 @@ public class BOQDetails {
 	String ends;
 	String size;
 	String quantity;
+	String baseSupplyRate;
 	String supplyRate;
+	String baseErectionRate;
 	String erectionRate;
 	String supplyAmount;
 	String erectionAmount;
@@ -34,7 +36,8 @@ public class BOQDetails {
 
 	public BOQDetails(String projectId, String boqName, String inventoryName, String material, String type,
 			String manifacturingMethod, String classOrGrade, String ends, String size, String quantity,
-			String supplyRate, String erectionRate, String supplyAmount, String erectionAmount) {
+			String supplyRate, String erectionRate, String supplyAmount, String erectionAmount,
+			String baseErectionRate, String baseSupplyRate) {
 		super();
 		this.projectId = projectId;
 		this.boqName = boqName;
@@ -50,6 +53,8 @@ public class BOQDetails {
 		this.erectionRate = erectionRate;
 		this.supplyAmount = supplyAmount;
 		this.erectionAmount = erectionAmount;
+		this.baseErectionRate = baseErectionRate;
+		this.baseSupplyRate = baseSupplyRate;
 	}
 
 	@Id
@@ -183,5 +188,30 @@ public class BOQDetails {
 
 	public void setErectionAmount(String erectionAmount) {
 		this.erectionAmount = erectionAmount;
-	}		
+	}
+
+	public String getQuotationName() {
+	    return quotationName;
+	}
+
+	public void setQuotationName(String quotationName) {
+	    this.quotationName = quotationName;
+	}
+
+	public String getBaseSupplyRate() {
+	    return baseSupplyRate;
+	}
+
+	public void setBaseSupplyRate(String baseSupplyRate) {
+	    this.baseSupplyRate = baseSupplyRate;
+	}
+
+	public String getBaseErectionRate() {
+	    return baseErectionRate;
+	}
+
+	public void setBaseErectionRate(String baseErectionRate) {
+	    this.baseErectionRate = baseErectionRate;
+	}
+	
 }

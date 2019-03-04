@@ -36,7 +36,7 @@ public class InventoryDao {
     public ArrayList<Inventory> getAvailableInventory() {
 	ArrayList<Inventory> inventoryList = new ArrayList<Inventory>();
 	Session session = sessionFactory.getCurrentSession();
-	String hql = "FROM Inventory";
+	String hql = "FROM Inventory invD where invD.assignedProject = null or invD.assignedProject = ''";
 
 	Query query = session.createQuery(hql);
 	List results = query.getResultList();
@@ -57,13 +57,14 @@ public class InventoryDao {
 
 	Session session = null;
 	String selectHql = "SELECT invD.quantity FROM Inventory invD where " + 
-		"invD.inventorySpec.inventory = '"+ inventorySpec.getInventoryName() + 
+		"invD.inventorySpec.inventoryName = '"+ inventorySpec.getInventoryName() + 
 		"' and  " + "invD.inventorySpec.material = '"+ inventorySpec.getMaterial() + 
 		"' and  " + "invD.inventorySpec.type = '" + inventorySpec.getType()+ 
 		"' and  " + "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + 
 		"' and  " + "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + 
 		"' and  " + "invD.inventorySpec.size = '" + inventorySpec.getSize() +
-		"' and  " + "invD.inventorySpec.ends = '" + inventorySpec.getEnds() + "'";
+		"' and  " + "invD.inventorySpec.ends = '" + inventorySpec.getEnds() + 
+		"' and  " + "invD.assignedProject = null or invD.assignedProject = ''";
 	try {
 	    session = sessionFactory.openSession();
 	    Query query = session.createQuery(selectHql);
@@ -109,13 +110,15 @@ public class InventoryDao {
 	InventorySpec inventorySpec = inventory.getInventorySpec();
 
 	Session session = null;
-	String selectHql = "SELECT invD.purchaseRate FROM Inventory invD where " + "invD.inventorySpec.inventory = '"
-		+ inventorySpec.getInventoryName() + "' and  " + "invD.inventorySpec.material = '"
-		+ inventorySpec.getMaterial() + "' and  " + "invD.inventorySpec.type = '" + inventorySpec.getType()
-		+ "' and  " + "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
+	String selectHql = "SELECT invD.purchaseRate FROM Inventory invD where "
+		+ "invD.inventorySpec.inventoryName = '" + inventorySpec.getInventoryName() + "' and  "
+		+ "invD.inventorySpec.material = '" + inventorySpec.getMaterial() + "' and  "
+		+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
+		+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
 		+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
-		+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
-		+ inventorySpec.getEnds() + "'";
+		+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " 
+		+ "invD.inventorySpec.ends = '"   + inventorySpec.getEnds() + "'  and  "
+		+ "invD.assignedProject = '"   + inventory.getAssignedProject() + "'";
 	try {
 	    session = sessionFactory.openSession();
 	    Query query = session.createQuery(selectHql);

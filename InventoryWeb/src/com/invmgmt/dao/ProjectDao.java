@@ -70,4 +70,24 @@ public class ProjectDao {
 
 		return projectList;
 	}
+	
+	@Transactional
+	public int getProjectId(String projectName) {
+		int projectId = 0;
+		
+		Session session = sessionFactory.getCurrentSession();
+
+		String hql = "SELECT P.projectId FROM Project P WHERE P.projectName = '";
+
+		Query query = session.createQuery(hql + projectName + "'");
+		List results = query.getResultList();
+
+		Iterator itr = results.iterator();
+
+		while (itr.hasNext()) {
+		    projectId = ((int) itr.next());
+		}
+
+		return projectId;
+	}
 }

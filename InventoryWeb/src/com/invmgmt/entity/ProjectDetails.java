@@ -102,4 +102,12 @@ public class ProjectDetails
 		this.address = address;
 	}
 
+	@Override
+	public String toString() {
+	    return "ProjectDetails [projectId=" + projectId + ": poDate=" + poDate + ": poNumber=" + poNumber
+		    + ": contactName=" + contactName + ": contactPhone=" + contactPhone + ": contactEmail="
+		    + contactEmail + ": gstNumber=" + gstNumber + ": address=" + address + "]";
+	}
+
+	
 }

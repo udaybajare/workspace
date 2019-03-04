@@ -792,7 +792,7 @@
             </div>
             <br>
             <form name="generateBOQ" id="generateBOQ" action="generate" method="POST">
-            <input type="hidden" id="projectId" name="projectId" value="${projectId}" />
+            <input type="hidden" name="projectId" value="${projectId}" />
             <div class="row">
               <div class="col-md-12 ">
 				
@@ -809,13 +809,15 @@
                     <th>Ends</th>
                     <th>Size</th>
                     <th>Quantity</th>
+					<th>Base Supply Rate</th>
 					<th>Supply Rate</th>
+                    <th>Base Erection Rate</th>
                     <th>Erection Rate</th>
                     <th>Supply Amount</th>
                     <th>Erection Amount</th>
                   </tr>
                   <tr>
-                    <th>A</th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -825,7 +827,9 @@
                     <th></th>
                     <th></th>
 					<th><input type="text" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
+                    <th></th>
                     <th><input type="text" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                   </tr>
@@ -842,26 +846,34 @@
               </div>
             <br>
             <div class="row">
-              <div class="col-md-4 ">
+              <div class="col-md-3 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                	<h4>BOQ Revisions</h4>
+                	<h4>Quotation Revisions</h4>
 					<select class="form-control" id="revisionSection" onChange="download($('#revisionSection').val());">
     						<option></option>
 					</select>                
                 </div>
               </div>
-              <div class="col-md-4 ">
+              <div class="col-md-3 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                  <h4>Quotation List</h4>
+                  <h4>Inquiry List</h4>
 					<select class="form-control" onChange="download($('#offerRevisionSection').val());" id="offerRevisionSection">
     						<option></option>
 					</select>
                 </div>
               </div>
-              <div class="col-md-4 ">
+              <div class="col-md-3 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                  <h4>TaxInvoice List</h4>
+					<select class="form-control" onChange="downloadInvoice($('#taxInvoiceList').val());" id="taxInvoiceList">
+    						<option></option>
+					</select>
+                </div>
+              </div>
+              <div class="col-md-3 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                 <h4>BOQ Name :</h4> 
-						<input type="text" name="boqName" value=${projectName}></input>
+						<input type="text" name="boqName" value="${projectName}" ></input>
                 </div>
               </div>
             </div>
@@ -883,17 +895,209 @@
 				<div class="col-md-3" id="generateQuot" style="display:none">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label>
-						<input type="hidden" name="boqNameList" value=${boqNameList}>
-						<input type="hidden" name="quotationNamesList" value=${quotationNamesList}>
+						<input type="hidden" name="boqNameList" value="${boqNameList}" >
+						<input type="hidden" name="quotationNamesList" value="${quotationNamesList}" >
 						</label>
 						</br>
-						<button type="button" onClick="createInquiry();" class="btn btn-default">Generate Quotation</button>		
+						<button type="button" onClick="createInquiry();" class="btn btn-default">Generate Inquiry</button>		
 					</div>					
 				</div>
+				</div>
 				</form>
-				<div class="col-md-3" id="importBoq">
+				
+				<!--Create BOQ Start-->
+				<!-- Start Create BOQ -->
+            
+			<form name="generateBOQ" action="generateNew" class="createBOQ" style="display:none;" method="POST">
+			<div class="row">
+			<div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+            
+            			<label>BOQ Name : 
+						<input type="text" name="boqName" value=${projectName} />
+						<input type="hidden" name="boqNameList" value=${boqNameList} >
+						<input type="hidden" name="quotationNamesList" value=${quotationNamesList} >
+						<input type="hidden" name="taxInvoiceNamesList" value=${taxInvoiceNamesList} >
+						</label>
+				</div>
+            </div>
+            </div>
+			<input type="hidden" id="projectId" name="projectId" value="${projectId}"/>
+            <div class="row">
+              <div class="col-md-12 ">
+				<div class="table-responsive">                
+				<table class="table inventoryDetails" style="display:none;">
+                <thead>
+                  <tr>
+                    <th>Inventory</th>
+                    <th>Material</th>
+                    <th>Type</th>
+                    <th>Manifacturing Method</th>
+                    <th>Class/Schedule</th>
+                    <th>Ends</th>
+                    <th>Size</th>
+                    <th>Quantity</th>
+                    <th/>
+                    <th>Supply Rate</th>
+                    <th/>
+                    <th>Erection Rate</th>
+                    <th>Supply Amount</th>
+                    <th>Erection Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="tableContentDetails">
+				</tbody>
+				</table>
+				</div>
+				</div>
+				</div>
+				<div class="form-row">
+	<div class="col-md-4 ">
+	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+	</div>
+	</div>
+	<div class="col-md-4 ">
+	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+	</div>	
+	</div>
+	<div class="col-md-4 ">
+	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+	<label></label>
+	<br>
+		<button type="submit" class="btn btn-default generateBOQButton" style="display:none;">Gnerate Quotation</button>
+		</div>	
+	</div>	
+	</div>
+	
+	</form>
+	</form>
+				
+                <table class="table createBOQ" style="display:none;">
+                <thead>
+                  <tr>
+                    <th>Inventory</th>
+                    <th>Material</th>
+                    <th>Type</th>
+                    <th>Manifacturing Method</th>
+                    <th>Class/Schedule</th>
+                    <th>Ends</th>
+                    <th>Size</th>
+                  </tr>
+                </thead>
+                <tbody id="tableContent">
+                 <tr>
+<td>
+<div class="form-group">
+  <select class="form-control" name="inventoryName" id="inventoryName" onChange="myFunction(this.value,'inventoryName','material');">
+    <option></option>
+    <option value="Pipe">Pipe</option>
+    <option value="Fittings">Fittings</option>
+    <option value="Accesories">Accesories</option>
+  </select>
+</div>
+</td>
+<td>
+<div class="form-group">
+  <select class="form-control" name="material" id="material" onChange="myFunction(this.value,'material','type');">
+    <option></option>
+  </select>
+</div>
+</td>
+<td>
+<div class="form-group">
+  <select class="form-control" name="type" id="type" onChange="myFunction($('#material').val(),'material','classOrGrade');">
+    <option></option>
+  </select>
+</div>
+</td>
+<td>
+<div class="form-group">
+  <select class="form-control" name="manifacturingMethod" id="manifacturingMethod">
+    <option></option>
+    <option>Seamless</option>
+    <option>ERW</option>
+    <option>Centrifuge</option>
+  </select>
+</div>
+</td>
+<td>
+<div class="form-group">
+  <select class="form-control" name="classOrGrade" id="classOrGrade">
+    <option></option>
+  </select>
+</div>
+</td>
+<td>
+<div class="form-group">
+  <select class="form-control" name="ends" id="ends">
+    <option></option>
+    <option>Buttweld</option>
+    <option>Socket Weld/Threaded</option>
+    <option>Threaded</option>
+    <option>Plain End</option>
+  </select>
+</div>
+</td>
+<td>
+<div class="form-group">
+  <select class="form-control" name="size" id="size">
+    <option></option>
+    <option>1</option>
+    <option>1.25</option>
+    <option>1.5</option>
+    <option>2</option>
+    <option>2.5</option>
+  </select>
+</div>
+</td>
+</tr>                 
+                </tbody>
+              </table>
+                  
+                </div>
+              
+            <br>
+            <div class="row">
+              <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                </div>
+              </div>
+              <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                </div>
+              </div>
+              <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                </div>
+              </div>
+            </div>
+			<div class="form-row createBOQ" style="display:none;">
+				<div class="col-md-4 ">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+					</div>
+				</div>
+				<div class="col-md-4 ">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+					</div>					
+				</div>
+				<div class="col-md-4 ">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label></label>
+						<br>
+						<button type="button" class="btn btn-default" onClick="appendInventory();">Add Inventory</button>		
+					</div>					
+				</div>
+			</div>
+			</div>				
+					
+            <!-- End Create BOQ -->
+
+				
+				<!--Create BOQ End-->
+				<div class="col-md-3">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<button type="button" class="btn btn-default" onClick="toggleCreateBOQSec();">Create BOQ</button>
 						<br>
 					</div>					
 				</div>							
@@ -986,6 +1190,7 @@ if(fileLocation != "User cancelled the prompt.")
             success : function(data) {
             
                 $('#tableContent').html(data);
+                adjustWidth();
             }
         });
         
@@ -996,6 +1201,19 @@ if(fileLocation != "User cancelled the prompt.")
         generate.style.display = "block";
 }
 }
+function adjustWidth() 
+{
+	console.log('Inside adjustWidth');
+var inputArray = $('input');
+var i;
+for(i=0;i<inputArray.length;i++)
+{
+	$('input')[i].css("width", parseFloat(inputArray[i].value.length)*2 + "ch");
+	console.log($('input')[i].css);
+}
+
+}
+
 </script>
 <script>
 function myFunction(value, tagName, nextTagName) {
@@ -1023,14 +1241,18 @@ function updateSupplyRate(thisObj)
 var rate = [];
 var quantity = [];
 
-$("input[name='supplyRate']").each(function() {
-    console.log($(this).val());
-    console.log(parseFloat($(this).val()) + parseFloat($("[name='supplyPrsnt']").val()*$(this).val()/100));
+$("input[name='baseSupplyRate']").each(function() {
+    
     var sRate = parseFloat($(this).val()) + parseFloat($("[name='supplyPrsnt']").val()*$(this).val()/100);
-    $(this).val(sRate);
     rate.push(sRate);
 });
 
+var int = 0;
+$("input[name='supplyRate']").each(function() {
+		$(this).val(rate[int]);
+		int++;
+	});
+	
 $("input[name='quantity']").each(function() {
 	quantity.push($(this).val());
 });
@@ -1053,14 +1275,16 @@ function updateErectionRate(thisObj)
 var rate = [];
 var quantity = [];
 
-$("input[name='erectionRate']").each(function() {
-    console.log($(this).val());
-    console.log(parseFloat($(this).val()) + parseFloat($("[name='erectionPrsnt']").val()*$(this).val()/100));
-    
+$("input[name='baseErectionRate']").each(function() {
     var eRate = parseFloat($(this).val()) + parseFloat($("[name='erectionPrsnt']").val()*$(this).val()/100);
-    $(this).val(eRate);
     rate.push(eRate);
 });
+
+var int = 0;
+$("input[name='erectionRate']").each(function() {
+		$(this).val(rate[int]);
+		int++;
+	});
 
 $("input[name='quantity']").each(function() {
 	quantity.push($(this).val());
@@ -1135,6 +1359,36 @@ $(document).ready(function(){
      
    })();
 });
+
+$(document).ready(function(){
+   // we define and invoke a function
+   (function(){
+          
+     var inputArray = $("input[name='taxInvoiceNamesList']")[0].value.split(",");
+     
+     var names = [];
+		$.each(inputArray, function(i, el){
+    		if($.inArray(el, names) === -1) 
+    		{
+    		names.push(el);
+    		}
+		});
+
+     var dummy = "<option value=\"taxInvoiceName\"><h5>taxInvoiceName</h5></option>";
+     
+    $.each(names,function(i){
+   			
+   			var dummy1 = dummy.replace("taxInvoiceName",names[i]);
+   			
+   			var tags = dummy1.replace("taxInvoiceName",names[i]);
+   			
+   			$('#taxInvoiceList').append(tags);
+   			
+		});
+     
+   })();
+});
+
 </script>
 
 <script>
@@ -1155,9 +1409,9 @@ function download(name)
             url : 'downloadBoq',
             success : function(data)
             {            
-            	console.log(data);
             	$('#tableContent').html(data);
-		    	console.log('Download Successful..!!');
+
+         		adjustWidthDn();
             }
                          
         });
@@ -1171,6 +1425,24 @@ function download(name)
 
 		var generateBOQ = document.getElementById("generate");
         generateBOQ.style.display = "block";
+
+}
+function adjustWidthDn() 
+{
+	console.log('Inside adjustWidth');
+var inputArray = $('input');
+var i;
+for(i=0;i<inputArray.length;i++)
+{
+	var inputlength = inputArray[i].value.length;
+	
+	if(inputlength<5)
+		inputArray[i].style.width = "10ch";
+	else if(inputlength==7)
+		inputArray[i].style.width = "12ch";
+	else
+		inputArray[i].style.width = "15ch";
+}
 
 }
 </script>
@@ -1205,7 +1477,9 @@ function createInquiry()
 	var ends                = [];
 	var size                = [];
 	var quantity            = [];
+	var baseSupplyRate      = [];
 	var supplyRate          = [];
+	var baseErectionRate    = [];
 	var erectionRate        = [];
 	var supplyAmount        = [];
 	var erectionAmount      = [];
@@ -1218,11 +1492,17 @@ function createInquiry()
 	
 	if(selectedElements[k] != undefined)
 	{
-		var start = 3 + 12*parseFloat(selectedElements[k]) + n+k;
+		var start = 3 + 14*parseFloat(selectedElements[k]) + n + k ;
 				
 				
-				inventoryName[k] 	  = $('#generateBOQ input')[start++].value;
-							      
+
+				baseSupplyRate[k]     = $('#generateBOQ input')[start++].value;
+				supplyRate[k]         = $('#generateBOQ input')[start++].value;
+				baseErectionRate[k]   = $('#generateBOQ input')[start++].value;
+				erectionRate[k]       = $('#generateBOQ input')[start++].value;
+				supplyAmount[k]       = $('#generateBOQ input')[start++].value;
+				erectionAmount[k]     = $('#generateBOQ input')[start++].value;
+				inventoryName[k] 	  = $('#generateBOQ input')[start++].value;							      
 				material[k]      	  = $('#generateBOQ input')[start++].value;     
 				type[k]               = $('#generateBOQ input')[start++].value;
 				manifacturingMethod[k]= $('#generateBOQ input')[start++].value;
@@ -1230,10 +1510,6 @@ function createInquiry()
 				ends[k]               = $('#generateBOQ input')[start++].value;
 				size[k]               = $('#generateBOQ input')[start++].value;
 				quantity[k]           = $('#generateBOQ input')[start++].value;
-				supplyRate[k]         = $('#generateBOQ input')[start++].value;
-				erectionRate[k]       = $('#generateBOQ input')[start++].value;
-				supplyAmount[k]       = $('#generateBOQ input')[start++].value;
-				erectionAmount[k]     = $('#generateBOQ input')[start++].value;
 	}	
 	}
 	
@@ -1263,7 +1539,7 @@ function createInquiry()
 		var formData = $(this).serializeArray();
 		
 		formData.push({name: 'projectId', value: $('#generateBOQ input')[0].value});
-		formData.push({name: 'boqName', value: $('#generateBOQ input')[$('#generateBOQ input').length - 3].value});
+		formData.push({name: 'boqName', value: $('#generateBOQ input')[$('#generateBOQ input').length - 4].value});
 		
 		
 		var inventoryName_string = cleanArray(inventoryName);
@@ -1282,10 +1558,16 @@ function createInquiry()
 		formData.push({name: 'size', value: size_string});
 		var quantity_string = cleanArray(quantity);
 		formData.push({name: 'quantity', value: quantity_string});
+		
+		var baseSupplyRate_string = cleanArray(baseSupplyRate);
+		formData.push({name: 'baseSupplyRate', value: baseSupplyRate_string});
 		var supplyRate_string = cleanArray(supplyRate);
 		formData.push({name: 'supplyRate', value: supplyRate_string});
+		var baseErectionRate_string = cleanArray(baseErectionRate);
+		formData.push({name: 'baseErectionRate', value: baseErectionRate_string});
 		var erectionRate_string = cleanArray(erectionRate);
 		formData.push({name: 'erectionRate', value: erectionRate_string});
+		
 		var supplyAmount_string = cleanArray(supplyAmount);
 		formData.push({name: 'supplyAmount', value: supplyAmount_string});
 		var erectionAmount_string = cleanArray(erectionAmount);
@@ -1342,7 +1624,7 @@ function generatePO()
 				var temp = $('#generateBOQ input')[i];
 				line = $(temp).clone();
 			}
-			else if($('#generateBOQ input')[i].name == "manifMethod")
+			else if($('#generateBOQ input')[i].name == "manifMetod")
 			{
 				var temp = $('#generateBOQ input')[i];
 				line = $(temp).clone();
@@ -1368,6 +1650,59 @@ function generatePO()
 		
 		$('#generateOffer').submit();
 	}
+</script>
+<script>
+    function toggleCreateBOQSec()
+    {
+    	$('.createBOQ').toggle();
+    
+    }    
+</script>
+<script>
+function appendInventory() 
+{
+
+$('.generateBOQButton').css('display','block');
+
+var inventoryName = $('#inventoryName').children("option:selected").val();
+var material = $('#material').children("option:selected").val();
+var type = $('#type').children("option:selected").val();
+var manifacturingMethod = $('#manifacturingMethod').children("option:selected").val();
+var classOrGrade = $('#classOrGrade').children("option:selected").val();
+var ends = $('#ends').children("option:selected").val();
+var size = $('#size').val();
+
+console.log(type);
+	
+	var	template = "<tr>" 
+	+ "    <td> <input type='hidden' name='inventoryName' value='"+inventoryName+"'></input>"+inventoryName+"</td>"
+	+ "    <td>  <input type='hidden' name='material' value='"+material+"'></input>"+material+"</td>"
+	+ "    <td> <input type='hidden' name='type' value='"+type+"'></input>"+type+"</td>"
+	+ "    <td> <input type='hidden' name='manifMetod' value='"+manifacturingMethod+"'></input>"+manifacturingMethod+"</td>"
+	+ "    <td> <input type='hidden' name='classOrGrade' value='"+classOrGrade+"'></input>"+classOrGrade+"</td>"
+	+ "    <td> <input type='hidden' name='ends' value='"+ends+"'></input>"+ends+"</td>"
+	+ "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
+	+ "	   <td><input type='text' name='quantity' value=''></input></td>"
+	+ "	   <td><input type='text' name='baseSupplyRate' value=''></input></td>"
+	+ "	   <td><input type='text' name='supplyRate' value=''></input></td>"
+	+ "	   <td><input type='text' name='baseErectionRate' value=''></input></td>"
+	+ "	   <td><input type='text' name='erectionRate' value=''></input></td>"
+	+ "	   <td><input type='text' name='supplyAmount' value=''></input></td>"
+	+ "	   <td><input type='text' name='erectionAmount' value=''></input></td>";
+	
+	console.log(template);
+            	$('.inventoryDetails').css("display","block");          	
+                $('#tableContentDetails').append(template);
+}
+
+</script>
+
+<script>
+
+function downloadInvoice( invoiceName )
+{
+	window.location.assign("http://localhost:8080/InventoryWeb/showInvoice?invoiceName="+invoiceName);
+}
 </script>
 
 </body>

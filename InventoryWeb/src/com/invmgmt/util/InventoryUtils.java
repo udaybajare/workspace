@@ -39,4 +39,9 @@ public class InventoryUtils {
 	
 	return inventorySpecList;
     }
+    
+    public static void main(String[] args) {
+	String home = System.getProperty("user.home");
+	System.out.println(home);
+    }
 }

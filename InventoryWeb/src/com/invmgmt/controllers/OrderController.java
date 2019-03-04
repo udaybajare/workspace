@@ -1,16 +1,19 @@
 package com.invmgmt.controllers;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.invmgmt.dao.TaxInvoiceDetailsDao;
+import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.util.InventoryUtils;
 
 @Controller
@@ -20,6 +23,9 @@ public class OrderController {
     
     @Autowired
     InventoryUtils inventoryUtils;
+    
+    @Autowired
+    TaxInvoiceDetailsDao invoiceDao;
     
     @RequestMapping(value = "/generateOrderForm", method = RequestMethod.POST)
     public ModelAndView generateOfferFrom(String[] inventoryName, String[] material, String[] type, String[] manifMethod,
@@ -76,6 +82,17 @@ public class OrderController {
 	return mav;
     }
     
+    @RequestMapping(value = "/showInvoice", method = {RequestMethod.POST,RequestMethod.GET} )
+    private String shiwInvoice(Model model, String invoiceName)
+    {
+	ArrayList<TaxInvoiceDetails> invoiceDetails = invoiceDao.getTaxIvoiceData("taxInvoiceNo", invoiceName);
+	
+	model.addAttribute("taxInvoiceDetails", invoiceDetails.get(0));
+	
+	return "taxInvoiceView";
+    }
+    
+    
     private String getInventoryDetailsRow(String sr_no, String description, String quantity, String supplyRate) 
     {
 	String template = "<TR>" + "	<TD class=\"tr8 td38\"><P class=\"p16 ft8\">sr_no</P></TD>               "
@@ -95,9 +112,13 @@ public class OrderController {
 	float sgst = amount*9/100;
 	float cgst = amount*9/100;
 
-	String stringToReturn = template.replace("sr_no", sr_no).replace("Description", description)
-		.replace("quantity", quantity).replace("supplyRate", supplyRate.substring(0,supplyRate.indexOf("."))).replace("cgst", get2DecimalVal(cgst))
-		.replace("sgst", get2DecimalVal(sgst)).replace("amount", get2DecimalVal(amount));
+	String stringToReturn = template.replace("sr_no", sr_no)
+		.replace("Description", description)
+		.replace("quantity", quantity)
+		.replace("supplyRate", supplyRate.contains(".")?supplyRate.substring(0,supplyRate.indexOf(".")):supplyRate)
+		.replace("cgst", get2DecimalVal(cgst))
+		.replace("sgst", get2DecimalVal(sgst))
+		.replace("amount", get2DecimalVal(amount));
 
 	return stringToReturn;
     }
@@ -106,7 +127,7 @@ public class OrderController {
     {
 	String twoDecimalVal = String.valueOf(val);
 
-	twoDecimalVal = twoDecimalVal.substring(0, twoDecimalVal.indexOf(".") + 3);
+	//twoDecimalVal = twoDecimalVal.substring(0, twoDecimalVal.indexOf(".") + 3);
 
 	return twoDecimalVal;
     }

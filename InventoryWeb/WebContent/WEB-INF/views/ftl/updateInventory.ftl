@@ -881,11 +881,16 @@
     </div>
     <div class="form-group col-md-3">
       <label>Email</label>
-      <input type="text" class="form-control" name="gstNo">
+      <input type="text" class="form-control" name="emailAddress">
     </div>
     <div class="form-group col-md-3">
-      <label>Invoice No</label>
-      <input type="text" class="form-control" name="invoiceNo">
+      <label>Invoice Type</label>
+      	<select class="form-control" name="invoiceType" id="invoiceType">
+    		<option></option>
+    		<option value="Supply">Supply</option>
+    		<option value="Labour">Labour</option>
+    		<option value="Supply&Labour">Supply&Labour</option>
+  		</select>
     </div>
     <div class="form-group col-md-3">
       <label>Order No</label>
@@ -1060,7 +1065,7 @@
       </section>
       <!-- main-container end -->
 
-
+	<input type="hidden" id="projectNamesList" value="${projectNames}" >
       
 
       <!-- footer start (Add "dark" class to #footer in order to enable dark footer) -->
@@ -1150,8 +1155,6 @@ var manifacturingMethod = $('#manifacturingMethod').children("option:selected").
 var classOrGrade = $('#classOrGrade').children("option:selected").val();
 var ends = $('#ends').children("option:selected").val();
 var size = $('#size').val();
-
-console.log(type);
 	
 	var	template = "<tr>"
 	+ "    <td> <input type='button' value='X' onClick='removeRow($(this));'></td>" 
@@ -1164,20 +1167,147 @@ console.log(type);
 	+ "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
 	+ "	   <td><input type='text' name='quantity' value=''></input></td>"
 	+ "	   <td><input type='text' name='purchaseRate' value=''></input></td>"
-	+ "	   <td><input type='text' name='project' value=''></input></td>"
+	+ "	   <td><select class='form-control' name='project' name='projectName' id='projectNm' onChange='getCompanyDetails($(this));' ><option></option></td>"
 	+ "	   <td><input type='text' name='location' value=''></input></td>";
 
 	
-	console.log(template);
-            	$('.inventoryDetails').css("display","block");          	
-                $('#tableContentDetails').append(template);
+   $('.inventoryDetails').css("display","block");          	
+   $('#tableContentDetails').append(template);
                 
-                $('#updateButton').css("display","block");
+   $('#updateButton').css("display","block");
+                
+   addProjects();       
 }
 
 function removeRow(thisObj)
 {
 	console.log(thisObj.parent().parent().remove());
+}
+</script>
+
+<script>
+function addProjects()
+{
+   // we define and invoke a function
+   (function(){
+          
+     var inputArray = $('#projectNamesList').val().split(",");
+     
+     var names = [];
+		$.each(inputArray, function(i, el){
+    		if($.inArray(el, names) === -1) 
+    		{
+    		names.push(el);
+    		}
+		});
+
+     var dummy = "<option value=\"taxInvoiceName\"><h5>taxInvoiceName</h5></option>";
+     
+    $.each(names,function(i){
+   			
+   			var dummy1 = dummy.replace("taxInvoiceName",names[i]);
+   			
+   			var tags = dummy1.replace("taxInvoiceName",names[i]);
+   			
+   			$('#projectNm').append(tags);
+   			
+		});
+     
+   })();
+}
+
+</script>
+
+<script>
+$ducument.ready(function()
+{
+   // we define and invoke a function
+   (function(){
+          
+     var inputArray = $('#projectNamesList').val().split(",");
+     
+     var names = [];
+		$.each(inputArray, function(i, el){
+    		if($.inArray(el, names) === -1) 
+    		{
+    		names.push(el);
+    		}
+		});
+
+     var dummy = "<option value=\"taxInvoiceName\"><h5>taxInvoiceName</h5></option>";
+     
+    $.each(names,function(i){
+   			
+   			var dummy1 = dummy.replace("taxInvoiceName",names[i]);
+   			
+   			var tags = dummy1.replace("taxInvoiceName",names[i]);
+   			
+   			$('#projectNm').append(tags);
+   			
+		});
+     
+   })();
+}
+
+</script>
+
+
+<script>
+
+function getCompanyDetails(thisObj)
+{
+	var projectName = $('#projectNm').val();
+	
+	 $.ajax({
+			type : 'POST',
+			data :  {'projectName' : projectName},
+            url : 'getProjectDetails',
+            success : function(data) 
+            {
+     			var inputArray = data.split(":");
+     			$.each(inputArray,function(i, el)
+     			{
+     				var pair = el.split('=');
+     				var ele = pair[0].trim();
+     				var valu = pair[1].trim();
+     				
+     				console.log(ele+":"+valu);
+     				
+     				if(ele=='poDate')
+					{
+					$('[name="poDate"]').val(valu);
+					}
+					else if(ele=='poNumber')
+					{
+					$('[name="poNo"]').val(valu);
+					}
+					else if(ele=='contactName')
+					{
+					$('[name="contactName"]').val(valu);
+					}
+					else if(ele=='contactPhone')
+					{
+					$('[name="mobileNo"]').val(valu);
+					}
+					else if(ele=='contactEmail')
+					{
+					$('[name="emailAddress"]').val(valu);
+					}
+					else if(ele=='gstNumber')
+					{
+					$('[name="gstNo"]').val(valu);
+					}
+					else if(ele=='address')
+					{
+					$('[name="Consignee"]').val(valu);
+					$('[name="addressedto1"]').val(valu);
+					}
+
+     			
+     			
+     			});       
+            }
+        });
 }
 </script>
 </body>

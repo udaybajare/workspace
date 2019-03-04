@@ -215,27 +215,32 @@
  
  <div id="textOverlay">
 <form action="createProject" modelAttribute="createProjrctForm" class="textForm" method="POST">
+                
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Project Name</label>
+                  <label>Project Name</label>
                   <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputPassword1">Project Description</label>
+                  <label>Company Name</label>
+                  <input type="text" class="form-control" placeholder="Enter Company Name Here" name="companyName">
+                </div>
+                <div class="form-group">
+                  <label>Project Description</label>
                   <input type="text" class="form-control" placeholder="Type in the description Here" name="projectDesc">
                 </div>                
-                <button type="submit" class="btn btn-default">Create</button>
+                <button type="submit" class="btn btn-default">Create</button> <button type="button" class="btn btn-default" onClick="closeOverlay('textOverlay');" >Cancel</button>
 </form>
 
 </div>
 
- <div id="textOverlaySearch">
+<div id="textOverlaySearch" style="display:none;">
 <form action="searchProject" modelAttribute="createProjrctForm" class="textForm" method="POST">
                 <div class="form-group">
                   <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
-                  <label for="exampleInputPassword1">OR</label>
+                  <label>OR</label>
                   <input type="text" class="form-control" placeholder="Type in the project id here" name="projectDesc">
                 </div>                
-                <button type="submit" class="btn btn-default">Search</button>
+                <button type="submit" class="btn btn-default">Search</button> <button type="button" class="btn btn-default" onClick="closeOverlay('textOverlaySearch');" >Cancel</button>
 </form>
 
 </div>
@@ -390,5 +395,15 @@
 
 
     </script>
+    <script>
+    
+    function closeOverlay(overLayId)
+    {
+    	var idVal = overLayId;
+    	document.getElementById(overLayId).style.display = "none";
+    }
+    
+    </script>
+    
   </body>
 </html>

@@ -781,14 +781,14 @@
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                   <div class="form-group has-feedback">
                     <label>PO Date</label>
-                    <input type="text" name="poDate" class="form-control" >                   
+                    <input type="text" name="poDate" class="form-control" value=" ">                   
                   </div>
                 </div>
               </div>
               <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                   <label>PO Number</label>
-                    <input type="text" name="poNumber" class="form-control" >
+                    <input type="text" name="poNumber" class="form-control" value=" ">
                 </div>
               </div>
               <div class="col-md-4 ">
@@ -815,7 +815,7 @@
               <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                    <label>GST Number</label>
-                    <input type="text" name="gstNumber" class="form-control">
+                    <input type="text" name="gstNumber" class="form-control" value=" ">
                 </div>
               </div>
             </div>
@@ -877,7 +877,9 @@
                     <th>Ends</th>
                     <th>Size</th>
                     <th>Quantity</th>
+					<th>Base Supply Rate</th>
 					<th>Supply Rate</th>
+                    <th>Base Erection Rate</th>
                     <th>Erection Rate</th>
                     <th>Supply Amout</th>
                     <th>Erection Amount</th>
@@ -911,7 +913,7 @@
             <div class="form-row">
 				<div class="col-md-4 " id="offer">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<button type="button" class="btn btn-default" onClick="createInquiry();">Generate Quotation</button>		
+						<button type="button" class="btn btn-default" onClick="createInquiry();">Generate Inquiry</button>		
 					</div>
 				</div>
 				
@@ -922,7 +924,7 @@
 				</div>
 				<div class="col-md-4" id="generate" style="display:none">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<button type="Submit" class="btn btn-default">Generate BOQ</button>		
+						<button type="Submit" class="btn btn-default">Generate Quotation</button>		
 					</div>					
 				</div>							
 			</div>
@@ -959,10 +961,28 @@
                     <th>Ends</th>
                     <th>Size</th>
                     <th>Quantity</th>
+                    <th>Base Supply Rate</th>
                     <th>Supply Rate</th>
+                    <th>Base Erection Rate</th>
                     <th>Erection Rate</th>
                     <th>Supply Amount</th>
                     <th>Erection Amount</th>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th><input type="text" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
+					<th></th>
+                    <th><input type="text" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody id="tableContentDetails">
@@ -984,7 +1004,7 @@
 	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 	<label></label>
 	<br>
-		<button type="submit" class="btn btn-default generateBOQButton" style="display:none;">Gnerate BOQ</button>
+		<button type="submit" class="btn btn-default generateBOQButton" style="display:none;">Generate Quotation</button>
 		</div>	
 	</div>	
 	</div>
@@ -1282,13 +1302,23 @@ function updateSupplyRate(thisObj)
 var rate = [];
 var quantity = [];
 
-$("input[name='supplyRate']").each(function() {
-    console.log($(this).val());
-    console.log(parseFloat($(this).val()) + parseFloat($("[name='supplyPrsnt']").val()*$(this).val()/100));
-    var sRate = parseFloat($(this).val()) + parseFloat($("[name='supplyPrsnt']").val()*$(this).val()/100);
-    $(this).val(sRate);
+console.log("presentage : "+$(thisObj).val());
+
+$("input[name='baseSupplyRate']").each(function() {
+    
+   	var sRate = parseFloat($(this).val()) + parseFloat($(thisObj).val()*$(this).val()/100);
+   
+    console.log('sRate is : '+sRate);
+    
     rate.push(sRate);
 });
+
+var int = 0;
+$("input[name='supplyRate']").each(function() {
+		$(this).val(rate[int]);
+		int++;
+	});
+
 
 $("input[name='quantity']").each(function() {
 	quantity.push($(this).val());
@@ -1312,14 +1342,17 @@ function updateErectionRate(thisObj)
 var rate = [];
 var quantity = [];
 
-$("input[name='erectionRate']").each(function() {
-    console.log($(this).val());
-    console.log(parseFloat($(this).val()) + parseFloat($("[name='erectionPrsnt']").val()*$(this).val()/100));
+$("input[name='baseErectionRate']").each(function() {
     
-    var eRate = parseFloat($(this).val()) + parseFloat($("[name='erectionPrsnt']").val()*$(this).val()/100);
-    $(this).val(eRate);
+    var eRate = parseFloat($(this).val()) + parseFloat($(thisObj).val()*$(this).val()/100);
     rate.push(eRate);
 });
+
+var int = 0;
+$("input[name='erectionRate']").each(function() {
+		$(this).val(rate[int]);
+		int++;
+	});
 
 $("input[name='quantity']").each(function() {
 	quantity.push($(this).val());
@@ -1380,7 +1413,9 @@ console.log(type);
 	+ "    <td> <input type='hidden' name='ends' value='"+ends+"'></input>"+ends+"</td>"
 	+ "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
 	+ "	   <td><input type='text' name='quantity' value=''></input></td>"
+	+ "	   <td><input type='text' name='baseSupplyRate' value=''></input></td>"
 	+ "	   <td><input type='text' name='supplyRate' value=''></input></td>"
+	+ "	   <td><input type='text' name='baseErectionRate' value=''></input></td>"
 	+ "	   <td><input type='text' name='erectionRate' value=''></input></td>"
 	+ "	   <td><input type='text' name='supplyAmount' value=''></input></td>"
 	+ "	   <td><input type='text' name='erectionAmount' value=''></input></td>";
@@ -1521,7 +1556,9 @@ function createInquiry()
 	var ends                = [];
 	var size                = [];
 	var quantity            = [];
+	var baseSupplyRate      = [];
 	var supplyRate          = [];
+	var baseErectionRate    = [];
 	var erectionRate        = [];
 	var supplyAmount        = [];
 	var erectionAmount      = [];
@@ -1546,7 +1583,9 @@ function createInquiry()
 				ends[k]               = $('#generateBOQ input')[start++].value;
 				size[k]               = $('#generateBOQ input')[start++].value;
 				quantity[k]           = $('#generateBOQ input')[start++].value;
+				baseSupplyRate[k]     = $('#generateBOQ input')[start++].value;
 				supplyRate[k]         = $('#generateBOQ input')[start++].value;
+				baseEerectionRate[k]  = $('#generateBOQ input')[start++].value;
 				erectionRate[k]       = $('#generateBOQ input')[start++].value;
 				supplyAmount[k]       = $('#generateBOQ input')[start++].value;
 				erectionAmount[k]     = $('#generateBOQ input')[start++].value;
@@ -1598,10 +1637,16 @@ function createInquiry()
 		formData.push({name: 'size', value: size_string});
 		var quantity_string = cleanArray(quantity);
 		formData.push({name: 'quantity', value: quantity_string});
+		
+		var baseSupplyRate_string = cleanArray(baseSupplyRate);
+		formData.push({name: 'baseSupplyRate', value: baseSupplyRate_string});
 		var supplyRate_string = cleanArray(supplyRate);
 		formData.push({name: 'supplyRate', value: supplyRate_string});
+		var baseErectionRate_string = cleanArray(baseErectionRate);
+		formData.push({name: 'baseErectionRate', value: baseErectionRate_string});
 		var erectionRate_string = cleanArray(erectionRate);
 		formData.push({name: 'erectionRate', value: erectionRate_string});
+		
 		var supplyAmount_string = cleanArray(supplyAmount);
 		formData.push({name: 'supplyAmount', value: supplyAmount_string});
 		var erectionAmount_string = cleanArray(erectionAmount);

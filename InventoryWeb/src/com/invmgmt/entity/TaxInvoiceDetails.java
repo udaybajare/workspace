@@ -27,6 +27,7 @@ public class TaxInvoiceDetails {
     public String gstNo;
     public String emailAddress;
     public String projectName;
+    public int projectId;
     public String invoiceType;
     
     public TaxInvoiceDetails()
@@ -37,7 +38,7 @@ public class TaxInvoiceDetails {
     public TaxInvoiceDetails(String taxInvoiceNo, String addressedto1, String addressedto2, String addressedto3,
 	    String addressedto4, String invoiceNo, String date, String orderNo, String orderDate, String contactName,
 	    String mobileNo, String hsnOrSac, String rate, String amtInwrd1, String amtInwrd2, String cGst,
-	    String total, String gstNo, String emailAddress, String projectName, String invoiceType) {
+	    String total, String gstNo, String emailAddress, String projectName, int projectId, String invoiceType) {
 	super();
 	this.taxInvoiceNo = taxInvoiceNo;
 	this.addressedto1 = addressedto1;
@@ -59,6 +60,7 @@ public class TaxInvoiceDetails {
 	this.gstNo = gstNo;
 	this.emailAddress = emailAddress;
 	this.projectName = projectName;
+	this.projectId = projectId;
 	this.invoiceType = invoiceType;
     }
     
@@ -182,6 +184,12 @@ public class TaxInvoiceDetails {
     public void setProjectName(String projectName) {
         this.projectName = projectName;
     }
+    public int getProjectId() {
+        return projectId;
+    }
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }    
     public String getInvoiceType() {
         return invoiceType;
     }

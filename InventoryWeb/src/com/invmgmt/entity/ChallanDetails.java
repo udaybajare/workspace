@@ -21,7 +21,7 @@ public class ChallanDetails {
     private String receivedFrom;
     private String consignee;
     private String transportMode;
-    private String lrNumberDate;
+    private String lrNumber;
     private String vheicleNumber;
     private String gstNo;
 
@@ -37,7 +37,7 @@ public class ChallanDetails {
 	this.receivedFrom = receivedFrom;
 	this.consignee = consignee;
 	this.transportMode = transportMode;
-	this.lrNumberDate = lrNumberDate;
+	this.lrNumber = lrNumberDate;
 	this.vheicleNumber = vheicleNumber;
 	this.gstNo = gstNo;
 	this.projectId = projectId;
@@ -108,11 +108,11 @@ public class ChallanDetails {
     }
 
     public String getLrNumberDate() {
-	return lrNumberDate;
+	return lrNumber;
     }
 
     public void setLrNumberDate(String lrNumberDate) {
-	this.lrNumberDate = lrNumberDate;
+	this.lrNumber = lrNumberDate;
     }
 
     public String getVheicleNumber() {

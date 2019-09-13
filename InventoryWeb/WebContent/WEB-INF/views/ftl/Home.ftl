@@ -238,7 +238,9 @@
                 <div class="form-group">
                   <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
                   <label>OR</label>
-                  <input type="text" class="form-control" placeholder="Type in the project id here" name="projectDesc">
+                  <input type="text" class="form-control" placeholder="Type in the project description here" name="projectDesc">
+                  <label>OR</label>
+                  <input type="text" class="form-control" placeholder="Type in the company name here" name="companyName">
                 </div>                
                 <button type="submit" class="btn btn-default">Search</button> <button type="button" class="btn btn-default" onClick="closeOverlay('textOverlaySearch');" >Cancel</button>
 </form>

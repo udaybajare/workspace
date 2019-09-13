@@ -849,6 +849,58 @@
             
             <form name="generateBOQ" action="generate" method="POST" class="importBOQ" id="generateBOQ" style="display:none;">
             <div class="row">
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>D Name</label>
+						<input type="text" name="dName" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Utility  &ensp;</label>
+						<input type="text" name="utility" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Pressure</label>
+						<input type="text" name="pressure" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Temperature</label>
+						<input type="text" name="temperature" value="" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>D Number</label>
+						<input type="text" name="dNo" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Client &ensp;</label>
+						<input type="text" name="client" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Site &ensp;&ensp;&ensp;</label>
+						<input type="text" name="site" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Project &ensp;</label>
+						<input type="text" name="project" value="" />
+					</div>
+				</div>
+			</div>
+            <div class="row">
             <div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
             
@@ -894,8 +946,11 @@
                     <th></th>
                     <th></th>
                     <th></th>
+                    <th></th>
 					<th><input type="text" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
+                    <th></th>
                     <th><input type="text" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                   </tr>
@@ -919,7 +974,11 @@
 				
 				<div class="col-md-4" id="importBoq">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<button type="button" onClick="captureFileLocation()" class="btn btn-default">Import BOQ/BOM</button>
+						<form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data">
+							<input type="file" name="file" onClick="toggleImportSec();" class="btn btn-default">
+					        <br/>
+					        <button class="btn btn-primary" name="uploadFile">Upload</button>
+						</form>
 					</div>					
 				</div>
 				<div class="col-md-4" id="generate" style="display:none">
@@ -934,6 +993,59 @@
             <!-- Start Create BOQ -->
             
 			<form name="generateBOQ" action="generateNew" class="createBOQ" style="display:none;" method="POST">
+			<div class="row">
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>D Name</label>
+						<input type="text" name="dName" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Utility  &ensp;</label>
+						<input type="text" name="utility" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Pressure</label>
+						<input type="text" name="pressure" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Temperature</label>
+						<input type="text" name="temperature" value="" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>D Number</label>
+						<input type="text" name="dNo" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Client &ensp;</label>
+						<input type="text" name="client" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Site &ensp;&ensp;&ensp;</label>
+						<input type="text" name="site" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Project &ensp;</label>
+						<input type="text" name="project" value="" />
+					</div>
+				</div>
+			</div>
+				
 			<div class="row">
 			<div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
@@ -977,13 +1089,14 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th><input type="text" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
-					<th></th>
+                    <th></th>
+                    <th></th>
+					<th><input type="text" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
+                    <th></th>
                     <th><input type="text" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                  </tr>
+                    <th></th>                  </tr>
                 </thead>
                 <tbody id="tableContentDetails">
 				</tbody>
@@ -1592,26 +1705,6 @@ function createInquiry()
 	}	
 	}
 	
-	
-	var l = 0;
-	var m = 1;
-	for(l=0;l<selectedElements.length;l++)
-	{
-	
-	if(selectedElements[l] != undefined)
-	{
-		var start = 3 + 12*parseFloat(selectedElements[l]) + m+l;				
-				
-				$('#generateBOQ input')[3 + 12*parseFloat(selectedElements[l]) + l].checked = false;
-				$('#generateBOQ input')[3 + 12*parseFloat(selectedElements[l]) + l].disabled = true;
-				for(var a=0;a <12;a++)
-				{
-					$('#generateBOQ input')[start++].disabled = true;
-				}				
-				
-	}	
-	}
-	
 	var lastArray = 3 + 12*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
 	
 	
@@ -1678,5 +1771,66 @@ function cleanArray(actual)
 }
 </script>
 
+<script type="text/javascript">
+$(function() {
+  $('button[name=uploadFile]').click(function(e) {
+    e.preventDefault();
+    //Disable submit button
+    $(this).prop('disabled',true);
+    
+    var form = document.forms[name="fileUploadForm"];
+    
+    var formData = new FormData(form);
+    	
+    console.log(formData);	
+    // Ajax call for file uploaling
+    var ajaxReq = $.ajax({
+      url : 'import',
+      type : 'POST',
+      data : formData,
+      cache : false,
+      contentType : false,
+      processData : false,
+      
+      success: function(data) {
+				$('#tableContent').html(data);
+                adjustWidth();
+                
+                var imp = document.getElementById("importBoq");
+        //imp.style.display = "none";
+        
+        var generate = document.getElementById("generate");
+        generate.style.display = "block";
+        
+        var generateInq = document.getElementById("generateQuot");
+        generateInq.style.display = "block";
+			}
+    });
+  
+    // Called on success of file upload
+    ajaxReq.done(function(msg) {
+      $('input[type=file]').val('');
+      $('button[type=submit]').prop('disabled',false);
+    });
+    
+    // Called on failure of file upload
+    ajaxReq.fail(function(jqXHR) {
+      $('button[type=submit]').prop('disabled',false);
+    });
+  });
+});
+</script>
+<script>
+    function toggleImportSec()
+    {
+    console.log('calling toggleImportSec');
+    	$('.importBOQ1').toggle();
+    	$('.importBOQ2').toggle();
+    	
+    	/*var imp = document.getElementsByClassName("importBOQ");
+        imp.style.display = "block";
+    */
+    }    
+</script>
 </body>
 </html>

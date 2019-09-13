@@ -764,7 +764,7 @@
         <!-- ================ -->
         <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
           <div class="container">
-            <form action="updateInventory" method="POST">
+            <form action="updateInventory" id="updateInventory" method="POST">
             <div class="row">
               <div class="col-md-12 ">
 				<div class="table-responsive">                
@@ -822,10 +822,6 @@
       <input type="text" class="form-control" name="transportMode">
     </div>
     <div class="form-group col-md-3">
-      <label>LR Number & Date</label>
-      <input type="text" class="form-control" name="lrNumberDate">
-    </div>
-    <div class="form-group col-md-3">
       <label>Vheicle Number</label>
       <input type="text" class="form-control" name="vheicleNumber">
     </div>
@@ -838,6 +834,33 @@
  <!-- Challan Section Ends--> 
  <br>
  <br>
+ <!-- Bill Section Ends -->
+    <div class="collapse" id="challan">
+   <label><h3></h3></label>
+   <div class="form-row">
+    <div class="form-group col-md-4">
+      <label>Bill Number</label>
+      <input type="text" class="form-control" name="billNumber">
+    </div>
+    <div class="form-group col-md-4">
+      <label>Bill Date</label>
+      <input type="text" class="form-control" name="billDate">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label>PO Number</label>
+      <input type="text" class="form-control" name="poNumber">
+    </div>
+    <div class="form-group col-md-3">
+      <label>GST Number</label>
+      <input type="text" class="form-control" name="gstNumber">
+    </div>
+  </div>
+  </div>
+  <!-- Bill Section Ends -->
+  <br>
+  <br>
   <!-- Invoice Section Starts--> 
  
    <div class="collapse" id="invoice"> 
@@ -899,21 +922,115 @@
  </div>
  </div>
  <!-- Invoice Section Ends-->
-            
+
+   <!-- Accessories Section Starts--> 
+ 
+ <div class="collapse" id="accessory"> 
+  <label><h3></h3></label>	
+	<div class="form-row">	
+	<div class="form-group col-md-4">
+      <label>Accessory Name</label>
+      <input type="text" class="form-control" name="accessoryName">
+    </div>
+    <div class="form-group col-md-4">
+      <label>Description 1</label>
+      <input type="text" class="form-control" name="desc1">
+    </div>
+	<div class="form-group col-md-4">
+      <label>Description 2</label>
+      <input type="text" class="form-control" name="desc2">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label>Description 3</label>
+      <input type="text" class="form-control" name="desc3">
+    </div>
+    <div class="form-group col-md-3">
+      <label>Description 4</label>
+      <input type="text" class="form-control" name="desc4">
+    </div>
+    <div class="form-group col-md-3">
+      <label>Description 5</label>
+      <input type="text" class="form-control" name="desc5">
+    </div>
+ </div>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <label>Assigned Project</label>
+      <select class='form-control' name='project' name='assignedProject' id='projectNm'><option></option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label>Location</label>
+      <input type="text" class="form-control" name="location">
+    </div>
+    <div class="form-group col-md-3">
+    <br>
+    <button type="button" onClick="saveAccessory();" class="btn btn-default">Save Accessory</button>
+    </div>
+ </div>
+ </div>
+ <!-- Accessories Section Ends-->
+    <div class="form-row">
+    	<div class="col-md-3 ">
+			<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+				<br>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" id="generateChallan" value="">
+					<label class="form-check-label">
+							Generate Challan
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 ">
+			<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+				<br>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" id="generateInvoice" value="">
+					<label class="form-check-label">
+							Generate Invoice
+					</label>
+				</div>
+			</div>
+		</div>
+    </div>       
+		                                    
+	<input type="hidden" name="generateChallan" id="gC1" value=""/>
+	<input type="hidden" name="generateInvoice" id="gI1" value=""/>
+	                                    
 	<div class="form-row">
-	<div class="col-md-4 ">
+	<div class="col-md-3 ">
 	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 	<br>
 	<button type="button" data-toggle="collapse" data-target="#challan" class="btn btn-default">Challan Details</button>
 	</div>
 	</div>
-	<div class="col-md-4 ">
+	<div class="col-md-3 ">
+	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+	<br>
+	<button type="button" data-toggle="collapse" data-target="#bill" class="btn btn-default">Bill Details</button>
+	</div>
+	</div>
+	<div class="col-md-3 ">
 	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 	<br>
 	<button type="button" data-toggle="collapse" data-target="#invoice" class="btn btn-default">Invoice Details</button>
 	</div>	
 	</div>
-	<div class="col-md-4 ">
+	
+	<div class="col-md-3 ">
+	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+	<br>
+	<button type="button" data-toggle="collapse" data-target="#accessory" class="btn btn-default">Add Accessory</button>
+	</div>	
+	</div>
+	
+	</div>
+	
+	<div class="form-row">
+	<div class="col-md-3 ">
 	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 	<br>
 		<button type="submit" id="updateButton" class="btn btn-default" Style="display:none;">Update Inventory</button>
@@ -1023,23 +1140,23 @@
               </div>
             </div>
 			<div class="form-row">
-				<div class="col-md-4 ">
+				<div class="col-md-3 ">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 					</div>
 				</div>
-				<div class="col-md-4 ">
+				<div class="col-md-3 ">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<br>
 						<button type="button" class="btn btn-default" onClick="showInventory();">Show Available Inventory</button>
 					</div>					
 				</div>
-				<div class="col-md-4 ">
+				<div class="col-md-3 ">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label></label>
 						<br>
 						<button type="button" class="btn btn-default" onClick="appendInventory();">Add Inventory</button>		
 					</div>					
-				</div>							
+				</div>											
 			</div>
 					
 			<div class="form-row">
@@ -1065,6 +1182,9 @@
       </section>
       <!-- main-container end -->
 
+	<form action="saveAccessory" id="saveAccessory" method="POST" style="display:none;">
+	
+	</form>
 	<input type="hidden" id="projectNamesList" value="${projectNames}" >
       
 
@@ -1168,7 +1288,8 @@ var size = $('#size').val();
 	+ "	   <td><input type='text' name='quantity' value=''></input></td>"
 	+ "	   <td><input type='text' name='purchaseRate' value=''></input></td>"
 	+ "	   <td><select class='form-control' name='project' name='projectName' id='projectNm' onChange='getCompanyDetails($(this));' ><option></option></td>"
-	+ "	   <td><input type='text' name='location' value=''></input></td>";
+	+ "	   <td><input type='text' name='location' value=''></input></td>"
+	+ "	   <td><select class='form-control' name='status' value='$(this).selected' id='status'><option value='available'>Available</option><option value='assigned'>Assigned</option><option value='delivered'>Delivered</option></td>";
 
 	
    $('.inventoryDetails').css("display","block");          	
@@ -1183,6 +1304,55 @@ function removeRow(thisObj)
 {
 	console.log(thisObj.parent().parent().remove());
 }
+</script>
+
+<script>
+
+function saveAccessory()
+	{				
+				var line;
+		
+				var temp = $('[name="accessoryName"]');
+				line = $(temp).clone();
+				$('#saveAccessory').append($(line));
+				
+				var temp = $('[name="desc1"]');
+				line = $(temp).clone();
+				$('#saveAccessory').append($(line));
+				var temp = $('[name="desc2"]');
+				line = $(temp).clone();
+				$('#saveAccessory').append($(line));
+				var temp = $('[name="desc3"]');
+				line = $(temp).clone();
+				$('#saveAccessory').append($(line));
+				var temp = $('[name="desc4"]');
+				line = $(temp).clone();
+				$('#saveAccessory').append($(line));
+				var temp = $('[name="desc5"]');
+				line = $(temp).clone();
+				$('#saveAccessory').append($(line));
+				
+				var selectedProj = $('#projectNm').val();
+				
+				$('<input>').attr({
+    				type: 'hidden',
+    				name: 'assignedProject',
+    				value: selectedProj
+				}).appendTo('#saveAccessory');
+				
+				
+				$('#saveAccessory').append($(line));
+				var temp = $('[name="location"]');
+				line = $(temp).clone();
+				$('#saveAccessory').append($(line));
+							
+
+		var temp = $('#projectId');
+		line = $(temp).clone();
+		$('#saveAccessory').append($(line));
+		
+		$('#saveAccessory').submit();
+	}
 </script>
 
 <script>
@@ -1219,7 +1389,7 @@ function addProjects()
 </script>
 
 <script>
-$ducument.ready(function()
+$(document).ready(function()
 {
    // we define and invoke a function
    (function(){
@@ -1247,7 +1417,7 @@ $ducument.ready(function()
 		});
      
    })();
-}
+});
 
 </script>
 
@@ -1297,18 +1467,41 @@ function getCompanyDetails(thisObj)
 					{
 					$('[name="gstNo"]').val(valu);
 					}
+					else if(ele=='finalRate')
+					{
+					$('[name="rate"]').val(valu);
+					}
 					else if(ele=='address')
 					{
 					$('[name="Consignee"]').val(valu);
 					$('[name="addressedto1"]').val(valu);
 					}
-
-     			
      			
      			});       
             }
         });
 }
 </script>
+<script>
+	
+	$('#updateInventory').submit(function(event) {
+
+ 	event.preventDefault(); //this will prevent the default submit
+
+  	if($('#generateChallan:checked').val() != undefined)
+	{
+		$('#gC1').val('1');
+	}
+	
+	if($('#generateInvoice:checked').val() != undefined)
+	{
+		$('#gI1').val('1');
+	}
+
+ 		$(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+	})
+	
+</script>
+
 </body>
 </html>

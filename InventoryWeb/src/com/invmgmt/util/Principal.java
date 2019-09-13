@@ -24,10 +24,6 @@ import com.invmgmt.entity.TaxInvoiceDetails;
 
 @ManagedBean
 public class Principal {
-    // public static final String SRC =
-    // "C:/Users/Uday/Desktop/Projects/Humdule/NewFolder/Invoice_No-HI-073.pdf";
-    
-    
     
     public boolean createInvoice(TaxInvoiceDetails taxInvoiceDetails) {
 	
@@ -46,8 +42,8 @@ public class Principal {
 		    File file = ResourceUtils.getFile("classpath:"+templates[i]+".pdf");
 		    document = PDDocument.load(file);
 		    
-		    int rateInt = Integer.parseInt(taxInvoiceDetails.getRate());
-		    int cGst = rateInt*9/100;
+		    double rateInt = Double.parseDouble(taxInvoiceDetails.getRate());
+		    double cGst = rateInt*9/100;
 			    
 		    String[] address = taxInvoiceDetails.getAddressedto1().split(",");
 		    
@@ -69,7 +65,7 @@ public class Principal {
 		    String total = String.valueOf(rateInt + cGst*2);
 		    String cGstString = String.valueOf(cGst);
 		    	    
-		    document = replaceText(document, "invoiceNo", taxInvoiceDetails.getInvoiceNo());
+		    document = replaceText(document, "invoiceNo", taxInvoiceDetails.getTaxInvoiceNo());
 		    document = replaceText(document, "date", LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 		    document = replaceText(document, "orderNo", taxInvoiceDetails.getOrderNo());
 		    document = replaceText(document, "orderDate", taxInvoiceDetails.getOrderDate());
@@ -97,6 +93,52 @@ public class Principal {
 	return invoiceGenerated;
     }
 
+    public boolean generatePO()
+    {
+	boolean poGenerated = true;
+	
+	String[] destination = {"C:/temp/POTemplate.pdf"};
+	
+	
+	    PDDocument document = null;
+		
+		try {
+		    File file = ResourceUtils.getFile("classpath:POTemplate.pdf");
+		    document = PDDocument.load(file);
+		    document = replaceText(document, "Mr.	PRATIK", "contactName");	    
+		    document = replaceText(document, "CEASEFIRE	INDUSTRIES	PVT.	LTD.", "vendorName");
+		    document = replaceText(document, "Mr.	PRATIK", "contactName");
+		    document = replaceText(document, "8448390493", "contactNo");
+		    document = replaceText(document, "pratikn.pun@ceasefire.in", "contactEmail");
+		    document = replaceText(document, "HI/CSE/291218045", "poNumber");
+		    document = replaceText(document, "29-Dec-18", "poDate");
+		    document = replaceText(document, "CEASEFIRE	QUICK	RESPONSE	SYSTEM	PRE", "description1");
+		    document = replaceText(document, "ENGINEERED	(HFC236fa)	2KG	KIT ", "description2");
+		    document = replaceText(document, "84241000", "hsnNu");
+		    document = replaceText(document, "NOS", "unit");
+		    document = replaceText(document, "58,725", "unitPrice");
+		    document = replaceText(document, "10,571" ,"cGst");
+		    document = replaceText(document, "1,17,450", "amount");
+	            document = replaceText(document, "21,141", "taxTotal"); 
+		    document = replaceText(document, "1,38,591", "total");
+		    document = replaceText(document, "1,38,591", "total");
+		    document = replaceText(document, "ONE	LAKH	THIRTY	EIGHT	THOUSAND	FIVE	HUNDRED	", "amountInword1");
+		    document = replaceText(document, "AND	NINETY	ONE	ONLY", "amountInword2");
+		    document = replaceText(document, "Please	send	two	copies	of	your	invoice	with	enclosed	Purchase	Order	Cop", "term1");
+		    document = replaceText(document, "Enter	this	order	in	accordance	with	the	prices,	terms,	delivery	method,	and	specifications	listed	above.", "term2");
+		    document = replaceText(document, "Warranty	12	months", "term3");
+		    document = replaceText(document, "Material	Test	Certificate	Required	along	with	invoice", "term4");
+		    document = replaceText(document, "Taxes	as	applicable", "term5");
+		    		    
+		    document.save(destination[0]);
+		    document.close();
+
+		} catch (Exception ex) {
+		    poGenerated = false;
+		    ex.printStackTrace();
+		}	
+		return poGenerated;
+    }
     public PDDocument replaceText(PDDocument document, String searchString, String replacement) throws IOException {
 
 	for (PDPage page : document.getPages()) {

@@ -27,6 +27,9 @@ public class Mappings {
 	@Column
 	private String classOrGrade;
 	
+	@Column
+	private String catogory;
+	
 	public int getId() {
 		return Id;
 	}
@@ -59,5 +62,10 @@ public class Mappings {
 	public void setClassOrGrade(String classOrGrade) {
 		this.classOrGrade = classOrGrade;
 	}
-		
+	public String getCatogory() {
+		return catogory;
+	}
+	public void setCatogory(String catogory) {
+		this.catogory = catogory;
+	}	
 }

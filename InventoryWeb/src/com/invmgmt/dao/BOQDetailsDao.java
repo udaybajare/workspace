@@ -53,14 +53,14 @@ public class BOQDetailsDao {
 	}
 
 	@Transactional
-	public ArrayList<String> getAssociatedBOQNames(String attrValue) {
+	public ArrayList<String> getAssociatedBOQNames(String projectId) {
 
 		ArrayList<String> boqDetailsNameList = new ArrayList<String>();
 
 		Session session = sessionFactory.getCurrentSession();
 		String selectHql = "Select distinct boqD.boqName FROM BOQDetails boqD where boqD.projectId='";
 
-		Query query = session.createQuery(selectHql + attrValue + "'");
+		Query query = session.createQuery(selectHql + projectId + "'");
 		List results = query.getResultList();
 
 		Iterator itr = results.iterator();
@@ -90,5 +90,5 @@ public class BOQDetailsDao {
 		}
 
 		return boqNames;
-	}
+	}	
 }

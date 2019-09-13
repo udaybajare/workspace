@@ -52,14 +52,14 @@ public class ProjectDao {
 	}
 	
 	@Transactional
-	public ArrayList<Project> getProject(String projectName) {
+	public ArrayList<Project> getProject(String tag, String value) {
 		ArrayList<Project> projectList = new ArrayList<Project>();
 		
 		Session session = sessionFactory.getCurrentSession();
 
-		String hql = "FROM Project P WHERE P.projectName LIKE '%";
+		String hql = "FROM Project P WHERE P."+tag+" LIKE '%";
 
-		Query query = session.createQuery(hql + projectName + "%'");
+		Query query = session.createQuery(hql + value + "%'");
 		List results = query.getResultList();
 
 		Iterator itr = results.iterator();

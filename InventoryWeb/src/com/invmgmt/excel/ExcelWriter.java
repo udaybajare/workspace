@@ -1,6 +1,6 @@
 package com.invmgmt.excel;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,8 +14,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.util.ResourceUtils;
 
 import com.invmgmt.entity.BOQDetails;
+import com.invmgmt.entity.BOQHeader;
 import com.invmgmt.entity.BOQLineData;
 
 @ManagedBean
@@ -27,7 +29,8 @@ public class ExcelWriter {
 	FileInputStream inputStream = null;
 	try {
 	    inputStream = new FileInputStream(
-		    new File("C:\\Users\\Uday\\Desktop\\Projects\\Humdule\\BOQ_Template.xls"));
+		    ResourceUtils.getFile("classpath:BOQ_Template.xls"));
+	    
 	    workbook = WorkbookFactory.create(inputStream);
 	} catch (EncryptedDocumentException | InvalidFormatException e) {
 	    // TODO Auto-generated catch block
@@ -85,9 +88,9 @@ public class ExcelWriter {
 	workbook.close();
     }
 
-    public void writeExcel(ArrayList<BOQLineData> boqLineDataDetails, String[] size, String[] quantity,
+    public byte[] writeExcel(ArrayList<BOQLineData> boqLineDataDetails, String[] size, String[] quantity,
 	    String[] supplyRate, String[] erectionRate, String[] sypplyAmount, String[] erectionAmount,
-	    String boqNameRevisionStr) throws IOException {
+	    String boqNameRevisionStr, BOQHeader header) throws IOException {
 
 	ArrayList<BOQLineData> processedInventory = new ArrayList<BOQLineData>();
 	Workbook workbook = null;
@@ -95,7 +98,7 @@ public class ExcelWriter {
 	try 
 	{
 	    inputStream = new FileInputStream(
-		    new File("C:\\Users\\Uday\\Desktop\\Projects\\Humdule\\BOQ_Template.xls"));
+		    ResourceUtils.getFile("classpath:BOQ_Template.xls"));
 	    workbook = WorkbookFactory.create(inputStream);
 	} 
 	catch (EncryptedDocumentException | InvalidFormatException e) 
@@ -108,6 +111,21 @@ public class ExcelWriter {
 
 	//Sort the list
 
+	if(header != null)
+	{
+	    	sheet.getRow(2).getCell(1).setCellValue(header.getClient());
+		sheet.getRow(2).getCell(3).setCellValue(header.getUtility());
+		
+		sheet.getRow(3).getCell(1).setCellValue(header.getSite());
+		sheet.getRow(3).getCell(3).setCellValue(header.getPressure());
+		
+		sheet.getRow(4).getCell(1).setCellValue(header.getProject());
+		sheet.getRow(4).getCell(3).setCellValue(header.getTemp());
+		
+		sheet.getRow(5).getCell(1).setCellValue(header.getdName());
+		sheet.getRow(5).getCell(3).setCellValue(header.getdNo());    
+	}
+		
 	int index = 0;
 	int nextRow = 9;
 	int i = 1;
@@ -201,12 +219,23 @@ public class ExcelWriter {
 
 	inputStream.close();
 
-	FileOutputStream fileOut = new FileOutputStream(
+	/*FileOutputStream fileOut = new FileOutputStream(
 		"C:\\Users\\Uday\\Desktop\\Projects\\Humdule\\BOQs\\"+boqNameRevisionStr+".xls");
 	workbook.write(fileOut);
+	
 	fileOut.close();
-
+*/
+	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	try {
+	    workbook.write(bos);
+	} finally {
+	    bos.close();
+	}
+	byte[] bytes = bos.toByteArray();
+	
 	// Closing the workbook
 	workbook.close();
+	
+	return bytes;
     }
 }

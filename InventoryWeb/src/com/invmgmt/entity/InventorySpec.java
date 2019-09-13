@@ -131,5 +131,11 @@ public class InventorySpec implements Serializable {
 		this.ends = ends;
 	}
 
+	@Override
+	public String toString() {
+	    return "InventorySpec [inventoryName=" + inventoryName + "; material=" + material + "; type=" + type
+		    + "; manifMethod=" + manifMethod + "; gradeOrClass=" + gradeOrClass + "; size=" + size + "; ends="
+		    + ends + "]";
+	}
 	
 }

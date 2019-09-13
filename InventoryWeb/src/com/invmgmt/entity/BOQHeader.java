@@ -3,8 +3,10 @@ package com.invmgmt.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.invmgmt.interfaces.BOQData;
+
 @Entity
-public class BOQHeader {
+public class BOQHeader implements BOQData {
 
     @Id
     private String boqName;

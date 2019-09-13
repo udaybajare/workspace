@@ -729,12 +729,13 @@
   <div class="form-row">
     <div class="form-group col-md-4">
       <label>Vendor Name</label>
-      <select class='form-control' name='vendorName' id='vendorName' onChange='getVendorDetails($(this));'>
+      <select class='form-control' name='vendorName' id='vendorName' onChange='getCompanyDetails($(this));'>
       <option></option>
+      </select>
     </div>
     <div class="form-group col-md-4">
-      <label>Vendor Location</label>
-      <input type="text" class="form-control" name="location">
+    	  <label>Vendor Location</label>
+    	  <input type="text" class="form-control" name="location">
     </div>
     <div class="form-group col-md-4">
       <label>Add Vendor</label>
@@ -767,6 +768,8 @@
     <input type="text" class="form-control" id="inputAddress" name="term">
   </div>
   <input type="hidden" name="lineItem" value='${lineItemData}' >
+  <input type="hidden" name="lineItemSimple" value='${lineItemDataSimple}' >
+  <input type="hidden" name="projectId" value='${projectId}' >
   <button type="submit" class="btn btn-primary">Generate PO</button>
 </form>
               <!-- Forms -->
@@ -901,7 +904,10 @@ $.ajax({
             url : 'saveVendor',
             success : function(data) 
             {
-     			document.getElementById("textOverlaySearch").style.display = "none";       
+				var venderName = $('[name="vendorNameStr"]').val();
+     			$("[name='vendorName']").append("<option value=" + venderName + ">" + venderName + "</option>");
+     			
+     			document.getElementById("textOverlaySearch").style.display = "none";     			       
             }
         });
 
@@ -926,24 +932,22 @@ function getCompanyDetails(thisObj)
      				var pair = el.split('=');
      				var ele = pair[0].trim();
      				var valu = pair[1].trim();
-     				
-     				console.log(ele+":"+valu);
-     				
+     				     				
      				if(ele=='vendorAddress')
 					{
-					$('[name="vendorAddress"]').val(valu);
+					$('[name="location"]').val(valu);
 					}
 					else if(ele=='contactName')
 					{
-					$('[name="vendorContactName"]').val(valu);
+					$('[name="contactName"]').val(valu);
 					}
-					else if(ele=='vendorNumber')
+					else if(ele=='contactNumber')
 					{
-					$('[name="vendorNumber"]').val(valu);
+					$('[name="contactNumber"]').val(valu);
 					}
-					else if(ele=='vendorEmail')
+					else if(ele=='contactEmail')
 					{
-					$('[name="vendorEmail"]').val(valu);
+					$('[name="contactEmail"]').val(valu);
 					}  			
      			
      			});       
@@ -951,5 +955,32 @@ function getCompanyDetails(thisObj)
         });
 }
 </script>
+<script>
+$(document).ready(function() {
+	 $.ajax({
+			type : 'POST',
+            url  : 'getVendors',
+            success : function(data) 
+            	{
+            		var vList = data.split(',');
+            	
+            		for(var i = 0; i < vList.length ; i++)
+            		{
+        	    		var venderName = vList[i];
+        	    		
+        	    		if(venderName != "")
+		     			$("[name='vendorName']").append("<option value=" + venderName + ">" + venderName + "</option>");
+            		
+            		}
+            	}
+            
+            });
+
+
+});
+
+
+</script>
+
 </body>
 </html>

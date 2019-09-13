@@ -60,7 +60,7 @@ public class EmailUtils {
 	    helper.setText(text);
 
 	    FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
-	    helper.addAttachment(taxInvoiceName+"pdf", file);
+	    helper.addAttachment(taxInvoiceName+".pdf", file);
 
 	} catch (MessagingException e) {
 	    // TODO Auto-generated catch block

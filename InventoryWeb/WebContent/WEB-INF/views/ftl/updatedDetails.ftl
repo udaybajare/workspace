@@ -21,6 +21,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+	<link href="css/custTooltip.css" rel="stylesheet">
 
     <!-- Font Awesome CSS -->
     <link href="fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -47,7 +48,7 @@
   </head>
 
   <!-- body classes:  -->
-  <!-- "boxed": boxed layout mode e.g. <body class="boxed"> -->
+  <!-- "boxed": boxed layout mode e.g. <body "projDetails"boxed"> -->
   <!-- "pattern-1 ... pattern-9": background patterns for boxed layout mode e.g. <body class="boxed pattern-1"> -->
   <!-- "transparent-header": makes the header transparent and pulls the banner to top -->
   <!-- "gradient-background-header": applies gradient background to header -->
@@ -791,7 +792,148 @@
             </aside>			  
             </div>
             <br>
-            <form name="generateBOQ" id="generateBOQ" action="generate" method="POST">
+          
+<table id="payDetailsSection" class="table table-striped" style="display:none;">
+    <thead>
+      <tr>
+        <th>Payment ID</th>
+        <th>TaxInvoice Number</th>
+        <th>Amount</th>
+        <th>Date Received</th>
+      </tr>
+    </thead>
+    ${paymentDetails}
+    <tbody>
+	</tbody>
+</table>
+                
+            <!-- Update project Section START -->
+            
+          <form action="updateProject" class="projDetails" style="display:none;" method="POST">
+            <div class="row" >
+              <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                  <div class="form-group has-feedback">
+                    <label>PO Date</label>
+                    <input type="text" name="poDate" class="form-control" value=" ">                   
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                  <label>PO Number</label>
+                    <input type="text" name="poNumber" class="form-control" value=" ">
+                </div>
+              </div>
+              <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                 <label>Contact Person Name</label>
+                    <input type="text" name="contactName" class="form-control" >
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                  <label>Contact Email</label>
+                    <input type="text" name="contactEmail" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                   <label>Contact Phone</label>
+                    <input type="text" name="contactPhone" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                   <label>GST Number</label>
+                    <input type="text" name="gstNumber" class="form-control" value=" ">
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+            <div class="col-md-4 ">
+                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                   <label>Address</label>
+                    <input type="text" name="address" class="form-control">
+                </div>
+            </div>
+            
+            <div class="col-md-4 ">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						
+					</div>					
+			</div>
+			<div class="col-md-4 ">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<br>
+						<button type="submit" class="btn btn-default">Update Project</button>
+					</div>					
+			</div>
+            <input type="hidden" name="projectId" value="${projectId}"/>
+            </div>
+            </form>
+            
+            <!-- Update project Section END -->
+            
+            <form name="generateBOQ" id="generateBOQ" action="generate" method="POST" >
+             <div class="row importBOQ2" style="display:none;">
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>D Name</label>
+						<input type="text" name="dName" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Utility  &ensp;</label>
+						<input type="text" name="utility" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Pressure</label>
+						<input type="text" name="pressure" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Temperature</label>
+						<input type="text" name="temperature" value="" />
+					</div>
+				</div>
+			</div>
+			<div class="row importBOQ2" style="display:none;">
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>D Number</label>
+						<input type="text" name="dNo" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Client &ensp;</label>
+						<input type="text" name="client" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Site &ensp;&ensp;&ensp;</label>
+						<input type="text" name="site" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Project &ensp;</label>
+						<input type="text" name="project" value="" />
+					</div>
+				</div>
+			</div>
             <input type="hidden" name="projectId" value="${projectId}" />
             <div class="row">
               <div class="col-md-12 ">
@@ -808,6 +950,7 @@
                     <th>Grade/Class</th>
                     <th>Ends</th>
                     <th>Size</th>
+                    <th>Available Quantity</th>
                     <th>Quantity</th>
 					<th>Base Supply Rate</th>
 					<th>Supply Rate</th>
@@ -817,6 +960,7 @@
                     <th>Erection Amount</th>
                   </tr>
                   <tr>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -872,8 +1016,10 @@
               </div>
               <div class="col-md-3 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                <h4>BOQ Name :</h4> 
-						<input type="text" name="boqName" value="${projectName}" ></input>
+                <h4>PO List:</h4> 
+					<select class="form-control" onChange="downloadPO($('#poList').val());" id="poList">
+    						<option></option>
+					</select>
                 </div>
               </div>
             </div>
@@ -889,9 +1035,15 @@
 				<div class="col-md-3" id="generate" style="display:none">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 					<br>
-					<button type="Submit" class="btn btn-default">Generate BOQ</button>
+					<button type="Submit" class="btn btn-default">Generate Quotation</button>
 					</div>
 				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                		<h4>BOQ Name :</h4> 
+						<input type="text" name="boqName" value="${projectName}" ></input>
+                	</div>
+              	</div>
 				<div class="col-md-3" id="generateQuot" style="display:none">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label>
@@ -909,6 +1061,58 @@
 				<!-- Start Create BOQ -->
             
 			<form name="generateBOQ" action="generateNew" class="createBOQ" style="display:none;" method="POST">
+			 <div class="row">
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>D Name</label>
+						<input type="text" name="dName" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Utility  &ensp;</label>
+						<input type="text" name="utility" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Pressure</label>
+						<input type="text" name="pressure" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Temperature</label>
+						<input type="text" name="temperature" value="" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>D Number</label>
+						<input type="text" name="dNo" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Client &ensp;</label>
+						<input type="text" name="client" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Site &ensp;&ensp;&ensp;</label>
+						<input type="text" name="site" value="" />
+					</div>
+				</div>
+				<div class="col-md-3 ">
+                	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label>Project &ensp;</label>
+						<input type="text" name="project" value="" />
+					</div>
+				</div>
+			</div>
 			<div class="row">
 			<div class="col-md-4 ">
                 <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
@@ -918,6 +1122,7 @@
 						<input type="hidden" name="boqNameList" value=${boqNameList} >
 						<input type="hidden" name="quotationNamesList" value=${quotationNamesList} >
 						<input type="hidden" name="taxInvoiceNamesList" value=${taxInvoiceNamesList} >
+						<input type="hidden" name="poNamesList" value=${poNamesList} >
 						</label>
 				</div>
             </div>
@@ -936,6 +1141,7 @@
                     <th>Class/Schedule</th>
                     <th>Ends</th>
                     <th>Size</th>
+                    <th>Available Quantity</th>
                     <th>Quantity</th>
                     <th/>
                     <th>Supply Rate</th>
@@ -991,8 +1197,16 @@
   <select class="form-control" name="inventoryName" id="inventoryName" onChange="myFunction(this.value,'inventoryName','material');">
     <option></option>
     <option value="Pipe">Pipe</option>
-    <option value="Fittings">Fittings</option>
-    <option value="Accesories">Accesories</option>
+    <option value="Flange">Flange</option>
+	<option value="Elbow">Elbow</option>
+	<option value="Socket">Socket</option>
+	<option value="Barrel Nipple">Barrel Nipple</option>
+	<option value="Coupling">Coupling</option>
+	<option value="Reducer">Reducer</option>
+	<option value="Tee">Tee</option>
+	<option value="Gasket">Gasket</option>
+	<option value="Nut Bolt">Nut Bolt</option>
+	<option value="Support">Support</option>
   </select>
 </div>
 </td>
@@ -1094,27 +1308,74 @@
 
 				
 				<!--Create BOQ End-->
-				<div class="col-md-3">
-					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-						<label></label>
-						<button type="button" class="btn btn-default" onClick="toggleCreateBOQSec();">Create BOQ</button>
-						<br>
-					</div>					
-				</div>							
-			</div>
-			
 			<div class="form-row">
 				<div class="col-md-3">
 					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 						<label></label>
 						<br>
-						<button type="button" onClick="captureFileLocation()" class="btn btn-default">Import BOQ/BOM</button>    					
+						<button type="button" class="btn btn-default" onClick="toggleCreateBOQSec();">Create BOQ</button>
+						<br>
+					</div>					
+				</div>							
+				<div class="col-md-3">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<br>
+						<form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data">
+							<input type="file" name="file" onClick="toggleImportSec();" class="btn btn-default">
+					        <br/>
+					        <button class="btn btn-primary" name="uploadFile">Upload</button>
+						</form>    					
 					</div>					
 				</div>
+				<div class="col-md-3 ">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<br>
+						<button type="button" class="btn btn-default" onClick="toggleProjSec();">Project Details Section</button>
+					</div>					
+				</div>
+				<div class="col-md-3 ">
+					<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+						<label></label>
+						<br>
+						<button type="button" class="btn btn-default" onClick="togglePayDetailsSec();">Received Payment Details</button>
+					</div>					
+				</div>
+            </div>
 			</div>
 			
             <br>
           </div>
+          
+          <div class="row">
+              <div class="col-md-12 ">
+				<div class="table-responsive">                
+				
+				<table class="table assignedInventorySec" style="display:none;">
+                <thead>
+                  <tr>
+                  	<th></th>
+                    <th>Inventory</th>
+                    <th>Material</th>
+                    <th>Type</th>
+                    <th>Manifacturing Method</th>
+                    <th>Class/Schedule</th>
+                    <th>Ends</th>
+                    <th>Size</th>
+                    <th>Quantity</th>
+                    <th>Purchase Rate</th>
+                    <th>Project</th>
+                    <th>Location</th>
+                  </tr>
+                </thead>
+                <tbody id="tableContentDetails">
+                ${assignedInventory}
+				</tbody>
+				</table>
+			</div>	
+		</div>
+	</div>
         </section>
        
       </section>
@@ -1168,6 +1429,7 @@
     <script src="js/template.js"></script>
     <!-- Custom Scripts -->
     <script src="js/custom.js"></script>
+    
 
 
 <script>
@@ -1199,19 +1461,22 @@ if(fileLocation != "User cancelled the prompt.")
         
         var generate = document.getElementById("generate");
         generate.style.display = "block";
+        
+        var generateInq = document.getElementById("generateQuot");
+        generateInq.style.display = "block";
 }
 }
 function adjustWidth() 
 {
 	console.log('Inside adjustWidth');
-var inputArray = $('input');
+/* var inputArray = $('input');
 var i;
 for(i=0;i<inputArray.length;i++)
 {
-	$('input')[i].css("width", parseFloat(inputArray[i].value.length)*2 + "ch");
+	$('input')[i].style.width = parseFloat(inputArray[i].value.length)*2 + "ch";
 	console.log($('input')[i].css);
 }
-
+*/
 }
 
 </script>
@@ -1244,6 +1509,11 @@ var quantity = [];
 $("input[name='baseSupplyRate']").each(function() {
     
     var sRate = parseFloat($(this).val()) + parseFloat($("[name='supplyPrsnt']").val()*$(this).val()/100);
+    
+    if(sRate % 5 != 0)
+	{
+		sRate + 5 - sRate % 5
+    }
     rate.push(sRate);
 });
 
@@ -1277,6 +1547,12 @@ var quantity = [];
 
 $("input[name='baseErectionRate']").each(function() {
     var eRate = parseFloat($(this).val()) + parseFloat($("[name='erectionPrsnt']").val()*$(this).val()/100);
+    
+    if(eRate % 5 != 0)
+	{
+		eRate + 5 - eRate % 5
+    }
+    
     rate.push(eRate);
 });
 
@@ -1312,7 +1588,7 @@ $(document).ready(function(){
 		$.each(inputArray, function(i, el){
     		if($.inArray(el, names) === -1) 
     		{
-    		names.push(el);
+    			names.push(el);
     		}
 		});
 
@@ -1329,6 +1605,14 @@ $(document).ready(function(){
 		});
      
    })();
+   
+   console.log("Table content is : "+$('#tableContentDetails tr').length);
+   if($('#tableContentDetails tr').length > 0)
+   {
+   	$('.assignedInventorySec').toggle();
+   }
+   
+   
 });
 
 $(document).ready(function(){
@@ -1389,6 +1673,34 @@ $(document).ready(function(){
    })();
 });
 
+$(document).ready(function(){
+   // we define and invoke a function
+   (function(){
+          
+     var inputArray = $("input[name='poNamesList']")[0].value.split(",");
+     
+     var names = [];
+		$.each(inputArray, function(i, el){
+    		if($.inArray(el, names) === -1) 
+    		{
+    		names.push(el);
+    		}
+		});
+
+     var dummy = "<option value=\"poName\"><h5>poName</h5></option>";
+     
+    $.each(names,function(i){
+   			
+   			var dummy1 = dummy.replace("poName",names[i]);
+   			
+   			var tags = dummy1.replace("poName",names[i]);
+   			
+   			$('#poList').append(tags);
+   			
+		});
+     
+   })();
+});
 </script>
 
 <script>
@@ -1492,10 +1804,10 @@ function createInquiry()
 	
 	if(selectedElements[k] != undefined)
 	{
-		var start = 3 + 14*parseFloat(selectedElements[k]) + n + k ;
+		var start = 12 + 15*parseFloat(selectedElements[k]);
+			console.log('Start is : '+start);
 				
-				
-
+				quantity[k]           = $('#generateBOQ input')[start++].value;
 				baseSupplyRate[k]     = $('#generateBOQ input')[start++].value;
 				supplyRate[k]         = $('#generateBOQ input')[start++].value;
 				baseErectionRate[k]   = $('#generateBOQ input')[start++].value;
@@ -1509,37 +1821,16 @@ function createInquiry()
 				classOrGrade[k]       = $('#generateBOQ input')[start++].value;
 				ends[k]               = $('#generateBOQ input')[start++].value;
 				size[k]               = $('#generateBOQ input')[start++].value;
-				quantity[k]           = $('#generateBOQ input')[start++].value;
-	}	
+		}	
 	}
 	
-	
-	var l = 0;
-	var m = 1;
-	for(l=0;l<selectedElements.length;l++)
-	{
-	
-	if(selectedElements[l] != undefined)
-	{
-		var start = 3 + 12*parseFloat(selectedElements[l]) + m+l;				
-				
-				$('#generateBOQ input')[3 + 12*parseFloat(selectedElements[l]) + l].checked = false;
-				$('#generateBOQ input')[3 + 12*parseFloat(selectedElements[l]) + l].disabled = true;
-				for(var a=0;a <12;a++)
-				{
-					$('#generateBOQ input')[start++].disabled = true;
-				}				
-				
-	}	
-	}
-	
-	var lastArray = 3 + 12*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
+	var lastArray = 3 + 20*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
 	
 	
 		var formData = $(this).serializeArray();
 		
-		formData.push({name: 'projectId', value: $('#generateBOQ input')[0].value});
-		formData.push({name: 'boqName', value: $('#generateBOQ input')[$('#generateBOQ input').length - 4].value});
+		formData.push({name: 'projectId', value: $('#projectId').val()});
+		formData.push({name: 'boqName', value: $('[name="boqName"]').val()});
 		
 		
 		var inventoryName_string = cleanArray(inventoryName);
@@ -1647,6 +1938,10 @@ function generatePO()
 							
 			$('#generateOffer').append($(line));		
 		}
+
+		var temp = $('#projectId');
+		line = $(temp).clone();
+		$('#generateOffer').append($(line));
 		
 		$('#generateOffer').submit();
 	}
@@ -1656,6 +1951,18 @@ function generatePO()
     {
     	$('.createBOQ').toggle();
     
+    }    
+</script>
+<script>
+    function toggleImportSec()
+    {
+    console.log('calling toggleImportSec');
+    	$('.importBOQ1').toggle();
+    	$('.importBOQ2').toggle();
+    	
+    	/*var imp = document.getElementsByClassName("importBOQ");
+        imp.style.display = "block";
+    */
     }    
 </script>
 <script>
@@ -1703,7 +2010,82 @@ function downloadInvoice( invoiceName )
 {
 	window.location.assign("http://localhost:8080/InventoryWeb/showInvoice?invoiceName="+invoiceName);
 }
-</script>
 
+function downloadPO( poName )
+{
+	window.location.assign("http://localhost:8080/InventoryWeb/showPO?poName="+poName);
+}
+</script>
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
+<script>
+    function toggleProjSec()
+    {
+    	$('.projDetails').toggle();
+    }
+    
+    function togglePayDetailsSec()
+    {
+    	$('#payDetailsSection').toggle();
+    }
+</script>
+<script>
+function updateVal(){
+	var promptVal = prompt("Enter %","0%");
+	console.log(promptVal);
+}
+</script>
+  <script type="text/javascript">
+$(function() {
+  $('button[name=uploadFile]').click(function(e) {
+    e.preventDefault();
+    //Disable submit button
+    $(this).prop('disabled',true);
+    
+    var form = document.forms[name="fileUploadForm"];
+    
+    var formData = new FormData(form);
+    	
+    console.log(formData);	
+    // Ajax call for file uploaling
+    var ajaxReq = $.ajax({
+      url : 'import',
+      type : 'POST',
+      data : formData,
+      cache : false,
+      contentType : false,
+      processData : false,
+      
+      success: function(data) {
+				$('#tableContent').html(data);
+                adjustWidth();
+                
+                var imp = document.getElementById("importBoq");
+        //imp.style.display = "none";
+        
+        var generate = document.getElementById("generate");
+        generate.style.display = "block";
+        
+        var generateInq = document.getElementById("generateQuot");
+        generateInq.style.display = "block";
+			}
+    });
+  
+    // Called on success of file upload
+    ajaxReq.done(function(msg) {
+      $('input[type=file]').val('');
+      $('button[type=submit]').prop('disabled',false);
+    });
+    
+    // Called on failure of file upload
+    ajaxReq.fail(function(jqXHR) {
+      $('button[type=submit]').prop('disabled',false);
+    });
+  });
+});
+</script>
 </body>
 </html>

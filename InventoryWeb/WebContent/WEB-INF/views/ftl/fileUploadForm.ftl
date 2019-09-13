@@ -51,17 +51,16 @@
   <!-- "page-loader-1 ... page-loader-6": add a page loader to the page (more info @components-page-loaders.html) -->
   <body class=" ">
   
-  <form method="POST" action="uploadFile" enctype="multipart/form-data">
-    <table>
-        <tr>
-            <td><label path="file">Select a file to upload</label></td>
-            <td><input type="file" name="file" /></td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Submit" /></td>
-        </tr>
-    </table>
-  </form>
+  
+<form action="fileUpload" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label>Select File</label> 
+        <input class="form-control" type="file" name="file">
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Upload</button>
+      </div>
+ </form>
   
     <script src="plugins/jquery.min.js"></script>
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -78,5 +77,40 @@
     <script src="js/template.js"></script>
     <!-- Custom Scripts -->
     <script src="js/custom.js"></script>
-  </body>
+
+  <script type="text/javascript">
+$(function() {
+  $('button[type=submit]').click(function(e) {
+    e.preventDefault();
+    //Disable submit button
+    $(this).prop('disabled',true);
+    
+    var form = document.forms[0];
+    var formData = new FormData(form);
+    
+    		
+    // Ajax call for file uploaling
+    var ajaxReq = $.ajax({
+      url : 'fileUpload',
+      type : 'POST',
+      data : formData,
+      cache : false,
+      contentType : false,
+      processData : false,
+    });
+  
+    // Called on success of file upload
+    ajaxReq.done(function(msg) {
+      $('input[type=file]').val('');
+      $('button[type=submit]').prop('disabled',false);
+    });
+    
+    // Called on failure of file upload
+    ajaxReq.fail(function(jqXHR) {
+      $('button[type=submit]').prop('disabled',false);
+    });
+  });
+});
+</script>
+      </body>
   </html>

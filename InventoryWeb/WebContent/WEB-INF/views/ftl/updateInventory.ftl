@@ -834,8 +834,8 @@
  <!-- Challan Section Ends--> 
  <br>
  <br>
- <!-- Bill Section Ends -->
-    <div class="collapse" id="challan">
+ <!-- Bill Section Starts -->
+  <div class="collapse" id="bill">
    <label><h3></h3></label>
    <div class="form-row">
     <div class="form-group col-md-4">
@@ -988,9 +988,31 @@
 			<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 				<br>
 				<div class="form-check">
+					<input class="form-check-input" type="checkbox" id="addBillDetails" value="">
+					<label class="form-check-label">
+							Add Bill Details
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 ">
+			<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+				<br>
+				<div class="form-check">
 					<input class="form-check-input" type="checkbox" id="generateInvoice" value="">
 					<label class="form-check-label">
 							Generate Invoice
+					</label>
+				</div>
+			</div>
+		</div>				
+		<div class="col-md-3 ">
+			<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+				<br>
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" id="addAccessory" value="">
+					<label class="form-check-label">
+							Add Accessory
 					</label>
 				</div>
 			</div>
@@ -999,7 +1021,9 @@
 		                                    
 	<input type="hidden" name="generateChallan" id="gC1" value=""/>
 	<input type="hidden" name="generateInvoice" id="gI1" value=""/>
-	                                    
+	<input type="hidden" name="addBillDetails" id="aBD" value=""/>
+	<input type="hidden" name="addAccessory" id="aAcc" value=""/>
+	                                    	                                    
 	<div class="form-row">
 	<div class="col-md-3 ">
 	<div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
@@ -1059,8 +1083,16 @@
   <select class="form-control" name="inventoryName" id="inventoryName" onChange="myFunction(this.value,'inventoryName','material');">
     <option></option>
     <option value="Pipe">Pipe</option>
-    <option value="Fittings">Fittings</option>
-    <option value="Accesories">Accesories</option>
+    <option value="Flange">Flange</option>
+<option value="Elbow">Elbow</option>
+<option value="Barrel Nipple">Barrel Nipple</option>
+<option value="Socket">Socket</option>
+<option value="Reducer">Reducer</option>
+<option value="Coupling">Coupling</option>
+<option value="Tee">Tee</option>
+<option value="Gasket">Gasket</option>
+<option value="Nut Bolt">Nut Bolt</option>
+<option value="Support">Support</option>
   </select>
 </div>
 </td>
@@ -1497,8 +1529,18 @@ function getCompanyDetails(thisObj)
 	{
 		$('#gI1').val('1');
 	}
+	
+	if($('#addBillDetails:checked').val() != undefined)
+	{
+		$('#aBD').val('1');
+	}
+	
+	if($('#addAccessory:checked').val() != undefined)
+	{
+		$('#aAcc').val('1');
+	}
+ 	$(this).unbind('submit').submit(); // continue the submit unbind preventDefault
 
- 		$(this).unbind('submit').submit(); // continue the submit unbind preventDefault
 	})
 	
 </script>

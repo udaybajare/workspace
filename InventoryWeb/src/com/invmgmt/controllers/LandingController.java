@@ -19,10 +19,10 @@ public class LandingController extends AbstractController {
 
     final static String VIEW = "LandingPage";
     final static String PLACE_HOLDER = "welcomeMessage";
-    final static String WELCOME_MESSAGE = "THIS IS LANDING PAGE FOR IPABOTS..!!";
+    final static String WELCOME_MESSAGE = "";
 
     @Override
-    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
 	    throws Exception {
 

@@ -36,7 +36,7 @@ public class InventoryDao {
     public ArrayList<Inventory> getAvailableInventory() {
 	ArrayList<Inventory> inventoryList = new ArrayList<Inventory>();
 	Session session = sessionFactory.getCurrentSession();
-	String hql = "FROM Inventory invD where invD.assignedProject = null or invD.assignedProject = ''";
+	String hql = "FROM Inventory invD where invD.assignedProject = null or invD.assignedProject = '' and invD.quantity > 0";
 
 	Query query = session.createQuery(hql);
 	List results = query.getResultList();

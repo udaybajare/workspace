@@ -19,6 +19,7 @@ public class BOQHeader implements BOQData {
     private String pressure;
     private String temp;
     private String dNo;
+    private String sheetDetails;
     
     public BOQHeader()
     {
@@ -91,6 +92,12 @@ public class BOQHeader implements BOQData {
     }
     public void setBoqName(String boqName) {
         this.boqName = boqName;
+    }
+    public String getSheetDetails() {
+        return sheetDetails;
+    }
+    public void setSheetDetails(String sheetDetails) {
+        this.sheetDetails = sheetDetails;
     }
     
 }

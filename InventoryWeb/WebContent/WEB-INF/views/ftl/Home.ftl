@@ -159,27 +159,88 @@
 
 
           <div class="feature-box">
-            <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
+            <div class="col-md-4 col-sm-4 text-center">
               <div class="feature-box-heading">
                 <em>
                 <img src="./loginPage/img/1.png" alt="" width="100" height="100">
 
                 </em>
                 <h4>
-                  <b class="selectable">Create a new Project</b>
+              <button type="button" class="btn btn-default" data-toggle="modal" data-target="#createProjectModal">
+                Create Project
+              </button>
+                  
+                <div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="myModalLabel">Enter Project Details</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    </div>
+					<form action="createProject" method="POST">
+						<div class="modal-body">
+						  <p>Project Name</p>
+						  <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
+						  <br/>
+						  <p>Company Name</p>
+						  <input type="text" class="form-control" placeholder="Enter Company Name Here" name="companyName">
+						  <br/>
+						  <p>Project Description</p>
+						  <input type="text" class="form-control" placeholder="Type in the description Here" name="projectDesc">
+						</div>
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">Close</button>
+						  <button type="submit" class="btn btn-sm btn-default">Create</button>
+						</div>
+					</form>
+                  </div>
+                </div>
+              </div>
+                  
                 </h4>
               </div>
               <p class="text-center">
                 Please click Create Project link to create a new project. Please make sure the PO has been recevied for this as some of the details will be required to create the project.
               </p>
             </div>
-            <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
+            <div class="col-md-4 col-sm-4 text-center">
               <div class="feature-box-heading">
                 <em>
                   <img src="./loginPage/img/2.png" alt="" width="100" height="100">
                 </em>
                 <h4>
-                  <b class="searchProjectForm" >Search Porject</b>
+                  
+                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#searchProjectModal">
+					Search Project
+				</button>
+                  
+                <div class="modal fade" id="searchProjectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="myModalLabel">Please enter any of the following details to search </h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    </div>
+					<form action="searchProject" method="POST">
+						<div class="modal-body">
+						  <p>Project Name</p>
+						  <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
+						  <br/>
+						  <p>Company Name</p>
+						  <input type="text" class="form-control" placeholder="Enter Company Name Here" name="companyName">
+						  <br/>
+						  <p>Project Description</p>
+						  <input type="text" class="form-control" placeholder="Type in the description Here" name="projectDesc">
+						</div>
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">Close</button>
+						  <button type="submit" class="btn btn-sm btn-default">Search</button>
+						</div>
+					</form>
+                  </div>
+                </div>
+              </div>
+                  
                 </h4>
               </div>
               <p class="text-center">
@@ -213,39 +274,9 @@
 
 
  
- <div id="textOverlay">
-<form action="createProject" modelAttribute="createProjrctForm" class="textForm" method="POST">
-                
-                <div class="form-group">
-                  <label>Project Name</label>
-                  <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
-                </div>
-                <div class="form-group">
-                  <label>Company Name</label>
-                  <input type="text" class="form-control" placeholder="Enter Company Name Here" name="companyName">
-                </div>
-                <div class="form-group">
-                  <label>Project Description</label>
-                  <input type="text" class="form-control" placeholder="Type in the description Here" name="projectDesc">
-                </div>                
-                <button type="submit" class="btn btn-default">Create</button> <button type="button" class="btn btn-default" onClick="closeOverlay('textOverlay');" >Cancel</button>
-</form>
 
-</div>
 
-<div id="textOverlaySearch" style="display:none;">
-<form action="searchProject" modelAttribute="createProjrctForm" class="textForm" method="POST">
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
-                  <label>OR</label>
-                  <input type="text" class="form-control" placeholder="Type in the project description here" name="projectDesc">
-                  <label>OR</label>
-                  <input type="text" class="form-control" placeholder="Type in the company name here" name="companyName">
-                </div>                
-                <button type="submit" class="btn btn-default">Search</button> <button type="button" class="btn btn-default" onClick="closeOverlay('textOverlaySearch');" >Cancel</button>
-</form>
 
-</div>
 
     <!--container end-->
 

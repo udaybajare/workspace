@@ -91,12 +91,7 @@ public class TestController {/*
 		
 	*/
 		
-	
-	String str = "0,";
-	
-	String[] splittedAyyay = str.split("0,");
-	
-	System.out.println(splittedAyyay.length);
+	System.out.println();
 	
 	}
 	

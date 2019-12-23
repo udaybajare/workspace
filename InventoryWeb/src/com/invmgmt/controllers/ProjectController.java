@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.invmgmt.dao.AccessoryDetailsDao;
 import com.invmgmt.dao.BOQDetailsDao;
 import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.dao.PODetailsDao;
@@ -22,6 +23,7 @@ import com.invmgmt.dao.ProjectDao;
 import com.invmgmt.dao.ProjectDetailsDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
 import com.invmgmt.dao.VendorDetailsDao;
+import com.invmgmt.entity.AccessoryDetails;
 import com.invmgmt.entity.BOQDetails;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.PaymentDetails;
@@ -58,6 +60,9 @@ public class ProjectController {
 	private InventoryDao inventoryDao;
 
 	@Autowired
+	private AccessoryDetailsDao accessoryDetailsDao;
+	
+	@Autowired
 	VendorDetailsDao vendorDetailsDao;
 
 	@Autowired
@@ -78,19 +83,38 @@ public class ProjectController {
 
 		System.out.println("New project created with ID : " + projId);
 
-		ModelAndView mav = new ModelAndView(createProjectviewName);
+		ModelAndView mav = new ModelAndView(updateProjectviewName);
 
 		mav.addObject("boqNameList", String.join(",", ""));
 		mav.addObject("quotationNamesList", String.join(",", ""));
 		mav.addObject("projectName", project.getProjectName());
 		mav.addObject("projectDesc", project.getProjectDesc());
 		mav.addObject("projectId", project.getProjectId());
+		mav.addObject("taxInvoiceNamesList","");
+		mav.addObject("poNamesList","");
+		mav.addObject("projectId", project.getProjectId());
+		mav.addObject("projectName", project.getProjectName());
+		mav.addObject("projectDesc", project.getProjectDesc());
+		mav.addObject("address", "");
+		mav.addObject("contactEmail", "");
+		mav.addObject("contactName", "");
+		mav.addObject("contactPhone", "");
+		mav.addObject("gstNumber", "");
+		mav.addObject("poDate", "");
+		mav.addObject("poNumber", "");
+		mav.addObject("assignedInventory", "");
+		mav.addObject("assignedAccessory", "");
+		mav.addObject("paymentDetails","");
+		
 		return mav;
 	}
 
 	@RequestMapping(value = "/updateProject", method = RequestMethod.POST)
-	protected ModelAndView updateProject(ProjectDetails projectDetails) throws Exception {
+	protected ModelAndView updateProject(ProjectDetails projectDetails) throws Exception
+	{
 		projectDetailsDao.updateProjet(projectDetails);
+
+		projectDetails = projectDetailsDao.getProjectDetails(projectDetails.getProjectId());
 
 		System.out.println("projectDetails.getProjectId() is : " + projectDetails.getProjectId());
 		Project project = projectDao.getProject(projectDetails.getProjectId());
@@ -212,15 +236,40 @@ public class ProjectController {
 
 		StringBuffer assignedInventoryStr = new StringBuffer();
 
-		for (Inventory inv : assignedInventory) {
+		String projectDetalsHTML = inventoryRowHTML;
+		
+		projectDetalsHTML = projectDetalsHTML.replace("projectIdVal", projectId);
+		projectDetalsHTML = projectDetalsHTML.replace("projectNameVal", project.getProjectName());
+		projectDetalsHTML = projectDetalsHTML.replace("projectDescVal", project.getProjectDesc());
+		
+		
+		for (Inventory inv : assignedInventory) 
+		{
 			System.out.println(inv.toString());
-			assignedInventoryStr.append(inventoryUtils.createInventoryRowTable(inv));
+			assignedInventoryStr.append(inventoryUtils.createInventoryRowTable(inv)+projectDetalsHTML);
 		}
 
+		//Assigned accessories
+		
+		ArrayList<AccessoryDetails> assignedAccessory = accessoryDetailsDao.getAccessoryDetailsByStatus(project.getProjectName(),"assigned");
+		
+		StringBuffer assignedAccessoryStr = new StringBuffer();
+		
+		for (AccessoryDetails accessory : assignedAccessory) 
+		{
+			assignedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(accessory)+projectDetalsHTML);
+		}
+		
 		ModelAndView mav = new ModelAndView(updateProjectviewName);
 
 		mav.addObject("assignedInventory", assignedInventoryStr);
+		mav.addObject("assignedAccessory", assignedAccessoryStr);
 
+		//TODO : Add Consumed Inventory and Consumed Accessory
+		/*mav.addObject("consumedInventory", assignedInventoryStr);
+		mav.addObject("consumedAccessory", assignedAccessoryStr);*/
+		
+		
 		if (projectDetails.getAddress() == null) {
 			mav.addObject("address", "No Details");
 			mav.addObject("contactEmail", "No Details");
@@ -393,13 +442,14 @@ public class ProjectController {
 	private String getPayDetailsString(ArrayList<PaymentDetails> payDetailsList) {
 		String payDetailsString = "";
 
-		for (PaymentDetails paymentDetail : payDetailsList) {
+		for (PaymentDetails paymentDetail : payDetailsList) 
+		{
 			String tempRow = paymentRow;
 
-			tempRow.replace("paymentID", paymentDetail.getPaymentId());
-			tempRow.replace("taxInvoiceNumber", paymentDetail.getTaxInvoiceNumber());
-			tempRow.replace("amount", paymentDetail.getAmount());
-			tempRow.replace("dateReceived", paymentDetail.getDateReceived());
+			tempRow = tempRow.replace("paymentID", paymentDetail.getPaymentId());
+			tempRow = tempRow.replace("taxInvoiceNumber", paymentDetail.getTaxInvoiceNumber());
+			tempRow = tempRow.replace("amount", paymentDetail.getAmount());
+			tempRow = tempRow.replace("dateReceived", paymentDetail.getDateReceived());
 
 			System.out.println("tempRow is : " + tempRow);
 			payDetailsString = tempRow;
@@ -420,16 +470,7 @@ public class ProjectController {
 			+ "<input type=\"hidden\" name=\"projectName\" value=\"projectNameVal\"/>"
 			+ "<input type=\"hidden\" name=\"projectDesc\" value=\"projectDescVal\"/> </form>";
 
-	/*
-	 * public static void main(String[] args) { ArrayList<String> vendors = new
-	 * ArrayList<String>(); vendors.add("a"); vendors.add("b");
-	 * vendors.add("c");
-	 * 
-	 * String vendorsList = vendors.toString();
-	 * 
-	 * System.out.println(vendorsList.substring(1).substring(0,vendorsList.
-	 * length()-2));
-	 * 
-	 * }
-	 */
+	private static final String inventoryRowHTML = "<input type=\"hidden\" name=\"projectId\" value=\"projectIdVal\" >"
+				+ "<input type=\"hidden\" name=\"projectName\" value=\"projectNameVal\" >"
+				+ "<input type=\"hidden\" name=\"projectDesc\" value=\"projectDescVal\" ></form>";
 }

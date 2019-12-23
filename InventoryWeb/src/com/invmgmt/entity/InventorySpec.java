@@ -33,13 +33,19 @@ public class InventorySpec implements Serializable {
 	@Column(name="ends")
 	public String ends;
 	
+	@Column(name = "status")
+	public String status;
+
+	@Column(name = "assignedProject")
+	public String assignedProject;
+	
 	public InventorySpec()
 	{
 		
 	}
 	
 	public InventorySpec(String inventoryName, String material, String type, String manifMethod, String gradeOrClass,
-			 String ends, String size) {
+			 String ends, String size, String assignedProject, String status) {
 		super();
 		this.inventoryName = inventoryName;
 		this.material = material;
@@ -48,6 +54,8 @@ public class InventorySpec implements Serializable {
 		this.gradeOrClass = gradeOrClass;
 		this.ends = ends;
 		this.size = size;
+		this.status = status;
+		this.assignedProject = assignedProject;
 	}
 
 
@@ -66,13 +74,16 @@ public class InventorySpec implements Serializable {
 				&& Objects.equals(getMaterial(), inv.getMaterial())
 				&& Objects.equals(getType(), inv.getType())
 				&& Objects.equals(getGradeOrClass(), inv.getGradeOrClass())
-				&& Objects.equals(getSize(),inv.getSize());
+				&& Objects.equals(getManifMethod(), inv.getManifMethod())
+				&& Objects.equals(getSize(),inv.getSize())
+				&& Objects.equals(getAssignedProject(),inv.getAssignedProject())
+				&& Objects.equals(getStatus(),inv.getStatus());
 	}
 	
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(getInventoryName(), getMaterial(), getGradeOrClass(), getType());
+		return Objects.hash(getInventoryName(), getMaterial(), getGradeOrClass(), getType(), getManifMethod(), getStatus(), getAssignedProject());
 	}
 	
 	public String getSize() {
@@ -130,12 +141,28 @@ public class InventorySpec implements Serializable {
 	public void setEnds(String ends) {
 		this.ends = ends;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getAssignedProject() {
+		return assignedProject;
+	}
+
+	public void setAssignedProject(String assignedProject) {
+		this.assignedProject = assignedProject;
+	}
 
 	@Override
 	public String toString() {
 	    return "InventorySpec [inventoryName=" + inventoryName + "; material=" + material + "; type=" + type
 		    + "; manifMethod=" + manifMethod + "; gradeOrClass=" + gradeOrClass + "; size=" + size + "; ends="
-		    + ends + "]";
+		    + ends + "; assignedProject="+assignedProject+"; status="+status+"]";
 	}
 	
 }

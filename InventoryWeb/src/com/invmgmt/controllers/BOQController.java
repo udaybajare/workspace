@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +81,7 @@ public class BOQController {
 	public @ResponseBody String getBOQLine(@RequestParam("file") MultipartFile file) {
 
 		List inventoryList = null;
-		Map<BOQData, String> inventoryQtyMap = new HashMap<BOQData, String>();
+		Map<BOQData, String> inventoryQtyMap = new LinkedHashMap<BOQData, String>();
 
 		File convFile = new File(file.getOriginalFilename());
 		try {
@@ -167,7 +168,7 @@ public class BOQController {
 		ArrayList<AccessoryDetails> accessoryDetailsList = null;
 		try {
 			inventoryList = inventoryDao.getAvailableInventory();
-			accessoryDetailsList = accessoryDetailsDao.getAvailableInventory();
+			accessoryDetailsList = accessoryDetailsDao.getAccessoryDetailsByStatus();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -378,14 +379,15 @@ public class BOQController {
 	@RequestMapping(value = "/getDropdown", method = RequestMethod.POST)
 	public @ResponseBody String getNextDropDownContent(@RequestParam(value = "value", required = true) String value,
 			@RequestParam(value = "currentTag", required = true) String currentTag,
-			@RequestParam(value = "nextTagName", required = true) String nextTagName) {
+			@RequestParam(value = "nextTagName", required = true) String nextTagName,
+			@RequestParam(value = "inventory", required = true) String inventory) {
 
 		StringBuilder dropdownContent = new StringBuilder();
 
 		try {
 
 			ArrayList<String> results = (ArrayList<String>) mappingsDao.getAssociatedOptions(currentTag, value,
-					nextTagName);
+					nextTagName, inventory);
 
 			for (int i = 0; i < results.size(); i++) {
 				String option = String.valueOf(results.get(i));
@@ -490,24 +492,43 @@ public class BOQController {
 
 		StringBuilder tableContent = new StringBuilder();
 
+		int index = 0;
 		for (Inventory inv : inventoryList) {
 
-			tableContent.append(inventoryUtils.createInventoryRowTable(inv));
+			tableContent.append(inventoryUtils.createInventoryRowTable(inv, true, String.valueOf(index)));
 		}
-
-		for (AccessoryDetails inv : accessoryDetailsList) {
-
-			tableContent.append(createInventoryRowTable(inv));
+		
+		int accessoryNo = 0;
+		for (AccessoryDetails inv : accessoryDetailsList) 
+		{
+			tableContent.append(createInventoryRowTable(inv, String.valueOf(accessoryNo)));
+			accessoryNo++;
 		}
 
 		return tableContent.toString();
 	}
 
-	private String createInventoryRowTable(AccessoryDetails inv) {
-		String template = "<tr>" + "<td></td><td>Inventory</td>" + "    <td>Material</td>" + "    <td>Type</td>"
-				+ "    <td>ManifMethod</td>" + "<td>gradeOrClass</td>" + "    <td>ends</td>" + "    <td>size</td>"
-				+ "    <td>availableQuantity</td>" + "    <td>purchaseRate</td>" + "<td>project</td>"
-				+ "<td>location</td>";
+	private String createInventoryRowTable(AccessoryDetails inv, String accessoryNo) {
+		
+		String accessoryId = "accessoryNo"+accessoryNo;
+		
+		String template = "<tr id=\""+accessoryId+"\" >" 
+				+ "<td></td><td>Inventory</td>" 
+				+ "<td>Material</td>" 
+				+ "<td>Type</td>"
+				+ "<td>ManifMethod</td>" + "<td>gradeOrClass</td>" + "    <td>ends</td>" + "    <td>size</td>"
+				+ "<td><input type=\"text\" name=\"quantity\" value=\"availableQuantity\"></td>" + "    <td>purchaseRate</td>" 
+				+ "<td><select class='form-control currentProjectList' name='assignedProject'><option></option></td>"
+				+ "<td>locationVal</td> <td><input type=\"submit\" class=\"btn btn-default\" onClick=\"accessoryStatusTo('"+accessoryId+"');\" value=\"Assign\"></td>"
+				+ "<input type=\"hidden\" name=\"accessoryName\" value=\"Inventory\">"
+				+ "<input type=\"hidden\" name=\"desc1\" value=\"Material\">"
+				+ "<input type=\"hidden\" name=\"desc2\" value=\"Type\">"
+				+ "<input type=\"hidden\" name=\"desc3\" value=\"ManifMethod\">"
+				+ "<input type=\"hidden\" name=\"desc4\" value=\"gradeOrClass\">"
+				+ "<input type=\"hidden\" name=\"desc5\" value=\"ends\">"
+				+ "<input type=\"hidden\" name=\"locationStr\" value=\"locationVal\">"
+				+ "<input type=\"hidden\" name=\"status\" value=\"assigned\"> "
+				+ " </tr>";
 
 		String rowToReturn = template;
 		rowToReturn = rowToReturn.replace("Inventory", inv.getAccessoryName());
@@ -518,12 +539,12 @@ public class BOQController {
 		rowToReturn = rowToReturn.replace("ends", inv.getDesc5());
 		rowToReturn = rowToReturn.replace("size", "-");
 
-		rowToReturn = rowToReturn.replace("availableQuantity", "-");
+		rowToReturn = rowToReturn.replace("availableQuantity", inv.getQuantity());
 
 		// Purchse Rate
 		rowToReturn = rowToReturn.replace("purchaseRate", "-");
 		rowToReturn = rowToReturn.replace("project", inv.getAssignedProject() != null ? inv.getAssignedProject() : "");
-		rowToReturn = rowToReturn.replace("location", inv.getLocation() != null ? inv.getLocation() : "");
+		rowToReturn = rowToReturn.replace("locationVal", inv.getLocation() != null ? inv.getLocation() : "");
 		return rowToReturn;
 	}
 
@@ -561,8 +582,8 @@ public class BOQController {
 					.add(new Inventory(
 							new InventorySpec(boqDetails.getInventoryName(), boqDetails.getMaterial(),
 									boqDetails.getType(), boqDetails.getManifacturingMethod(),
-									boqDetails.getClassOrGrade(), boqDetails.getEnds(), boqDetails.getSize()),
-							"", Integer.parseInt(boqDetails.getQuantity()), "", "", ""));
+									boqDetails.getClassOrGrade(), boqDetails.getEnds(), boqDetails.getSize(), "", ""),
+							"", Integer.parseInt(boqDetails.getQuantity()), ""));
 		}
 		return inventoryList;
 	}

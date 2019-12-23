@@ -91,12 +91,12 @@
 				<tr><td>Delivery Challan No</td><td>${challanNo}</td><td>Purchase Order No</td><td>${poNo}</td></tr>
 				<tr><td>Date</td><td>${date}</td><td>Purchase Order Date</td><td>${poDate}</td></tr>
 				<tr><td colspan="2">From</td><td colspan="2">Consignee</td></tr>
-				<tr><td colspan="2">${from}</td><td colspan="2">${consignee}</td></tr>
-				<tr><td colspan="2">${from}</td><td colspan="2">${consignee}</td></tr>
-				<tr><td colspan="2">${from}</td><td colspan="2">${consignee}</td></tr>
+				<tr><td colspan="2">${from1}</td><td colspan="2">${consignee1}</td></tr>
+				<tr><td colspan="2">${from2}</td><td colspan="2">${consignee2}</td></tr>
+				<tr><td colspan="2">${from3}</td><td colspan="2">${consignee3}</td></tr>
 				<tr><td>Transport Mode</td><td>LR# & Date</td><td>Vheicle Number</td><td></td></tr>
 				<tr><td>${transportMode}</td><td>${lrNo}</td><td>${vheicleNumber}</td><td></td></tr>
-				<tr><td>SrNO&emsp;Size</td><td>Quantity</td><td>Description</td><td>Units</td></tr>
+				<tr><td>SrNO&emsp;Size</td><td>Description</td><td>Quantity</td><td>Units</td></tr>
 				${itemList}				
 				<tr><td>GST Number</td><td>${gstNo}</td><td></td><td>For<br/>Hamdule Industries</td></tr>
 				<tr><td colspan="2" rowspan="5" ></td><td colspan="2" rowspan="5"></td></tr>

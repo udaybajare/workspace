@@ -99,7 +99,6 @@ public class ExcelWriter {
 			String[] supplyRate, String[] erectionRate, String[] sypplyAmount, String[] erectionAmount,
 			String boqNameRevisionStr, BOQHeader header) throws IOException {
 
-		ArrayList<BOQLineData> processedInventory = new ArrayList<BOQLineData>();
 		Workbook workBook = null;
 		FileInputStream inputStream = null;
 		try {
@@ -153,11 +152,10 @@ public class ExcelWriter {
 					int fCellNum = row.getFirstCellNum();
 					int lCellNum = row.getLastCellNum();
 
-					System.out.println("fCellNum is : "+fCellNum);
-					System.out.println("lCellNum is : "+lCellNum);
+					System.out.println("fCellNum is : " + fCellNum);
+					System.out.println("lCellNum is : " + lCellNum);
 					/* Loop in cells, add each cell value to the list. */
-					for (int j = fCellNum; j < 8; j++) 
-					{
+					for (int j = fCellNum; j < 8; j++) {
 						copyCell(row.getCell(j), newRow.createCell(j));
 					}
 
@@ -169,13 +167,12 @@ public class ExcelWriter {
 		int startIndex = 0;
 		int lastIndex = 0;
 
-		for (int s = 1; s < sheetNames.size(); s++) 
-		{
-		
+		for (int s = 1; s <= sheetNames.size(); s++) {
+			ArrayList<BOQLineData> processedInventory = new ArrayList<BOQLineData>();
 			Sheet sheet = workBook.getSheetAt(s);
-			int inventoryCount = Integer.parseInt(sheetDetailsMap.get(sheetNameList.get(s)));
+			int inventoryCount = Integer.parseInt(sheetDetailsMap.get(sheetNameList.get(s - 1)));
 
-			lastIndex = inventoryCount - 1;
+			lastIndex = lastIndex + inventoryCount;
 
 			System.out.println("lastIndex is : " + lastIndex);
 
@@ -198,8 +195,7 @@ public class ExcelWriter {
 			int nextRow = 9;
 			int i = 1;
 
-			for (int invIndx = startIndex; invIndx < lastIndex; invIndx++) 
-			{
+			for (int invIndx = startIndex; invIndx < lastIndex; invIndx++) {
 				BOQLineData inventory = boqLineDataDetails.get(invIndx);
 
 				int presentIndex = processedInventory.indexOf(inventory);
@@ -209,7 +205,7 @@ public class ExcelWriter {
 				if (presentIndex != -1) {
 					// int row = presentIndex * 7 + 9 + i;
 
-					int row = nextRow;
+					int row = nextRow - 6;
 
 					Cell cellToUpdate0 = sheet.getRow(row).getCell(2);
 					cellToUpdate0.setCellValue(size[index]);
@@ -284,14 +280,15 @@ public class ExcelWriter {
 				}
 
 				index++;
-				startIndex = startIndex + inventoryCount;
 
 				System.out.println("Next start index is : " + startIndex);
 			}
+
+			startIndex = startIndex + inventoryCount;
 		}
-		
+
 		workBook.removeSheetAt(0);
-		
+
 		inputStream.close();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -359,12 +356,11 @@ public class ExcelWriter {
 		return ret;
 	}
 
-	private static void copyCell(Cell oldCell, Cell newCell) 
-	{
-		
+	private static void copyCell(Cell oldCell, Cell newCell) {
+
 		System.out.println("newCell is : " + newCell);
 		System.out.println("oldCell is : " + oldCell);
-		
+
 		newCell.setCellStyle(oldCell.getCellStyle());
 
 		switch (oldCell.getCellType()) {

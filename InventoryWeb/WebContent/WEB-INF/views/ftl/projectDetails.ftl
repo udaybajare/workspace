@@ -970,10 +970,11 @@ $("input[name='erectionAmount']").each(function() {
 function myFunction(value, tagName, nextTagName) {
     
     var tag = '#'+nextTagName;
+    var inventory = $('#inventoryName')[0].value;
     
     $.ajax({
 			type : 'POST',
-			data :  {'value' : value,'currentTag' : tagName,'nextTagName' : nextTagName},
+			data :  {'value' : value,'currentTag' : tagName,'nextTagName' : nextTagName, 'inventory' : inventory},
             url : 'getDropdown',
             success : function(data) {
             

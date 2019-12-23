@@ -8999,3 +8999,10 @@ h6.media-heading {
   margin-top: -9px;
   color: #ffffff;
 }
+
+input {
+ overflow: visible;
+ border-radius: 5px;
+ border-color: #e1e1e1;
+ border: 1px solid #ced4da;
+}

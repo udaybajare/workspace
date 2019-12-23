@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,178 +18,211 @@ import com.invmgmt.entity.InventorySpec;
 @Repository
 public class InventoryDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+	@Autowired
+	private SessionFactory sessionFactory;
 
-    @Transactional
-    public int saveInventory(Inventory inventory) {
-	Session session = sessionFactory.getCurrentSession();
+	@Transactional
+	public int saveInventory(Inventory inventory) throws Exception {
+		Session session = sessionFactory.getCurrentSession();
 
-	try {
-	    session.saveOrUpdate(inventory);
-	} catch (Exception ex) {
-	    ex.printStackTrace();
+		try {
+			 System.out.println("Before calling save");
+			 session.save(inventory);
+			 System.out.println("After calling save");
+			 
+		} catch (Exception hibernateException) 
+		{
+			throw hibernateException;
+		}
+		return inventory.getInventoryRowId();
 	}
-	return inventory.getInventoryRowId();
-    }
 
-    @Transactional
-    public ArrayList<Inventory> getAvailableInventory() {
-	ArrayList<Inventory> inventoryList = new ArrayList<Inventory>();
-	Session session = sessionFactory.getCurrentSession();
-	String hql = "FROM Inventory invD where invD.assignedProject = null or invD.assignedProject = '' and invD.quantity > 0";
-
-	Query query = session.createQuery(hql);
-	List results = query.getResultList();
-
-	Iterator itr = results.iterator();
-
-	while (itr.hasNext()) {
-
-	    inventoryList.add((Inventory) itr.next());
+	
+	@Transactional
+	public int updateWhenSaveFailed(Inventory inventory) {
+		Session session = sessionFactory.getCurrentSession();
+			
+			try
+			{
+				session.update(inventory);
+			}
+			catch(Exception updateHibernateException)
+			{
+				System.out.println("Update faled too.");
+				updateHibernateException.printStackTrace();
+			}
+		return inventory.getInventoryRowId();
 	}
-	return inventoryList;
-    }
 
-    @Transactional
-    public int getAvailableQuantity(Inventory inventory) {
-	int availableQuantity = 0;
-	InventorySpec inventorySpec = inventory.getInventorySpec();
+	
+	@Transactional
+	public ArrayList<Inventory> getAvailableInventory() {
+		ArrayList<Inventory> inventoryList = new ArrayList<Inventory>();
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "FROM Inventory invD where invD.inventorySpec.assignedProject = null or invD.inventorySpec.assignedProject = '' and invD.quantity > 0";
 
-	Session session = null;
-	String selectHql = "SELECT invD.quantity FROM Inventory invD where " + "invD.inventorySpec.inventoryName = '"
-		+ inventorySpec.getInventoryName() + "' and  " + "invD.inventorySpec.material = '"
-		+ inventorySpec.getMaterial() + "' and  " + "invD.inventorySpec.type = '" + inventorySpec.getType()
-		+ "' and  " + "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
-		+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
-		+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
-		+ inventorySpec.getEnds() + "' and  (" + "invD.assignedProject = null or invD.assignedProject = '')";
-	try {
-	    session = sessionFactory.openSession();
-	    Query query = session.createQuery(selectHql);
+		Query query = session.createQuery(hql);
+		List results = query.getResultList();
 
-	    Object result = query.uniqueResult();
+		Iterator itr = results.iterator();
 
-	    availableQuantity = (int) (result != null ? result : 0);
+		while (itr.hasNext()) {
 
-	    System.out.println("Available Quentity is : " + availableQuantity);
-	} catch (Exception ex) {
-	    ex.printStackTrace();
+			inventoryList.add((Inventory) itr.next());
+		}
+		return inventoryList;
 	}
-	return availableQuantity;
-    }
 
-    @Transactional
-    public int getAssignedQuantity(Inventory inventory) {
-	int availableQuantity = 0;
-	InventorySpec inventorySpec = inventory.getInventorySpec();
+	@Transactional
+	public int getAvailableQuantity(Inventory inventory) {
+		int availableQuantity = 0;
+		InventorySpec inventorySpec = inventory.getInventorySpec();
 
-	Session session = null;
-	String selectHql = "SELECT invD.quantity FROM Inventory invD where " + "invD.inventorySpec.inventoryName = '"
-		+ inventorySpec.getInventoryName() + "' and  " + "invD.inventorySpec.material = '"
-		+ inventorySpec.getMaterial() + "' and  " + "invD.inventorySpec.type = '" + inventorySpec.getType()
-		+ "' and  " + "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
-		+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
-		+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
-		+ inventorySpec.getEnds() + "' and  " + "invD.assignedProject = '" + inventory.getAssignedProject()
-		+ "' and invD.status='assigned'";
-	try {
-	    session = sessionFactory.openSession();
-	    Query query = session.createQuery(selectHql);
+		Session session = null;
+		String selectHql = "SELECT invD.quantity FROM Inventory invD where " + "invD.inventorySpec.inventoryName = '"
+				+ inventorySpec.getInventoryName() + "' and  " + "invD.inventorySpec.material = '"
+				+ inventorySpec.getMaterial() + "' and  " + "invD.inventorySpec.type = '" + inventorySpec.getType()
+				+ "' and  " + "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
+				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
+				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
+				+ inventorySpec.getEnds() + "' and  (" + "invD.inventorySpec.assignedProject = null or invD.inventorySpec.assignedProject = '')";
+		try {
+			session = sessionFactory.openSession();
+			Query query = session.createQuery(selectHql);
 
-	    Object result = query.uniqueResult();
+			Object result = query.uniqueResult();
 
-	    availableQuantity = (int) (result != null ? result : 0);
+			availableQuantity = (int) (result != null ? result : 0);
 
-	} catch (Exception ex) {
-	    ex.printStackTrace();
+			System.out.println("Available Quentity is : " + availableQuantity);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return availableQuantity;
 	}
-	return availableQuantity;
-    }
 
-    public int isEntityPresent(Inventory inventory) {
-	int associatedRowId = 0;
-	InventorySpec inventorySpec = inventory.getInventorySpec();
+	@Transactional
+	public int getQuantityByStatus(Inventory inventory, String status) {
+		int availableQuantity = 0;
+		InventorySpec inventorySpec = inventory.getInventorySpec();
 
-	Session session = null;
-	String selectHql = "SELECT invD.inventoryRowId FROM Inventory invD where "
-		+ "invD.inventorySpec.inventoryName = '" + inventorySpec.getInventoryName() + "' and  "
-		+ "invD.inventorySpec.material = '" + inventorySpec.getMaterial() + "' and  "
-		+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
-		+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
-		+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
-		+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.assignedProject = '"
-		+ inventory.getAssignedProject() + "' and  " + "invD.inventorySpec.ends = '" + inventorySpec.getEnds()
-		+ "'";
-	try {
-	    session = sessionFactory.openSession();
-	    Query query = session.createQuery(selectHql);
+		Session session = null;
+		String selectHql = "SELECT invD.quantity FROM Inventory invD where " + "invD.inventorySpec.inventoryName = '"
+				+ inventorySpec.getInventoryName() + "' and  " + "invD.inventorySpec.material = '"
+				+ inventorySpec.getMaterial() + "' and  " + "invD.inventorySpec.type = '" + inventorySpec.getType()
+				+ "' and  " + "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
+				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
+				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
+				+ inventorySpec.getEnds() + "' and  " + "invD.inventorySpec.assignedProject = '"
+				+ inventorySpec.getAssignedProject() + "' and invD.inventorySpec.status='"+status+"'";
+		try {
+			session = sessionFactory.openSession();
+			Query query = session.createQuery(selectHql);
 
-	    associatedRowId = query.uniqueResult() != null ? (int) query.uniqueResult() : 0;
+			Object result = query.uniqueResult();
 
-	} catch (Exception ex) {
-	    ex.printStackTrace();
+			availableQuantity = (int) (result != null ? result : 0);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return availableQuantity;
 	}
-	return associatedRowId;
 
-    }
+	public int isEntityPresent(Inventory inventory, String statusTo) {
+		int associatedRowId = 0;
+		InventorySpec inventorySpec = inventory.getInventorySpec();
 
-    @Transactional
-    public double getPurchaseRate(Inventory inventory) {
-	double purchaseRate = 0;
-	InventorySpec inventorySpec = inventory.getInventorySpec();
+		Session session = null;
+		String selectHql = "SELECT invD.inventoryRowId FROM Inventory invD where "
+				+ "invD.inventorySpec.inventoryName = '" + inventorySpec.getInventoryName() + "' and  "
+				+ "invD.inventorySpec.material = '" + inventorySpec.getMaterial() + "' and  "
+				+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
+				+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
+				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
+				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.assignedProject = '"
+				+ inventorySpec.getAssignedProject() + "' and  " + "invD.inventorySpec.ends = '"
+				+ inventorySpec.getEnds() + "'";
+		
+		if(!statusTo.equals("%%"))
+		{
+			selectHql = selectHql + "and invD.inventorySpec.status = '" + statusTo + "'";
+		}
+		
+		
+		try {
+			session = sessionFactory.openSession();
+			Query query = session.createQuery(selectHql);
 
-	Session session = null;
-	String selectHql = "SELECT invD.purchaseRate FROM Inventory invD where "
-		+ "invD.inventorySpec.inventoryName = '" + inventorySpec.getInventoryName() + "' and  "
-		+ "invD.inventorySpec.material = '" + inventorySpec.getMaterial() + "' and  "
-		+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
-		+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
-		+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
-		+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
-		+ inventorySpec.getEnds() + "'  and  " + "invD.assignedProject = '" + inventory.getAssignedProject()
-		+ "'";
-	try {
-	    session = sessionFactory.openSession();
-	    Query query = session.createQuery(selectHql);
+			associatedRowId = query.uniqueResult() != null ? (int) query.uniqueResult() : 0;
 
-	    purchaseRate = Double.parseDouble((String) query.uniqueResult());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return associatedRowId;
 
-	    System.out.println("PurchaseRate is : " + purchaseRate);
-	} catch (Exception ex) {
-	    ex.printStackTrace();
 	}
-	return purchaseRate;
-    }
 
-    @Transactional
-    public ArrayList<Inventory> getAssignedInventory(String projectName) {
-
-	ArrayList<Inventory> assignedInventory = new ArrayList<Inventory>();
-
-	Session session = null;
-	String selectHql = "FROM Inventory invD where " + "invD.assignedProject = '" + projectName + "' and "
-		+ "invD.status = 'assigned'";
-	try {
-	    session = sessionFactory.openSession();
-	    Query query = session.createQuery(selectHql);
-
-	    assignedInventory = (ArrayList<Inventory>) query.getResultList();
-
-	} catch (Exception ex) {
-	    ex.printStackTrace();
+	public int isEntityPresent(Inventory inventory) {
+		return isEntityPresent(inventory, "%%");
 	}
-	return assignedInventory;
-    }
 
-    @Transactional
-    public int getLatestInventoryEntryNo() {
-	Session session = sessionFactory.getCurrentSession();
+	@Transactional
+	public double getPurchaseRate(Inventory inventory) {
+		double purchaseRate = 0;
+		InventorySpec inventorySpec = inventory.getInventorySpec();
 
-	String selectHql = "Select max(invD.inventoryRowId) from Inventory invD";
+		Session session = null;
+		String selectHql = "SELECT invD.purchaseRate FROM Inventory invD where "
+				+ "invD.inventorySpec.inventoryName = '" + inventorySpec.getInventoryName() + "' and  "
+				+ "invD.inventorySpec.material = '" + inventorySpec.getMaterial() + "' and  "
+				+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
+				+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
+				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
+				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
+				+ inventorySpec.getEnds() + "'  and  " + "invD.inventorySpec.assignedProject = '"
+				+ inventorySpec.getAssignedProject() + "' and invD.inventorySpec.status='"+ inventory.getInventorySpec().getStatus() +"'";
+		try {
+			session = sessionFactory.openSession();
+			Query query = session.createQuery(selectHql);
 
-	Query query = session.createQuery(selectHql);
-	int inventoryEntryNo = query.uniqueResult() == null ? 0 : (int) query.uniqueResult();
-	return inventoryEntryNo;
-    }
+			purchaseRate = Double.parseDouble((String) query.uniqueResult());
+
+			System.out.println("PurchaseRate is : " + purchaseRate);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return purchaseRate;
+	}
+
+	@Transactional
+	public ArrayList<Inventory> getAssignedInventory(String projectName) {
+
+		ArrayList<Inventory> assignedInventory = new ArrayList<Inventory>();
+
+		Session session = null;
+		String selectHql = "FROM Inventory invD where " + "invD.inventorySpec.assignedProject = '" + projectName + "' and "
+				+ "invD.inventorySpec.status = 'assigned'";
+		try {
+			session = sessionFactory.openSession();
+			Query query = session.createQuery(selectHql);
+
+			assignedInventory = (ArrayList<Inventory>) query.getResultList();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return assignedInventory;
+	}
+
+	@Transactional
+	public int getLatestInventoryEntryNo() {
+		Session session = sessionFactory.getCurrentSession();
+
+		String selectHql = "Select max(invD.inventoryRowId) from Inventory invD";
+
+		Query query = session.createQuery(selectHql);
+		int inventoryEntryNo = query.uniqueResult() == null ? 0 : (int) query.uniqueResult();
+		return inventoryEntryNo;
+	}
 }

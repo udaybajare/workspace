@@ -536,7 +536,7 @@ $('.grandTotal').html(grandTotal);
 function downloadPO( poName )
 {
 	var lineItemSimple = $('#lineItemSimple').val();
-    window.location.assign("http://localhost:8080/InventoryWeb/showPO?poName="+poName+"&lineItemSimple="+lineItemSimple);
+    window.location.assign("showPO?poName="+poName+"&lineItemSimple="+lineItemSimple);
 };
 </script>    
 </BODY>

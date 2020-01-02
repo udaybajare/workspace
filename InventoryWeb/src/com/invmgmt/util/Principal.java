@@ -60,8 +60,8 @@ public class Principal {
 		    }
 		    
 		    
-		    String amtWrd1 = taxInvoiceDetails.getAmtInwrd1().substring(0, 39);
-		    String amtWrd2 = taxInvoiceDetails.getAmtInwrd1().substring(40);
+		    String amtWrd1 = taxInvoiceDetails.getAmtInwrd1();
+		    String amtWrd2 = taxInvoiceDetails.getAmtInwrd2();
 		    String total = String.valueOf(rateInt + cGst*2);
 		    String cGstString = String.valueOf(cGst);
 		    	    

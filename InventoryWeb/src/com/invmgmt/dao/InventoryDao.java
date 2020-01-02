@@ -216,6 +216,26 @@ public class InventoryDao {
 	}
 
 	@Transactional
+	public ArrayList<Inventory> getConsumedInventory(String projectName) {
+
+		ArrayList<Inventory> assignedInventory = new ArrayList<Inventory>();
+
+		Session session = null;
+		String selectHql = "FROM Inventory invD where " + "invD.inventorySpec.assignedProject = '" + projectName + "' and "
+				+ "invD.inventorySpec.status = 'consumed'";
+		try {
+			session = sessionFactory.openSession();
+			Query query = session.createQuery(selectHql);
+
+			assignedInventory = (ArrayList<Inventory>) query.getResultList();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return assignedInventory;
+	}
+	
+	@Transactional
 	public int getLatestInventoryEntryNo() {
 		Session session = sessionFactory.getCurrentSession();
 

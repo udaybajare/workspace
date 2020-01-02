@@ -19,12 +19,18 @@ public class MappingsDao {
 		List<String> associatedValues = new ArrayList<String>();
 		Session session = null;
 		String selectHql = "";
+
 		if (superSetVal.equalsIgnoreCase("null")) {
 			selectHql = "SELECT distinct mpng." + subSet + " FROM Mappings mpng where mpng." + superSet + " is "
 					+ superSetVal;
 		} else {
 			selectHql = "SELECT distinct mpng." + subSet + " FROM Mappings mpng where mpng.inventoryName='" + inventory
 					+ "' and mpng." + superSet + " = '" + superSetVal + "'";
+		}
+
+		if (!(inventory.trim().equals("Pipe"))) {
+			selectHql = "SELECT distinct mpng." + subSet + " FROM Mappings mpng where mpng.inventoryName='" + inventory
+					+ "'";
 		}
 
 		try {

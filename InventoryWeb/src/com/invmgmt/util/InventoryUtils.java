@@ -47,10 +47,10 @@ public class InventoryUtils {
 		return inventorySpecList;
 	}
 
-	public String createInventoryRowTable(Inventory inv) {
-		return createInventoryRowTable(inv, false, null);
+	public String createInventoryRowTable(Inventory inv, boolean isConsumed) {
+		return createInventoryRowTable(inv, false, null, isConsumed);
 	}
-	public String createInventoryRowTable(Inventory inv, boolean needProjectList, String index) {
+	public String createInventoryRowTable(Inventory inv, boolean needProjectList, String index, boolean isConsumed) {
 		
 		String inventoryId = "inventoryNo";
 		
@@ -59,15 +59,17 @@ public class InventoryUtils {
 			inventoryId = inventoryId + index;	
 		}
 		
-		String template = "<tr id=\""+inventoryId+"\"><td></td>"
+		String template = "<tr id=\""+inventoryId+"\"><form><td></td>"
 				+ "<td>InventoryVal</td>    <td>MaterialVal</td>    <td>TypeVal</td>"
 				+ "<td>ManifMethodVal</td><td>gradeOrClassVal</td>    <td>endsVal</td>" + "<td>sizeVal</td>"
-				+ "<td><input type=\"text\" name=\"quantity\" value=\"availableQuantity\" ></td>"
+				+ "<td>"
+				+ (isConsumed? "availableQuantity" : "<input type=\"text\" name=\"quantity\" value=\"availableQuantity\" ></td>")
 				+ "<td>purchaseRateVal</td>"
 				+ (needProjectList? "<td><select class='form-control currentProjectList' name='project' name='projectName' ><option></option></td>" : "<td>projectVal</td>")
 				+ "<td>locationVal</td>"
 				+ "<td>"
-				+ (needProjectList? "<input type=\"submit\" class=\"btn btn-default \" onClick=\"statusTo('"+inventoryId+"');\"  value=\"Assign\">" : "<select class=\"form-control statusTo\" name=\"statusTo\" > <option></option> <option value=\"release\">Release</option>" + "<option value=\"consumed\">Consumed</option></select>")
+				+ (needProjectList? "<input type=\"submit\" class=\"btn btn-default \" onClick=\"statusTo('"+inventoryId+"');\"  value=\"Assign\">" 
+						: (isConsumed?"":"<select class=\"form-control statusTo\" name=\"statusTo\" > <option></option> <option value=\"release\">Release</option>" + "<option value=\"consumed\">Consumed</option></select>"))
 				+ "</td>" 
 				+ "<input type=\"hidden\" name=\"inventoryStr\" value=\"InventoryVal\" >"
 				+ "<input type=\"hidden\" name=\"materialStr\" value=\"MaterialVal\" >"
@@ -103,7 +105,7 @@ public class InventoryUtils {
 		return rowToReturn;
 	}
 
-	public String createAccessoryRowTable(AccessoryDetails accessoryDetails) {
+	public String createAccessoryRowTable(AccessoryDetails accessoryDetails, boolean isConsumed) {
 		String template = "<tr><form action=\"release\" method=\"POST\" ><td></td>" 
 				+ "<td>desc1Val</td>"
 				+ "<td>desc2Val</td>"
@@ -112,13 +114,17 @@ public class InventoryUtils {
 				+ "<td>desc5Val</td>"
 				+ "<td>accessoryNameVal</td>"
 				+ "<td>-</td>"				
-				+ "<td><input type=\"text\" name=\"quantity\" value=\"availableQuantity\" ></td>"
+				+ "<td>"
+				+ (isConsumed?"availableQuantity":"<input type=\"text\" name=\"quantity\" value=\"availableQuantity\" ></td>")
 				+ "<td>-</td>"
 				+ "<td>projectVal</td>"
 				+ "<td>locationVal</td>"
-				+ "<td><select class=\"form-control accessoryStatusTo\" name=\"accessoryStatusTo\" >" + "<option></option>"
+				+ "<td>"
+				+ (isConsumed?"":"<select class=\"form-control accessoryStatusTo\" name=\"accessoryStatusTo\" >" 
+				+ "<option></option>"
 				+ "<option value=\"release\">Release</option>" + "<option value=\"consumed\">Consumed</option>"
-				+ "</select></td>" 
+				+ "</select>")
+				+ "</td>" 
 				+ "<input type=\"hidden\" name=\"desc1\" value=\"desc1Val\" >"
 				+ "<input type=\"hidden\" name=\"desc2\" value=\"desc2Val\" >"
 				+ "<input type=\"hidden\" name=\"desc3\" value=\"desc3Val\" >"
@@ -158,6 +164,18 @@ public class InventoryUtils {
 		toReturn.setType(toCopy.getType());
 
 		return toReturn;
+	}
+	
+	public String blankIfNull(String[] input, int index)
+	{
+		try
+		{
+			return input[index];
+		}
+		catch(Exception ex)
+		{
+			return "";
+		}
 	}
 	/*
 	 * public static void main(String[] args) { String home =

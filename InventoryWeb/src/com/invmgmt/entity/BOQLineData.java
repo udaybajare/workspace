@@ -1,6 +1,5 @@
 package com.invmgmt.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -10,18 +9,21 @@ import javax.persistence.Table;
 public class BOQLineData {
 
 	@Id
-	@Column(nullable=false)
+	private String id;
+	
 	private String material;
+	private String inventoryName;
 	private String stdLine;
 	private String specLine;
 	private String grdLine;
 	private String endsLine;
 	private String makesLine;
+	private String category;
 	
 	public BOQLineData()
 	{}	
 	
-	public BOQLineData(String material, String stdLine, String specLine, String grdLine, String endsLine, String makesLine) {
+	public BOQLineData(String material, String stdLine, String specLine, String grdLine, String endsLine, String makesLine, String inventoryName, String category) {
 		super();
 		this.material = material;
 		this.stdLine = stdLine;
@@ -29,6 +31,8 @@ public class BOQLineData {
 		this.grdLine = grdLine;
 		this.endsLine = endsLine;
 		this.makesLine = makesLine;
+		this.inventoryName = inventoryName;
+		this.category = category;
 	}
 	
 	
@@ -70,7 +74,23 @@ public class BOQLineData {
 		this.makesLine = makesLine;
 	}
 	
-    public boolean isSameEntry(BOQLineData obj1, BOQLineData obj2) {
+    public String getInventoryName() {
+		return inventoryName;
+	}
+
+	public void setInventoryName(String inventoryName) {
+		this.inventoryName = inventoryName;
+	}
+	
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public boolean isSameEntry(BOQLineData obj1, BOQLineData obj2) {
 	boolean isEqual = false;
 
 	if (obj1.getStdLine().equalsIgnoreCase(obj2.getStdLine())
@@ -78,7 +98,9 @@ public class BOQLineData {
 		&& obj1.getGrdLine().equalsIgnoreCase(obj2.getGrdLine())
 		&& obj1.getMakesLine().equalsIgnoreCase(obj2.getMakesLine())
 		&& obj1.getMaterial().equalsIgnoreCase(obj2.getMaterial())
-		&& obj1.getSpecLine().equalsIgnoreCase(obj2.getSpecLine())) {
+		&& obj1.getSpecLine().equalsIgnoreCase(obj2.getSpecLine())
+		&& obj1.getInventoryName().equalsIgnoreCase(obj2.getInventoryName())
+		&& obj1.getCategory().equalsIgnoreCase(obj2.getCategory())) {
 	    isEqual = true;
 	}
 
@@ -86,16 +108,17 @@ public class BOQLineData {
     }
 
     @Override
-    public boolean equals(Object obj) {
-	if (obj == this)
-	    return true;
+	public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
 
-	BOQLineData lineData = (BOQLineData) obj;
+		BOQLineData lineData = (BOQLineData) obj;
 
-	return lineData.getEndsLine().equals(endsLine) && lineData.getGrdLine().equals(grdLine)
-		&& lineData.getMakesLine().equals(makesLine) && lineData.getMaterial().equals(material)
-		&& lineData.getSpecLine().equals(specLine) && lineData.getStdLine().equals(stdLine);
-    }
+		return lineData.getEndsLine().equals(endsLine) && lineData.getGrdLine().equals(grdLine)
+				&& lineData.getMakesLine().equals(makesLine) && lineData.getMaterial().equals(material)
+				&& lineData.getSpecLine().equals(specLine) && lineData.getStdLine().equals(stdLine)
+				&& lineData.getInventoryName().equals(inventoryName) && lineData.getCategory().equals(category);
+	}
     
     @Override
     public int hashCode() {
@@ -106,6 +129,7 @@ public class BOQLineData {
 	result = 31 * result + material.hashCode();
 	result = 31 * result + specLine.hashCode();
 	result = 31 * result + stdLine.hashCode();
+	result = 31 * result + inventoryName.hashCode();
 	return result;
     }
 }

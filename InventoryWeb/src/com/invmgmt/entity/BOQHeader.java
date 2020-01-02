@@ -27,7 +27,7 @@ public class BOQHeader implements BOQData {
     }
     
     public BOQHeader(String client, String site, String project, String dName, String utility, String pressure,
-	    String temp, String dNo, String boqName) {
+	    String temp, String dNo, String boqName, String sheetDetails) {
 	super();
 	this.boqName = boqName;
 	this.client = client;
@@ -38,6 +38,7 @@ public class BOQHeader implements BOQData {
 	this.pressure = pressure;
 	this.temp = temp;
 	this.dNo = dNo;
+	this.sheetDetails = sheetDetails;
     }
     public String getClient() {
         return client;

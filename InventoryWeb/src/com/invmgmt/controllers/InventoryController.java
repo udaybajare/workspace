@@ -28,6 +28,7 @@ import com.invmgmt.entity.Project;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.entity.TaxInvoiceGenerator;
 import com.invmgmt.util.InventoryUtils;
+import com.invmgmt.util.NumberWordConverter;
 
 @Controller
 @EnableWebMvc
@@ -53,6 +54,9 @@ public class InventoryController {
 
 	@Autowired
 	TaxInvoiceGenerator taxInvoiceGenerator;
+	
+	@Autowired
+	NumberWordConverter numberWordConverter;
 
 	private static final String updateViewName = "updateInventory";
 
@@ -108,7 +112,7 @@ public class InventoryController {
 			inventory.setQuantity(quantity[i]);
 			inventory.setLocation(location[i]);
 
-			int inventoryRowId = inventoryDao.isEntityPresent(inventory);
+			int inventoryRowId = inventoryDao.isEntityPresent(inventory, "assigned");
 
 			System.out.println("inventoryRowId is : " + inventoryRowId);
 
@@ -265,6 +269,27 @@ public class InventoryController {
 					String invoiceNo = "Invoice/" + clientShortName + "/" + String.valueOf(lrNoInt);
 					taxInvoiceDetails.setInvoiceNo(invoiceNo);
 					taxInvoiceDetails.setTaxInvoiceNo(invoiceNo);
+					
+					String totalAmount = getTotalAmount(purchaseRate, quantity);
+					
+					Double doubleVal = Double.parseDouble(totalAmount);
+					
+					String amountsToWord = numberWordConverter.convert((int)Math.round(doubleVal));
+					
+					taxInvoiceDetails.setRate(totalAmount);
+					
+					if(amountsToWord.length() > 40)
+					{
+						taxInvoiceDetails.setAmtInwrd1((String)amountsToWord.substring(0, 39));
+						taxInvoiceDetails.setAmtInwrd2((String)amountsToWord.substring(40));						
+					}
+					else
+					{
+						taxInvoiceDetails.setAmtInwrd1(amountsToWord);
+						taxInvoiceDetails.setAmtInwrd2("");
+					}
+
+					
 					taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
 				}
 			}
@@ -539,5 +564,17 @@ public class InventoryController {
 				.replace("Description", description).replace("quantity", quantity).replace("unit", unit);
 
 		return stringToReturn;
+	}
+	
+	private String getTotalAmount(String[] purchaseRate, int[] quantity)
+	{
+		double total = 0;
+		
+		for(int i=0; i < purchaseRate.length; i++)
+		{
+			total = total + (Double.parseDouble(purchaseRate[i])*quantity[i]);
+		}
+		
+		return String.valueOf(total);
 	}
 }

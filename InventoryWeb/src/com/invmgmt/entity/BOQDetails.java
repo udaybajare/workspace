@@ -28,6 +28,7 @@ public class BOQDetails {
 	String erectionRate;
 	String supplyAmount;
 	String erectionAmount;
+	String sheetName;
 
 	public BOQDetails()
 	{
@@ -37,7 +38,7 @@ public class BOQDetails {
 	public BOQDetails(String projectId, String boqName, String inventoryName, String material, String type,
 			String manifacturingMethod, String classOrGrade, String ends, String size, String quantity,
 			String supplyRate, String erectionRate, String supplyAmount, String erectionAmount,
-			String baseErectionRate, String baseSupplyRate) {
+			String baseErectionRate, String baseSupplyRate, String sheetName) {
 		super();
 		this.projectId = projectId;
 		this.boqName = boqName;
@@ -55,6 +56,7 @@ public class BOQDetails {
 		this.erectionAmount = erectionAmount;
 		this.baseErectionRate = baseErectionRate;
 		this.baseSupplyRate = baseSupplyRate;
+		this.sheetName = sheetName;
 	}
 
 	@Id
@@ -213,5 +215,15 @@ public class BOQDetails {
 	public void setBaseErectionRate(String baseErectionRate) {
 	    this.baseErectionRate = baseErectionRate;
 	}
+
+	public String getSheetName() {
+		return sheetName;
+	}
+
+	public void setSheetName(String sheetName) {
+		this.sheetName = sheetName;
+	}
+	
+	
 	
 }

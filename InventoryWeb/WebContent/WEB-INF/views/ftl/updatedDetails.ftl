@@ -69,67 +69,7 @@
           <!-- "dark": dark version of header top e.g. class="header-top dark" -->
           <!-- "colored": colored version of header top e.g. class="header-top colored" -->
           <!-- ================ -->
-          <div class="header-top dark">
-            <div class="container">
-              <div class="row">
-                <div class="col-3 col-sm-6 col-lg-9">
-                  <!-- header-top-first start -->
-                  <!-- ================ -->
-                  <div class="header-top-first clearfix">
-                    <ul class="social-links circle small clearfix hidden-sm-down">
-                      <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                      <li class="skype"><a href="#"><i class="fa fa-skype"></i></a></li>
-                      <li class="linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                      <li class="googleplus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                      <li class="youtube"><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                      <li class="flickr"><a href="#"><i class="fa fa-flickr"></i></a></li>
-                      <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                      <li class="pinterest"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                    </ul>
-                    <div class="social-links hidden-md-up circle small">
-                      <div class="btn-group dropdown">
-                        <button id="header-top-drop-1" type="button" class="btn dropdown-toggle dropdown-toggle--no-caret" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share-alt"></i></button>
-                        <ul class="dropdown-menu dropdown-animation" aria-labelledby="header-top-drop-1">
-                          <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                          <li class="skype"><a href="#"><i class="fa fa-skype"></i></a></li>
-                          <li class="linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                          <li class="googleplus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                          <li class="youtube"><a href="#"><i class="fa fa-youtube-play"></i></a></li>
-                          <li class="flickr"><a href="#"><i class="fa fa-flickr"></i></a></li>
-                          <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                          <li class="pinterest"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                        </ul>
-                      </div>
-                    </div>
-                    <ul class="list-inline hidden-md-down">
-                      <li class="list-inline-item"><i class="fa fa-map-marker pr-1 pl-2"></i>One Infinity Loop Av, Tk 123456</li>
-                      <li class="list-inline-item"><i class="fa fa-phone pr-1 pl-2"></i>+12 123 123 123</li>
-                      <li class="list-inline-item"><i class="fa fa-envelope-o pr-1 pl-2"></i> theproject@mail.com</li>
-                    </ul>
-                  </div>
-                  <!-- header-top-first end -->
-                </div>
-                <div class="col-9 col-sm-6 col-lg-3">
-
-                  <!-- header-top-second start -->
-                  <!-- ================ -->
-                  <div id="header-top-second"  class="clearfix">
-
-                    <!-- header top dropdowns start -->
-                    <!-- ================ -->
-                    <div class="header-top-dropdown text-right">
-                      <div class="btn-group">
-                        <a href="page-signup.html" class="btn btn-default btn-sm"><i class="fa fa-user pr-2"></i> Sign Up</a>
-                      </div>
-
-                    </div>
-                    <!--  header top dropdowns end -->
-                  </div>
-                  <!-- header-top-second end -->
-                </div>
-              </div>
-            </div>
-          </div>
+         
           <!-- header-top end -->
 
           <!-- header start -->
@@ -143,25 +83,22 @@
           <header class="header fixed fixed-desktop clearfix">
             <div class="container">
               <div class="row">
-                <div class="col-md-auto hidden-md-down">
-                  <!-- header-first start -->
-                  <!-- ================ -->
-                  <div class="header-first clearfix">
-
-                    <!-- logo -->
-                    <div id="logo" class="logo">
-                      <a href="index.html"><img id="logo_img" src="images/logo_light_blue.png" alt="The Project"></a>
-                    </div>
-
-                    <!-- name-and-slogan -->
-                    <div class="site-slogan">
-                      Multipurpose HTML5 Template
-                    </div>
-
-                  </div>
-                  <!-- header-first end -->
-
+                 <div class="col-md-8">
+                   <div class="navbar navbar-default navbar-static-top container" style="margin-left: 0px; margin-right: 0px;">
+                    <div class="navbar-header" style="width: 200px;">
+                   <img src="./loginPage/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
                 </div>
+                </div>
+                </div> 
+                <div class="col-md-2">
+                  </div>
+                  <div class="col-md-2"> 
+                <form class="form-horizontal" action="logout" method="POST" style="margin-left: 100px;margin-top: 30px;">
+             
+                  <button type="submit" class="btn btn-default btn-animated">Log Out <i class="fa fa-user"></i></button>
+                </form>
+              </div>
+            </div>
                 <div class="col-lg-8 ml-auto">
 
                   <!-- header-second start -->
@@ -178,19 +115,11 @@
                         <div class="navbar-brand clearfix hidden-lg-up">
 
                           <!-- logo -->
-                          <div id="logo-mobile" class="logo">
-                            <a href="index.html"><img id="logo-img-mobile" src="images/logo_light_blue.png" alt="The Project"></a>
-                          </div>
+                         
 
                           <!-- name-and-slogan -->
-                          <div class="site-slogan">
-                            Multipurpose HTML5 Template
-                          </div>
-
-                        </div>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse-1" aria-controls="navbar-collapse-1" aria-expanded="false" aria-label="Toggle navigation">
-                          <span class="navbar-toggler-icon"></span>
-                        </button>
+                         
+                        
 
                         <div class="collapse navbar-collapse" id="navbar-collapse-1">
                         </div>
@@ -238,9 +167,9 @@
                       <h3 class="title">Project Details</h3>
                       <div class="separator-2"></div>
                       <ul class="list margin-clear">
-                        <li><strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 10%;">PO Number</strong> <span>${poNumber}</span></li>
-                        <li><strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 10%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span></li>
-                        <li><strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 10%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span></li>                    
+                        <li><strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 29%;">PO Number:</strong> <span>${poNumber}</span></li>
+                        <li><strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 25%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span></li>
+                        <li><strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 20%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span></li>                    
                         <li><strong>GST #: </strong> <span class="text-right">${gstNumber}</span></li>
                       </ul>
 
@@ -392,7 +321,7 @@
 </div>
 </div>
 <input type="hidden" name="projectId" value="${projectId}" />
-<div class="row">
+<div class="row inventoryTableHeader" style="display:none;">
   <div class="col-md-12 ">
 
     <div class="table">                
@@ -448,66 +377,66 @@
 <br>
 <div class="row">
   <div class="col-md-3 ">
-    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+    
      <h4>Quotation Revisions</h4>
      <select class="form-control" id="revisionSection" onChange="download($('#revisionSection').val());">
       <option></option>
     </select>                
-  </div>
+  
 </div>
 <div class="col-md-3 ">
-  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+  
     <h4>Inquiry List</h4>
     <select class="form-control" onChange="download($('#offerRevisionSection').val());" id="offerRevisionSection">
       <option></option>
     </select>
-  </div>
+  
 </div>
 <div class="col-md-3 ">
-  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+  
     <h4>TaxInvoice List</h4>
     <select class="form-control" onChange="downloadInvoice($('#taxInvoiceList').val());" id="taxInvoiceList">
       <option></option>
     </select>
-  </div>
+  
 </div>
 <div class="col-md-3 ">
-  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+  
     <h4>PO List:</h4> 
     <select class="form-control" onChange="downloadPO($('#poList').val());" id="poList">
       <option></option>
     </select>
-  </div>
+ 
 </div>
 </div>
-<div class="form-row">
+<div class="row" style="margin-top: 10px">
   <div class="col-md-3">
-   <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-    <label></label>
-    <br>
+   
+    
     <button type="button" onClick="generatePO();" class="btn btn-default">Generate PO</button>
-  </div>					
+					
 </div>
 
 <div class="col-md-3" id="generate">
- <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-   <br>
+ 
+   
    <button type="Submit" class="btn btn-default">Generate</button>
- </div>
+
 </div>
 <div class="col-md-3 ">
- <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+
+<div class="row" style="margin-top: 10px; margin-left: 10px">
+
   <h4>BOQ Name :</h4> 
   <input type="text" name="boqName" value="${projectName}" ></input>
 </div>
 </div>
 <div class="col-md-3" id="generateQuot">
- <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+ 
   <label>
     <input type="hidden" name="boqNameList" value="${boqNameList}" >
     <input type="hidden" name="quotationNamesList" value="${quotationNamesList}" >
   </label>
-</br>
 <button type="button" onClick="createInquiry();" class="btn btn-default">Generate Inquiry</button>		
 </div>					
 </div>
@@ -535,12 +464,14 @@
  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
   <label>Pressure</label>
   <input type="text" name="pressure" value="" />
+
 </div>
 </div>
 <div class="col-md-3 ">
  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
   <label>Temperature</label>
   <input type="text" name="temperature" value="" />
+
 </div>
 </div>
 </div>
@@ -561,17 +492,19 @@
  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
   <label>Site &ensp;&ensp;&ensp;</label>
   <input type="text" name="site" value="" />
+
 </div>
 </div>
 <div class="col-md-3 ">
  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
   <label>Project &ensp;</label>
   <input type="text" name="project" value="" />
+
 </div>
 </div>
 </div>
 <div class="row">
- <div class="col-md-4 ">
+ <div class="col-md-3">
   <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 
    <label>BOQ Name : 
@@ -581,6 +514,7 @@
     <input type="hidden" name="taxInvoiceNamesList" value=${taxInvoiceNamesList} >
     <input type="hidden" name="poNamesList" value=${poNamesList} >
   </label>
+
 </div>
 </div>
 </div>
@@ -598,7 +532,6 @@
             <th>Class/Schedule</th>
             <th>Ends</th>
             <th>Size</th>
-            <th>Available Quantity</th>
             <th>Quantity</th>
             <th/>
             <th>Supply Rate</th>
@@ -614,22 +547,18 @@
     </div>
   </div>
 </div>
-<div class="form-row">
+<div class="row">
   <div class="col-md-4 ">
-    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-    </div>
+   
   </div>
   <div class="col-md-4 ">
-    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-    </div>	
+   	
   </div>
   <div class="col-md-4 ">
-    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-      <label></label>
-      <br>
+    
       <button type="submit" class="btn btn-default generateBOQButton" style="display:none;">Gnerate Quotation</button>
     </div>	
-  </div>	
+ 	
 </div>
 
 </form>
@@ -742,51 +671,55 @@
   </div>					
 </div>
 </div>
-</div>				
+				
 
 <!-- End Create BOQ -->
 
 
 <!--Create BOQ End-->
-<div class="form-row">
+<div class="container" style="min-width: 98%">
+<div class="row">
   <div class="col-md-3">
-   <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-    <label></label>
-    <br>
+   
     <button type="button" class="btn btn-default" onClick="toggleCreateBOQSec();">Create BOQ</button>
-    <br>
-  </div>					
+    				
 </div>							
 <div class="col-md-3">
- <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-  <form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data">
+ 
+  <form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data" style="margin: 0px">
+       <button class="btn btn-default" name="uploadFile">Upload</button>
    <label for="choose">Choose File</label>
    <input id="choose" type="file" name="file" onClick="toggleImportSec();" style="display:none;" class="btn btn-default">
-   <button class="btn btn-primary" name="uploadFile">Upload</button>
+
  </form>    					
-</div>					
+					
 </div>
 <div class="col-md-3 ">
- <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-  <label></label>
-  <br>
+
   <button type="button" class="btn btn-default" onClick="toggleProjSec();">Project Details Section</button>
-</div>					
+					
 </div>
 <div class="col-md-3 ">
- <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-  <label></label>
-  <br>
+
   <button type="button" class="btn btn-default" onClick="togglePayDetailsSec();">Received Payment Details</button>
 </div>					
 </div>
 </div>
+
+<div class="form-row">
+  <div class="col-md-3">
+    <br><button type="button" class="btn btn-default" style="margin-left:8%;" data-toggle="collapse" data-target="#assignedInventory">Show Assigned Inventory</button>
+</div>
+<div class="col-md-3">
+    <br><button type="button" class="btn btn-default" style="margin-left:6%;" data-toggle="collapse" data-target="#consumedInventory">Show Consumed Inventory</button>
+</div>
+</div>	
 <!-- </div> -->
 
 <br>
 <!-- </div> -->
 
-<div class="container" style="max-width:98%;">
+<div class="container collapse" style="max-width:98%;" id="assignedInventory" >
   <div class="col-md-12 ">
     <div class="table-responsive">                
 
@@ -837,7 +770,63 @@
  </div>	
 </div>
 </div>
+<!-- Assugned Inventory Section ENDS-->
+
+<!-- Consumed Inventory Sesion STARTS -->
+<div class="container collapse" style="max-width:98%;" id="consumedInventory" >
+  <div class="col-md-12 ">
+    <div class="table-responsive">                
+
+      <table class="table table-colored" >
+        <thead>
+          <tr>
+           <th></th>
+           <th>Inventory</th>
+           <th>Material</th>
+           <th>Type</th>
+           <th>Manifacturing Method</th>
+           <th>Class/Schedule</th>
+           <th>Ends</th>
+           <th>Size</th>
+           <th>Quantity</th>
+           <th>Purchase Rate</th>
+           <th>Project</th>
+           <th>Location</th>
+         </tr>
+       </thead>
+       <tbody >
+        ${consumedInventory}
+      </tbody>
+    </table>
+    <table class="table table-colored">
+      <thead>
+        <tr>
+         <th></th>
+         <th>Desc 1</th>
+         <th>Desc 2</th>
+         <th>Desc 3</th>
+         <th>Desc 4</th>
+         <th>Desc 5</th>
+         <th>Accesory Name</th>
+         <th></th>
+         <th>Quantity</th>
+         <th>Purchase Rate</th>
+         <th>Project</th>
+         <th>Location</th>
+       </tr>
+     </thead>
+     <tbody>
+       ${consumedAccessory}
+     </tbidy>
+   </table>
+ </div> 
 </div>
+</div>
+<!-- Consumed Inventory Sesion STARTS -->
+
+
+
+
 </section>
 
 </section>
@@ -857,7 +846,7 @@
       <div class="subfooter-inner">
         <div class="row">
           <div class="col-md-12">
-            <p class="text-center">Copyright © 2018 The Project. All rights reserved.</p>
+            <p class="text-center">Powered By Social Angels Digital Solution Pvt Ltd.</p>
           </div>
         </div>
       </div>
@@ -957,6 +946,8 @@ for(i=0;i<inputArray.length;i++)
       console.log(data);
       console.log($(tag));
 
+      var blank = "<option> </option>";
+      $(tag).html(blank);
       $(tag).append(data);
     }
   });
@@ -1171,6 +1162,9 @@ for(i=0;i<inputArray.length;i++)
   {
    console.log("Download being called.");
 
+    $('.inventoryTableHeader').css('display','block');
+    //$('.importBOQ2').show();
+    $('[name="boqName"]')[0].value = name;
    var projectId = $('#projectId').val();  
 
    var formData = $(this).serializeArray();
@@ -1205,21 +1199,7 @@ for(i=0;i<inputArray.length;i++)
       function adjustWidthDn() 
       {
        console.log('Inside adjustWidth');
-       var inputArray = $('input');
-       var i;
-       for(i=0;i<inputArray.length;i++)
-       {
-         var inputlength = inputArray[i].value.length;
-
-         if(inputlength<5)
-          inputArray[i].style.width = "45px";
-        else if(inputlength==7)
-          inputArray[i].style.width = "55px";
-        else
-          inputArray[i].style.width = "65px";
       }
-
-    }
   </script>
 
 
@@ -1434,6 +1414,7 @@ function cleanArray(actual)
       {
 
         $('.generateBOQButton').css('display','block');
+        $('.inventoryTableHeader').css('display','block');
 
         var inventoryName = $('#inventoryName').children("option:selected").val();
         var material = $('#material').children("option:selected").val();
@@ -1508,7 +1489,7 @@ function cleanArray(actual)
       e.preventDefault();
     //Disable submit button
     $(this).prop('disabled',true);
-    
+    $('.inventoryTableHeader').css('display','block');
     var form = document.forms[name="fileUploadForm"];
     
     var formData = new FormData(form);
@@ -1578,9 +1559,9 @@ function cleanArray(actual)
    var purchaseRateStr = $(this.form.elements)[9].value;
    var projectStr		= $(this.form.elements)[10].value;
    var locationStr		= $(this.form.elements)[11].value;
-   var projectId		= $(this.form.elements)[12].value;
-   var projectName		= $(this.form.elements)[13].value;
-   var projectDesc		= $(this.form.elements)[14].value;
+   var projectId		= $(this.form.elements)[13].value;
+   var projectName		= $(this.form.elements)[14].value;
+   var projectDesc		= $(this.form.elements)[15].value;
    var statusTo		= $(this).val();
 
    if(statusTo !== '')

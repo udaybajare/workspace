@@ -22,15 +22,25 @@ public class BOQLineDataDao {
 	SessionFactory sessionFactory;
 	
 	@Transactional
-	public BOQLineData getLineData(String material)
+	public BOQLineData getLineData(String material, String inventoryName)
 	{
 		ArrayList<BOQLineData> boqLineDataList = new ArrayList<BOQLineData>();
 		
 		try {
 			Session session = sessionFactory.getCurrentSession();
-					
-			Query sqlQuery = session.createQuery("from BOQLineData as lineData where lineData.material=:material");
-			sqlQuery.setParameter("material", material);
+			Query sqlQuery = null;
+			
+			if(inventoryName.equals("Pipe"))
+			{
+				sqlQuery = session.createQuery("from BOQLineData as lineData where lineData.material=:material and lineData.inventoryName=:inventoryName");	
+				sqlQuery.setParameter("material", material);
+			}
+			else
+			{
+				sqlQuery = session.createQuery("from BOQLineData as lineData where lineData.inventoryName=:inventoryName");
+			}
+						
+			sqlQuery.setParameter("inventoryName", inventoryName);
 			
 			List results = sqlQuery.getResultList();
 			

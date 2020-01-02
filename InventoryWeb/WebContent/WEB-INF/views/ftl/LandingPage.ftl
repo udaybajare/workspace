@@ -78,7 +78,7 @@
         <!-- "dark": dark version of header e.g. class="header dark clearfix" -->
         <!-- "centered": mandatory class for the centered logo layout -->
         <!-- ================ -->
-        <div class="sticky-wrapper" style=""><header class="header fixed fixed-desktop clearfix">
+        <div class="" style=""><header class="header-section">
           <div class="container">
             <div class="row">
               <div class="col-md-auto hidden-md-down">
@@ -88,12 +88,13 @@
 
                   <!-- logo -->
                   <div id="logo" class="logo">
-                    <img id="logo_img" src="./loginPage/img/Hamdule-Logo1.png" alt="The Project">
+                    <img src="./loginPage/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 0px;margin-left: -100px;">
+          </div>
                   </div>
 
                   <!-- name-and-slogan -->
                   <div class="site-slogan">
-                    Multipurpose HTML5 Template
+                 
                   </div>
 
                 </div>
@@ -209,7 +210,7 @@
 
       <!-- main-container start -->
       <!-- ================ -->
-      <div class="main-container dark-translucent-bg" style="background-image:url(&#39;images/background-img-6.jpg&#39;);">
+      <div class="main-container dark-translucent-bg">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-auto">
@@ -223,19 +224,21 @@
                       <label for="inputUserName" class="col-md-3 text-md-right control-label col-form-label">User Name</label>
                       <div class="col-md-8">
                         <input name ="userName" type="text" class="form-control" id="inputUserName" placeholder="User Name" required="">
-                        <i class="fa fa-user form-control-feedback pr-4"></i>
+                        <i class=" form-control-feedback pr-4"></i>
                       </div>
                     </div>
                     <div class="form-group has-feedback row">
                       <label for="inputPassword" class="col-md-3 text-md-right control-label col-form-label">Password</label>
                       <div class="col-md-8">
                         <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password" required="">
-                        <i class="fa fa-lock form-control-feedback pr-4"></i>
+                        <i class=" form-control-feedback pr-4"></i>
                       </div>
                     </div>
-                    <div class="form-group row">
-                      <div class="ml-md-auto col-md-9">                        
-                        <button type="submit" class="btn btn-group btn-default btn-animated">Log In <i class="fa fa-user"></i></button>
+                    <div class="row">
+                      <div class="ml-md-auto col-md-9">  
+                      <form class="form-horizontal">                      
+                        <button type="submit" class="btn btn-default btn-animated">Log In </button>
+                        </form>
                         <ul class="space-top">
                           <li><a href="file:///C:/Users/Uday/Desktop/Humdule/WB0F82581/the_project_v.2.1.0/html/html/template/page-login.html#">Forgot your password?</a></li>
                         </ul>
@@ -243,12 +246,16 @@
                     </div>
                   </form>
                 </div>
-                <p class="text-center space-top">Don't have an account yet? <a href="file:///C:/Users/Uday/Desktop/Humdule/WB0F82581/the_project_v.2.1.0/html/html/template/page-signup.html">Sing up</a> now.</p>
+               
               </div>
               <!-- main end -->
             </div>
           </div>
         </div>
+        <div class="row mar-b-50">
+     </div>
+     <div class="row mar-b-50">
+     </div>
       </div>
       <!-- main-container end -->
 
@@ -263,7 +270,7 @@
         <!-- .footer start -->
         <!-- ================ -->
         
-        </div>
+      
         <!-- .footer end -->
 
         <!-- .subfooter start -->
@@ -273,7 +280,7 @@
             <div class="subfooter-inner">
               <div class="row">
                 <div class="col-md-12">
-                  <p class="text-center">Copyright © 2018 The Project. All rights reserved.</p>
+                  <p class="text-center">Powered By Social Angels Digital Solution Pvt Ltd</p>
                 </div>
               </div>
             </div>

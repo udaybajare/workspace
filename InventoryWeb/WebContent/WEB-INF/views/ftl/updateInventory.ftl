@@ -60,9 +60,9 @@
 
       <!-- page wrapper start -->
       <!-- ================ -->
-      <div class="page-wrapper">
+      
         <!-- header-container start -->
-        <div class="header-container">
+        
           <!-- header-top start -->
           <!-- classes:  -->
           <!-- "dark": dark version of header top e.g. class="header-top dark" -->
@@ -79,75 +79,32 @@
           <!-- "dark": dark version of header e.g. class="header dark clearfix" -->
           <!-- "centered": mandatory class for the centered logo layout -->
           <!-- ================ -->
-          <header class="header fixed fixed-desktop clearfix">
+          <header class="header-section">
             <div class="container">
               <div class="row">
-                <div class="col-md-auto hidden-md-down">
-                  <!-- header-first start -->
-                  <!-- ================ -->
-                  <div class="header-first clearfix">
-
-                    <!-- logo -->
-                    <div id="logo" class="logo">
-                      <a href="index.html"><img id="logo_img" src="images/logo_light_blue.png" alt="The Project"></a>
-                    </div>
-
-                    <!-- name-and-slogan -->
-                    <div class="site-slogan">
-                      Multipurpose HTML5 Template
-                    </div>
-
+                  <div class="col-md-8">
+                
+                 <img src="./loginPage/img/Hamdule-Logo1.png"  style="width: 250px;height: 55px;margin-top: 20px;margin-left: -130px;">
+                   </div>
+        
+      
+                <div class="col-md-2">
                   </div>
-                  <!-- header-first end -->
-
-                </div>
-                <div class="col-lg-8 ml-auto">
+                  <div class="col-md-2"> 
+                <form class="form-horizontal" action="logout" method="POST" style="margin-left: 60px;margin-top: 30px;">
+             
+                  <button type="submit" class="btn btn-default btn-animated">Log Out <i class="fa fa-user"></i></button>
+                </form>
+              </div>
+              </div>  
 
                   <!-- header-second start -->
                   <!-- ================ -->
-                  <div class="header-second clearfix">
-                    
-                    <!-- main-navigation start -->
-                    <!-- classes: -->
-                    <!-- "onclick": Makes the dropdowns open on click, this the default bootstrap behavior e.g. class="main-navigation onclick" -->
-                    <!-- "animated": Enables animations on dropdowns opening e.g. class="main-navigation animated" -->
-                    <!-- ================ -->
-                    <div class="main-navigation main-navigation--mega-menu  animated">
-                      <nav class="navbar navbar-expand-lg navbar-light p-0">
-                        <div class="navbar-brand clearfix hidden-lg-up">
-
-                          <!-- logo -->
-                          <div id="logo-mobile" class="logo">
-                            <a href="index.html"><img id="logo-img-mobile" src="images/logo_light_blue.png" alt="The Project"></a>
-                          </div>
-
-                          <!-- name-and-slogan -->
-                          <div class="site-slogan">
-                            Multipurpose HTML5 Template
-                          </div>
-
-                        </div>
-                        <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                          <!-- main-menu -->
-                          <ul class="navbar-nav ml-xl-auto">
-                          </ul>
-                          <!-- main-menu end -->
-                        </div>
-                      </nav>
-                    </div>
-                    <!-- main-navigation end -->
-                  </div>
-                  <!-- header-second end -->
-
-                </div>
-                <div class="col-auto hidden-md-down">
-
-                </div>
-              </div>
-            </div>
+                 
           </header>
+       
           <!-- header end -->
-        </div>
+        
         <!-- header-container end -->
         <!-- breadcrumb start -->
         <!-- ================ -->
@@ -157,7 +114,7 @@
         <!-- main-container start -->
         <!-- ================ -->
         
-        <section class="main-container padding-bottom-clear">
+        
           <!-- section -->
           <!-- ================ -->
           <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
@@ -194,8 +151,8 @@
                <div class="row">
                 <div class="col-md-3">
                  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                  <br>
-                  <button type="button" class="btn btn-default" onClick="showInventory();">Show Available Inventory</button>
+                  
+                  <button type="button" class="btn btn-default" onClick="showInventory();" style="margin-left: 90px;">Show Available Inventory</button>
                 </div>
               </div>
             </div>
@@ -230,27 +187,27 @@
                </div>
                <!-- Challan Section Starts-->
                
-               <div class="collapse" id="challan">
+               <div class="collapse" id="challan" style="margin-left: 80px">
                  <label><h3></h3></label>
                  <div class="form-row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-3">
                     <label>PO No</label>
                     <input type="text" class="form-control" placeholder="Po No" name="poNo">
                   </div>
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-3">
                     <label>PO Date</label>
                     <input type="text" class="form-control" placeholder="PO Date" name="poDate">
                   </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-3">
                     <label>From</label>
                     <input type="text" class="form-control" name="receivedFrom">
                   </div>
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-3">
                     <label>Consignee</label>
                     <input type="text" class="form-control" name="Consignee">
                   </div>
+                   </div>
+                <div class="form-row">
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-3">
@@ -268,22 +225,20 @@
                 </div>
               </div>
               <!-- Challan Section Ends--> 
-              <br>
-              <br>
+            
+              
               <!-- Bill Section Starts -->
-              <div class="collapse" id="bill">
+              <div class="collapse" id="bill" style="margin-left: 80px">
                <label><h3></h3></label>
                <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                   <label>Bill Number</label>
                   <input type="text" class="form-control" name="billNumber">
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                   <label>Bill Date</label>
                   <input type="text" class="form-control" name="billDate">
                 </div>
-              </div>
-              <div class="form-row">
                 <div class="form-group col-md-3">
                   <label>PO Number</label>
                   <input type="text" class="form-control" name="poNumber">
@@ -293,33 +248,36 @@
                   <input type="text" class="form-control" name="gstNumber">
                 </div>
               </div>
+              <div class="form-row">
+                
+              </div>
             </div>
             <!-- Bill Section Ends -->
-            <br>
-            <br>
+            
+            
             <!-- Invoice Section Starts--> 
             
-            <div class="collapse" id="invoice"> 
+            <div class="collapse" id="invoice" style="margin-left: 80px"> 
               <label><h3></h3></label>	
               <div class="form-row">	
-               <div class="form-group col-md-4">
+               <div class="form-group col-md-3">
                 <label>TaxInvoice No</label>
                 <input type="text" class="form-control" name="taxInvoiceNo">
               </div>
-              <div class="form-group col-md-4">
+              <div class="form-group col-md-3">
                 <label>Addressed To</label>
                 <input type="text" class="form-control" name="addressedto1">
               </div>
-              <div class="form-group col-md-4">
+              <div class="form-group col-md-3">
                 <label>Order Date</label>
                 <input type="text" class="form-control" name="orderDate">
               </div>
-            </div>
-            <div class="form-row">
               <div class="form-group col-md-3">
                 <label>Rate</label>
                 <input type="text" class="form-control" name="rate">
               </div>
+            </div>
+            <div class="form-row">              
               <div class="form-group col-md-3">
                 <label>Contact Name</label>
                 <input type="text" class="form-control" name="contactName">
@@ -332,12 +290,12 @@
                 <label>Hsn/Sac</label>
                 <input type="text" class="form-control" name="hsnOrSac">
               </div>
-            </div>
-            <div class="form-row">
               <div class="form-group col-md-3">
                 <label>Amount In Words</label>
                 <input type="text" class="form-control" name="amtInwrd1">
               </div>
+            </div>
+            <div class="form-row">              
               <div class="form-group col-md-3">
                 <label>Email</label>
                 <input type="text" class="form-control" name="emailAddress">
@@ -352,7 +310,7 @@
                 </select>
               </div>
               <div class="form-group col-md-3">
-                <label>Order No</label>
+                <label>Purchase Order No</label>
                 <input type="text" class="form-control" name="orderNo">
               </div>
             </div>
@@ -361,27 +319,28 @@
 
           <!-- Accessories Section Starts--> 
           
-          <div class="collapse" id="accessory"> 
+          <div class="collapse" id="accessory" style="margin-left: 80px"> 
             <label><h3></h3></label>	
             <div class="form-row">	
-             <div class="form-group col-md-4">
+             <div class="form-group col-md-3">
               <label>Accessory Name</label>
               <input type="text" class="form-control" name="accessoryName">
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label>Description 1</label>
               <input type="text" class="form-control" name="desc1">
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label>Description 2</label>
               <input type="text" class="form-control" name="desc2">
             </div>
-          </div>
-          <div class="form-row">
             <div class="form-group col-md-3">
               <label>Description 3</label>
               <input type="text" class="form-control" name="desc3">
             </div>
+          </div>
+          <div class="form-row">
+            
             <div class="form-group col-md-3">
               <label>Description 4</label>
               <input type="text" class="form-control" name="desc4">
@@ -390,8 +349,6 @@
               <label>Description 5</label>
               <input type="text" class="form-control" name="desc5">
             </div>
-          </div>
-          <div class="form-row">
             <div class="form-group col-md-3">
               <label>Assigned Project</label>
               <select class='form-control' name='project' name='assignedProject' id='projectNm'><option></option>
@@ -401,12 +358,18 @@
               <label>Location</label>
               <input type="text" class="form-control" name="location">
             </div>
-            <div class="form-group col-md-3">
+          </div>
+          <div class="form-row">
+            
+            <div class="form-group col-md-4">
               <input type="hidden" class="form-control" name="status" value"assigned">
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4" style="margin-left: 100px">
               <br>
               <button type="button" onClick="saveAccessory();" class="btn btn-default">Save Accessory</button>
+            </div>
+            <div class="form-group col-md-4">
+              <input type="hidden" class="form-control" name="status" value"assigned">
             </div>
           </div>
         </div>
@@ -467,26 +430,26 @@
 	<div class="col-md-3 ">
    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
      <br>
-     <button type="button" data-toggle="collapse" data-target="#challan" class="btn btn-default">Challan Details</button>
+     <button type="button" onClick="hideOthers('challan')" data-toggle="collapse" data-target="#challan" class="btn btn-default">Challan Details</button>
    </div>
  </div>
  <div class="col-md-3 ">
    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
      <br>
-     <button type="button" data-toggle="collapse" data-target="#bill" class="btn btn-default">Bill Details</button>
+     <button type="button" onClick="hideOthers('bill')" data-toggle="collapse" data-target="#bill" class="btn btn-default">Bill Details</button>
    </div>
  </div>
  <div class="col-md-3 ">
    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
      <br>
-     <button type="button" data-toggle="collapse" data-target="#invoice" class="btn btn-default">Invoice Details</button>
+     <button type="button" onClick="hideOthers('invoice')" data-toggle="collapse" data-target="#invoice" class="btn btn-default">Invoice Details</button>
    </div>	
  </div>
  
  <div class="col-md-3 ">
    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
      <br>
-     <button type="button" data-toggle="collapse" data-target="#accessory" class="btn btn-default">Add Accessory</button>
+     <button type="button" onClick="hideOthers('accessory')" data-toggle="collapse" data-target="#accessory" class="btn btn-default">Add Accessory</button>
    </div>	
  </div>
  
@@ -496,7 +459,7 @@
 	<div class="col-md-3 ">
    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
      <br>
-     <button type="submit" id="updateButton" class="btn btn-default" Style="display:none;">Update Inventory</button>
+     <button type="submit" id="updateButton" class="btn btn-default" Style="display: none;margin-left: 100px">Update Inventory</button>
    </div>	
  </div>	
 </div>
@@ -673,7 +636,7 @@
       <div class="subfooter-inner">
         <div class="row">
           <div class="col-md-12">
-            <p class="text-center">Copyright © 2018 The Project. All rights reserved.</p>
+            <p class="text-left">Powered By Social Angels Digital Solution Pvt Ltd</p>
           </div>
         </div>
       </div>
@@ -1129,5 +1092,28 @@ function accessoryStatusTo(accessoryId){
 };
 </script>
 
+<script>
+function hideOthers(idToBeOpen)
+{
+
+  var idVals = ["challan","bill","invoice","accessory"];
+  
+  for(var i=0; i< idVals.length; i++)
+  {
+    if(idToBeOpen !== idVals[i])
+    {
+      $('#'+idVals[i]).hide();
+    
+    }
+    else
+    {
+      $('#'+idVals[i]).show();
+    }
+  
+  }
+
+
+}
+</script>
 </body>
 </html>

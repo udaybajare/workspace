@@ -38,7 +38,7 @@ public class TaxInvoicePDFView extends AbstractView {
 	    File file = ResourceUtils.getFile("classpath:InvoiceTemplate.pdf");
 	    document = PDDocument.load(file);
 	    
-	    int rateInt = Integer.parseInt(taxInvoiceDetails.getRate());
+	    int rateInt = (int)Double.parseDouble(taxInvoiceDetails.getRate());
 	    int cGst = rateInt*9/100;
 		    
 	    String[] address = taxInvoiceDetails.getAddressedto1().split(",");

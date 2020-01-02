@@ -246,7 +246,7 @@ public class ProjectController {
 		for (Inventory inv : assignedInventory) 
 		{
 			System.out.println(inv.toString());
-			assignedInventoryStr.append(inventoryUtils.createInventoryRowTable(inv)+projectDetalsHTML);
+			assignedInventoryStr.append(inventoryUtils.createInventoryRowTable(inv, false)+projectDetalsHTML);
 		}
 
 		//Assigned accessories
@@ -257,17 +257,36 @@ public class ProjectController {
 		
 		for (AccessoryDetails accessory : assignedAccessory) 
 		{
-			assignedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(accessory)+projectDetalsHTML);
+			assignedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(accessory, false)+projectDetalsHTML);
 		}
 		
 		ModelAndView mav = new ModelAndView(updateProjectviewName);
 
+		StringBuffer consumedInventoryStr = new StringBuffer();
+		
+		ArrayList<Inventory> consumedInventory = inventoryDao.getConsumedInventory(project.getProjectName());
+		
+		for (Inventory inv : consumedInventory) 
+		{
+			consumedInventoryStr.append(inventoryUtils.createInventoryRowTable(inv, true)+projectDetalsHTML);
+		}
+		
+		ArrayList<AccessoryDetails> consumedAccessory = accessoryDetailsDao.getAccessoryDetailsByStatus(project.getProjectName(),"consumed");
+		StringBuffer consumedAccessoryStr = new StringBuffer();
+		
+		for (AccessoryDetails accessory : consumedAccessory) 
+		{
+			consumedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(accessory, true)+projectDetalsHTML);
+		}
+		
 		mav.addObject("assignedInventory", assignedInventoryStr);
 		mav.addObject("assignedAccessory", assignedAccessoryStr);
 
+		
+		
 		//TODO : Add Consumed Inventory and Consumed Accessory
-		/*mav.addObject("consumedInventory", assignedInventoryStr);
-		mav.addObject("consumedAccessory", assignedAccessoryStr);*/
+		mav.addObject("consumedInventory", consumedInventoryStr);
+		mav.addObject("consumedAccessory", consumedAccessoryStr);
 		
 		
 		if (projectDetails.getAddress() == null) {

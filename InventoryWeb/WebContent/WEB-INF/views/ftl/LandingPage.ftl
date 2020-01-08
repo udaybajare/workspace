@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0102)file:///C:/Users/Uday/Desktop/Humdule/WB0F82581/the_project_v.2.1.0/html/html/template/page-login.html -->
 <html dir="ltr" lang="zxx"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <title>The Project | Page Login</title>
+    <title>The Project & Inventory Manager</title>
     <meta name="description" content="The Project a Bootstrap-based, Responsive HTML5 Template">
     <meta name="author" content="author">
 
@@ -10,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="file:///C:/Users/Uday/Desktop/Humdule/WB0F82581/the_project_v.2.1.0/html/html/template/images/favicon.ico">
+    <link rel="shortcut icon" href="./images/favicon.ico">
 
     <!-- Web Fonts -->
     <link href="./loginPage/css" rel="stylesheet">

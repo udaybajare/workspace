@@ -69,7 +69,7 @@
           <!-- "dark": dark version of header top e.g. class="header-top dark" -->
           <!-- "colored": colored version of header top e.g. class="header-top colored" -->
           <!-- ================ -->
-         
+
           <!-- header-top end -->
 
           <!-- header start -->
@@ -83,159 +83,138 @@
           <header class="header fixed fixed-desktop clearfix">
             <div class="container">
               <div class="row">
-                 <div class="col-md-8">
-                   <div class="navbar navbar-default navbar-static-top container" style="margin-left: 0px; margin-right: 0px;">
-                    <div class="navbar-header" style="width: 200px;">
+               <div class="col-md-8">
+                 <div class="navbar navbar-default navbar-static-top container" style="margin-left: 0px; margin-right: 0px;">
+                  <div class="navbar-header" style="width: 200px;">
                    <img src="./loginPage/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
-                </div>
-                </div>
-                </div> 
-                <div class="col-md-2">
-                  </div>
-                  <div class="col-md-2"> 
-                <form class="form-horizontal" action="logout" method="POST" style="margin-left: 100px;margin-top: 30px;">
-             
-                  <button type="submit" class="btn btn-default btn-animated">Log Out <i class="fa fa-user"></i></button>
-                </form>
-              </div>
-            </div>
-                <div class="col-lg-8 ml-auto">
-
-                  <!-- header-second start -->
-                  <!-- ================ -->
-                  <div class="header-second clearfix">
-
-                    <!-- main-navigation start -->
-                    <!-- classes: -->
-                    <!-- "onclick": Makes the dropdowns open on click, this the default bootstrap behavior e.g. class="main-navigation onclick" -->
-                    <!-- "animated": Enables animations on dropdowns opening e.g. class="main-navigation animated" -->
-                    <!-- ================ -->
-                    <div class="main-navigation main-navigation--mega-menu  animated">
-                      <nav class="navbar navbar-expand-lg navbar-light p-0">
-                        <div class="navbar-brand clearfix hidden-lg-up">
-
-                          <!-- logo -->
-                         
-
-                          <!-- name-and-slogan -->
-                         
-                        
-
-                        <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                        </div>
-                      </nav>
-                    </div>
-                    <!-- main-navigation end -->
-                  </div>
-                  <!-- header-second end -->
-
-                </div>
-                <div class="col-auto hidden-md-down">
-                </div>
-              </div>
-            </div>
-          </header>
-          <!-- header end -->
-        </div>
-        <!-- header-container end -->
-        <!-- breadcrumb start -->
-        <!-- ================ -->
-
-        <!-- breadcrumb end -->
-
-        <!-- main-container start -->
-        <!-- ================ -->
-        <section class="main-container padding-bottom-clear">
-          <!-- section -->
-          <!-- ================ -->
-          <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
-            <div class="container" style="max-width:98%;">
-              <div class="row">
-                <div class="col-md-7 ">
-                  <div class="pv-30 ph-20 feature-box bordered shadow text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-
-                    <h3>${projectName}</h3>
-                    <div class="separator clearfix"></div>
-                    <p>${projectDesc}</p>
-
-                  </div>
-
-                </div> 
-                <aside class="col-md-5 col-xl-5 ml-xl-auto">
-                  <div class="sidebar">
-                    <div class="block clearfix">
-                      <h3 class="title">Project Details</h3>
-                      <div class="separator-2"></div>
-                      <ul class="list margin-clear">
-                        <li><strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 29%;">PO Number:</strong> <span>${poNumber}</span></li>
-                        <li><strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 25%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span></li>
-                        <li><strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 20%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span></li>                    
-                        <li><strong>GST #: </strong> <span class="text-right">${gstNumber}</span></li>
-                      </ul>
-
-                    </div>
-                  </div>
-                </aside>			  
-              </div>
-              <br>
-
-              <table id="payDetailsSection" class="table table-striped table-colored" style="display:none;">
-               <thead>
-                 <tr>
-                   <th>Payment ID</th>
-                   <th>TaxInvoice Number</th>
-                   <th>Amount</th>
-                   <th>Date Received</th>
-                 </tr>
-               </thead>
-               ${paymentDetails}
-               <tbody>
-               </tbody>
-             </table>
-
-             <!-- Update project Section START -->
-
-             <form action="updateProject" class="projDetails" style="display:none;" method="POST">
-              <div class="row" >
-                <div class="col-md-4 ">
-                  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                    <div class="form-group has-feedback">
-                      <label>PO Date</label>
-                      <input type="text" name="poDate" class="form-control" value=" ">                   
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4 ">
-                  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                    <label>PO Number</label>
-                    <input type="text" name="poNumber" class="form-control" value=" ">
-                  </div>
-                </div>
-                <div class="col-md-4 ">
-                  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                   <label>Contact Person Name</label>
-                   <input type="text" name="contactName" class="form-control" >
                  </div>
                </div>
+             </div> 
+             <div class="col-md-2">
              </div>
-             <br>
-             <div class="row">
-              <div class="col-md-4 ">
-                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                  <label>Contact Email</label>
-                  <input type="text" name="contactEmail" class="form-control">
+             <div class="col-md-2"> 
+              <form class="form-horizontal" action="logout" method="POST" style="margin-left: 100px;margin-top: 30px;">
+
+                <button type="submit" class="btn btn-default btn-animated">Log Out <i class="fa fa-user"></i></button>
+              </form>
+            </div>
+          </div>
+          <div class="col-lg-8 ml-auto">
+
+            <!-- header-second start -->
+            <!-- ================ -->
+            <div class="header-second clearfix">
+
+              <!-- main-navigation start -->
+              <!-- classes: -->
+              <!-- "onclick": Makes the dropdowns open on click, this the default bootstrap behavior e.g. class="main-navigation onclick" -->
+              <!-- "animated": Enables animations on dropdowns opening e.g. class="main-navigation animated" -->
+              <!-- ================ -->
+              <div class="main-navigation main-navigation--mega-menu  animated">
+                <nav class="navbar navbar-expand-lg navbar-light p-0">
+                  <div class="navbar-brand clearfix hidden-lg-up">
+
+                    <!-- logo -->
+
+
+                    <!-- name-and-slogan -->
+
+
+
+                    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                    </div>
+                  </nav>
+                </div>
+                <!-- main-navigation end -->
+              </div>
+              <!-- header-second end -->
+
+            </div>
+            <div class="col-auto hidden-md-down">
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- header end -->
+    </div>
+    <!-- header-container end -->
+    <!-- breadcrumb start -->
+    <!-- ================ -->
+
+    <!-- breadcrumb end -->
+
+    <!-- main-container start -->
+    <!-- ================ -->
+    <section class="main-container padding-bottom-clear">
+      <!-- section -->
+      <!-- ================ -->
+      <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
+        <div class="container" style="max-width:98%;">
+          <div class="row">
+            <div class="col-md-7 ">
+              <div class="pv-30 ph-20 feature-box bordered shadow text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+
+                <h3>${projectName}</h3>
+                <div class="separator clearfix"></div>
+                <p>${projectDesc}</p>
+
+              </div>
+
+            </div> 
+            <aside class="col-md-5 col-xl-5 ml-xl-auto">
+              <div class="sidebar">
+                <div class="block clearfix">
+                  <h3 class="title">Project Details</h3>
+                  <div class="separator-2"></div>
+                  <ul class="list margin-clear">
+                    <li><strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 29%;">PO Number:</strong> <span>${poNumber}</span></li>
+                    <li><strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 25%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span></li>
+                    <li><strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 20%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span></li>                    
+                    <li><strong>GST #: </strong> <span class="text-right">${gstNumber}</span></li>
+                  </ul>
+
                 </div>
               </div>
-              <div class="col-md-4 ">
-                <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                 <label>Contact Phone</label>
-                 <input type="text" name="contactPhone" class="form-control">
-               </div>
-             </div>
-             <div class="col-md-4 ">
+            </aside>			  
+          </div>
+          <br>
+
+          <table id="payDetailsSection" class="table table-striped table-colored" style="display:none;">
+           <thead>
+             <tr>
+               <th>Payment ID</th>
+               <th>TaxInvoice Number</th>
+               <th>Amount</th>
+               <th>Date Received</th>
+             </tr>
+           </thead>
+           ${paymentDetails}
+           <tbody>
+           </tbody>
+         </table>
+
+         <!-- Update project Section START -->
+
+         <form action="updateProject" class="projDetails" style="display:none;" method="POST">
+          <div class="row" >
+            <div class="col-md-4 ">
               <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-               <label>GST Number</label>
-               <input type="text" name="gstNumber" class="form-control" value=" ">
+                <div class="form-group has-feedback">
+                  <label>PO Date</label>
+                  <input type="text" name="poDate" class="form-control" value=" ">                   
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 ">
+              <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                <label>PO Number</label>
+                <input type="text" name="poNumber" class="form-control" value=" ">
+              </div>
+            </div>
+            <div class="col-md-4 ">
+              <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+               <label>Contact Person Name</label>
+               <input type="text" name="contactName" class="form-control" >
              </div>
            </div>
          </div>
@@ -243,43 +222,64 @@
          <div class="row">
           <div class="col-md-4 ">
             <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-             <label>Address</label>
-             <input type="text" name="address" class="form-control">
+              <label>Contact Email</label>
+              <input type="text" name="contactEmail" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-4 ">
+            <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+             <label>Contact Phone</label>
+             <input type="text" name="contactPhone" class="form-control">
            </div>
          </div>
-
          <div class="col-md-4 ">
-           <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-            <label></label>
+          <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+           <label>GST Number</label>
+           <input type="text" name="gstNumber" class="form-control" value=" ">
+         </div>
+       </div>
+     </div>
+     <br>
+     <div class="row">
+      <div class="col-md-4 ">
+        <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+         <label>Address</label>
+         <input type="text" name="address" class="form-control">
+       </div>
+     </div>
 
-          </div>					
-        </div>
-        <div class="col-md-4 ">
-         <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-          <label></label>
-          <br>
-          <button type="submit" class="btn btn-default">Update Project</button>
-        </div>					
-      </div>
-      <input type="hidden" name="projectId" value="${projectId}"/>
+     <div class="col-md-4 ">
+       <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+        <label></label>
+
+      </div>					
     </div>
-  </form>
-
-  <!-- Update project Section END -->
-
-  <form name="generateBOQ" id="generateBOQ" action="generate" method="POST" >
-   <div class="row importBOQ2" style="display:none;">
-    <div class="col-md-3 ">
+    <div class="col-md-4 ">
      <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-      <label>D Name</label>
-      <input type="text" name="dName" value="" />
-    </div>
+      <label></label>
+      <br>
+      <button type="submit" class="btn btn-default">Update Project</button>
+    </div>					
   </div>
+  <input type="hidden" name="projectId" value="${projectId}"/>
+</div>
+</form>
+
+<!-- Update project Section END -->
+
+<form name="generateBOQ" id="generateBOQ" action="generate" method="POST" >
+ <div class="row importBOQ2" style="display:none;">
   <div class="col-md-3 ">
    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-    <label>Utility  &ensp;</label>
-    <input type="text" name="utility" value="" />
+    <label>D Name</label>
+    <input type="text" name="dName" value="" />
   </div>
+</div>
+<div class="col-md-3 ">
+ <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+  <label>Utility  &ensp;</label>
+  <input type="text" name="utility" value="" />
+</div>
 </div>
 <div class="col-md-3 ">
  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
@@ -377,68 +377,67 @@
 <br>
 <div class="row">
   <div class="col-md-3 ">
-    
-     <h4>Quotation Revisions</h4>
-     <select class="form-control" id="revisionSection" onChange="download($('#revisionSection').val());">
-      <option></option>
-    </select>                
+
+   <h4>Quotation Revisions</h4>
+   <select class="form-control" id="revisionSection" onChange="download($('#revisionSection').val());">
+    <option></option>
+  </select>                
   
 </div>
 <div class="col-md-3 ">
-  
-    <h4>Inquiry List</h4>
-    <select class="form-control" onChange="download($('#offerRevisionSection').val());" id="offerRevisionSection">
-      <option></option>
-    </select>
-  
-</div>
-<div class="col-md-3 ">
-  
-    <h4>TaxInvoice List</h4>
-    <select class="form-control" onChange="downloadInvoice($('#taxInvoiceList').val());" id="taxInvoiceList">
-      <option></option>
-    </select>
+
+  <h4>Inquiry List</h4>
+  <select class="form-control" onChange="download($('#offerRevisionSection').val());" id="offerRevisionSection">
+    <option></option>
+  </select>
   
 </div>
 <div class="col-md-3 ">
+
+  <h4>TaxInvoice List</h4>
+  <select class="form-control" onChange="downloadInvoice($('#taxInvoiceList').val());" id="taxInvoiceList">
+    <option></option>
+  </select>
   
-    <h4>PO List:</h4> 
-    <select class="form-control" onChange="downloadPO($('#poList').val());" id="poList">
-      <option></option>
-    </select>
- 
 </div>
+<div class="col-md-3 ">
+
+  <h4>PO List:</h4> 
+  <select class="form-control" onChange="downloadPO($('#poList').val());" id="poList">
+    <option></option>
+  </select>
+
+</div>
+</div>
+<div class="row" id="LoadingImage" style="display: none">
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+    <div>
+      <img src="images/img/loading.gif" />
+    </div>
+  </div>
+  <div class="col-md-4">
+  </div>
 </div>
 <div class="row" style="margin-top: 10px">
-  <div class="col-md-3">
-   
-    
+  <div class="col-md-3">      
     <button type="button" onClick="generatePO();" class="btn btn-default">Generate PO</button>
-					
-</div>
-
-<div class="col-md-3" id="generate">
- 
-   
-   <button type="Submit" class="btn btn-default">Generate</button>
-
-</div>
-<div class="col-md-3 ">
-
-<div class="row" style="margin-top: 10px; margin-left: 10px">
-
-  <h4>BOQ Name :</h4> 
-  <input type="text" name="boqName" value="${projectName}" ></input>
-</div>
-</div>
-<div class="col-md-3" id="generateQuot">
- 
-  <label>
-    <input type="hidden" name="boqNameList" value="${boqNameList}" >
-    <input type="hidden" name="quotationNamesList" value="${quotationNamesList}" >
-  </label>
-<button type="button" onClick="createInquiry();" class="btn btn-default">Generate Inquiry</button>		
-</div>					
+  </div>
+  <div class="col-md-3" id="generate">
+    <button type="Submit" class="btn btn-default">Generate</button>
+  </div>
+  <div class="col-md-3">    
+    <h4>BOQ Name :</h4> 
+    <input type="text" name="boqName" value="${projectName}">
+  </div>
+  <div class="col-md-3" id="generateQuot">
+    <label>
+      <input type="hidden" name="boqNameList" value="${boqNameList}" >
+      <input type="hidden" name="quotationNamesList" value="${quotationNamesList}" >
+    </label>
+    <button type="button" onClick="createInquiry();" class="btn btn-default">Generate Inquiry</button>		
+  </div>					
 </div>
 </div>
 </form>
@@ -549,16 +548,16 @@
 </div>
 <div class="row">
   <div class="col-md-4 ">
-   
+
   </div>
   <div class="col-md-4 ">
-   	
+
   </div>
   <div class="col-md-4 ">
-    
-      <button type="submit" class="btn btn-default generateBOQButton" style="display:none;">Gnerate Quotation</button>
-    </div>	
- 	
+
+    <button type="submit" class="btn btn-default generateBOQButton" style="display:none;">Gnerate Quotation</button>
+  </div>	
+
 </div>
 
 </form>
@@ -671,48 +670,48 @@
   </div>					
 </div>
 </div>
-				
+
 
 <!-- End Create BOQ -->
 
 
 <!--Create BOQ End-->
 <div class="container" style="min-width: 98%">
-<div class="row">
-  <div class="col-md-3">
-   
-    <button type="button" class="btn btn-default" onClick="toggleCreateBOQSec();">Create BOQ</button>
-    				
-</div>							
-<div class="col-md-3">
- 
-  <form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data" style="margin: 0px">
+  <div class="row">
+    <div class="col-md-3">
+
+      <button type="button" class="btn btn-default" onClick="toggleCreateBOQSec();">Create BOQ</button>
+
+    </div>							
+    <div class="col-md-3">
+
+      <form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data" style="margin: 0px">
        <button class="btn btn-default" name="uploadFile">Upload</button>
-   <label for="choose">Choose File</label>
-   <input id="choose" type="file" name="file" onClick="toggleImportSec();" style="display:none;" class="btn btn-default">
+       <label for="choose">Choose File</label>
+       <input id="choose" type="file" name="file" onClick="toggleImportSec();" style="display:none;" class="btn btn-default">
 
- </form>    					
-					
-</div>
-<div class="col-md-3 ">
+     </form>    					
 
-  <button type="button" class="btn btn-default" onClick="toggleProjSec();">Project Details Section</button>
-					
-</div>
-<div class="col-md-3 ">
+   </div>
+   <div class="col-md-3 ">
 
-  <button type="button" class="btn btn-default" onClick="togglePayDetailsSec();">Received Payment Details</button>
-</div>					
+    <button type="button" class="btn btn-default" onClick="toggleProjSec();">Project Details Section</button>
+
+  </div>
+  <div class="col-md-3 ">
+
+    <button type="button" class="btn btn-default" onClick="togglePayDetailsSec();">Received Payment Details</button>
+  </div>					
 </div>
 </div>
 
 <div class="form-row">
   <div class="col-md-3">
     <br><button type="button" class="btn btn-default" style="margin-left:8%;" data-toggle="collapse" data-target="#assignedInventory">Show Assigned Inventory</button>
-</div>
-<div class="col-md-3">
+  </div>
+  <div class="col-md-3">
     <br><button type="button" class="btn btn-default" style="margin-left:6%;" data-toggle="collapse" data-target="#consumedInventory">Show Consumed Inventory</button>
-</div>
+  </div>
 </div>	
 <!-- </div> -->
 
@@ -885,6 +884,7 @@
 
 <script>
   function captureFileLocation() {
+    $('#LoadingImage').show();
     var fileLocation;
     var entrerLocationRequest = prompt("Please Enter the file location", "BOQ File Location");
     if (entrerLocationRequest == null || entrerLocationRequest == "") {
@@ -904,6 +904,7 @@
 
         $('#tableContent').html(data);
         adjustWidth();
+        $('#LoadingImage').hide();
       }
     });
 
@@ -934,6 +935,7 @@ for(i=0;i<inputArray.length;i++)
 <script>
   function myFunction(value, tagName, nextTagName) {
 
+    $('#LoadingImage').show();
     var tag = '#'+nextTagName;
     var inventory = $('#inventoryName')[0].value;
     
@@ -949,6 +951,7 @@ for(i=0;i<inputArray.length;i++)
       var blank = "<option> </option>";
       $(tag).html(blank);
       $(tag).append(data);
+      $('#LoadingImage').hide();
     }
   });
   }
@@ -1160,19 +1163,20 @@ for(i=0;i<inputArray.length;i++)
 <script>
   function download(name) 
   {
-   console.log("Download being called.");
+    $('#LoadingImage').show();
+    console.log("Download being called.");
 
     $('.inventoryTableHeader').css('display','block');
     //$('.importBOQ2').show();
     $('[name="boqName"]')[0].value = name;
-   var projectId = $('#projectId').val();  
+    var projectId = $('#projectId').val();  
 
-   var formData = $(this).serializeArray();
+    var formData = $(this).serializeArray();
 
-   formData.push({name: 'projectId', value: $('#projectId').val()});
-   formData.push({name: 'boqName', value: name});
+    formData.push({name: 'projectId', value: $('#projectId').val()});
+    formData.push({name: 'boqName', value: name});
 
-   $.ajax({
+    $.ajax({
      type : 'GET',
      data :  formData,
      url : 'downloadBoq',
@@ -1181,12 +1185,13 @@ for(i=0;i<inputArray.length;i++)
        $('#tableContent').html(data);
 
        adjustWidthDn();
+       $('#LoadingImage').hide();
      }
 
    });
 
-   var generateQuot = document.getElementById("generateQuot");                                         
-   generateQuot.style.display = "block";
+    var generateQuot = document.getElementById("generateQuot");                                         
+    generateQuot.style.display = "block";
 
         //var generate = document.getElementById("offer");
         //generate.style.display = "block";
@@ -1199,138 +1204,157 @@ for(i=0;i<inputArray.length;i++)
       function adjustWidthDn() 
       {
        console.log('Inside adjustWidth');
-      }
-  </script>
+     }
+   </script>
 
 
-  <script>
+   <script>
     function createInquiry() 
     {
 
-     console.log("calling createInquiry()...")
-     var CheckeleCount = document.forms["generateBOQ"].getElementsByClassName("checkbox").length;
+      $('#LoadingImage').show();
+      console.log("calling createInquiry()...")
+      var CheckeleCount = document.forms["generateBOQ"].getElementsByClassName("checkbox").length;
 
-     var selectedElements = [];
-     var i;
+      var selectedElements = [];
+      var i;
 
-     for(i=0; i < CheckeleCount; i++)
-     {
-      if(document.forms["generateBOQ"].getElementsByClassName("checkbox")[i].checked)
+      for(i=0; i < CheckeleCount; i++)
       {
-       selectedElements[i] = i;
+        if(document.forms["generateBOQ"].getElementsByClassName("checkbox")[i].checked)
+        {
+         selectedElements[i] = i;
+       }
      }
-   }
 
-   var eleCount = document.forms["generateBOQ"].getElementsByTagName("input").length;
+     var eleCount = document.forms["generateBOQ"].getElementsByTagName("input").length;
 
 
-   var inventoryName       = [];
-   var material            = [];
-   var type                = [];
-   var manifacturingMethod = [];
-   var classOrGrade        = [];
-   var ends                = [];
-   var size                = [];
-   var quantity            = [];
-   var baseSupplyRate      = [];
-   var supplyRate          = [];
-   var baseErectionRate    = [];
-   var erectionRate        = [];
-   var supplyAmount        = [];
-   var erectionAmount      = [];
+     var inventoryName       = [];
+     var material            = [];
+     var type                = [];
+     var manifacturingMethod = [];
+     var classOrGrade        = [];
+     var ends                = [];
+     var size                = [];
+     var quantity            = [];
+     var baseSupplyRate      = [];
+     var supplyRate          = [];
+     var baseErectionRate    = [];
+     var erectionRate        = [];
+     var supplyAmount        = [];
+     var erectionAmount      = [];
 
-   var j;
-   var k = 0;
-   var n = 1;
-   for(k=0;k<selectedElements.length;k++)
-   {
-
-     if(selectedElements[k] != undefined)
+     var j;
+     var k = 0;
+     var n = 1;
+     for(k=0;k<selectedElements.length;k++)
      {
-      var start = 12 + 15*parseFloat(selectedElements[k]);
-      console.log('Start is : '+start);
 
-      quantity[k]           = $('#generateBOQ input')[start++].value;
-      baseSupplyRate[k]     = $('#generateBOQ input')[start++].value;
-      supplyRate[k]         = $('#generateBOQ input')[start++].value;
-      baseErectionRate[k]   = $('#generateBOQ input')[start++].value;
-      erectionRate[k]       = $('#generateBOQ input')[start++].value;
-      supplyAmount[k]       = $('#generateBOQ input')[start++].value;
-      erectionAmount[k]     = $('#generateBOQ input')[start++].value;
-      inventoryName[k] 	  = $('#generateBOQ input')[start++].value;							      
-      material[k]      	  = $('#generateBOQ input')[start++].value;     
-      type[k]               = $('#generateBOQ input')[start++].value;
-      manifacturingMethod[k]= $('#generateBOQ input')[start++].value;
-      classOrGrade[k]       = $('#generateBOQ input')[start++].value;
-      ends[k]               = $('#generateBOQ input')[start++].value;
-      size[k]               = $('#generateBOQ input')[start++].value;
-    }	
-  }
+       if(selectedElements[k] != undefined)
+       {
+        var start = 12 + 15*parseFloat(selectedElements[k]);
+        console.log('Start is : '+start);
 
-  var lastArray = 3 + 20*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
-
-
-  var formData = $(this).serializeArray();
-
-  formData.push({name: 'projectId', value: $('#projectId').val()});
-  formData.push({name: 'boqName', value: $('[name="boqName"]').val()});
-
-
-  var inventoryName_string = cleanArray(inventoryName);
-  formData.push({name: 'inventoryName', value: inventoryName_string});
-  var material_string = cleanArray(material);
-  formData.push({name: 'material', value: material_string});
-  var type_string = cleanArray(type);
-  formData.push({name: 'type', value: type_string});
-  var manifacturingMethod_string = cleanArray(manifacturingMethod);
-  formData.push({name: 'manifMetod', value: manifacturingMethod_string});
-  var classOrGrade_string = cleanArray(classOrGrade);
-  formData.push({name: 'classOrGrade', value: classOrGrade_string});
-  var ends_string = cleanArray(ends);
-  formData.push({name: 'ends', value: ends_string});
-  var size_string = cleanArray(size);
-  formData.push({name: 'size', value: size_string});
-  var quantity_string = cleanArray(quantity);
-  formData.push({name: 'quantity', value: quantity_string});
-
-  var baseSupplyRate_string = cleanArray(baseSupplyRate);
-  formData.push({name: 'baseSupplyRate', value: baseSupplyRate_string});
-  var supplyRate_string = cleanArray(supplyRate);
-  formData.push({name: 'supplyRate', value: supplyRate_string});
-  var baseErectionRate_string = cleanArray(baseErectionRate);
-  formData.push({name: 'baseErectionRate', value: baseErectionRate_string});
-  var erectionRate_string = cleanArray(erectionRate);
-  formData.push({name: 'erectionRate', value: erectionRate_string});
-
-  var supplyAmount_string = cleanArray(supplyAmount);
-  formData.push({name: 'supplyAmount', value: supplyAmount_string});
-  var erectionAmount_string = cleanArray(erectionAmount);
-  formData.push({name: 'erectionAmount', value: erectionAmount_string});
-
-  formData.push({name: 'isOffer', value: 'true'});
-
-  $.ajax({
-   url: "generate",
-   data: formData,
-   type: 'post',
-   success: function(data) {
-    console.log(data);
-  }
-});
-}
-
-function cleanArray(actual)
-{
-  var newArray = new Array();
-  for(var i = 0; i<actual.length; i++)
-  {
-    if (actual[i])
-    {
-      newArray.push(actual[i]);
+        quantity[k]           = $('#generateBOQ input')[start++].value;
+        baseSupplyRate[k]     = $('#generateBOQ input')[start++].value;
+        supplyRate[k]         = $('#generateBOQ input')[start++].value;
+        baseErectionRate[k]   = $('#generateBOQ input')[start++].value;
+        erectionRate[k]       = $('#generateBOQ input')[start++].value;
+        supplyAmount[k]       = $('#generateBOQ input')[start++].value;
+        erectionAmount[k]     = $('#generateBOQ input')[start++].value;
+        inventoryName[k] 	  = $('#generateBOQ input')[start++].value;							      
+        material[k]      	  = $('#generateBOQ input')[start++].value;     
+        type[k]               = $('#generateBOQ input')[start++].value;
+        manifacturingMethod[k]= $('#generateBOQ input')[start++].value;
+        classOrGrade[k]       = $('#generateBOQ input')[start++].value;
+        ends[k]               = $('#generateBOQ input')[start++].value;
+        size[k]               = $('#generateBOQ input')[start++].value;
+      }	
     }
+
+    var lastArray = 3 + 20*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
+
+
+    var formData = $(this).serializeArray();
+
+    formData.push({name: 'projectId', value: $('#projectId').val()});
+    formData.push({name: 'boqName', value: $('[name="boqName"]').val()});
+
+
+    var inventoryName_string = cleanArray(inventoryName);
+    formData.push({name: 'inventoryName', value: inventoryName_string});
+    var material_string = cleanArray(material);
+    formData.push({name: 'material', value: material_string});
+    var type_string = cleanArray(type);
+    formData.push({name: 'type', value: type_string});
+    var manifacturingMethod_string = cleanArray(manifacturingMethod);
+    formData.push({name: 'manifMetod', value: manifacturingMethod_string});
+    var classOrGrade_string = cleanArray(classOrGrade);
+    formData.push({name: 'classOrGrade', value: classOrGrade_string});
+    var ends_string = cleanArray(ends);
+    formData.push({name: 'ends', value: ends_string});
+    var size_string = cleanArray(size);
+    formData.push({name: 'size', value: size_string});
+    var quantity_string = cleanArray(quantity);
+    formData.push({name: 'quantity', value: quantity_string});
+
+    var baseSupplyRate_string = cleanArray(baseSupplyRate);
+    formData.push({name: 'baseSupplyRate', value: baseSupplyRate_string});
+    var supplyRate_string = cleanArray(supplyRate);
+    formData.push({name: 'supplyRate', value: supplyRate_string});
+    var baseErectionRate_string = cleanArray(baseErectionRate);
+    formData.push({name: 'baseErectionRate', value: baseErectionRate_string});
+    var erectionRate_string = cleanArray(erectionRate);
+    formData.push({name: 'erectionRate', value: erectionRate_string});
+
+    var supplyAmount_string = cleanArray(supplyAmount);
+    formData.push({name: 'supplyAmount', value: supplyAmount_string});
+    var erectionAmount_string = cleanArray(erectionAmount);
+    formData.push({name: 'erectionAmount', value: erectionAmount_string});
+
+    formData.push({name: 'isOffer', value: 'true'});
+
+    var inquiryNameList = $('#offerRevisionSection').find('option'); 
+
+    var revisionNo = 1;
+    for(var k = 0; k < inquiryNameList.length; k++)
+    {
+      if(inquiryNameList[k].value.startsWith('Inquiry_'+$('[name="boqName"]').val()))
+      {
+        revisionNo ++;
+        var optionVal = inquiryNameList[k].value;
+        console.log(optionVal);        
+      }
+      
+    }    
+
+    var inquiryName = '<option value="Inquiry_'+ $('[name="boqName"]').val() +'_R'+revisionNo+'">Inquiry_'+$('[name="boqName"]').val()+'_R'+revisionNo+'</option>';
+    $.ajax({
+     url: "generate",
+     data: formData,
+     type: 'post',
+     success: function(data) {
+
+      $('#offerRevisionSection').append(inquiryName);
+
+      $('#LoadingImage').hide();
+    }
+  });
   }
-  return newArray;
-}
+
+  function cleanArray(actual)
+  {
+    var newArray = new Array();
+    for(var i = 0; i<actual.length; i++)
+    {
+      if (actual[i])
+      {
+        newArray.push(actual[i]);
+      }
+    }
+    return newArray;
+  }
 </script>
 
 <script>
@@ -1487,6 +1511,7 @@ function cleanArray(actual)
   $(function() {
     $('button[name=uploadFile]').click(function(e) {
       e.preventDefault();
+      $('#LoadingImage').show();
     //Disable submit button
     $(this).prop('disabled',true);
     $('.inventoryTableHeader').css('display','block');
@@ -1527,6 +1552,7 @@ function cleanArray(actual)
          $('[name="temperature"]')[0].value 	= $('#iDtemp')[0].value; 		
          $('[name="dNo"]')[0].value 		= $('#iDdNo')[0].value;
 
+         $('#LoadingImage').hide();
        }
      });
 
@@ -1548,92 +1574,102 @@ function cleanArray(actual)
 <script>
   $('.statusTo').on('change',function() {
 
-   var quantity 		= $(this.form.elements)[0].value;
-   var inventoryStr    = $(this.form.elements)[2].value;
-   var materialStr		= $(this.form.elements)[3].value;
-   var typeStr			= $(this.form.elements)[4].value;
-   var manifMethodStr	= $(this.form.elements)[5].value;
-   var gradeOrClassStr = $(this.form.elements)[6].value;
-   var endsStr			= $(this.form.elements)[7].value;
-   var sizeStr			= $(this.form.elements)[8].value;
-   var purchaseRateStr = $(this.form.elements)[9].value;
-   var projectStr		= $(this.form.elements)[10].value;
-   var locationStr		= $(this.form.elements)[11].value;
-   var projectId		= $(this.form.elements)[13].value;
-   var projectName		= $(this.form.elements)[14].value;
-   var projectDesc		= $(this.form.elements)[15].value;
-   var statusTo		= $(this).val();
+    $('#LoadingImage').show();
 
-   if(statusTo !== '')
-   {
-    $.ajax({
-     url: "release",
-     data: { 'inventoryStr' : 	inventoryStr,
-     'materialStr' : 	materialStr,		
-     'typeStr' : 		typeStr,			
-     'manifMethodStr' : 	manifMethodStr,	
-     'gradeOrClassStr' : gradeOrClassStr, 
-     'endsStr' : 		endsStr,			
-     'sizeStr' : 		sizeStr,			
-     'purchaseRateStr' : purchaseRateStr, 
-     'projectStr' : 		projectStr,		
-     'locationStr' : 	locationStr,
-     'quantity'	 : 		quantity,		
-     'projectId' : 		projectId,		
-     'projectName' : 	projectName,		
-     'projectDesc' : 	projectDesc,
-     'statusTo' : 		statusTo},
-     type: 'post',
-     success: function(data) {
-      console.log(data);
-    }
+
+    var quantity 		= $(this.form.elements)[0].value;
+    var inventoryStr    = $(this.form.elements)[2].value;
+    var materialStr		= $(this.form.elements)[3].value;
+    var typeStr			= $(this.form.elements)[4].value;
+    var manifMethodStr	= $(this.form.elements)[5].value;
+    var gradeOrClassStr = $(this.form.elements)[6].value;
+    var endsStr			= $(this.form.elements)[7].value;
+    var sizeStr			= $(this.form.elements)[8].value;
+    var purchaseRateStr = $(this.form.elements)[9].value;
+    var projectStr		= $(this.form.elements)[10].value;
+    var locationStr		= $(this.form.elements)[11].value;
+    var projectId		= $(this.form.elements)[13].value;
+    var projectName		= $(this.form.elements)[14].value;
+    var projectDesc		= $(this.form.elements)[15].value;
+    var statusTo		= $(this).val();
+
+    if(statusTo !== '')
+    {
+      $.ajax({
+       url: "release",
+       data: { 'inventoryStr' : 	inventoryStr,
+       'materialStr' : 	materialStr,		
+       'typeStr' : 		typeStr,			
+       'manifMethodStr' : 	manifMethodStr,	
+       'gradeOrClassStr' : gradeOrClassStr, 
+       'endsStr' : 		endsStr,			
+       'sizeStr' : 		sizeStr,			
+       'purchaseRateStr' : purchaseRateStr, 
+       'projectStr' : 		projectStr,		
+       'locationStr' : 	locationStr,
+       'quantity'	 : 		quantity,		
+       'projectId' : 		projectId,		
+       'projectName' : 	projectName,		
+       'projectDesc' : 	projectDesc,
+       'statusTo' : 		statusTo},
+       type: 'post',
+       success: function(data) {
+        console.log(data);
+        $('#LoadingImage').hide();
+
+      }
+    });
+    }	
+
   });
-  }	
-
-});
 </script>
 <script>
   $('.accessoryStatusTo').on('change',function() {
 
-   var quantity			= $(this.form.elements)[0].value;
-   var accessoryStatusTo	= $(this.form.elements)[1].value;
-   var desc1 				= $(this.form.elements)[2].value;
-   var desc2    			= $(this.form.elements)[3].value;
-   var desc3				= $(this.form.elements)[4].value;
-   var desc4				= $(this.form.elements)[5].value;
-   var desc5				= $(this.form.elements)[6].value;
-   var accessoryName 		= $(this.form.elements)[7].value;	
-   var project 			= $(this.form.elements)[8].value;	
-   var locationStr			= $(this.form.elements)[9].value;	
-   var projectId			= $(this.form.elements)[10].value;
-   var projectName			= $(this.form.elements)[11].value;
-   var projectDesc			= $(this.form.elements)[12].value;
+    $('#LoadingImage').show();
 
-   if(accessoryStatusTo !== '')
-   {
-    $.ajax({
-     url: "releaseAccessory",
-     data: { 'quantity' 			: quantity,
-     'accessoryStatusTo' : accessoryStatusTo,
-     'desc1' 			: desc1,
-     'desc2' 			: desc2,
-     'desc3' 			: desc3,
-     'desc4' 			: desc4,
-     'desc5' 			: desc5,
-     'accessoryName' 	: accessoryName,
-     'project' 			: project,
-     'locationStr' 		: locationStr,
-     'projectId' 		: projectId,
-     'projectName' 		: projectName,
-     'projectDesc' 		: projectDesc},
-     type: 'post',
-     success: function(data) {
-      console.log(data);
-    }
+
+    var quantity			= $(this.form.elements)[0].value;
+    var accessoryStatusTo	= $(this.form.elements)[1].value;
+    var desc1 				= $(this.form.elements)[2].value;
+    var desc2    			= $(this.form.elements)[3].value;
+    var desc3				= $(this.form.elements)[4].value;
+    var desc4				= $(this.form.elements)[5].value;
+    var desc5				= $(this.form.elements)[6].value;
+    var accessoryName 		= $(this.form.elements)[7].value;	
+    var project 			= $(this.form.elements)[8].value;	
+    var locationStr			= $(this.form.elements)[9].value;	
+    var projectId			= $(this.form.elements)[10].value;
+    var projectName			= $(this.form.elements)[11].value;
+    var projectDesc			= $(this.form.elements)[12].value;
+
+    if(accessoryStatusTo !== '')
+    {
+      $.ajax({
+       url: "releaseAccessory",
+       data: { 'quantity' 			: quantity,
+       'accessoryStatusTo' : accessoryStatusTo,
+       'desc1' 			: desc1,
+       'desc2' 			: desc2,
+       'desc3' 			: desc3,
+       'desc4' 			: desc4,
+       'desc5' 			: desc5,
+       'accessoryName' 	: accessoryName,
+       'project' 			: project,
+       'locationStr' 		: locationStr,
+       'projectId' 		: projectId,
+       'projectName' 		: projectName,
+       'projectDesc' 		: projectDesc},
+       type: 'post',
+       success: function(data) {
+        console.log(data);
+        $('#LoadingImage').hide();
+
+      }
+    });
+    }	
+
   });
-  }	
-
-});
 </script>
 
 </body>

@@ -76,9 +76,21 @@ public class ProjectController {
 	private static final String searchProjectviewName = "searchProjectResult";
 
 	@RequestMapping(value = "/createProject", method = RequestMethod.POST)
-	protected ModelAndView saveProject(Project project) throws Exception {
-		// TODO Auto-generated method stub
+	protected ModelAndView saveProject(Project project, RedirectAttributes redirectAttrs) throws Exception {
 
+		ArrayList<Project> existing = projectDao.getProject("projectName", project.getProjectName());
+		
+		if(existing.size() > 0)
+		{
+			ModelAndView projectDetails = new ModelAndView("redirect:/projectDetails");
+			
+			redirectAttrs.addAttribute("projectId",String.valueOf(existing.get(0).getProjectId()));
+			redirectAttrs.addAttribute("projectName",existing.get(0).getProjectName());
+			redirectAttrs.addAttribute("projectDesc",existing.get(0).getProjectDesc());
+			
+			return projectDetails;
+		}
+		
 		int projId = projectDao.addProject(project);
 
 		System.out.println("New project created with ID : " + projId);
@@ -105,6 +117,12 @@ public class ProjectController {
 		mav.addObject("assignedInventory", "");
 		mav.addObject("assignedAccessory", "");
 		mav.addObject("paymentDetails","");
+		
+		mav.addObject("consumedInventory", "");
+		mav.addObject("consumedAccessory", "");
+		
+		mav.addObject("assignedInventory", "");
+		mav.addObject("assignedAccessory", "");
 		
 		return mav;
 	}

@@ -19,16 +19,20 @@ public class TestController {
 	
 	public static void main(String[] args) 
 	{
-		rkoundOff(65);	
+		rkoundOff(515);	
 	}
 	
 	
 	private static int rkoundOff(int price)
 	{
 
-		int reminder = ((price+5)/10)*10;
+		int remender = 10 - price%10;
 		
-		System.out.println(reminder);
+		
+		
+		int value = ((price+remender)/10)*10;
+		
+		System.out.println(value);
 			
 		return 1;
 		

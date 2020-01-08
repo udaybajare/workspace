@@ -225,7 +225,13 @@ public class BOQController {
 	{
 		
 		StringBuilder sheetdetailsStr = new StringBuilder();
-		int accessIndex = client.length - 1;
+		
+		int accessIndex = 0;
+		if(client!=null)
+		{
+			accessIndex = client.length - 1;	
+		}		
+		
 		if(null!=sheetDetails && 0!=sheetDetails.length)
 		{
 			for(String name : sheetDetails)

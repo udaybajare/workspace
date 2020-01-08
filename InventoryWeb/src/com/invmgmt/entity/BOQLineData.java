@@ -109,27 +109,69 @@ public class BOQLineData {
 
     @Override
 	public boolean equals(Object obj) {
-		if (obj == this)
+		if (this == obj)
 			return true;
-
-		BOQLineData lineData = (BOQLineData) obj;
-
-		return lineData.getEndsLine().equals(endsLine) && lineData.getGrdLine().equals(grdLine)
-				&& lineData.getMakesLine().equals(makesLine) && lineData.getMaterial().equals(material)
-				&& lineData.getSpecLine().equals(specLine) && lineData.getStdLine().equals(stdLine)
-				&& lineData.getInventoryName().equals(inventoryName) && lineData.getCategory().equals(category);
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BOQLineData other = (BOQLineData) obj;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
+		if (endsLine == null) {
+			if (other.endsLine != null)
+				return false;
+		} else if (!endsLine.equals(other.endsLine))
+			return false;
+		if (grdLine == null) {
+			if (other.grdLine != null)
+				return false;
+		} else if (!grdLine.equals(other.grdLine))
+			return false;
+		if (inventoryName == null) {
+			if (other.inventoryName != null)
+				return false;
+		} else if (!inventoryName.equals(other.inventoryName))
+			return false;
+		if (makesLine == null) {
+			if (other.makesLine != null)
+				return false;
+		} else if (!makesLine.equals(other.makesLine))
+			return false;
+		if (material == null) {
+			if (other.material != null)
+				return false;
+		} else if (!material.equals(other.material))
+			return false;
+		if (specLine == null) {
+			if (other.specLine != null)
+				return false;
+		} else if (!specLine.equals(other.specLine))
+			return false;
+		if (stdLine == null) {
+			if (other.stdLine != null)
+				return false;
+		} else if (!stdLine.equals(other.stdLine))
+			return false;
+		return true;
 	}
+       
     
     @Override
-    public int hashCode() {
-	int result = 17;
-	result = 31 * result + endsLine.hashCode();
-	result = 31 * result + grdLine.hashCode();
-	result = 31 * result + makesLine.hashCode();
-	result = 31 * result + material.hashCode();
-	result = 31 * result + specLine.hashCode();
-	result = 31 * result + stdLine.hashCode();
-	result = 31 * result + inventoryName.hashCode();
-	return result;
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + ((endsLine == null) ? 0 : endsLine.hashCode());
+		result = prime * result + ((grdLine == null) ? 0 : grdLine.hashCode());
+		result = prime * result + ((inventoryName == null) ? 0 : inventoryName.hashCode());
+		result = prime * result + ((makesLine == null) ? 0 : makesLine.hashCode());
+		result = prime * result + ((material == null) ? 0 : material.hashCode());
+		result = prime * result + ((specLine == null) ? 0 : specLine.hashCode());
+		result = prime * result + ((stdLine == null) ? 0 : stdLine.hashCode());
+		return result;
+	}
 }

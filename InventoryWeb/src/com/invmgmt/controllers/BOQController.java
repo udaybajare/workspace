@@ -219,9 +219,10 @@ public class BOQController {
 	protected void generateBOQ(String projectId, String boqName, String[] inventoryName, String[] material,
 			String[] type, String[] manifMetod, String[] classOrGrade, String[] ends, String[] size, String[] quantity,
 			String[] supplyRate, String[] erectionRate, String[] supplyAmount, String[] erectionAmount,
-			String[] baseErectionRate, String[] baseSupplyRate, String isOffer, String[] client, String[] site, String[] project, String[] dName, String[] utility, String[] pressure,
-		    String[] temp, String[] dNo, String[] sheetDetails,
-			RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException 
+			String[] baseErectionRate, String[] baseSupplyRate, String[] accessoryName, String[] desc1, String[] desc2,
+			String[] desc3, String[] desc4, String[] desc5, String isOffer, String[] client, String[] site,
+			String[] project, String[] dName, String[] utility, String[] pressure, String[] temp, String[] dNo,
+			String[] sheetDetails, RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException 
 	{
 		
 		StringBuilder sheetdetailsStr = new StringBuilder();
@@ -281,6 +282,15 @@ public class BOQController {
 		System.out.println("Saving BOQ with name : " + boqNameRevisionStr);
 
 		ArrayList<BOQLineData> boqInventoryDetails = getBOQLineDataList(material, type, ends, classOrGrade, inventoryName);
+		
+		if(accessoryName!=null)
+		{
+			for (int l = 0; l < accessoryName.length; l++) {
+				boqInventoryDetails.add(new BOQLineData(accessoryName[l], desc1[l], desc2[l], desc3[l], desc4[l],
+						desc5[l], "Accessories", ""));
+			}
+		}
+		
 		byte[] excelByts = null;
 		try {
 			if (Boolean.valueOf(isOffer)) {
@@ -292,7 +302,7 @@ public class BOQController {
 			excelByts = writer.writeExcel(boqInventoryDetails, size, quantity, supplyRate, erectionRate, supplyAmount,
 					erectionAmount, boqNameRevisionStr, header);
 
-			ArrayList<BOQDetails> boqInventoryDetailsList = getBOQDetailsList(projectId, boqNameRevisionStr,
+			ArrayList<BOQDetails> boqInventoryDetailsList = inventoryUtils.getBOQDetailsList(projectId, boqNameRevisionStr,
 					inventoryName, material, type, manifMetod, classOrGrade, ends, size, quantity, supplyRate,
 					erectionRate, supplyAmount, erectionAmount, baseErectionRate, baseSupplyRate, header.getSheetDetails());
 
@@ -389,54 +399,7 @@ public class BOQController {
 		return boqLineData;
 	}
 
-	private ArrayList<BOQDetails> getBOQDetailsList(String projectId, String boqName, String[] inventoryName,
-			String[] material, String[] type, String[] manifMetod, String[] classOrGrade, String[] ends, String[] size,
-			String[] quantity, String[] supplyRate, String[] erectionRate, String[] supplyAmount,
-			String[] erectionAmount, String[] baseErectionRate, String[] baseSupplyRate, String sheetDetails) {
-		int noOfEntries = inventoryName.length;
-		ArrayList<BOQDetails> boqInventoryDetails = new ArrayList<>();
-
-		String[] sheetDetailsArray = sheetDetails.split(",");
-		ArrayList<String> sheetNames = new ArrayList<String>();
-		ArrayList<Integer> sheetInventoryCount = new ArrayList<Integer>();
-		
-		int total = 0;
-		
-		for(int i=0;i<sheetDetailsArray.length;i++)
-		{
-			if(i%2==0)
-			{
-				sheetNames.add(sheetDetailsArray[i]);
-			}
-			else
-			{
-				total = total + Integer.valueOf(sheetDetailsArray[i]);
-				
-				sheetInventoryCount.add(total);
-			}
-			 	
-		}		
-		String sheetName = "";
-		for (int i = 0; i < noOfEntries; i++) {
-
-			for (int j = 0; j < sheetInventoryCount.size(); j++) {
-				if (i < sheetInventoryCount.get(j)) {
-					sheetName = sheetNames.get(j);
-					break;
-				}
-			}
-
-			boqInventoryDetails.add(new BOQDetails(projectId, boqName, inventoryName[i], material[i], type[i],
-					manifMetod[i], classOrGrade[i], ends[i], size[i], quantity[i],
-					supplyRate.length > 0 ? supplyRate[i] : "", erectionRate.length > 0 ? erectionRate[i] : "",
-					supplyAmount.length > 0 ? supplyAmount[i] : "", erectionAmount.length > 0 ? erectionAmount[i] : "",
-					baseErectionRate.length > 0 ? baseErectionRate[i] : "",
-					baseSupplyRate.length > 0 ? baseSupplyRate[i] : "", sheetName));
-			System.out.println(boqInventoryDetails.get(i).toString());
-		}
-
-		return boqInventoryDetails;
-	}
+	
 
 	@RequestMapping(value = "/getDropdown", method = RequestMethod.POST)
 	public @ResponseBody String getNextDropDownContent(@RequestParam(value = "value", required = true) String value,

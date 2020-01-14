@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.entity.AccessoryDetails;
+import com.invmgmt.entity.BOQDetails;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
 
@@ -177,8 +178,53 @@ public class InventoryUtils {
 			return "";
 		}
 	}
-	/*
-	 * public static void main(String[] args) { String home =
-	 * System.getProperty("user.home"); System.out.println(home); }
-	 */
+
+	public ArrayList<BOQDetails> getBOQDetailsList(String projectId, String boqName, String[] inventoryName,
+			String[] material, String[] type, String[] manifMetod, String[] classOrGrade, String[] ends, String[] size,
+			String[] quantity, String[] supplyRate, String[] erectionRate, String[] supplyAmount,
+			String[] erectionAmount, String[] baseErectionRate, String[] baseSupplyRate, String sheetDetails) {
+		int noOfEntries = inventoryName.length;
+		ArrayList<BOQDetails> boqInventoryDetails = new ArrayList<>();
+
+		String[] sheetDetailsArray = sheetDetails.split(",");
+		ArrayList<String> sheetNames = new ArrayList<String>();
+		ArrayList<Integer> sheetInventoryCount = new ArrayList<Integer>();
+		
+		int total = 0;
+		
+		for(int i=0;i<sheetDetailsArray.length;i++)
+		{
+			if(i%2==0)
+			{
+				sheetNames.add(sheetDetailsArray[i]);
+			}
+			else
+			{
+				total = total + Integer.valueOf(sheetDetailsArray[i]);
+				
+				sheetInventoryCount.add(total);
+			}
+			 	
+		}		
+		String sheetName = "";
+		for (int i = 0; i < noOfEntries; i++) {
+
+			for (int j = 0; j < sheetInventoryCount.size(); j++) {
+				if (i < sheetInventoryCount.get(j)) {
+					sheetName = sheetNames.get(j);
+					break;
+				}
+			}
+
+			boqInventoryDetails.add(new BOQDetails(projectId, boqName, inventoryName[i], material[i], type[i],
+					manifMetod[i], classOrGrade[i], ends[i], size[i], quantity[i],
+					supplyRate.length > 0 ? supplyRate[i] : "", erectionRate.length > 0 ? erectionRate[i] : "",
+					supplyAmount.length > 0 ? supplyAmount[i] : "", erectionAmount.length > 0 ? erectionAmount[i] : "",
+					baseErectionRate.length > 0 ? baseErectionRate[i] : "",
+					baseSupplyRate.length > 0 ? baseSupplyRate[i] : "", sheetName));
+			System.out.println(boqInventoryDetails.get(i).toString());
+		}
+
+		return boqInventoryDetails;
+	}
 }

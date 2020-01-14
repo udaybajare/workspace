@@ -585,7 +585,7 @@
     
   </div>					
 </div>
-<div class="col-md-3 ">
+<div class="col-md-3">
  <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
   <label></label>
   <br>

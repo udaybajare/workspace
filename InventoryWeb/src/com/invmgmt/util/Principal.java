@@ -28,7 +28,7 @@ public class Principal {
     public boolean createInvoice(TaxInvoiceDetails taxInvoiceDetails) {
 	
 	String[] destination = { System.getProperty("java.io.tmpdir") + "/TaxInvoice.pdf",
-		System.getProperty("user.home") + "/Downloads/" + taxInvoiceDetails.getTaxInvoiceNo() + ".pdf" };
+		System.getProperty("user.home") + "/Downloads/" + taxInvoiceDetails.getTaxInvoiceNo().replace("/", "_") + ".pdf" };
 	boolean invoiceGenerated = false;
 	
 	String[] templates = {"InvoiceTemplate","InvoiceTemplateDwnld"};
@@ -49,14 +49,14 @@ public class Principal {
 		    
 		    for(int j=0;j<address.length;j++)
 		    {
-			document = replaceText(document, "addressedto"+j+1, address[j]);
+			document = replaceText(document, "ADDRESSEDTO"+j+1, address[j]);
 		    }		    
 		    
 		    int moreEle = 4 - address.length;
 		    
 		    for(int k=4;k<=moreEle;k++)
 		    {
-			document = replaceText(document, "addressedto"+k, " ");
+			document = replaceText(document, "ADDRESSEDTO"+k, " ");
 		    }
 		    
 		    

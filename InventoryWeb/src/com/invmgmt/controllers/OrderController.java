@@ -10,12 +10,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.invmgmt.dao.PODetailsDao;
+import com.invmgmt.dao.ProjectDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
 import com.invmgmt.entity.PODetails;
+import com.invmgmt.entity.Project;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.util.InventoryUtils;
 
@@ -32,9 +35,13 @@ public class OrderController {
 	@Autowired
 	PODetailsDao poDetailsDao;
 
+	@Autowired
+	ProjectDao projectDao;
+
 	@RequestMapping(value = "/generateOrderForm", method = RequestMethod.POST)
 	public ModelAndView generateOfferFrom(String[] inventoryName, String[] material, String[] type,
-			String[] manifMethod, String[] classOrGrade, String[] quantity, String[] supplyRate, String projectId) {
+			String[] manifMethod, String[] classOrGrade, String[] ends, String[] size, String[] quantity,
+			String[] supplyRate, String projectId) {
 		StringBuffer lineItemData = new StringBuffer();
 
 		StringBuffer lineItemDataSiple = new StringBuffer();
@@ -47,7 +54,7 @@ public class OrderController {
 		for (int i = 0; i < length; i++) {
 
 			String description = inventoryUtils.createDescriptionLine(material[i], type[i], inventoryName[i],
-					classOrGrade[i]);
+					classOrGrade[i], manifMethod[i], ends[i], size[i]);
 			String index = String.valueOf(i + 1);
 			String lineItem = getInventoryDetailsRow(index, description, quantity[i], supplyRate[i]);
 			lineItemData.append(lineItem);
@@ -166,6 +173,85 @@ public class OrderController {
 		return "purchaseOrderView";
 	}
 
+	@RequestMapping(value = "/getPoList", method = { RequestMethod.POST, RequestMethod.GET })
+	private @ResponseBody String getPoList(String projectName) {
+		int projectID = projectDao.getProjectId(projectName);
+		String poNames = inventoryUtils.getPONames(String.valueOf(projectID));
+
+		return poNames;
+	}
+
+	@RequestMapping(value = "/getPoDetails", method = { RequestMethod.POST, RequestMethod.GET })
+	private @ResponseBody String getPoDetails(String poNumber) {
+		ArrayList<PODetails> poDetailsList = poDetailsDao.getPOData("poNumber", poNumber);
+
+		String rowToReturn = "";
+
+		for (PODetails pODetails : poDetailsList) {
+			Project project = projectDao.getProject(Integer.parseInt(pODetails.getProjectId()));
+
+			String[] lineItems = pODetails.getLineItemNoHtml().split(";");
+
+			for (String line : lineItems) {
+				String itemsStr = poDetailsRow;
+
+				String words[] = line.split(",");
+
+				String[] details = words[1].split(" ");
+
+				int instanceofOF = findIndex(details, "of");
+				int instanceofAS = findIndex(details, "as");
+				int instanceofEnds = findIndex(details, "Ends");
+				int instanceofsize = findIndex(details, "size");
+				int instanceofManifMethod = findIndex(details, "Method");
+				
+				String inventoryNameVal = details[instanceofOF-1];
+				String materialVal = details[0];
+				
+				String typeVal = "";
+				
+				for(int i=instanceofOF-2;i>0;i--)
+				{
+					typeVal = details[i] + typeVal;	
+				}
+				 				
+				String manifacturingMethod = details[instanceofManifMethod+2];
+				String gradeOrClassVal = details[instanceofAS+1];
+				String endsVal = details[instanceofEnds+1];
+				String sizeVal = details[instanceofsize+1];
+				String purchaseRate = words[3];
+				String poQuantity = words[2];
+				String projectNameVal = project.getProjectName();
+				
+
+				itemsStr = itemsStr.replace("inventoryNameVal", inventoryNameVal);
+				itemsStr = itemsStr.replace("materialVal", materialVal);
+				itemsStr = itemsStr.replace("typeVal", typeVal);
+				itemsStr = itemsStr.replace("manifacturingMethod", manifacturingMethod);
+				itemsStr = itemsStr.replace("gradeOrClassVal", gradeOrClassVal);
+				itemsStr = itemsStr.replace("endsVal", endsVal);
+				itemsStr = itemsStr.replace("sizeVal", sizeVal);
+				itemsStr = itemsStr.replace("poQuantity", poQuantity);
+				itemsStr = itemsStr.replace("projectNameVal", projectNameVal);
+				itemsStr = itemsStr.replace("purchaseRateVal", purchaseRate);
+				
+				rowToReturn = rowToReturn + itemsStr;
+			}
+		}
+
+		return rowToReturn;
+	}
+
+	// Function to find the index of an element in a primitive array in Java
+	public static int findIndex(String[] a, String target)
+	{
+		for (int i = 0; i < a.length; i++) {
+			if (a[i].equals(target))
+				return i;
+		}
+		return -1;
+	}
+	
 	private String getInventoryDetailsRow(String sr_no, String description, String quantity, String supplyRate) {
 		String template = "<TR>" + "	<TD class=\"tr8 td38\"><P class=\"p16 ft8\">sr_no</P></TD>               "
 				+ "	<TD class=\"tr8 td27\"><P class=\"p0 ft0\"></P></TD>               "
@@ -217,5 +303,21 @@ public class OrderController {
 
 		return stringToReturn;
 	}
+
+	private static final String poDetailsRow = "	   <tr>"
+			+ "    <td> <input type='button' value='X' onClick='removeRow($(this));'></td>"
+			+ "    <td> <input type='hidden' name='inventoryName' value='inventoryNameVal'></input> inventoryNameVal </td>"
+			+ "    <td> <input type='hidden' name='material' value='materialVal'></input>materialVal</td>"
+			+ "    <td> <input type='hidden' name='type' value='typeVal'></input>typeVal</td>"
+			+ "    <td> <input type='hidden' name='manifMethod' value='manifacturingMethod'></input>manifacturingMethod</td>"
+			+ "    <td> <input type='hidden' name='gradeOrClass' value='gradeOrClassVal'></input>gradeOrClassVal</td>"
+			+ "    <td> <input type='hidden' name='ends' value='endsVal'></input>endsVal</td>"
+			+ "    <td> <input type='hidden' name='size' value='sizeVal'></input>sizeVal</td>"
+			+ "	   <td> <input type='hidden' name='purchaseRate' value='purchaseRateVal'></input> purchaseRateVal </td>" 
+			+ "	   <td> poQuantity </td>"
+			+ "	   <td><input type='text' class='form-control' name='quantity' value=''></input><input type='hidden' name='projectName' id='projectNm' value='projectNameVal'></td>"
+			+ "	   <td><input type='text' class='form-control' name='location' value=''></input></td>" 
+			+ "	   <input type='hidden' name='status' value='assigned'>"
+			+ "    </tr>";
 
 }

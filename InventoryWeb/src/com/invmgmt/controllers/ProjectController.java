@@ -1,7 +1,10 @@
 package com.invmgmt.controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +25,7 @@ import com.invmgmt.dao.PaymentDetailsDao;
 import com.invmgmt.dao.ProjectDao;
 import com.invmgmt.dao.ProjectDetailsDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
+import com.invmgmt.dao.ValvesDao;
 import com.invmgmt.dao.VendorDetailsDao;
 import com.invmgmt.entity.AccessoryDetails;
 import com.invmgmt.entity.BOQDetails;
@@ -30,6 +34,7 @@ import com.invmgmt.entity.PaymentDetails;
 import com.invmgmt.entity.Project;
 import com.invmgmt.entity.ProjectDetails;
 import com.invmgmt.entity.TaxInvoiceDetails;
+import com.invmgmt.entity.Valves;
 import com.invmgmt.entity.VendorDetails;
 import com.invmgmt.excel.ExcelReader;
 import com.invmgmt.util.InventoryUtils;
@@ -61,6 +66,9 @@ public class ProjectController {
 
 	@Autowired
 	private AccessoryDetailsDao accessoryDetailsDao;
+	
+	@Autowired
+	private ValvesDao valveDetailsDao;
 	
 	@Autowired
 	VendorDetailsDao vendorDetailsDao;
@@ -144,7 +152,7 @@ public class ProjectController {
 		String taxInvoiceNames = getTaxInvoiceNames(project.getProjectId());
 
 		System.out.println("project.getProjectId() is : " + project.getProjectId());
-		String poNames = getPONames(String.valueOf(project.getProjectId()));
+		String poNames = inventoryUtils.getPONames(String.valueOf(project.getProjectId()));
 
 		ModelAndView mav = new ModelAndView(updateProjectviewName);
 
@@ -238,7 +246,7 @@ public class ProjectController {
 		ArrayList<String> boqNames = boqDao.getAssociatedBOQNames(String.valueOf(project.getProjectId()));
 		ArrayList<String> quotationNames = new ArrayList<String>();
 
-		String poNames = getPONames(String.valueOf(project.getProjectId()));
+		String poNames = inventoryUtils.getPONames(String.valueOf(project.getProjectId()));
 
 		ArrayList<String> temp = new ArrayList<String>();
 
@@ -278,6 +286,15 @@ public class ProjectController {
 			assignedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(accessory, false)+projectDetalsHTML);
 		}
 		
+		//ArrayList<Valves> assignedValves = valveDetailsDao.getValveDetailsByStatus(project.getProjectName(),"assigned");
+		
+		StringBuffer assignedValveStr = new StringBuffer();
+		
+/*		for (Valves valveDetails : assignedValves) 
+		{
+			assignedValveStr.append(inventoryUtils.createAccessoryRowTable(valveDetails, true)+projectDetalsHTML);
+		}*/
+		
 		ModelAndView mav = new ModelAndView(updateProjectviewName);
 
 		StringBuffer consumedInventoryStr = new StringBuffer();
@@ -297,8 +314,11 @@ public class ProjectController {
 			consumedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(accessory, true)+projectDetalsHTML);
 		}
 		
+		
+		
 		mav.addObject("assignedInventory", assignedInventoryStr);
-		mav.addObject("assignedAccessory", assignedAccessoryStr);
+		mav.addObject("assignedAccessory", assignedAccessoryStr);		
+		mav.addObject("assignedValves", assignedValveStr);
 
 		
 		
@@ -452,6 +472,46 @@ public class ProjectController {
 		return vendorsList;
 	}
 
+	@RequestMapping(value = "/updatePaymentDetails", method = { RequestMethod.POST, RequestMethod.POST })
+	protected @ResponseBody String updatePaymentDetails(String taxInvoiceNumber, String receivedAmount,
+			String paymentMode, String projectId) 
+	{
+		try {
+			List<PaymentDetails> paymentDetailsList = paymentDetailsDao.getPayentDetails(taxInvoiceNumber, projectId);
+			PaymentDetails payDetails = null;
+			
+			//Get total Amount for the invoice 
+			 ArrayList<TaxInvoiceDetails> taxinvoiceDetailsList = taxInvoiceDao.getTaxIvoiceData("taxInvoiceNo", taxInvoiceNumber);
+			
+			String totalAmount = taxinvoiceDetailsList.get(0).getRate();
+			String dateReceived = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss aa").format(new Date());
+
+			String pendingAmount = ""; 
+			
+			if(paymentDetailsList.size()>0)
+			{
+				payDetails = getLatestPaymentRecord(paymentDetailsList);
+				pendingAmount = String
+						.valueOf(Double.parseDouble(payDetails.getPendingAmount()) - Double.parseDouble(receivedAmount));
+					
+			}
+			else
+			{
+				pendingAmount = String
+						.valueOf(Double.parseDouble(totalAmount) - Double.parseDouble(receivedAmount));
+				payDetails = new PaymentDetails(taxInvoiceNumber, totalAmount, receivedAmount, pendingAmount, paymentMode, dateReceived, projectId);
+			}
+			
+			paymentDetailsDao.savePaymentDetails(new PaymentDetails(taxInvoiceNumber, payDetails.getTotalAmount(), receivedAmount, pendingAmount,
+					paymentMode, dateReceived, projectId));
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return "Failure";
+		}
+		return "totalAmount";
+	}
+	
 	private String getTaxInvoiceNames(int projectId) {
 		ArrayList<TaxInvoiceDetails> invoiceNames = taxInvoiceDao.getTaxIvoiceData("projectId",
 				String.valueOf(projectId));
@@ -465,38 +525,69 @@ public class ProjectController {
 		return invoiceNamesString.toString();
 	}
 
-	private String getPONames(String projectId) {
-		ArrayList<String> poNames = poDetailsDao.getAssociatedPONames(projectId);
+	
 
-		StringBuffer invoiceNamesString = new StringBuffer();
-		for (String poName : poNames) {
-			invoiceNamesString.append(poName + ",");
-		}
-
-		return invoiceNamesString.toString();
-	}
-
-	private String getPayDetailsString(ArrayList<PaymentDetails> payDetailsList) {
+	private String getPayDetailsString(ArrayList<PaymentDetails> payDetailsList)
+	{
 		String payDetailsString = "";
 
 		for (PaymentDetails paymentDetail : payDetailsList) 
 		{
 			String tempRow = paymentRow;
 
-			tempRow = tempRow.replace("paymentID", paymentDetail.getPaymentId());
+			tempRow = tempRow.replace("paymentID", String.valueOf(paymentDetail.getPaymentId()));
 			tempRow = tempRow.replace("taxInvoiceNumber", paymentDetail.getTaxInvoiceNumber());
-			tempRow = tempRow.replace("amount", paymentDetail.getAmount());
-			tempRow = tempRow.replace("dateReceived", paymentDetail.getDateReceived());
+			tempRow = tempRow.replace("totalAmount", paymentDetail.getTotalAmount());
+			tempRow = tempRow.replace("amountReceived", paymentDetail.getReceivedAmount());
+			tempRow = tempRow.replace("amountPrnding", paymentDetail.getPendingAmount());
+			tempRow = tempRow.replace("paymentMethod", paymentDetail.getPaymentMode());
+			tempRow = tempRow.replace("dateReceived", paymentDetail.getDateReceived());	
 
 			System.out.println("tempRow is : " + tempRow);
-			payDetailsString = tempRow;
+			payDetailsString = payDetailsString + tempRow;
 		}
 
 		return payDetailsString;
 	}
+	
+	private PaymentDetails getLatestPaymentRecord(List<PaymentDetails> paymentDetailsList)
+	{
+		if(paymentDetailsList.size()==1)
+		{
+			return paymentDetailsList.get(0);
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss aa");
+		PaymentDetails paymentDetails = paymentDetailsList.get(0);
+		
+		try
+		{
+			Date latestDate = dateFormat.parse(paymentDetailsList.get(0).getDateReceived());
 
-	private static final String paymentRow = "<tr>            " + "  <td>paymentID</td>    "
-			+ "  <td>taxInvoiceNumber</td> " + "  <td>amount</td> " + "  <td>dateReceived</td> " + "</tr>           ";
+			for(PaymentDetails payDetails : paymentDetailsList)
+			{
+				if(dateFormat.parse(payDetails.getDateReceived()).compareTo(latestDate)>0)
+				{
+					paymentDetails = payDetails;
+				}
+			}
+		} 
+		catch(ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return paymentDetails;
+	}
+
+	private static final String paymentRow = 
+			  "<tr><th>paymentID</th>"
+			+ "<th>taxInvoiceNumber</th>"
+			+ "<th>totalAmount</th>"
+			+ "<th>amountReceived</th>"
+			+ "<th>amountPrnding</th>"
+			+ "<th>paymentMethod</th>"
+			+ "<th>dateReceived</th>"
+			+ "</tr>";
 
 	private static final String projectRow = "<form action=\"projectDetails\" onClick=\"this.submit();\" method=\"POST\"> <div class=\"row\">"
 			+ " <div class=\"col-md-12 \">"

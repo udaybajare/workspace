@@ -1111,8 +1111,6 @@ function hideOthers(idToBeOpen)
     }
   
   }
-
-
 }
 </script>
 </body>

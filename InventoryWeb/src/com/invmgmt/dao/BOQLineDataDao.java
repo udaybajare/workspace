@@ -34,6 +34,7 @@ public class BOQLineDataDao {
 			{
 				sqlQuery = session.createQuery("from BOQLineData as lineData where lineData.material=:material and lineData.inventoryName=:inventoryName");	
 				sqlQuery.setParameter("material", material);
+				System.out.println("Getting data for : " + material);
 			}
 			else
 			{
@@ -43,9 +44,6 @@ public class BOQLineDataDao {
 			sqlQuery.setParameter("inventoryName", inventoryName);
 			
 			List results = sqlQuery.getResultList();
-			
-			
-			System.out.println("Getting data for : " + material);
 			Iterator itr = results.iterator();
 			
 			while(itr.hasNext())

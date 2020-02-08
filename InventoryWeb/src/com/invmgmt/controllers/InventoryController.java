@@ -1,9 +1,11 @@
 package com.invmgmt.controllers;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import com.invmgmt.dao.BillDetailsDao;
 import com.invmgmt.dao.ChallanDao;
 import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.dao.ProjectDao;
+import com.invmgmt.dao.TaxInvoiceDetailsDao;
 import com.invmgmt.entity.AccessoryDetails;
 import com.invmgmt.entity.BillDetails;
 import com.invmgmt.entity.ChallanDetails;
@@ -47,6 +50,9 @@ public class InventoryController {
 	BillDetailsDao billDao;
 
 	@Autowired
+	TaxInvoiceDetailsDao taxInvoiceDetailsDao;
+
+	@Autowired
 	AccessoryDetailsDao accessoryDetailsDao;
 
 	@Autowired
@@ -54,7 +60,7 @@ public class InventoryController {
 
 	@Autowired
 	TaxInvoiceGenerator taxInvoiceGenerator;
-	
+
 	@Autowired
 	NumberWordConverter numberWordConverter;
 
@@ -78,7 +84,7 @@ public class InventoryController {
 	@RequestMapping(value = "/updateInventory", method = RequestMethod.POST)
 	protected ModelAndView updateInventory(ChallanDetails challanDetails, String[] inventoryName, String[] material,
 			String[] type, String[] manifMethod, String[] gradeOrClass, String[] ends, String[] size, int[] quantity,
-			String[] purchaseRate, String[] rate, String[] project, String[] location, String[] status,
+			String[] purchaseRate, /* String[] rate, */ String[] project, String[] location, String[] status,
 			String invoiceType, TaxInvoiceDetails taxInvoiceDetails, BillDetails billDetails,
 			AccessoryDetails accessoryDetails, String generateChallan, String generateInvoice, String addAccessory,
 			String addBillDetails) {
@@ -90,8 +96,7 @@ public class InventoryController {
 
 		ModelAndView view = null;
 
-		if (!(generateChallan.equals("1") || generateInvoice.equals("1") || addAccessory.equals("1")
-				|| addBillDetails.equals("1"))) {
+		if (!(generateChallan.equals("1") || generateInvoice.equals("1") || addBillDetails.equals("1"))) {
 			view = new ModelAndView(updateViewName);
 		} else {
 			view = new ModelAndView("challan");
@@ -106,23 +111,21 @@ public class InventoryController {
 
 		for (int i = 0; i < inventorySpec.size(); i++) {
 			Inventory inventory = new Inventory();
-			Inventory inventoryWOProj = null;
 			inventory.setInventorySpec(inventorySpec.get(i));
 			inventory.setPurchaseRate(purchaseRate[i]);
 			inventory.setQuantity(quantity[i]);
 			inventory.setLocation(location[i]);
 
-			int inventoryRowId = inventoryDao.isEntityPresent(inventory, "assigned");
+			int inventoryRowId = inventoryDao.isEntityPresent(inventory, status[i]);
 
 			System.out.println("inventoryRowId is : " + inventoryRowId);
 
 			if (inventoryRowId != 0) {
 				int availableQuantity = inventoryDao.getAvailableQuantity(inventory);
 
-				System.out.println("project is : " + project[i]);
-				if (project[i] != null && project[i] != "") {
+				if (project[0] != null && project[0] != "") {
 
-					int assignedQty = inventoryDao.getQuantityByStatus(inventory,"assigned");
+					int assignedQty = inventoryDao.getQuantityByStatus(inventory, status[i]);
 
 					System.out.println("assignedQty is : " + assignedQty);
 
@@ -140,7 +143,7 @@ public class InventoryController {
 						InventorySpec invSpec = inventoryUtils.copyInventorySpec(inventory.getInventorySpec());
 						invSpec.setAssignedProject("");
 						invSpec.setStatus("available");
-						
+
 						availableInventory.setInventorySpec(invSpec);
 
 						int availableInventoryRowId = inventoryDao.isEntityPresent(availableInventory);
@@ -170,14 +173,14 @@ public class InventoryController {
 
 						// Add new entry for update existing one without project
 						Inventory deliveredInventory = inventory.copyObject(inventory);
-						
+
 						InventorySpec invSpec2 = inventoryUtils.copyInventorySpec(inventory.getInventorySpec());
-						
+
 						invSpec2.setAssignedProject(inventory.getInventorySpec().getAssignedProject());
 						invSpec2.setStatus("delivered");
-						
+
 						deliveredInventory.setInventorySpec(invSpec2);
-						
+
 						int deliveredInventoryRowId = inventoryDao.isEntityPresent(deliveredInventory);
 
 						if (deliveredInventoryRowId == 0) {
@@ -201,24 +204,6 @@ public class InventoryController {
 						break;
 					}
 
-					/*
-					 * if (status[i] != "delivered") { // update quantity from
-					 * the existing inventory quantity // to reduce the quantity
-					 * assigned in above code inventoryWOProj =
-					 * inventory.copyObject(inventory);
-					 * inventoryWOProj.setQuantity(availableQuantity -
-					 * quantity[i]); inventoryWOProj.setAssignedProject("");
-					 * inventoryWOProj.setStatus("available");
-					 * inventoryWOProj.setInventoryRowId(inventoryRowId + 1);
-					 * 
-					 * inventoryDao.saveInventory(inventoryWOProj); } else if
-					 * (quantity[i] < assignedQty) { Inventory assignedInv =
-					 * inventory.copyObject(inventory);
-					 * 
-					 * assignedInv.setQuantity(assignedQty - quantity[i]);
-					 * assignedInv.setStatus("assigned");
-					 * assignedInv.setInventoryRowId(inventoryRowId + 1); }
-					 */
 				} else {
 					inventory.setQuantity(quantity[i]);
 				}
@@ -266,30 +251,36 @@ public class InventoryController {
 				challanDao.saveChallan(challanDetails);
 
 				if (generateInvoice.equals("1")) {
-					String invoiceNo = "Invoice/" + clientShortName + "/" + String.valueOf(lrNoInt);
+					String lasttaxInvoiceNo = taxInvoiceDetailsDao.getLastTaxIvoiceNo();
+
+					int lastNo = 0;
+					if (lasttaxInvoiceNo.length() > 0) {
+						lastNo = Integer.parseInt(lasttaxInvoiceNo.substring(lasttaxInvoiceNo.lastIndexOf("/") + 1));
+					}
+
+					String invoiceNo = "Invoice/" + clientShortName + "/" + String.valueOf(lastNo + 1);
 					taxInvoiceDetails.setInvoiceNo(invoiceNo);
 					taxInvoiceDetails.setTaxInvoiceNo(invoiceNo);
-					
+
+					String invoiceDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:SS").format(new Date());
+					taxInvoiceDetails.setTaxInvoiceDate(invoiceDate);
+
 					String totalAmount = getTotalAmount(purchaseRate, quantity);
-					
+
 					Double doubleVal = Double.parseDouble(totalAmount);
-					
-					String amountsToWord = numberWordConverter.convert((int)Math.round(doubleVal));
-					
+
+					String amountsToWord = numberWordConverter.convert((int) Math.round(doubleVal));
+
 					taxInvoiceDetails.setRate(totalAmount);
-					
-					if(amountsToWord.length() > 40)
-					{
-						taxInvoiceDetails.setAmtInwrd1((String)amountsToWord.substring(0, 39));
-						taxInvoiceDetails.setAmtInwrd2((String)amountsToWord.substring(40));						
-					}
-					else
-					{
+
+					if (amountsToWord.length() > 40) {
+						taxInvoiceDetails.setAmtInwrd1((String) amountsToWord.substring(0, 39));
+						taxInvoiceDetails.setAmtInwrd2((String) amountsToWord.substring(40));
+					} else {
 						taxInvoiceDetails.setAmtInwrd1(amountsToWord);
 						taxInvoiceDetails.setAmtInwrd2("");
 					}
-
-					
+							
 					taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
 				}
 			}
@@ -298,13 +289,12 @@ public class InventoryController {
 				billDao.saveBill(billDetails);
 			}
 
-			if ("1".equals(addAccessory) && accessoryDetails.getAccessoryName() != null
-					&& accessoryDetails.getAccessoryName() != "") {
+			if (accessoryDetails.getAccessoryName() != null && accessoryDetails.getAccessoryName() != "") {
 				accessoryDetailsDao.saveAccessory(accessoryDetails);
 			}
 
 			String description = inventoryUtils.createDescriptionLine(material[i], type[i], inventoryName[i],
-					gradeOrClass[i]);
+					gradeOrClass[i], manifMethod[i], ends[i], size[i]);
 			String lineItem = getInventoryDetailsRow(String.valueOf(i + 1), size[i], description,
 					String.valueOf(quantity[i]), "NB");
 			lineItemData.append(lineItem);
@@ -345,8 +335,7 @@ public class InventoryController {
 	private ModelAndView releaseInventory(String inventoryStr, String materialStr, String typeStr,
 			String manifMethodStr, String gradeOrClassStr, String endsStr, String sizeStr, String purchaseRateStr,
 			String projectStr, String locationStr, String quantity, String projectId, String projectName,
-			String projectDesc, String statusTo, RedirectAttributes redirectAttributes) 
-	{
+			String projectDesc, String statusTo, RedirectAttributes redirectAttributes) {
 		Inventory inventory = new Inventory(new InventorySpec(inventoryStr, materialStr, typeStr, manifMethodStr,
 				gradeOrClassStr, endsStr, sizeStr, projectStr, "assigned"), purchaseRateStr, 0, locationStr);
 
@@ -442,73 +431,49 @@ public class InventoryController {
 		return new ModelAndView("redirect:/projectDetails");
 	}
 
-	
 	@RequestMapping(value = "/releaseAccessory", method = RequestMethod.POST)
-	private ModelAndView releaseAccessory(
-	String quantity,
-	String accessoryStatusTo,	
-	String desc1,	
-	String desc2,	
-	String desc3,	
-	String desc4,	
-	String desc5,	
-	String accessoryName,	
-	String project,
-	String locationStr,	
-	String projectId,	
-	String projectName,	
-	String projectDesc,	
-	RedirectAttributes redirectAttributes)
-	{
-		AccessoryDetails accessory = new AccessoryDetails(accessoryName,desc1, desc2, desc3, desc4, desc5, project, locationStr, "assigned", quantity); 
-		
-		String assignedQty = accessoryDetailsDao.getAccessoryDetailsByStatus(accessory,"assigned");
+	private ModelAndView releaseAccessory(String quantity, String accessoryStatusTo, String desc1, String desc2,
+			String desc3, String desc4, String desc5, String accessoryName, String project, String locationStr,
+			String projectId, String projectName, String projectDesc, RedirectAttributes redirectAttributes) {
+		AccessoryDetails accessory = new AccessoryDetails(accessoryName, desc1, desc2, desc3, desc4, desc5, project,
+				locationStr, "assigned", quantity);
+
+		String assignedQty = accessoryDetailsDao.getAccessoryDetailsByStatus(accessory, "assigned");
 		String qty = "";
-		if(accessoryStatusTo.equals("assigned"))
-		{
+		if (accessoryStatusTo.equals("assigned")) {
 			qty = String.valueOf(Integer.valueOf(assignedQty) + Integer.valueOf(quantity));
-		}
-		else
-		{
+		} else {
 			qty = String.valueOf(Integer.valueOf(assignedQty) - Integer.valueOf(quantity));
 		}
 		// Reduce the assigned quantity
 		accessory.setQuantity(qty);
 
 		// Add new entry or update existing one without project
-		AccessoryDetails accessoryToRelease = new AccessoryDetails(accessoryName, desc1, desc2, desc3, desc4, desc5, project, locationStr, accessoryStatusTo, quantity);
-		
+		AccessoryDetails accessoryToRelease = new AccessoryDetails(accessoryName, desc1, desc2, desc3, desc4, desc5,
+				project, locationStr, accessoryStatusTo, quantity);
+
 		boolean isAccessoryPresentinDB = false;
 		boolean isToBeAssigned = false;
-		if(accessoryStatusTo.equals("release"))
-		{
+		if (accessoryStatusTo.equals("release")) {
 			accessoryStatusTo = "available";
 			accessoryToRelease.setAssignedProject("");
 			accessoryToRelease.setStatus(accessoryStatusTo);
 			isAccessoryPresentinDB = accessoryDetailsDao.isEntityPresent(accessoryToRelease);
-		} 
-		else if (accessoryStatusTo.equals("consumed"))
-		{			
+		} else if (accessoryStatusTo.equals("consumed")) {
 			accessoryToRelease.setStatus("consumed");
 			isAccessoryPresentinDB = accessoryDetailsDao.isEntityPresent(accessoryToRelease, accessoryStatusTo);
-		}
-		else if (accessoryStatusTo.equals("assigned"))
-		{
+		} else if (accessoryStatusTo.equals("assigned")) {
 			isToBeAssigned = true;
 			accessoryStatusTo = "available";
 			accessoryToRelease.setAssignedProject("");
 			accessoryToRelease.setStatus("available");
 			isAccessoryPresentinDB = true;
 		}
-		
-		
-		if (!isAccessoryPresentinDB) 
-		{
+
+		if (!isAccessoryPresentinDB) {
 			// Inventory is not available. Add a new entry to DB
 			accessoryToRelease.setQuantity(quantity);
-		} 
-		else
-		{
+		} else {
 			// Inventory is available. Just increase the
 			// quantity
 			int quantityToGo = accessoryDetailsDao.getQuantityByStatus(accessoryToRelease, accessoryStatusTo);
@@ -522,12 +487,10 @@ public class InventoryController {
 
 			accessoryToRelease.setQuantity(qtytoUpdate);
 		}
-		
-		try 
-		{
+
+		try {
 			accessoryDetailsDao.saveAccessory(accessory);
-		} 
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			System.out.println("calling update");
 			accessoryDetailsDao.updateWhenSaveFailed(accessory);
 		}
@@ -539,18 +502,17 @@ public class InventoryController {
 			accessoryDetailsDao.updateWhenSaveFailed(accessoryToRelease);
 		}
 
-		if(isToBeAssigned)
-		{
-			return new ModelAndView("redirect:/updateInventoryForm");	
+		if (isToBeAssigned) {
+			return new ModelAndView("redirect:/updateInventoryForm");
 		}
-		
+
 		redirectAttributes.addAttribute("projectId", projectId);
 		redirectAttributes.addAttribute("projectName", projectName);
 		redirectAttributes.addAttribute("projectDesc", projectDesc);
-				
+
 		return new ModelAndView("redirect:/projectDetails");
 	}
-	
+
 	@RequestMapping(value = "/saveAccessory", method = RequestMethod.POST)
 	private ModelAndView saveAccessory(AccessoryDetails accessoryDetails) {
 		accessoryDetailsDao.saveAccessory(accessoryDetails);
@@ -558,23 +520,32 @@ public class InventoryController {
 		return new ModelAndView("redirect:/updateInventoryForm");
 	}
 
+	@RequestMapping(value = "/updateInvPO", method = RequestMethod.GET)
+	private ModelAndView updateInvPO() {
+		ArrayList<Project> projectList = projectDao.getProject("projectName", "");
+		StringBuffer projectNames = new StringBuffer();
+
+		for (Project project : projectList) {
+			projectNames.append(project.getProjectName() + ",");
+		}
+		return new ModelAndView("inventoryUpdate").addObject("projectNames", projectNames.toString());
+	}
+
 	private String getInventoryDetailsRow(String sr_no, String size, String description, String quantity, String unit) {
-		String template = "<tr><td>&emsp;sr_no&emsp;&emsp;&emsp;&emsp;size</td><td>Description</td><td>quantity</td><td>unit</td></tr>";
+		String template = "<tr><td>&emsp;sr_no&emsp;&emsp;&emsp;size</td><td>Description</td><td>quantity</td><td>unit</td></tr>";
 		String stringToReturn = template.replace("sr_no", sr_no).replace("size", size)
 				.replace("Description", description).replace("quantity", quantity).replace("unit", unit);
 
 		return stringToReturn;
 	}
-	
-	private String getTotalAmount(String[] purchaseRate, int[] quantity)
-	{
+
+	private String getTotalAmount(String[] purchaseRate, int[] quantity) {
 		double total = 0;
-		
-		for(int i=0; i < purchaseRate.length; i++)
-		{
-			total = total + (Double.parseDouble(purchaseRate[i])*quantity[i]);
+
+		for (int i = 0; i < purchaseRate.length; i++) {
+			total = total + (Double.parseDouble(purchaseRate[i]) * quantity[i]);
 		}
-		
+
 		return String.valueOf(total);
 	}
 }

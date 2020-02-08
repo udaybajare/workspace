@@ -1,6 +1,5 @@
 package com.invmgmt.dao;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,44 +18,69 @@ import com.invmgmt.entity.TaxInvoiceDetails;
 @Repository
 public class TaxInvoiceDetailsDao {
 
-    @Autowired
-    SessionFactory sessionFactory;
+	@Autowired
+	SessionFactory sessionFactory;
 
-    @Transactional
-    public boolean saveTaxIvoice(TaxInvoiceDetails taxInvoiceDetails) {
-	boolean taxInvoiceaved = false;
+	@Transactional
+	public boolean saveTaxIvoice(TaxInvoiceDetails taxInvoiceDetails) {
+		boolean taxInvoiceaved = false;
 
-	try 
-	{
-	    Session session = sessionFactory.getCurrentSession();
-	    session.save(taxInvoiceDetails);
-	    taxInvoiceaved = true;
-	} catch (Exception ex) 
-	{
-	    ex.printStackTrace();
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.save(taxInvoiceDetails);
+			taxInvoiceaved = true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return taxInvoiceaved;
 	}
-	return taxInvoiceaved;
-    }
-    
-    @Transactional
-    public ArrayList<TaxInvoiceDetails> getTaxIvoiceData(String tag, String value) {
-	ArrayList<TaxInvoiceDetails> taxInvoiceDetailsList = new ArrayList<TaxInvoiceDetails>();
-	try {
-	    Session session = sessionFactory.getCurrentSession();
-	    String sql = "from TaxInvoiceDetails td where td." + tag + "='" + value+"'";
 
-	    Query query = session.createQuery(sql);
+	@Transactional
+	public ArrayList<TaxInvoiceDetails> getTaxIvoiceData(String tag, String value) {
+		ArrayList<TaxInvoiceDetails> taxInvoiceDetailsList = new ArrayList<TaxInvoiceDetails>();
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			String sql = "from TaxInvoiceDetails td where td." + tag + "='" + value + "'";
 
-	    List results = query.getResultList();
+			Query query = session.createQuery(sql);
 
-	    Iterator itr = results.iterator();
+			List results = query.getResultList();
 
-	    while (itr.hasNext()) {
-		taxInvoiceDetailsList.add((TaxInvoiceDetails) itr.next());
-	    }
-	} catch (Exception ex) {
-	    ex.printStackTrace();
+			Iterator itr = results.iterator();
+
+			while (itr.hasNext()) {
+				taxInvoiceDetailsList.add((TaxInvoiceDetails) itr.next());
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return taxInvoiceDetailsList;
 	}
-	return taxInvoiceDetailsList;
-    }
+
+	@Transactional
+	public String getLastTaxIvoiceNo() {
+		String lastTaxInvoiceno = "";
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			String sql = "select taxInvoiceNo from TaxInvoiceDetails order by taxInvoiceDate DESC";
+
+			Query query = session.createQuery(sql);
+
+			List<Object> results = query.getResultList();
+
+			if(results.size()>0)
+			{
+				lastTaxInvoiceno = (String) results.get(0);	
+			}
+			else
+			{
+				lastTaxInvoiceno = "";
+			}
+			
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return lastTaxInvoiceno;
+	}
 }

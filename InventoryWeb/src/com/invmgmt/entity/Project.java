@@ -8,18 +8,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name="project")
 public class Project implements Serializable{
 
-	
+	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="projectId")
 	private int projectId;
-	
-	@Id
-	@Column(name="project_name")
+		
+	@Column(name="project_name", unique=true)
 	private String projectName;
 	
 	@Column(name="project_desc")

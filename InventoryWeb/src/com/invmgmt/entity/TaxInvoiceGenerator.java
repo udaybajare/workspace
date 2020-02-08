@@ -15,33 +15,29 @@ import com.invmgmt.util.Principal;
 @ManagedBean
 public class TaxInvoiceGenerator {
 
-    @Autowired
-    TaxInvoiceDetailsDao taxInvoiceDetailsDao;
-    
-    @Autowired
-    Principal invoiceGenerator;
-    
-    @Autowired
-    EmailUtils emailUtils;
-    
-    public void generateAndSendTaxInvoice(TaxInvoiceDetails taxInvoiceDetails) {
-	
-	taxInvoiceDetailsDao.saveTaxIvoice(taxInvoiceDetails);
+	@Autowired
+	TaxInvoiceDetailsDao taxInvoiceDetailsDao;
 
-	invoiceGenerator.createInvoice(taxInvoiceDetails);
-	
-	emailUtils.sendMessageWithAttachment(taxInvoiceDetails.getEmailAddress(),taxInvoiceDetails.getTaxInvoiceNo());
-	
-	try 
-	{
-	    FileUtils.forceDelete(new File(System.getProperty("java.io.tmpdir") + "/TaxInvoice.pdf"));
-	}
-	catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-    }
+	@Autowired
+	Principal invoiceGenerator;
 
-    
-    
+	@Autowired
+	EmailUtils emailUtils;
+
+	public void generateAndSendTaxInvoice(TaxInvoiceDetails taxInvoiceDetails) {
+
+		taxInvoiceDetailsDao.saveTaxIvoice(taxInvoiceDetails);
+
+		invoiceGenerator.createInvoice(taxInvoiceDetails);
+
+		emailUtils.sendMessageWithAttachment(taxInvoiceDetails.getEmailAddress(), taxInvoiceDetails.getTaxInvoiceNo(), false);
+
+		try {
+			FileUtils.forceDelete(new File(System.getProperty("java.io.tmpdir") + "/TaxInvoice.pdf"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

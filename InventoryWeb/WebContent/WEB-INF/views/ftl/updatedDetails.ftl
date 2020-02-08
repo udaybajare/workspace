@@ -53,7 +53,7 @@
     <!-- "transparent-header": makes the header transparent and pulls the banner to top -->
     <!-- "gradient-background-header": applies gradient background to header -->
     <!-- "page-loader-1 ... page-loader-6": add a page loader to the page (more info @components-page-loaders.html) -->
-    <body class="fixed-header-on" cz-shortcut-listen="true">
+    <body class="" cz-shortcut-listen="true">
 
       <!-- scrollToTop -->
       <!-- ================ -->
@@ -64,233 +64,244 @@
       <div class="page-wrapper">
         <!-- header-container start -->
         <div class="header-container">
-          <div class="sticky-wrapper" style="height: 111px;"><header class="header fixed fixed-desktop clearfix object-visible">
+          <header class="header fixed fixed-desktop clearfix">
             <div class="container">
-              <div class="row">
-               <div class="col-md-8">
-                 <div class="navbar navbar-default navbar-static-top container" style="margin-left: 0px; margin-right: 0px;">
-                  <div class="navbar-header" style="width: 200px;">
-                   <img src="images/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
-                 </div>
-               </div>
-             </div> 
-             <div class="col-md-2">
-             </div>
-             <div class="col-md-2"> 
-              <form class="form-horizontal" action="logout" method="POST" style="margin-left: 100px;margin-top: 30px;">
-                <button type="submit" class="btn btn-default btn-animated">Log Out <i class="fa fa-user"></i></button>
-              </form>
-            </div>
-          </div>
-          <div class="col-lg-8 ml-auto">
-
-            <!-- header-second start -->
-            <!-- ================ -->
-            <div class="header-second clearfix">
-              <div class="main-navigation main-navigation--mega-menu  animated">
-                <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="navbar-brand clearfix hidden-lg-up">
-                    <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                    </div>
-                  </div></nav>
+              <div class="col-md-auto hidden-md-down">
+                <div class="header-first clearfix">
+                 <div class="row">
+                   <div class="col-md-8">
+                     <div class="navbar navbar-default navbar-static-top container" style="margin-left: 0px; margin-right: 0px;">
+                      <div class="navbar-header" style="width: 200px;">
+                       <img src="./loginPage/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
+                     </div>
+                   </div>
+                 </div> 
+                 <div class="col-md-2">
+                   <form class="form-horizontal" action="home" method="POST" style="margin-left: 100px;margin-top: 30px;">
+                    <button type="submit" class="btn btn-default btn-animated">Home<i class="fa fa-user"></i></button>
+                  </form>
+                </div>
+                <div class="col-md-2"> 
+                  <form class="form-horizontal" action="logout" method="POST" style="margin-left: 100px;margin-top: 30px;">
+                    <button type="submit" class="btn btn-default btn-animated">Log Out <i class="fa fa-user"></i></button>
+                  </form>
+                </div>
+                <div class="site-slogan">
                 </div>
               </div>
             </div>
+
             <div class="col-auto hidden-md-down">
             </div>
           </div>
-        </header></div></div>
+        </div>
+      </header>
+    </div>
 
-        <!-- header end -->
-      </div>
-      <!-- main-container start -->
-      <!-- ================ -->
-      <section class="">
-        <!-- section -->
-        <!-- ================ -->
-        <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
-          <div class="container" style="max-width:98%;">
-            <div class="row">
-              <div class="col-md-7 ">
-                <div class="pv-30 ph-20 feature-box bordered shadow text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+    <!-- header end -->
+  </div>
+  <!-- main-container start -->
+  <!-- ================ -->
+  <section class="">
+    <!-- section -->
+    <!-- ================ -->
+    <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
+      <div class="container" style="max-width:98%;">
+        <div class="row">
+          <div class="col-md-7 ">
+            <div class="pv-30 ph-20 feature-box bordered shadow text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
 
-                  <h3>${projectName}</h3>
-                  <div class="separator clearfix"></div>
-                  <p>${projectDesc}</p>
+              <h3>${projectName}</h3>
+              <div class="separator clearfix"></div>
+              <p>${projectDesc}</p>
 
-                </div>
-
-              </div> 
-              <aside class="col-md-5 col-xl-5 ml-xl-auto">
-                <div class="sidebar">
-                  <div class="block clearfix">
-                    <h3 class="title">Project Details</h3>
-                    <div class="separator-2"></div>
-                    <ul class="list margin-clear">
-                      <li><strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 29%;">PO Number:</strong> <span>${poNumber}</span></li>
-                      <li><strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 25%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span></li>
-                      <li><strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 20%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span></li>                    
-                      <li><strong>GST #: </strong> <span class="text-right">${gstNumber}</span></li>
-                    </ul>
-
-                  </div>
-                </div>
-              </aside>			  
             </div>
-            <br>
+
+          </div> 
+          <aside class="col-md-5 col-xl-5 ml-xl-auto">
+            <div class="sidebar">
+              <div class="block clearfix">
+                <h3 class="title">Project Details</h3>
+                <div class="separator-2"></div>
+                <ul class="list margin-clear">
+                  <li><strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 29%;">PO Number:</strong> <span>${poNumber}</span></li>
+                  <li><strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 25%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span></li>
+                  <li><strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 20%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span></li>                    
+                  <li><strong>GST #: </strong> <span class="text-right">${gstNumber}</span></li>
+                </ul>
+
+              </div>
+            </div>
+          </aside>			  
+        </div>
+        <br>
 
 
-            <!-- Update project Section START -->
-            <div class="row">
-              <h3 class="mt-4" data-toggle="collapse" data-target="#projectDetails" style="margin-left: 3%;"> + Project Section</h3>
+        <!-- Update project Section START -->
+        <div class="row">
+          <h3 class="select-menu" data-toggle="modal" data-target="#createProjectModal" style="margin-left: 3%;"> + Project Section</h3>
+          <div class="container collapse" style="max-width:98%;" id="projectDetails">
+           <div class="col-md-12 ">
 
-              <div class="container collapse" style="max-width:98%;" id="projectDetails">
-               <div class="col-md-12 ">
+            <div class="modal fade bd-example-modal-lg" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+             <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content" style="width:110%;margin-left:-4%;">
+               <div class="modal-header">
+                <h4 class="modal-title" >Project Details</h4>
+              </div>
+              <div class="modal-body">
 
-                 <form action="updateProject" class="projDetails" method="POST">
-                  <div class="row" style="margin-top: 2%;">
-                    <div class="col-md-3 ">
-                      <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                        <div class="form-group has-feedback">
-                          <label style="margin-left: -80%;">PO Date</label>
-                          <input type="text" name="poDate" class="form-control" value=" ">                   
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-3 ">
-                      <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                        <label style="margin-left: -75%;">PO Number</label>
-                        <input type="text" name="poNumber" class="form-control" value=" ">
-                      </div>
-                    </div>
-                    <div class="col-md-3 ">
-                      <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                       <label style="margin-left: -55%;">Contact Person Name</label>
-                       <input type="text" name="contactName" class="form-control">
-                     </div>
-                   </div>
-                   <div class="col-md-3 ">
-                    <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                      <label style="margin-left: -70%;">Contact Email</label>
-                      <input type="text" name="contactEmail" class="form-control">
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="row" style="margin-top: -3%;margin-bottom: 2%">
 
+               <form action="updateProject" class="projDetails" method="POST">
+                <div class="row" style="margin-top: 2%;">
                   <div class="col-md-3 ">
                     <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                     <label style="margin-left: -70%;">Contact Phone</label>
-                     <input type="text" name="contactPhone" class="form-control">
+                      <div class="form-group has-feedback">
+                        <label style="margin-left: -80%;">PO Date</label>
+                        <input type="text" name="poDate" class="form-control" value=" ">                   
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 ">
+                    <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                      <label style="margin-left: -75%;">PO Number</label>
+                      <input type="text" name="poNumber" class="form-control" value=" ">
+                    </div>
+                  </div>
+                  <div class="col-md-3 ">
+                    <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                     <label style="margin-left: -55%;">Contact Person Name</label>
+                     <input type="text" name="contactName" class="form-control">
                    </div>
                  </div>
                  <div class="col-md-3 ">
                   <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                   <label style="margin-left: -70%;">GST Number</label>
-                   <input type="text" name="gstNumber" class="form-control" value=" ">
+                    <label style="margin-left: -70%;">Contact Email</label>
+                    <input type="text" name="contactEmail" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row" style="margin-top: -3%;margin-bottom: 2%">
+                <div class="col-md-3 ">
+                  <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                   <label style="margin-left: -70%;">Contact Phone</label>
+                   <input type="text" name="contactPhone" class="form-control">
                  </div>
                </div>
-
-
-
                <div class="col-md-3 ">
                 <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                 <label style="margin-left: -80%;">Address</label>
-                 <input type="text" name="address" class="form-control">
+                 <label style="margin-left: -70%;">GST Number</label>
+                 <input type="text" name="gstNumber" class="form-control" value=" ">
                </div>
              </div>
+             <div class="col-md-3 ">
+              <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+               <label style="margin-left: -80%;">Address</label>
+               <input type="text" name="address" class="form-control">
+             </div>
+           </div>
 
-             <div class="col-md-3 " style="margin-left: -2%;">
-               <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                <label></label>
-                <br>
-                <button type="submit" class="btn btn-default">Update Project</button>
-              </div>					
-            </div>
+           <div class="col-md-3 " style="margin-left: -2%;">
+             <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+              <label></label>
+              <br>
+              <button type="submit" class="btn btn-default">Update Project</button>
+            </div>          
           </div>
-          <input type="hidden" name="projectId" value="${projectId}"/>
         </div>
-      </form>
-    </div>
+        <input type="hidden" name="projectId" value="${projectId}">
+      </form></div>
+    </div>  
   </div>
+</div>
+</div>
+</div>
 </div>
 <div class="separator-2" style="margin-left: -1%;"></div>
 <!-- Update project Section END -->
 <div class="row" style="margin-top: -2%;margin-left: 2%;">
-  <h3 class="mt-4" data-toggle="collapse" data-target="#boqDetails" style="margin-left: 2%;"> + BOQ Section</h3>
+  <h3 class="mt-4" data-toggle="modal" data-target="#createProjectModal1" style="margin-left: 2%;"> + BOQ Section</h3>
 
   <div class="container collapse" style="max-width:98%;" id="boqDetails">
 
-    <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
-     <div class="col-md-3">
-      <h4>Quotation Revisions</h4>
-      <select class="form-control revisionSection" onchange="download($('.revisionSection').val(),'tableContentDetails');">
-        <option></option>
-      </select>
-    </div> 
-    <div class="col-md-3 "style="margin-left:-2%; margin-top: 1%";>
-     <button type="button" class="btn btn-default" onclick="toggleCreateBOQSec();">Create BOQ</button>
-   </div>
-   <div class="col-md-3 "style="margin-left:-2%; margin-top: 1%";>
-     <form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data" style="margin: 0px">
-       <button class="btn btn-default" name="uploadFile">Upload</button>
-       <label for="choose">Choose File</label>
-       <input id="choose" type="file" name="file" onClick="toggleImportSec();" style="display:none;" class="btn btn-default">
-     </form>  
-   </div>
-   <div class="col-md-3" id="generate" style="margin-left:-2%;margin-top: 1%";>
-    <button type="Submit" class="btn btn-default">Generate</button>
-  </div>
-  <div class="row" style="margin-left: 2%";>
-    <input class="form-control" type="hidden" name="boqNameList" value="${boqNameList}" style="margin-left: 3%;margin-bottom: 6%;">
-    <input class="form-control" type="hidden" name="quotationNamesList" value="${quotationNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
-    <input class="form-control" type="hidden" name="taxInvoiceNamesList" value="${taxInvoiceNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
-    <input class="form-control" type="hidden" name="poNamesList" value="${poNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
-  </div>
-</div>
-<form name="generateBOQ" action="generateNew" class="createBOQ" method="POST" style="display: none;">
-  <div class="row">
+   <div class="modal fade bd-example-modal-lg" id="createProjectModal1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="width:110%;margin-left:-4%;">
+       <div class="modal-header">
+        <h4 class="modal-title" >Project Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" style="margin-top: 2%;margin-bottom: 2%;margin-left: 12%">
+         <div class="col-md-3" style="margin-top: -1%">
+          <h4>Quotation Revisions</h4>
+          <select class="form-control revisionSection" onchange="download($('.revisionSection').val(),'tableContentDetails');">
+            <option></option>
+          </select>
+        </div> 
+        <div class="col-md-3 "style="margin-left:-2%; margin-top: 1%";>
+         <button type="button" class="btn btn-default" onclick="toggleCreateBOQSec();">Create BOQ</button>
+       </div>
+       <div class="col-md-3 "style="margin-left:-2%; margin-top: 1%";>
+         <form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data" style="margin: 0px">
+           <button class="btn btn-default" name="uploadFile">Upload</button>
+           <label for="choose">Choose File</label>
+           <input id="choose" type="file" name="file" onClick="toggleImportSec();" style="display:none;" class="btn btn-default">
+         </form>  
+       </div>
+       <div class="col-md-3" id="generate" style="margin-left:-2%;margin-top: 1%";>
+        <button type="Submit" class="btn btn-default">Generate</button>
+      </div>
+    </div>
+    <div class="row" style="margin-left: 2%";>
+      <input class="form-control" type="hidden" name="boqNameList" value="${boqNameList}" style="margin-left: 3%;margin-bottom: 6%;">
+      <input class="form-control" type="hidden" name="quotationNamesList" value="${quotationNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
+      <input class="form-control" type="hidden" name="taxInvoiceNamesList" value="${taxInvoiceNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
+      <input class="form-control" type="hidden" name="poNamesList" value="${poNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
+    </div>
+    
+    <form name="generateBOQ" action="generateNew" class="createBOQ" method="POST" style="display: none;">
+      <div class="row">
+        <div class="col-md-3 col-sm-3">
+         <div class="ph-20 feature-box  object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+          <label style="margin-left: 0%;">D Name</label>
+          <input type="text" name="dName" value="">
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-3">
+       <div class="ph-20 feature-box object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+        <label>Utility</label>
+        <input type="text" name="utility" value="">
+      </div>
+    </div>
     <div class="col-md-3 col-sm-3">
-     <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-      <label>D Name</label>
-      <input type="text" name="dName" value="">
+     <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+      <label>Pressure</label>
+      <input type="text" name="pressure" value="">
     </div>
   </div>
   <div class="col-md-3 col-sm-3">
-   <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-    <label>Utility  &#8194;</label>
-    <input type="text" name="utility" value="">
+   <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+    <label>Project &#8194;</label>
+    <input type="text" name="project" value="" style="margin-left: 8%;">
   </div>
-</div>
-<div class="col-md-3 col-sm-3">
- <div class="" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-  <label>Pressure</label>
-  <input type="text" name="pressure" value="">
-</div>
-</div>
-<div class="col-md-3 col-sm-3">
- <div class="" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-  <label>Project &#8194;</label>
-  <input type="text" name="project" value="" style="margin-left: 8%;">
-</div>
 </div>
 </div>
 <div class="row">
-  <div class="col-md-3 col-sm-3">
-   <div class="" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+  <div class="col-md-3 col-sm-3" style="margin-left: 2%;">
+   <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
     <label>Temperature</label>
     <input type="text" name="temperature" value="">
   </div>
 </div>
 <div class="col-md-3 col-sm-3">
- <div class="" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+ <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
   <label style="margin-left: 6%;">D Number</label>
   <input style="margin-left: 3%;"type="text" name="dNo" value="" >
 </div>
 </div>
-<div class="col-md-3 col-sm-3">
- <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+<div class="col-md-3 col-sm-3" style="margin-left: -4%" >
+ <div class="ph-20 feature-box object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
   <label>Client &#8194;</label>
   <input type="text" name="client" value="">
 </div>
@@ -302,7 +313,7 @@
 </div>
 </div>
 </div>
-<div class="row">
+<div class="row" >
  <div class="col-md-12 ">
    <div class="table-responsive">                
     <table class="table table-colored inventoryDetails inventoryTableHeader" style="display: none;">
@@ -365,97 +376,112 @@
   </div>  
 </div>
 </form>
-<div class="row createBOQ" style="display: none;">
-  <div class="col-md-10">
-   <table class="table table-colored" style="max-width: 98%;">
-    <thead>
-      <tr>
-        <th>Inventory</th>
-        <th>Material</th>
-        <th>Type</th>
-        <th>Manifacturing Method</th>
-        <th>Class/Schedule</th>
-        <th>Ends</th>
-        <th>Size</th>
-      </tr>
-    </thead>
-    <tbody id="tableContent">
-     <tr>
-      <td>
-       <div class="form-group">
-         <select class="form-control" name="inventoryName" id="inventoryName" onchange="myFunction(this.value,'inventoryName','material');">
-           <option></option>
-           <option value="Pipe">Pipe</option>
-           <option value="Flange">Flange</option>
-           <option value="Elbow">Elbow</option>
-           <option value="Socket">Socket</option>
-           <option value="Barrel Nipple">Barrel Nipple</option>
-           <option value="Coupling">Coupling</option>
-           <option value="Reducer">Reducer</option>
-           <option value="Tee">Tee</option>
-           <option value="Gasket">Gasket</option>
-           <option value="Nut Bolt">Nut Bolt</option>
-           <option value="Support">Support</option>
-         </select>
-       </div>
-     </td>
-     <td>
-       <div class="form-group">
-         <select class="form-control" name="material" id="material" onchange="myFunction(this.value,'material','type');">
-           <option></option>
-         </select>
-       </div>
-     </td>
-     <td>
-       <div class="form-group">
-         <select class="form-control" name="type" id="type" onchange="myFunction($('#material').val(),'material','classOrGrade');">
-           <option></option>
-         </select>
-       </div>
-     </td>
-     <td>
-       <div class="form-group">
-         <select class="form-control" name="manifacturingMethod" id="manifacturingMethod">
-           <option></option>
-           <option>Seamless</option>
-           <option>ERW</option>
-           <option>Centrifuge</option>
-         </select>
-       </div>
-     </td>
-     <td>
-       <div class="form-group">
-         <select class="form-control" name="classOrGrade" id="classOrGrade">
-           <option></option>
-         </select>
-       </div>
-     </td>
-     <td>
-       <div class="form-group">
-         <select class="form-control" name="ends" id="ends">
-           <option></option>
-           <option>Buttweld</option>
-           <option>Socket Weld/Threaded</option>
-           <option>Threaded</option>
-           <option>Plain End</option>
-         </select>
-       </div>
-     </td>
-     <td>
-       <div class="form-group">
-         <select class="form-control" name="size" id="size">
-           <option></option>
-           <option>1</option>
-           <option>1.25</option>
-           <option>1.5</option>
-           <option>2</option>
-           <option>2.5</option>
-         </select>
-       </div>
-     </td>
-   </tr>                 
- </tbody>
-</table>
+<div class="row createBOQ" style="display: none;margin-top: 2%;margin-bottom: 2%;">
+  <div class="col-md-3 "style="margin-left:5%";>
+    <br>
+    <h4 data-toggle="collapse" data-target="#addInventory">Add Inventory</h4>
+  </div>
+  <div class="col-md-3">
+    <br>
+    <h4 data-toggle="collapse" data-target="#addAccessory">Add Accessory</h4> 
+  </div>
+  <div class="col-md-3">
+    <br>
+    <h4 data-toggle="collapse" data-target="#addValve">Add Valve</h4>
+  </div>
+</div>
+<div class="container collapse" style="max-width:98%;" id="addInventory">
+  <div class="row createBOQ" style="display: none;">
+    <div class="col-md-10 form-inline">
+     <table class="table table-colored" style="max-width: 98%;">
+      <thead>
+        <tr>
+          <th>Inventory</th>
+          <th>Material</th>
+          <th>Type</th>
+          <th>Manifacturing Method</th>
+          <th>Class/Schedule</th>
+          <th>Ends</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tbody id="tableContent">
+       <tr>
+        <td>
+         <div class="form-group">
+           <select class="form-control" name="inventoryName" id="inventoryName" onchange="myFunction(this.value,'inventoryName','material');">
+             <option></option>
+             <option value="Pipe">Pipe</option>
+             <option value="Flange">Flange</option>
+             <option value="Elbow">Elbow</option>
+             <option value="Socket">Socket</option>
+             <option value="Barrel Nipple">Barrel Nipple</option>
+             <option value="Coupling">Coupling</option>
+             <option value="Reducer">Reducer</option>
+             <option value="Tee">Tee</option>
+             <option value="Gasket">Gasket</option>
+             <option value="Nut Bolt">Nut Bolt</option>
+             <option value="Support">Support</option>
+           </select>
+         </div>
+       </td>
+       <td>
+         <div class="form-group">
+           <select class="form-control" name="material" id="material" onchange="myFunction(this.value,'material','type');">
+             <option></option>
+           </select>
+         </div>
+       </td>
+       <td>
+         <div class="form-group">
+           <select class="form-control" name="type" id="type" onchange="myFunction($('#material').val(),'material','classOrGrade');">
+             <option></option>
+           </select>
+         </div>
+       </td>
+       <td>
+         <div class="form-group">
+           <select class="form-control" name="manifacturingMethod" id="manifacturingMethod">
+             <option></option>
+             <option>Seamless</option>
+             <option>ERW</option>
+             <option>Centrifuge</option>
+           </select>
+         </div>
+       </td>
+       <td>
+         <div class="form-group">
+           <select class="form-control" name="classOrGrade" id="classOrGrade">
+             <option></option>
+           </select>
+         </div>
+       </td>
+       <td>
+         <div class="form-group">
+           <select class="form-control" name="ends" id="ends">
+             <option></option>
+             <option>Buttweld</option>
+             <option>Socket Weld/Threaded</option>
+             <option>Threaded</option>
+             <option>Plain End</option>
+           </select>
+         </div>
+       </td>
+       <td>
+         <div class="form-group">
+           <select class="form-control" name="size" id="size">
+             <option></option>
+             <option>1</option>
+             <option>1.25</option>
+             <option>1.5</option>
+             <option>2</option>
+             <option>2.5</option>
+           </select>
+         </div>
+       </td>
+     </tr>                 
+   </tbody>
+ </table>
 </div>
 <div class="col-md-2">
  <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
@@ -465,37 +491,164 @@
  </div> 
 </div>
 </div>
-<div class="row createBOQ" style="display: none;">
-  <div class="col-md-10">
-    <table class="table table-colored createBOQ rounded-circle" style="display:none;">
-      <thead>
-        <tr>
-          <th>Accessory</th>
-          <th>Desc1</th>
-          <th>Desc2</th>
-          <th>Desc3</th>
-          <th>Desc4</th>
-          <th>Desc5</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><input class="form-control" type="text" name="accessoryName" id="accessoryName" /></td>
-          <td><input class="form-control" type="text" name="desc1" id="desc1" /></td>
-          <td><input class="form-control" type="text" name="desc2" id="desc2" /></td>
-          <td><input class="form-control" type="text" name="desc3" id="desc3" /></td>
-          <td><input class="form-control" type="text" name="desc4" id="desc4" /></td>
-          <td><input class="form-control" type="text" name="desc5" id="desc5" /></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="col-md-2">
-   <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-     <label></label>
-     <br>
-     <button type="button" class="btn btn-default" onclick="appendAccessory();">Add Accessory</button>   
-   </div> 
+</div>
+<div class="container collapse" style="max-width:98%;" id="addAccessory">
+
+  <div class="row createBOQ" style="display: none;">
+    <div class="col-md-10">
+      <table class="table table-colored createBOQ rounded-circle" style="display:none;">
+        <thead>
+          <tr>
+            <th>Accessory</th>
+            <th>Desc1</th>
+            <th>Desc2</th>
+            <th>Desc3</th>
+            <th>Desc4</th>
+            <th>Desc5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input class="form-control" type="text" name="accessoryName" id="accessoryName" /></td>
+            <td><input class="form-control" type="text" name="desc1" id="desc1" /></td>
+            <td><input class="form-control" type="text" name="desc2" id="desc2" /></td>
+            <td><input class="form-control" type="text" name="desc3" id="desc3" /></td>
+            <td><input class="form-control" type="text" name="desc4" id="desc4" /></td>
+            <td><input class="form-control" type="text" name="desc5" id="desc5" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-2">
+     <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+       <label></label>
+       <br>
+       <button type="button" class="btn btn-default" onclick="appendAccessory();">Add Accessory</button>   
+     </div> 
+   </div>
+ </div>
+</div>
+<div class="container collapse" style="max-width:98%;" id="addValve">
+  <div class="row createBOQ" style="display: none;">
+    <div class="col-md-12 form-inline">
+      <table class="table table-colored createBOQ rounded-circle" style="display:none;">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Material</th>
+            <th>End</th>
+            <th>Type</th>
+            <th>Pressure Ratings</th>
+            <th>Max Inlet Pressure</th>
+            <th>Operations</th>
+            <th>SeatAndSeals</th>
+            <th>Valve Size</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+             <div class="form-group">
+               <select class="form-control" name="model" id="model" onchange="getValveDetails('material');">
+                 <option></option>
+                 <option value="API-600"    >API-600  </option>
+                 <option value="API6D"     >API6D    </option>
+                 <option value="MSS SP-81" >MSS SP-81</option>
+                 <option value="ARC 014"   >ARC 014  </option>
+                 <option value="API 602"   >API 602  </option>
+                 <option value="BS-5352"   >BS-5352  </option>
+                 <option value="ARC-024"   >ARC-024  </option>
+                 <option value="BS-5156"   >BS-5156  </option>
+                 <option value="API 526"   >API 526  </option>
+                 <option value="IS 12268"  >IS 12268 </option>
+                 <option value="API 600"   >API 600  </option>
+                 <option value="API 6D"    >API 6D   </option>
+                 <option value="MSS SP-81" >MSS SP-81</option>
+                 <option value="BS-1873"   >BS-1873  </option>
+                 <option value="ND-16"     >ND-16    </option>
+                 <option value="ND-40"     >ND-40    </option>
+                 <option value="BS-1868"   >BS-1868  </option>
+                 <option value="API 6D"    >API 6D   </option>
+                 <option value="BS-5351"   >BS-5351  </option>
+                 <option value="API 6D"    >API 6D   </option>
+                 <option value="BS5159"    >BS5159   </option>
+                 <option value="ISO 17292" >ISO 17292</option>
+                 <option value="BS-5155"   >BS-5155  </option>
+                 <option value="API 609"   >API 609  </option>
+                 <option value="AWWA C504" >AWWA C504</option>
+                 <option value="IS 13095"  >IS 13095 </option>
+                 <option value="API 6D"    >API 6D   </option>
+                 <option value="API 594"   >API 594  </option>
+               </select>
+             </div>
+           </td>
+           <td>
+             <div class="form-group">
+               <select class="form-control" name="material" id="materialVal" onchange="getValveDetails('end');">
+                 <option></option>
+               </select>
+             </div>
+           </td>
+           <td>
+             <div class="form-group">
+               <select class="form-control" name="end" id="endVal" onchange="getValveDetails('type');">
+                 <option></option>
+               </select>
+             </div>
+           </td>
+           <td>
+             <div class="form-group">
+               <select class="form-control" name="type" id="typeVal" onchange="getValveDetails('pressureRatings');">
+                 <option></option>
+               </select>
+             </div>
+           </td>
+           <td>
+             <div class="form-group">
+               <select class="form-control" name="pressureRatings" id="pressureRatingsVal" onchange="getValveDetails('maxInletPressure');" >
+                 <option value='-'>-</option>
+               </select>
+             </div>
+           </td>
+           <td>
+             <div class="form-group">
+               <select class="form-control" name="maxInletPressure" id="maxInletPressureVal" onchange="getValveDetails('operations');">
+                 <option value='-'>-</option>
+               </select>
+             </div>
+           </td>
+           <td>
+             <div class="form-group">
+               <select class="form-control" name="operations" id="operationsVal" onchange="getValveDetails('seatAndSeals');">
+                 <option value='-'>-</option>
+               </select>
+             </div>
+           </td>
+           <td>
+             <div class="form-group">
+               <select class="form-control" name="seatAndSeals" id="seatAndSealsVal">
+                 <option value='-'>-</option>
+               </select>
+             </div>
+           </td>
+           <td>
+             <div class="form-group">
+               <input type="text" class="form-control" name="valveSize" id="valveSize" style="width:60%;">
+             </div>
+           </td>
+         </tr> 
+       </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="row createBOQ" style="display: none;">
+   <div class="col-md-2">
+     <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+       <label></label>
+       <br>
+       <button type="button" class="btn btn-default" onclick="appendValve();">Add Valve</button>   
+     </div> 
+   </div>
  </div>
 </div>
 <div class="form-row createBOQ" style="display: none;">
@@ -529,7 +682,7 @@
 </div>
 <div class="row" style="margin-top: 10px">
 </div>
-</form>
+</form></div>
 </div>
 </div>
 </div>
@@ -538,214 +691,339 @@
 
 <!--Create BOQ Start-->
 <div class="row" style="margin-top: -2%;margin-left: 1%;">
-  <h3 class="mt-4" data-toggle="collapse" data-target="#inquiryDetails" style="margin-left: 3%;"> + Inquiry Section</h3>
+  <h3 class="mt-4" data-toggle="modal" data-target="#createProjectModal2" style="margin-left: 3%;"> + Inquiry Section</h3>
   <div class="container collapse" style="max-width:98%;" id="inquiryDetails">
-    <div class="row">
-     <div class="col-md-12 ">
-       <div class="table-responsive">                
-        <table class="table table-colored tableContentInqSec" style="display: none;">
-         <thead>
-           <tr>
-             <th>Select</th>
-             <th>Inventory</th>
-             <th>Material</th>
-             <th>Type</th>
-             <th>Manifacturing Method</th>
-             <th>Grade/Class</th>
-             <th>Ends</th>
-             <th>Size</th>
-             <th>Available Quantity</th>
-             <th>Quantity</th>
-             <th>Base Supply Rate</th>
-             <th>Supply Rate</th>
-             <th>Base Erection Rate</th>
-             <th>Erection Rate</th>
-             <th>Supply Amount</th>
-             <th>Erection Amount</th>
-           </tr>
-           <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th><input type="text" style="width:45px;" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
-            <th></th>
-            <th><input type="text" style="width:45px;" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="tableContentInqSec">
-        </tbody>
-      </table>
+   <div class="modal fade bd-example-modal-lg" id="createProjectModal2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="width:110%;margin-left:-4%;">
+       <div class="modal-header">
+        <h4 class="modal-title" >Inquiries</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+         <div class="col-md-12 ">
+           <div class="table-responsive">                
+            <table class="table table-colored tableContentInqSec" style="display: none;">
+             <thead>
+               <tr>
+                 <th>Select</th>
+                 <th>Inventory</th>
+                 <th>Material</th>
+                 <th>Type</th>
+                 <th>Manifacturing Method</th>
+                 <th>Grade/Class</th>
+                 <th>Ends</th>
+                 <th>Size</th>
+                 <th>Available Quantity</th>
+                 <th>Quantity</th>
+                 <th>Base Supply Rate</th>
+                 <th>Supply Rate</th>
+                 <th>Base Erection Rate</th>
+                 <th>Erection Rate</th>
+                 <th>Supply Amount</th>
+                 <th>Erection Amount</th>
+               </tr>
+               <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th><input type="text" style="width:45px;" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
+                <th></th>
+                <th><input type="text" style="width:45px;" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tableContentInqSec">
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
+    <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
+     <div class="col-md-3">
+       <h4>Quotation Revisions</h4>
+       <select class="form-control revisionSection" onchange="download($(this).val(), 'tableContentInqSec');">
+        <option></option>
+      </select>                
+    </div>
+    <div class="col-md-3 ">
+      <h4>Inquiry List</h4>
+      <select class="form-control offerRevisionSection" onchange="download($(this).val(),'tableContentInqSec');" >
+        <option></option>
+      </select>
+    </div> 
+    <div class="col-md-3">
+      <h4>Inquiry Name</h4>
+      <input type="text" class="form-control" name="inquiryName">
+    </div>
+    <div class="col-md-3" id="generateQuot" style="margin-top: 2%;" >
+     <label>
+      <input type="hidden" name="boqNameList" value="${boqNameList}">
+      <input type="hidden" name="quotationNamesList" value="${quotationNamesList}">
+    </label>
+    <button type="button" onclick="createInquiry();" class="btn btn-default">Generate Inquiry</button>    
+  </div>    
+</div>    
 </div>
-<div class="row" style="margin-top: 2%;margin-bottom: 2%;">
- <div class="col-md-3">
-   <h4>Quotation Revisions</h4>
-   <select class="form-control revisionSection" onchange="download($(this).val(), 'tableContentInqSec');">
-    <option></option>
-  </select>                
 </div>
-<div class="col-md-3 ">
-  <h4>Inquiry List</h4>
-  <select class="form-control offerRevisionSection" onchange="download($(this).val(),'tableContentInqSec');" >
-    <option></option>
-  </select>
-</div> 
-<div class="col-md-3">
-  <h4>Inquiry Name</h4>
-  <input type="text" class="form-control" name="inquiryName">
-</div>
-<div class="col-md-3" id="generateQuot" style="margin-top: 1%";>
- <label>
-  <input type="hidden" name="boqNameList" value="${boqNameList}">
-  <input type="hidden" name="quotationNamesList" value="${quotationNamesList}">
-</label>
-<button type="button" onclick="createInquiry();" class="btn btn-default">Generate Inquiry</button>    
 </div>    
 </div>
 </div>
 </div>
 <div class="separator-2" style="margin-left: 1%;"></div>
 <div class="row" style="margin-top: -2%;margin-left: 1%;">
-  <h3 class="mt-4" data-toggle="collapse" data-target="#purchaseDetails" style="margin-left: 3%;"> + Purchase Order Section</h3>
+  <h3 class="mt-4" data-toggle="modal" data-target="#createProjectModal3" style="margin-left: 3%;"> + Purchase Order Section</h3>
 
   <div class="container collapse" style="max-width:98%;" id="purchaseDetails">
-    <div class="row">
-     <div class="col-md-12 ">
-       <div class="table-responsive">                
-        <table class="table table-colored tableContentPOSec" style="display: none;">
-         <thead>
-           <tr>
-             <th>Select</th>
-             <th>Inventory</th>
-             <th>Material</th>
-             <th>Type</th>
-             <th>Manifacturing Method</th>
-             <th>Grade/Class</th>
-             <th>Ends</th>
-             <th>Size</th>
-             <th>Available Quantity</th>
-             <th>Quantity</th>
-             <th>Base Supply Rate</th>
-             <th>Supply Rate</th>
-             <th>Base Erection Rate</th>
-             <th>Erection Rate</th>
-             <th>Supply Amount</th>
-             <th>Erection Amount</th>
-           </tr>
-           <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th><input type="text" style="width:45px;" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
-            <th></th>
-            <th><input type="text" style="width:45px;" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="tableContentPOSec">
-        </tbody>
-      </table>
+   <div class="modal fade bd-example-modal-lg" id="createProjectModal3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="width:110%;margin-left:-4%;">
+       <div class="modal-header">
+        <h4 class="modal-title" >Purchase Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+         <div class="col-md-12 ">
+           <div class="table-responsive">                
+            <table class="table table-colored tableContentPOSec" style="display: none;">
+             <thead>
+               <tr>
+                 <th>Select</th>
+                 <th>Inventory</th>
+                 <th>Material</th>
+                 <th>Type</th>
+                 <th>Manifacturing Method</th>
+                 <th>Grade/Class</th>
+                 <th>Ends</th>
+                 <th>Size</th>
+                 <th>Available Quantity</th>
+                 <th>Quantity</th>
+                 <th>Base Supply Rate</th>
+                 <th>Supply Rate</th>
+                 <th>Base Erection Rate</th>
+                 <th>Erection Rate</th>
+                 <th>Supply Amount</th>
+                 <th>Erection Amount</th>
+               </tr>
+               <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th><input type="text" style="width:45px;" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
+                <th></th>
+                <th><input type="text" style="width:45px;" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tableContentPOSec">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
+
+      <div class="col-md-3" style="margin-left:5%";>
+        <h4>Inquiry List</h4>
+        <select class="form-control offerRevisionSection" onchange="download($(this).val(),'tableContentPOSec');">
+          <option></option>
+        </select>
+      </div>
+      <div class="col-md-3 ">
+        <h4>PO List:</h4> 
+        <select class="form-control" onchange="downloadPO($('#poList').val());" id="poList">
+          <option></option>
+          <option value=""></option></select>
+
+        </div>  
+        <div class="col-md-3" style="margin-top: 1.5%;">      
+          <button type="button" onclick="generatePO();" class="btn btn-default">Generate PO</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<div class="row" style="margin-top: 2%;margin-bottom: 2%;">
-
-  <div class="col-md-3" style="margin-left:5%";>
-    <h4>Inquiry List</h4>
-    <select class="form-control offerRevisionSection" onchange="download($(this).val(),'tableContentPOSec');">
-      <option></option>
-    </select>
-  </div>
-  <div class="col-md-3 ">
-    <h4>PO List:</h4> 
-    <select class="form-control" onchange="downloadPO($('#poList').val());" id="poList">
-      <option></option>
-      <option value=""></option></select>
-
-    </div>  
-    <div class="col-md-3" style="margin-top: 1.5%;">      
-      <button type="button" onclick="generatePO();" class="btn btn-default">Generate PO</button>
-    </div>
-  </div>
+</div>
 
 </div>
 </div>
 <div class="separator-2" style="margin-left: 1%;"></div>
 <div class="row" style="margin-top: -2%;margin-left: 1%;">
-  <h3 class="mt-4" data-toggle="collapse" data-target="#InvoiceDetails" style="margin-left: 3%;"> + Invoice and Payment Section</h3>
-
+  <h3 class="mt-4" data-toggle="modal" data-target="#createProjectModal4" style="margin-left: 3%;"> + Invoice and Payment Section</h3>
   <div class="container collapse" style="max-width:98%;" id="InvoiceDetails">
-    <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
-
-      <div class="col-md-3 "style="margin-left:5%";>
-
-       <h4>TaxInvoice List</h4>
-       <select class="form-control" onchange="downloadInvoice($('#taxInvoiceList').val());" id="taxInvoiceList">
-        <option></option>
-        <option value=""></option></select>
-
+    <div class="modal fade bd-example-modal-lg" id="createProjectModal4" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" style="width:110%;margin-left:-4%;">
+       <div class="modal-header">
+        <h4 class="modal-title" >Invoice Details</h4>
       </div>
-      <div class="col-md-3" style="margin-top: 1.5%;">      
-        <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#payDetails" >Received Payment Details</button>
+      <div class="modal-body">
+        <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
+
+          <div class="col-md-3 "style="margin-left:5%";>
+           <h4>TaxInvoice List</h4>
+           <select class="form-control" onchange="downloadInvoice($('#taxInvoiceList').val());" id="taxInvoiceList">
+            <option></option>
+            <option value=""></option>
+          </select>
+        </div>
+        <div class="col-md-3" style="margin-top: 1.5%;">      
+          <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#payDetails" >Received Payment Details</button>
+        </div>
+        <div class="col-md-3" style="margin-top: 1.5%;">      
+         <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#createProjectModal5">Add Payment Details</button>
+       </div>
+     </div>
+     <div class="collapse" id="createProjectModal5">
+      <div class="row ">
+       <div class="col-md-3" style="margin-left: 5%;">
+         <label class="" style="margin-top: 1%;">Invoice</label>
+         <select class="form-control" name="taxInvoiceNumber" id="taxInvoiceNumber" > 
+          <option></option>
+        </select>
       </div>
+      <div class="col-md-3" style="margin-left: -4%;">
+       <label class="" style="margin-top: 1%;">Total Amount</label>
+       <input class="form-control" style="" type="text" id="" name="totalAmount" value="" project="">
+     </div>
+     <div class="col-md-3" style="margin-left: -4%;">
+       <label class="" style="margin-top: 1%;">Received Amount</label>
+       <input class="form-control" style="" type="text" id="" name="receivedAmount" value="" project="">
+     </div>
+     <div class="col-md-3" style="margin-left: -5%;">
+      <label class="" style="margin-top: 1%;">Payment Mode</label>
+      <input class="form-control" style="" type="text" id="" name="paymentMode" value="" project="">
     </div>
-    <div class="row collapse" id="payDetails">				
-      <div class="col-md-12" style="margin-top: 1.5%;">      
-        <table id="payDetailsSection" class="table table-striped table-colored" style="display:none;">
-         <thead>
-           <tr>
-             <th>Payment ID</th>
-             <th>TaxInvoice Number</th>
-             <th>Amount</th>
-             <th>Date Received</th>
-           </tr>
-         </thead>
-         ${paymentDetails}
-         <tbody>
-         </tbody>
-       </table>
-     </div>		
+  </div>
+  <div class="row" style="">
+   <div class="col-md-3" style="margin-left: 5%;">
+     <input type="button" class="btn btn-default" onClick="addPayDetails();" value="Add">
    </div>
  </div>
 </div>
-<div class="separator-2" style="margin-left: 1%;"></div>
-<div class="row" style="margin-top: -2%;margin-left: 1%;">
-  <h3 class="mt-4" data-toggle="collapse" data-target="#InventoryDetails" style="margin-left: 3%;"> + Inventory Section</h3>
+<div class="row collapse" id="payDetails">				
+  <div class="col-md-12" style="margin-top: 1.5%;">      
+    <table id="payDetailsSection" class="table table-striped table-colored">
+     <thead>
+       <tr>
+         <th>Payment ID</th>
+         <th>TaxInvoice Number</th>
+         <th>Total Amount</th>
+         <th>Amount Received</th>
+         <th>Amount Prnding</th>
+         <th>Payment Method</th>
+         <th>Date Received</th>
+       </tr>
+     </thead>     
+     <tbody id="paymentDetailsBody" >
+      ${paymentDetails}
+    </tbody>
+  </table>
+</div>		
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
+<div class="separator-2" style="margin-left: 1%;"></div>
+<div class="row" style="margin-top: -2%; margin-left: 1%;">
+  <h3 class="mt-4" data-toggle="modal" data-target="#createProjectModal6" style="margin-left: 3%;"> + Inventory Section</h3>
   <div class="container collapse" style="max-width:98%;" id="InventoryDetails">
-    <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
-     <div class="col-md-3 "style="margin-left:5%";>
-       <br><button type="button" class="btn btn-default" style="margin-left:8%;" data-toggle="collapse" data-target="#assignedInventory">Show Assigned Inventory</button>
-     </div>
-     <div class="col-md-3">
-       <br><button type="button" class="btn btn-default" style="margin-left:6%;" data-toggle="collapse" data-target="#consumedInventory">Show Consumed Inventory</button>
-     </div>
-   </div>
-   <div class="container collapse" style="max-width:98%;" id="assignedInventory">
+   <div class="modal fade bd-example-modal-lg" id="createProjectModal6" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+       <div class="modal-content" style="width:110%;margin-left:-4%;">
+         <div class="modal-header">
+          <h4 class="modal-title" >Inventory Details</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
+           <div class="col-md-3 "style="margin-left:5%";>
+            <br>
+            <button type="button" class="btn btn-default" style="margin-left:8%;" data-toggle="collapse" data-target="#assignedInventory">Show Assigned Inventory</button>
+          </div>
+          <div class="col-md-3">
+            <br>
+            <button type="button" class="btn btn-default" style="margin-left:6%;" data-toggle="collapse" data-target="#consumedInventory">Show Consumed Inventory</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container collapse" style="max-width:98%;" id="assignedInventory">
+        <div class="col-md-12 ">
+          <div class="table-responsive">                
+            <table class="table table-colored assignedInventorySec" >
+              <thead>
+                <tr>
+                 <th></th>
+                 <th>Inventory</th>
+                 <th>Material</th>
+                 <th>Type</th>
+                 <th>Manifacturing Method</th>
+                 <th>Class/Schedule</th>
+                 <th>Ends</th>
+                 <th>Size</th>
+                 <th>Quantity</th>
+                 <th>Purchase Rate</th>
+                 <th>Project</th>
+                 <th>Location</th>
+                 <th>Mark as</th>
+               </tr>
+             </thead>
+             <tbody id="tableContentDetails">
+              ${assignedInventory}
+            </tbody>
+          </table>
+          <table class="table table-colored assignedInventorySec">
+            <thead>
+              <tr>
+               <th></th>
+               <th>Desc 1</th>
+               <th>Desc 2</th>
+               <th>Desc 3</th>
+               <th>Desc 4</th>
+               <th>Desc 5</th>
+               <th>Accesory Name</th>
+               <th></th>
+               <th>Quantity</th>
+               <th>Purchase Rate</th>
+               <th>Project</th>
+               <th>Location</th>
+               <th>Mark as</th>
+             </tr>
+           </thead>
+           <tbody id="tableContentDetails">
+            ${assignedAccessory}
+          </tbody>
+        </table>
+      </div> 
+    </div>
+  </div>
+  <div class="container collapse" style="max-width:98%;" id="consumedInventory">
     <div class="col-md-12 ">
       <div class="table-responsive">                
 
-        <table class="table table-colored assignedInventorySec" >
+        <table class="table table-colored">
           <thead>
             <tr>
              <th></th>
@@ -760,14 +1038,13 @@
              <th>Purchase Rate</th>
              <th>Project</th>
              <th>Location</th>
-             <th>Mark as</th>
            </tr>
          </thead>
-         <tbody id="tableContentDetails">
-          ${assignedInventory}
+         <tbody>
+          ${consumedInventory}
         </tbody>
       </table>
-      <table class="table table-colored assignedInventorySec">
+      <table class="table table-colored">
         <thead>
           <tr>
            <th></th>
@@ -782,80 +1059,21 @@
            <th>Purchase Rate</th>
            <th>Project</th>
            <th>Location</th>
-           <th>Mark as</th>
-         </tr>
-       </thead>
-       <tbody id="tableContentDetails">
-        ${assignedAccessory}
-      </tbody>
-    </table>
-  </div> 
-</div>
-</div>
-<div class="container collapse" style="max-width:98%;" id="consumedInventory">
-  <div class="col-md-12 ">
-    <div class="table-responsive">                
-
-      <table class="table table-colored">
-        <thead>
-          <tr>
-           <th></th>
-           <th>Inventory</th>
-           <th>Material</th>
-           <th>Type</th>
-           <th>Manifacturing Method</th>
-           <th>Class/Schedule</th>
-           <th>Ends</th>
-           <th>Size</th>
-           <th>Quantity</th>
-           <th>Purchase Rate</th>
-           <th>Project</th>
-           <th>Location</th>
          </tr>
        </thead>
        <tbody>
-        ${consumedInventory}
-      </tbody>
-    </table>
-    <table class="table table-colored">
-      <thead>
-        <tr>
-         <th></th>
-         <th>Desc 1</th>
-         <th>Desc 2</th>
-         <th>Desc 3</th>
-         <th>Desc 4</th>
-         <th>Desc 5</th>
-         <th>Accesory Name</th>
-         <th></th>
-         <th>Quantity</th>
-         <th>Purchase Rate</th>
-         <th>Project</th>
-         <th>Location</th>
-       </tr>
-     </thead>
-     <tbody>
-       ${consumedAccessory}
-     </tbody>
-   </table>
- </div> 
+         ${consumedAccessory}
+       </tbody>
+     </table>
+   </div> 
+ </div>
 </div>
+</div>
+</div> 
 </div>
 </div>
 </div>
 
-<div class="container" style="min-width: 98%">
-  <div class="row">
-    <div class="col-md-3">
-    </div>							
-    <div class="col-md-3">
-    </div>
-    <div class="col-md-3 ">
-    </div>
-    <div class="col-md-3 ">
-    </div>					
-  </div>
-</div>
 
 <div class="form-row">
 </div>	
@@ -1080,14 +1298,6 @@
     });
      
    })();
-   
-   console.log("Table content is : "+$('#tableContentDetails tr').length);
-   if($('#tableContentDetails tr').length > 0)
-   {
-   	$('.assignedInventorySec').toggle();
-   }
-   
-   
  });
 
   $(document).ready(function(){
@@ -1142,6 +1352,7 @@
       var tags = dummy1.replace("taxInvoiceName",names[i]);
 
       $('#taxInvoiceList').append(tags);
+      $('#taxInvoiceNumber').append(tags);
 
     });
      
@@ -1240,20 +1451,20 @@
 
     $('#LoadingImage').show();
 
-    var CheckeleCount = $('#inquiryDetails .checkbox').length;
+    var CheckeleCount = $('#tableContentInqSec input.checkbox').length;
 
     var selectedElements = [];
     var i;
 
     for(i=0; i < CheckeleCount; i++)
     {
-      if($('#inquiryDetails .checkbox')[i].checked)
+      if($('#tableContentInqSec input.checkbox')[i].checked)
       {
        selectedElements[i] = i;
      }
    }
 
-   var eleCount = $('#inquiryDetails').find('input').length;
+   var eleCount = $('#tableContentInqSec input').length;
 
 
    var inventoryName       = [];
@@ -1279,23 +1490,23 @@
 
      if(selectedElements[k] != undefined)
      {
-      var start = 3 + 15*parseFloat(selectedElements[k]);
+      var start = 1 + 15*parseFloat(selectedElements[k]);
       console.log('Start is : '+start);
 
-      quantity[k]           = $('#inquiryDetails input')[start++].value;
-      baseSupplyRate[k]     = $('#inquiryDetails input')[start++].value;
-      supplyRate[k]         = $('#inquiryDetails input')[start++].value;
-      baseErectionRate[k]   = $('#inquiryDetails input')[start++].value;
-      erectionRate[k]       = $('#inquiryDetails input')[start++].value;
-      supplyAmount[k]       = $('#inquiryDetails input')[start++].value;
-      erectionAmount[k]     = $('#inquiryDetails input')[start++].value;
-      inventoryName[k] 	    = $('#inquiryDetails input')[start++].value;							      
-      material[k]      	    = $('#inquiryDetails input')[start++].value;     
-      type[k]               = $('#inquiryDetails input')[start++].value;
-      manifacturingMethod[k]= $('#inquiryDetails input')[start++].value;
-      classOrGrade[k]       = $('#inquiryDetails input')[start++].value;
-      ends[k]               = $('#inquiryDetails input')[start++].value;
-      size[k]               = $('#inquiryDetails input')[start++].value;
+      quantity[k]           = $('#tableContentInqSec input')[start++].value;
+      baseSupplyRate[k]     = $('#tableContentInqSec input')[start++].value;
+      supplyRate[k]         = $('#tableContentInqSec input')[start++].value;
+      baseErectionRate[k]   = $('#tableContentInqSec input')[start++].value;
+      erectionRate[k]       = $('#tableContentInqSec input')[start++].value;
+      supplyAmount[k]       = $('#tableContentInqSec input')[start++].value;
+      erectionAmount[k]     = $('#tableContentInqSec input')[start++].value;
+      inventoryName[k] 	    = $('#tableContentInqSec input')[start++].value;							      
+      material[k]      	    = $('#tableContentInqSec input')[start++].value;     
+      type[k]               = $('#tableContentInqSec input')[start++].value;
+      manifacturingMethod[k]= $('#tableContentInqSec input')[start++].value;
+      classOrGrade[k]       = $('#tableContentInqSec input')[start++].value;
+      ends[k]               = $('#tableContentInqSec input')[start++].value;
+      size[k]               = $('#tableContentInqSec input')[start++].value;
     }	
   }
 
@@ -1315,7 +1526,7 @@
   var type_string = cleanArray(type);
   formData.push({name: 'type', value: type_string});
   var manifacturingMethod_string = cleanArray(manifacturingMethod);
-  formData.push({name: 'manifMetod', value: manifacturingMethod_string});
+  formData.push({name: 'manifMethod', value: manifacturingMethod_string});
   var classOrGrade_string = cleanArray(classOrGrade);
   formData.push({name: 'classOrGrade', value: classOrGrade_string});
   var ends_string = cleanArray(ends);
@@ -1409,12 +1620,22 @@ function cleanArray(actual)
       var temp = $('#tableContentPOSec  input')[i];
       line = $(temp).clone();
     }
-    else if($('#tableContentPOSec  input')[i].name == "manifMetod")
+    else if($('#tableContentPOSec  input')[i].name == "manifMethod")
     {
       var temp = $('#tableContentPOSec input')[i];
       line = $(temp).clone();
     }
     else if($('#tableContentPOSec input')[i].name == "classOrGrade")
+    {
+      var temp = $('#tableContentPOSec input')[i];
+      line = $(temp).clone();
+    }
+    else if ($('#tableContentPOSec input')[i].name == "ends")
+    {
+      var temp = $('#tableContentPOSec input')[i];
+      line = $(temp).clone();
+    }
+    else if ($('#tableContentPOSec input')[i].name == "size")
     {
       var temp = $('#tableContentPOSec input')[i];
       line = $(temp).clone();
@@ -1482,7 +1703,7 @@ function cleanArray(actual)
     + "    <td> <input type='hidden' name='inventoryName' value='"+inventoryName+"'></input>"+inventoryName+"</td>"
     + "    <td> <input type='hidden' name='material' value='"+material+"'></input>"+material+"</td>"
     + "    <td> <input type='hidden' name='type' value='"+type+"'></input>"+type+"</td>"
-    + "    <td> <input type='hidden' name='manifMetod' value='"+manifacturingMethod+"'></input>"+manifacturingMethod+"</td>"
+    + "    <td> <input type='hidden' name='manifMethod' value='"+manifacturingMethod+"'></input>"+manifacturingMethod+"</td>"
     + "    <td> <input type='hidden' name='classOrGrade' value='"+classOrGrade+"'></input>"+classOrGrade+"</td>"
     + "    <td> <input type='hidden' name='ends' value='"+ends+"'></input>"+ends+"</td>"
     + "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
@@ -1539,6 +1760,60 @@ function cleanArray(actual)
     + "    <td> <input type='hidden' name='desc5' value='"+desc5+"'></input>"+desc5+"</td>"
     + "    <td> <input type='hidden' name='size' value='-'></input>-</td>"
     + "	   <td>	</td>"
+    + "    <td> <input class='form-control' type='text' name='quantity' value=''></input></td>"
+    + "    <td> <input class='form-control' type='text' name='baseSupplyRate' value=''></input></td>"
+    + "    <td> <input class='form-control' type='text' name='supplyRate' value=''></input></td>"
+    + "    <td> <input class='form-control' type='text' name='baseErectionRate' value=''></input></td>"
+    + "    <td> <input class='form-control' type='text' name='erectionRate' value=''></input></td>"
+    + "    <td> <input class='form-control' type='text' name='supplyAmount' value=''></input></td>"
+    + "    <td> <input class='form-control' type='text' name='erectionAmount' value=''></input></td>";
+
+    console.log(template);
+    $('.inventoryDetails').css("display","block");
+
+
+    if($('.accessoryTr').length>0)
+    {
+     $('.accessoryTr').last().after(template);
+   }
+   else if($('.inventry').length>0)
+   {
+     $('.inventry').last().after(template);
+   }
+   else
+   {
+     $('#tableContentDetails').append(template);
+   }
+ }
+</script>
+
+<script>
+  function appendValve() 
+  {
+
+    $('.generateBOQButton').css('display','block');
+    $('.inventoryTableHeader').css('display','block');
+
+    var model         = $('#model').val();
+    var material        = $('#materialVal').val();
+    var end           = $('#endVal').val();
+    var type          = $('#typeVal').val();
+    var pressureRatings   = $('#pressureRatingsVal').val();
+    var maxInletPressure    = $('#maxInletPressureVal').val();
+    var operations        = $('#operationsVal').val();     
+    var seatAndSeals    = $('#seatAndSealsVal').val();     
+    var valveSize       = $('#valveSize').val();    
+
+    var template = "<tr class='accessoryTr'>" 
+    + "     <td></td>"
+    + "    <td> <input type='hidden' name='model' value='"+model+"'></input>"+model+"</td>"
+    + "    <td> <input type='hidden' name='materialVal' value='"+material+"'></input>"+material+"</td>"    
+    + "    <td> <input type='hidden' name='typeVal' value='"+type+"-"+operations+"-"+seatAndSeals+"'></input>"+type+"-"+operations+"-"+seatAndSeals+"</td>"
+    + "    <td>-</td>"
+    + "    <td> <input type='hidden' name='pressureRatings' value='"+pressureRatings+"-"+maxInletPressure+"'></input>"+pressureRatings+"-"+maxInletPressure+"</td>"
+    + "    <td> <input type='hidden' name='endVal' value='"+end+"'></input>"+end+"</td>"
+    + "    <td> <input type='hidden' name='size' value='"+valveSize+"'></input>"+valveSize+"</td>"
+    + "    <td> </td>"
     + "    <td> <input class='form-control' type='text' name='quantity' value=''></input></td>"
     + "    <td> <input class='form-control' type='text' name='baseSupplyRate' value=''></input></td>"
     + "    <td> <input class='form-control' type='text' name='supplyRate' value=''></input></td>"
@@ -1626,7 +1901,7 @@ function cleanArray(actual)
       {
        $('#tableContentDetails').html(data);
        
-        toggleCreateBOQSec();
+       toggleCreateBOQSec();
        adjustWidth();
 
        var imp = document.getElementById("importBoq");
@@ -1766,4 +2041,65 @@ function cleanArray(actual)
 
   });
 </script>
-</body></html>
+<script type="text/javascript">
+  function addPayDetails()
+  {
+    var taxInvoiceNumber = $('[name="taxInvoiceNumber"]').children("option:selected").val();
+    var receivedAmount = $('[name="receivedAmount"]')[0].value;
+    var paymentMode = $('[name="paymentMode"]')[0].value;
+    var projectId = $('[name="projectId"]')[0].value;
+
+    var paymentDetailsLine = '';
+
+    $.ajax({
+     url: "updatePaymentDetails",
+     data: {'taxInvoiceNumber' : taxInvoiceNumber, 
+     'receivedAmount' : receivedAmount, 
+     'paymentMode' : paymentMode, 
+     'projectId' : projectId},
+     type: 'post',
+     success: function(totalAmount) {
+
+      if(totalAmount!=='Failure')
+      {
+        var fullDate = new Date();
+        var twoDigitMonth = fullDate.getMonth()+"";if(twoDigitMonth.length==1)  twoDigitMonth="0" +twoDigitMonth;
+        var twoDigitDate = fullDate.getDate()+"";if(twoDigitDate.length==1) twoDigitDate="0" +twoDigitDate;
+        var currentDate = twoDigitDate + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+
+        var amountPrnding = parseFloat(totalAmount) - parseFloat(receivedAmount); 
+        $('#paymentDetailsBody').append('<tr><th>-</th><th>'+taxInvoiceNumber+'</th><th>'+totalAmount+'</th><th>'+receivedAmount+'</th><th>'+amountPrnding+'</th><th>'+paymentMode+'</th><th>'+currentDate+'</th></tr>');
+      }
+
+    }
+  });
+  }
+</script>
+<script>
+  function getValveDetails(nextTagName) {
+
+    $('#LoadingImage').show();
+    var tag = '#'+nextTagName;
+    var model = $('#model')[0].value;
+    
+    console.log("nextTagName is : "+ nextTagName);
+
+    $.ajax({
+     type : 'POST',
+     data :  {'nextTagName' : nextTagName, 'model' : model},
+     url : 'getValveDetails',
+     success : function(data) {
+
+      console.log(data);
+      console.log($(tag));
+
+      var blank = "<option> </option> <option value='-'>-</option>";
+      $(tag+'Val').html(blank);
+      $(tag+'Val').append(data);
+      $('#LoadingImage').hide();
+    }
+  });
+  }
+</script>
+</body>
+</html>

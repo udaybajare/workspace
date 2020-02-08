@@ -8,6 +8,7 @@ import javax.annotation.ManagedBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.invmgmt.dao.InventoryDao;
+import com.invmgmt.dao.PODetailsDao;
 import com.invmgmt.entity.AccessoryDetails;
 import com.invmgmt.entity.BOQDetails;
 import com.invmgmt.entity.Inventory;
@@ -18,9 +19,12 @@ public class InventoryUtils {
 
 	@Autowired
 	InventoryDao inventoryDao;
+	
+	@Autowired
+	PODetailsDao poDetailsDao;
 
-	public String createDescriptionLine(String material, String type, String inventory, String classOrgrade) {
-		String templateDesc = "material type inventory of Grade(OR Class) as classOrgrade";
+	public String createDescriptionLine(String material, String type, String inventory, String classOrgrade, String manifMethod, String ends, String size) {
+		String templateDesc = "material type inventory of Grade(OR Class) as classOrgrade with Ends as endsVal Manifacturing Method as manifMethod of size sizeVal";
 
 		String description = templateDesc;
 
@@ -31,6 +35,10 @@ public class InventoryUtils {
 
 		description = description.replace("inventory", inventory);
 		description = description.replace("classOrgrade", classOrgrade);
+		
+		description = description.replace("endsVal", ends);
+		description = description.replace("sizeVal", size);
+		description = description.replace("manifMethod", manifMethod);
 
 		return description;
 	}
@@ -39,10 +47,11 @@ public class InventoryUtils {
 			String[] manifMethod, String[] gradeOrClass, String[] ends, String[] size, String[] project,
 			String[] status) {
 		ArrayList<InventorySpec> inventorySpecList = new ArrayList<InventorySpec>();
-
+		String projectname = project[0];
+		
 		for (int i = 0; i < inventoryName.length; i++) {
 			inventorySpecList.add(new InventorySpec(inventoryName[i], material[i], type[i], manifMethod[i],
-					gradeOrClass[i], ends[i], size[i], project[i], status[i]));
+					gradeOrClass[i], ends[i], size[i], projectname, status[i]));
 		}
 
 		return inventorySpecList;
@@ -51,28 +60,32 @@ public class InventoryUtils {
 	public String createInventoryRowTable(Inventory inv, boolean isConsumed) {
 		return createInventoryRowTable(inv, false, null, isConsumed);
 	}
+
 	public String createInventoryRowTable(Inventory inv, boolean needProjectList, String index, boolean isConsumed) {
-		
+
 		String inventoryId = "inventoryNo";
-		
-		if (null != index)
-		{
-			inventoryId = inventoryId + index;	
+
+		if (null != index) {
+			inventoryId = inventoryId + index;
 		}
-		
-		String template = "<tr id=\""+inventoryId+"\"><form><td></td>"
+
+		String template = "<tr id=\"" + inventoryId + "\"><form><td></td>"
 				+ "<td>InventoryVal</td>    <td>MaterialVal</td>    <td>TypeVal</td>"
-				+ "<td>ManifMethodVal</td><td>gradeOrClassVal</td>    <td>endsVal</td>" + "<td>sizeVal</td>"
-				+ "<td>"
-				+ (isConsumed? "availableQuantity" : "<input type=\"text\" name=\"quantity\" value=\"availableQuantity\" ></td>")
+				+ "<td>ManifMethodVal</td><td>gradeOrClassVal</td>    <td>endsVal</td>" + "<td>sizeVal</td>" + "<td>"
+				+ (isConsumed ? "availableQuantity"
+						: "<input type=\"text\" class=\"form-control\" name=\"quantity\" value=\"availableQuantity\" ></td>")
 				+ "<td>purchaseRateVal</td>"
-				+ (needProjectList? "<td><select class='form-control currentProjectList' name='project' name='projectName' ><option></option></td>" : "<td>projectVal</td>")
-				+ "<td>locationVal</td>"
-				+ "<td>"
-				+ (needProjectList? "<input type=\"submit\" class=\"btn btn-default \" onClick=\"statusTo('"+inventoryId+"');\"  value=\"Assign\">" 
-						: (isConsumed?"":"<select class=\"form-control statusTo\" name=\"statusTo\" > <option></option> <option value=\"release\">Release</option>" + "<option value=\"consumed\">Consumed</option></select>"))
-				+ "</td>" 
-				+ "<input type=\"hidden\" name=\"inventoryStr\" value=\"InventoryVal\" >"
+				+ (needProjectList
+						? "<td><select class='form-control currentProjectList' name='project' name='projectName' ><option></option></td>"
+						: "<td>projectVal</td>")
+				+ "<td>locationVal</td>" + "<td>"
+				+ (needProjectList
+						? "<input type=\"submit\" class=\"btn btn-default \" onClick=\"statusTo('" + inventoryId
+								+ "');\"  value=\"Assign\">"
+						: (isConsumed ? ""
+								: "<select class=\"form-control statusTo\" name=\"statusTo\" > <option></option> <option value=\"release\">Release</option>"
+										+ "<option value=\"consumed\">Consumed</option></select>"))
+				+ "</td>" + "<input type=\"hidden\" name=\"inventoryStr\" value=\"InventoryVal\" >"
 				+ "<input type=\"hidden\" name=\"materialStr\" value=\"MaterialVal\" >"
 				+ "<input type=\"hidden\" name=\"typeStr\" value=\"TypeVal\" >"
 				+ "<input type=\"hidden\" name=\"manifMethodStr\" value=\"ManifMethodVal\" >"
@@ -82,8 +95,7 @@ public class InventoryUtils {
 				+ "<input type=\"hidden\" name=\"purchaseRateStr\" value=\"purchaseRateVal\" >"
 				+ "<input type=\"hidden\" name=\"projectStr\" value=\"projectVal\" >"
 				+ "<input type=\"hidden\" name=\"locationStr\" value=\"locationVal\" > "
-				+ "<input type=\"hidden\" name=\"status\" value=\"assigned\"> "
-				+ "</tr>";
+				+ "<input type=\"hidden\" name=\"status\" value=\"assigned\"> " + "</tr>";
 
 		String rowToReturn = template;
 		rowToReturn = rowToReturn.replace("InventoryVal", inv.getInventorySpec().getInventoryName());
@@ -116,7 +128,7 @@ public class InventoryUtils {
 				+ "<td>accessoryNameVal</td>"
 				+ "<td>-</td>"				
 				+ "<td>"
-				+ (isConsumed?"availableQuantity":"<input type=\"text\" name=\"quantity\" value=\"availableQuantity\" ></td>")
+				+ (isConsumed?"availableQuantity":"<input type=\"text\" class=\"form-control\" name=\"quantity\" value=\"availableQuantity\" ></td>")
 				+ "<td>-</td>"
 				+ "<td>projectVal</td>"
 				+ "<td>locationVal</td>"
@@ -217,7 +229,7 @@ public class InventoryUtils {
 			}
 
 			boqInventoryDetails.add(new BOQDetails(projectId, boqName, inventoryName[i], material[i], type[i],
-					manifMetod[i], classOrGrade[i], ends[i], size[i], quantity[i],
+					manifMetod!=null?(manifMetod.length>=i?manifMetod[i]:"-"):"-", classOrGrade[i], ends[i], size[i], quantity[i],
 					supplyRate.length > 0 ? supplyRate[i] : "", erectionRate.length > 0 ? erectionRate[i] : "",
 					supplyAmount.length > 0 ? supplyAmount[i] : "", erectionAmount.length > 0 ? erectionAmount[i] : "",
 					baseErectionRate.length > 0 ? baseErectionRate[i] : "",
@@ -226,5 +238,16 @@ public class InventoryUtils {
 		}
 
 		return boqInventoryDetails;
+	}
+	
+	public String getPONames(String projectId) {
+		ArrayList<String> poNames = poDetailsDao.getAssociatedPONames(projectId);
+
+		StringBuffer invoiceNamesString = new StringBuffer();
+		for (String poName : poNames) {
+			invoiceNamesString.append(poName + ",");
+		}
+
+		return invoiceNamesString.toString();
 	}
 }

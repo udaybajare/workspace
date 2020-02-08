@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,13 +31,14 @@ import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.dao.InventoryDefinitionDao;
 import com.invmgmt.dao.MappingsDao;
 import com.invmgmt.dao.ProjectDao;
+import com.invmgmt.dao.ValvesDao;
 import com.invmgmt.entity.AccessoryDetails;
 import com.invmgmt.entity.BOQDetails;
 import com.invmgmt.entity.BOQHeader;
 import com.invmgmt.entity.BOQLineData;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
-import com.invmgmt.entity.Project;
+import com.invmgmt.entity.Valves;
 import com.invmgmt.excel.ExcelReader;
 import com.invmgmt.excel.ExcelWriter;
 import com.invmgmt.interfaces.BOQData;
@@ -61,6 +61,9 @@ public class BOQController {
 	MappingsDao mappingsDao;
 
 	@Autowired
+	ValvesDao valveDetailsDao;
+	
+	@Autowired
 	InventoryDao inventoryDao;
 
 	@Autowired
@@ -80,6 +83,8 @@ public class BOQController {
 
 	@Autowired
 	InventoryUtils inventoryUtils;
+	
+	ArrayList<Valves> ValveDetailsList = null;
 
 	@PostMapping("import")
 	public @ResponseBody String getBOQLine(@RequestParam("file") MultipartFile file) {
@@ -122,7 +127,7 @@ public class BOQController {
 	protected @ResponseBody String downloadBOQ(String boqName, String projectId) {
 		ArrayList<BOQDetails> boqDetails = boqDao.getBOQFromName(boqName, projectId);
 		
-		BOQHeader header = boqHeaderDao.getBOQHeaderFromName(boqName);
+		BOQHeader header = boqHeaderDao.getBOQHeaderFromName(boqName, projectId);
 		
 		List<Inventory> inventoryList = null;
 		List<String> supplyAmtList = new ArrayList<String>();
@@ -220,11 +225,12 @@ public class BOQController {
 			String[] type, String[] manifMetod, String[] classOrGrade, String[] ends, String[] size, String[] quantity,
 			String[] supplyRate, String[] erectionRate, String[] supplyAmount, String[] erectionAmount,
 			String[] baseErectionRate, String[] baseSupplyRate, String[] accessoryName, String[] desc1, String[] desc2,
-			String[] desc3, String[] desc4, String[] desc5, String isOffer, String[] client, String[] site,
+			String[] desc3, String[] desc4, String[] desc5, 
+			String[] model, String[] materialVal, String[] typeVal, String[] pressureRatings, String[] endVal,
+			String isOffer, String[] client, String[] site,
 			String[] project, String[] dName, String[] utility, String[] pressure, String[] temp, String[] dNo,
 			String[] sheetDetails, RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException 
 	{
-		
 		StringBuilder sheetdetailsStr = new StringBuilder();
 		
 		int accessIndex = 0;
@@ -241,7 +247,7 @@ public class BOQController {
 			}	
 		}		
 		
-		BOQHeader header = new BOQHeader(inventoryUtils.blankIfNull(client,accessIndex), inventoryUtils.blankIfNull(site,accessIndex), inventoryUtils.blankIfNull(project,accessIndex), inventoryUtils.blankIfNull(dName,accessIndex), inventoryUtils.blankIfNull(utility,accessIndex), inventoryUtils.blankIfNull(pressure,accessIndex),
+		BOQHeader header = new BOQHeader(projectId, inventoryUtils.blankIfNull(client,accessIndex), inventoryUtils.blankIfNull(site,accessIndex), inventoryUtils.blankIfNull(project,accessIndex), inventoryUtils.blankIfNull(dName,accessIndex), inventoryUtils.blankIfNull(utility,accessIndex), inventoryUtils.blankIfNull(pressure,accessIndex),
 				inventoryUtils.blankIfNull(temp,accessIndex), inventoryUtils.blankIfNull(dNo,accessIndex), boqName, sheetdetailsStr.toString());
 
 		System.out.println("Sheet Details are : "+header.getSheetDetails());
@@ -281,13 +287,25 @@ public class BOQController {
 
 		System.out.println("Saving BOQ with name : " + boqNameRevisionStr);
 
-		ArrayList<BOQLineData> boqInventoryDetails = getBOQLineDataList(material, type, ends, classOrGrade, inventoryName);
+		ArrayList<BOQLineData> boqInventoryDetails = new ArrayList<BOQLineData>();
+		
+		if (material != null)
+		{
+			boqInventoryDetails = getBOQLineDataList(material, type, ends, classOrGrade, inventoryName);	
+		}		
 		
 		if(accessoryName!=null)
 		{
 			for (int l = 0; l < accessoryName.length; l++) {
 				boqInventoryDetails.add(new BOQLineData(accessoryName[l], desc1[l], desc2[l], desc3[l], desc4[l],
 						desc5[l], "Accessories", ""));
+			}
+		}
+		
+		if(model!=null)
+		{
+			for (int l = 0; l < model.length; l++) {				
+				boqInventoryDetails.addAll(getBOQLineDataList(materialVal, typeVal, endVal, pressureRatings, model));
 			}
 		}
 		
@@ -302,17 +320,52 @@ public class BOQController {
 			excelByts = writer.writeExcel(boqInventoryDetails, size, quantity, supplyRate, erectionRate, supplyAmount,
 					erectionAmount, boqNameRevisionStr, header);
 
-			ArrayList<BOQDetails> boqInventoryDetailsList = inventoryUtils.getBOQDetailsList(projectId, boqNameRevisionStr,
-					inventoryName, material, type, manifMetod, classOrGrade, ends, size, quantity, supplyRate,
-					erectionRate, supplyAmount, erectionAmount, baseErectionRate, baseSupplyRate, header.getSheetDetails());
+			ArrayList<BOQDetails> boqInventoryDetailsList = new ArrayList<BOQDetails>();
+			if(inventoryName!=null)
+			{
+				boqInventoryDetailsList = inventoryUtils.getBOQDetailsList(projectId, boqNameRevisionStr,
+						inventoryName, material, type, manifMetod, classOrGrade, ends, size, quantity, supplyRate,
+						erectionRate, supplyAmount, erectionAmount, baseErectionRate, baseSupplyRate, header.getSheetDetails());	
+			}
+			
+			ArrayList<BOQDetails> boqAccessoryDetailsList = new ArrayList<>();
+			if(accessoryName!=null)
+			{
+				boqAccessoryDetailsList = inventoryUtils.getBOQDetailsList(projectId, boqNameRevisionStr,
+						accessoryName, desc1, desc2, desc3, desc4, desc5, size, quantity, supplyRate,
+						erectionRate, supplyAmount, erectionAmount, baseErectionRate, baseSupplyRate, header.getSheetDetails());	
+			}
+			
+			ArrayList<BOQDetails> boqValveDetailsList = new ArrayList<>();
+			
+			if(model!=null)
+			{
+				boqValveDetailsList = inventoryUtils.getBOQDetailsList(projectId, boqNameRevisionStr,
+						model, materialVal, typeVal, null, pressureRatings, endVal, size, quantity, supplyRate,
+						erectionRate, supplyAmount, erectionAmount, baseErectionRate, baseSupplyRate, header.getSheetDetails());	
+			}
+			
+			if(boqValveDetailsList.size()>0)
+			{
+				boqInventoryDetailsList.addAll(boqValveDetailsList);	
+			}
+			
+			if(boqAccessoryDetailsList.size()>0)
+			{
+				boqInventoryDetailsList.addAll(boqAccessoryDetailsList);
+			}
 
+			//Save Pipe, Accessories and Fittings
 			for (BOQDetails boqDetails : boqInventoryDetailsList) {
 				boqDao.saveBOQ(boqDetails);
 			}
 			
-			header.setBoqName(boqNameRevisionStr);
-			
+			//Save BOQ header
+			header.setBoqName(boqNameRevisionStr);			
 			boqHeaderDao.saveBOQHeader(header);
+			
+			//Save Valve details
+			
 
 			boqNames = boqDao.getAssociatedBOQNames(String.valueOf(projectId));
 
@@ -394,7 +447,18 @@ public class BOQController {
 
 		boqLineData.setEndsLine(boqLineData.getEndsLine().replaceAll("ENDS_VAL", ends));
 		boqLineData.setGrdLine(boqLineData.getGrdLine().replaceAll("CLASS_VAL", classOrGrade));
-		boqLineData.setGrdLine(boqLineData.getGrdLine().replaceAll("TYPE_VAL", type));
+		
+		if(boqLineData.getGrdLine().contains("TYPE_VAL"))
+		{
+			boqLineData.setGrdLine(boqLineData.getGrdLine().replaceAll("TYPE_VAL", type));	
+		}
+		
+		if(boqLineData.getSpecLine().contains("TYPE_VAL"))
+		{
+			boqLineData.setSpecLine(boqLineData.getSpecLine().replaceAll("TYPE_VAL", type));	
+		}
+
+		boqLineData.setStdLine(boqLineData.getStdLine().replaceAll("VALVE_NAME", inventoryName));	
 
 		return boqLineData;
 	}
@@ -429,6 +493,63 @@ public class BOQController {
 		return dropdownContent.toString();
 	}
 
+	@RequestMapping(value = "/getValveDetails", method = RequestMethod.POST)
+	public @ResponseBody String getValveDetails(
+			@RequestParam(value = "nextTagName", required = true) String nextTagName,
+			@RequestParam(value = "model", required = true) String model) {
+
+		StringBuilder dropdownContent = new StringBuilder();
+
+		ArrayList<String> results = new ArrayList<String>();
+		try {
+
+			if (ValveDetailsList == null) {
+				ValveDetailsList = valveDetailsDao.getValveDetails();
+			}
+
+			for (Valves vDetails : ValveDetailsList) {
+
+				if (vDetails.getModel().contains(model.trim())) {
+					String option = "";
+
+					switch (nextTagName) {
+					case "material":
+						option = vDetails.getMaterial();
+						break;
+					case "end":
+						option = vDetails.getEnd();
+						break;
+					case "maxInletPressure":
+						option = vDetails.getMaxInletPressure();
+						break;
+					case "operations":
+						option = vDetails.getOperation();
+						break;
+					case "pressureRatings":
+						option = vDetails.getPressureRatings();
+						break;
+					case "seatAndSeals":
+						option = vDetails.getSeatAndSeals();
+						break;
+					case "type":
+						option = vDetails.getType();
+						break;
+					}
+					
+					if (null != option && !(option.trim().equals(""))) {
+						dropdownContent.append("<option value=\"" + option + "\">" + option + "</option>" + "\n");
+					}
+				}
+
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return dropdownContent.toString();
+	}
 	private String createBOQContent(Map<BOQData, String> inventoryMap, List<String> supplyRateList,
 			List<String> erectionRateList, List<String> supplyAmtList, List<String> erectionAmtList,
 			List<String> baseSupplyRateList, List<String> baseErectionRateList, List<String> sheetNameList) {
@@ -467,8 +588,8 @@ public class BOQController {
 				+ "    <td style=\"padding: 0px 0px;\">manifMetodVal</td>"
 				+ "    <td style=\"padding: 0px 0px;\">classOrGradeVal</td>"
 				+ "    <td style=\"padding: 0px 0px;\">endsVal</td>"
-				+ "    <td style=\"padding: 0px 0px;\">sizeVal</td>"
-				+ "    <td style=\"padding: 0px 0px;\">availableQty</td>"
+				+ "    <td style=\"padding: 0px 0px;text-align:center;\">sizeVal</td>"
+				+ "    <td style=\"padding: 0px 0px;text-align:center;\">availableQty</td>"
 				+ "    <td><input type=\"text\" style=\"width:45px;\" name=\"quantity\" value=\"quantityVal\" /></td>"
 				+ "    <td><input type=\"text\" style=\"width:45px;\" name=\"baseSupplyRate\" dblclick=\"updateVal();\" value=\"baseSupplyRateVal\" id=\"baseSupplyRate\" /></td>"
 				+ "    <td><input type=\"text\" style=\"width:45px;\" name=\"supplyRate\" value=\"supplyRate\" /></td>"
@@ -479,7 +600,7 @@ public class BOQController {
 				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"inventoryName\" value=\"inventoryVal\" />"
 				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"material\" value=\"materialVal\" />"
 				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"type\" value=\"invenType\" />"
-				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"manifMetod\" value=\"manifMetodVal\" />"
+				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"manifMethod\" value=\"manifMetodVal\" />"
 				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"classOrGrade\" value=\"classOrGradeVal\" />"
 				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"ends\" value=\"endsVal\" />"
 				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"size\" value=\"sizeVal\" />"
@@ -614,4 +735,5 @@ public class BOQController {
 		}
 		return inventoryList;
 	}
+	
 }

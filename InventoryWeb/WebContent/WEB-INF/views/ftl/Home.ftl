@@ -99,13 +99,13 @@
                       <form action="createProject" method="POST">
                         <div class="modal-body">
                           <p>Project Name</p>
-                          <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
+                          <input type="text" style="color:#000000" class="form-control" placeholder="Type a project Name Here" name="projectName">
                           <br/>
                           <p>Company Name</p>
-                          <input type="text" class="form-control" placeholder="Enter Company Name Here" name="companyName">
+                          <input type="text" style="color:#000000" class="form-control" placeholder="Enter Company Name Here" name="companyName">
                           <br/>
                           <p>Project Description</p>
-                          <input type="text" class="form-control" placeholder="Type in the description Here" name="projectDesc">
+                          <input type="text" style="color:#000000" class="form-control" placeholder="Type in the description Here" name="projectDesc">
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">Close</button>
@@ -137,13 +137,13 @@
                     <form action="searchProject" method="POST">
                       <div class="modal-body">
                         <p>Project Name</p>
-                        <input type="text" class="form-control" placeholder="Type a project Name Here" name="projectName">
+                        <input type="text" style="color:#000000" class="form-control" placeholder="Type a project Name Here" name="projectName">
                         <br/>
                         <p>Company Name</p>
-                        <input type="text" class="form-control" placeholder="Enter Company Name Here" name="companyName">
+                        <input type="text" style="color:#000000" class="form-control" placeholder="Enter Company Name Here" name="companyName">
                         <br/>
                         <p>Project Description</p>
-                        <input type="text" class="form-control" placeholder="Type in the description Here" name="projectDesc">
+                        <input type="text" style="color:#000000" class="form-control" placeholder="Type in the description Here" name="projectDesc">
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-dark" data-dismiss="modal">Close</button>
@@ -225,17 +225,11 @@
 
     });
   </script>
-
-
-
   <!--common script for all pages-->
   <script src="./loginPage/js/common-scripts.js">
   </script>
-
   <script type="text/javascript">
     jQuery(document).ready(function() {
-
-
       $('.bxslider1').bxSlider({
         minSlides: 5,
         maxSlides: 6,
@@ -268,10 +262,7 @@
         }
         searchToggle = !searchToggle;
       });
-
     });
-
-
   </script>
 
 
@@ -288,13 +279,9 @@
     });
 
     $(document).ready(function() {
-
       $("#owl-demo").owlCarousel({
-
         items : 4
-
       });
-
     });
 
     jQuery(document).ready(function(){

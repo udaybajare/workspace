@@ -109,6 +109,8 @@ public class InventoryController {
 		List<InventorySpec> inventorySpec = inventoryUtils.createInventorySpecList(inventoryName, material, type,
 				manifMethod, gradeOrClass, ends, size, project, status);
 
+		String clientShortName = "";
+
 		for (int i = 0; i < inventorySpec.size(); i++) {
 			Inventory inventory = new Inventory();
 			inventory.setInventorySpec(inventorySpec.get(i));
@@ -223,8 +225,6 @@ public class InventoryController {
 			String projectName = project[0];
 			String temp = projectName;
 
-			String clientShortName = "";
-
 			if (projectName.contains(" ") && projectName.length() >= 7) {
 				clientShortName = projectName.substring(0, 3) + new String(temp.getBytes(), temp.indexOf(" "), 3);
 			} else {
@@ -250,39 +250,6 @@ public class InventoryController {
 				challanDetails.setLrNumberDate(lrNumber);
 				challanDao.saveChallan(challanDetails);
 
-				if (generateInvoice.equals("1")) {
-					String lasttaxInvoiceNo = taxInvoiceDetailsDao.getLastTaxIvoiceNo();
-
-					int lastNo = 0;
-					if (lasttaxInvoiceNo.length() > 0) {
-						lastNo = Integer.parseInt(lasttaxInvoiceNo.substring(lasttaxInvoiceNo.lastIndexOf("/") + 1));
-					}
-
-					String invoiceNo = "Invoice/" + clientShortName + "/" + String.valueOf(lastNo + 1);
-					taxInvoiceDetails.setInvoiceNo(invoiceNo);
-					taxInvoiceDetails.setTaxInvoiceNo(invoiceNo);
-
-					String invoiceDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:SS").format(new Date());
-					taxInvoiceDetails.setTaxInvoiceDate(invoiceDate);
-
-					String totalAmount = getTotalAmount(purchaseRate, quantity);
-
-					Double doubleVal = Double.parseDouble(totalAmount);
-
-					String amountsToWord = numberWordConverter.convert((int) Math.round(doubleVal));
-
-					taxInvoiceDetails.setRate(totalAmount);
-
-					if (amountsToWord.length() > 40) {
-						taxInvoiceDetails.setAmtInwrd1((String) amountsToWord.substring(0, 39));
-						taxInvoiceDetails.setAmtInwrd2((String) amountsToWord.substring(40));
-					} else {
-						taxInvoiceDetails.setAmtInwrd1(amountsToWord);
-						taxInvoiceDetails.setAmtInwrd2("");
-					}
-							
-					taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
-				}
 			}
 			if ("1".equals(addBillDetails) && billDetails.getBillNumber() != null
 					&& billDetails.getBillNumber() != "") {
@@ -299,6 +266,40 @@ public class InventoryController {
 					String.valueOf(quantity[i]), "NB");
 			lineItemData.append(lineItem);
 
+		}
+
+		if (generateInvoice.equals("1")) {
+			String lasttaxInvoiceNo = taxInvoiceDetailsDao.getLastTaxIvoiceNo();
+
+			int lastNo = 0;
+			if (lasttaxInvoiceNo.length() > 0) {
+				lastNo = Integer.parseInt(lasttaxInvoiceNo.substring(lasttaxInvoiceNo.lastIndexOf("/") + 1));
+			}
+
+			String invoiceNo = "Invoice/" + clientShortName + "/" + String.valueOf(lastNo + 1);
+			taxInvoiceDetails.setInvoiceNo(invoiceNo);
+			taxInvoiceDetails.setTaxInvoiceNo(invoiceNo);
+
+			String invoiceDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:SS").format(new Date());
+			taxInvoiceDetails.setTaxInvoiceDate(invoiceDate);
+
+			String totalAmount = getTotalAmount(purchaseRate, quantity);
+
+			Double doubleVal = Double.parseDouble(totalAmount);
+
+			String amountsToWord = numberWordConverter.convert((int) Math.round(doubleVal));
+
+			taxInvoiceDetails.setRate(totalAmount);
+
+			if (amountsToWord.length() > 40) {
+				taxInvoiceDetails.setAmtInwrd1((String) amountsToWord.substring(0, 39));
+				taxInvoiceDetails.setAmtInwrd2((String) amountsToWord.substring(40));
+			} else {
+				taxInvoiceDetails.setAmtInwrd1(amountsToWord);
+				taxInvoiceDetails.setAmtInwrd2("");
+			}
+
+			taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
 		}
 
 		view.addObject("itemList", lineItemData);

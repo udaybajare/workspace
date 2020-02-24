@@ -84,7 +84,7 @@
               <div class="row">
                   <div class="col-md-8">
                 
-                 <img src="./loginPage/img/Hamdule-Logo1.png"  style="width: 250px;height: 55px;margin-top: 20px;margin-left: -130px;">
+                 <img src="./images/img/Hamdule-Logo1.png"  style="width: 250px;height: 55px;margin-top: 20px;margin-left: -130px;">
                    </div>
         
       

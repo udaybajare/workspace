@@ -46,11 +46,9 @@ public class ExcelWriter {
 		String sheetDetails = header.getSheetDetails();
 
 		if (null == sheetDetails || "".equals(sheetDetails)) {
-			sheetDetails = "sheetDetails," + boqLineDataDetails.size(); // This
-																		// is
-																		// for
-																		// Inquiry
-			// generation. While generating
+			sheetDetails = "sheetDetails," + boqLineDataDetails.size();
+
+			// This is for Inquiry generation. While generating
 			// Inquiry we are creating only
 			// one sheet which will hold all the elements
 			// elements.
@@ -109,8 +107,6 @@ public class ExcelWriter {
 
 		}
 
-		
-		
 		int startIndex = 0;
 		int lastIndex = 0;
 
@@ -119,13 +115,12 @@ public class ExcelWriter {
 			Sheet sheet = workBook.getSheetAt(s);
 			int inventoryCount = Integer.parseInt(sheetDetailsMap.get(sheetNameList.get(s - 1)));
 
-			//Add blank rows to excel sheet
-			for(int i=79; i< 79+(boqLineDataDetails.size()*9);i++)
-			{
+			// Add blank rows to excel sheet
+			for (int i = 79; i < 79 + (boqLineDataDetails.size() * 9); i++) {
 				sheet.createRow(i);
-				System.out.println("creating row : "+i);
+				System.out.println("creating row : " + i);
 			}
-			
+
 			lastIndex = lastIndex + inventoryCount;
 
 			System.out.println("lastIndex is : " + lastIndex);
@@ -133,16 +128,16 @@ public class ExcelWriter {
 			// Sort the list
 			if (header != null) {
 				sheet.getRow(2).getCell(1).setCellValue(header.getClient());
-				sheet.getRow(2).getCell(4).setCellValue(header.getUtility());
+				sheet.getRow(2).getCell(3).setCellValue(header.getUtility());
 
 				sheet.getRow(3).getCell(1).setCellValue(header.getSite());
-				sheet.getRow(3).getCell(4).setCellValue(header.getPressure());
+				sheet.getRow(3).getCell(3).setCellValue(header.getPressure());
 
 				sheet.getRow(4).getCell(1).setCellValue(header.getProject());
-				sheet.getRow(4).getCell(4).setCellValue(header.getTemp());
+				sheet.getRow(4).getCell(3).setCellValue(header.getTemp());
 
 				sheet.getRow(5).getCell(1).setCellValue(header.getdName());
-				sheet.getRow(5).getCell(4).setCellValue(header.getdNo());
+				sheet.getRow(5).getCell(3).setCellValue(header.getdNo());
 			}
 
 			int index = 0;
@@ -190,9 +185,10 @@ public class ExcelWriter {
 				} else {
 					processedInventory.add(inventory);
 
-					Cell cellToUpdateInv = sheet.getRow(nextRow-1).getCell(1);
-					cellToUpdateInv.setCellValue(inventory.getInventoryName()+" "+inventory.getCategory());
-					
+					Cell cellToUpdateInv = sheet.getRow(nextRow - 1).getCell(1);
+					cellToUpdateInv.setCellValue(inventory.getInventoryName() + " " + null != inventory.getCategory()
+							? inventory.getCategory() : "");
+
 					Cell cellToUpdate = sheet.getRow(nextRow).getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 					cellToUpdate.setCellValue(inventory.getStdLine());
 
@@ -221,29 +217,29 @@ public class ExcelWriter {
 
 					if (erectionAmount.length > 0)
 						cellToUpdate10.setCellValue(erectionAmount[index]);
-					
-					if(null!=inventory.getSpecLine()&&!("".equals(inventory.getSpecLine())))
-					{
-						Cell cellToUpdate3 = sheet.getRow(++nextRow).getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-						cellToUpdate3.setCellValue(inventory.getSpecLine());						
+
+					if (null != inventory.getSpecLine() && !("".equals(inventory.getSpecLine()))) {
+						Cell cellToUpdate3 = sheet.getRow(++nextRow).getCell(1,
+								Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+						cellToUpdate3.setCellValue(inventory.getSpecLine());
 					}
 
-					if(null!=inventory.getGrdLine()&&!("".equals(inventory.getGrdLine())))
-					{
-						Cell cellToUpdate1 = sheet.getRow(++nextRow).getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-						cellToUpdate1.setCellValue(inventory.getGrdLine());						
+					if (null != inventory.getGrdLine() && !("".equals(inventory.getGrdLine()))) {
+						Cell cellToUpdate1 = sheet.getRow(++nextRow).getCell(1,
+								Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+						cellToUpdate1.setCellValue(inventory.getGrdLine());
 					}
 
-					if(null!=inventory.getEndsLine()&&!("".equals(inventory.getEndsLine())))
-					{
-						Cell cellToUpdate4 = sheet.getRow(++nextRow).getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-						cellToUpdate4.setCellValue(inventory.getEndsLine());						
+					if (null != inventory.getEndsLine() && !("".equals(inventory.getEndsLine()))) {
+						Cell cellToUpdate4 = sheet.getRow(++nextRow).getCell(1,
+								Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+						cellToUpdate4.setCellValue(inventory.getEndsLine());
 					}
 
-					if(null!=inventory.getMakesLine()&&!("".equals(inventory.getMakesLine())))
-					{
-						Cell cellToUpdate7 = sheet.getRow(++nextRow).getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-						cellToUpdate7.setCellValue(inventory.getMakesLine());						
+					if (null != inventory.getMakesLine() && !("".equals(inventory.getMakesLine()))) {
+						Cell cellToUpdate7 = sheet.getRow(++nextRow).getCell(1,
+								Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+						cellToUpdate7.setCellValue(inventory.getMakesLine());
 					}
 					nextRow = nextRow + 2 + i;
 				}
@@ -274,12 +270,10 @@ public class ExcelWriter {
 		return bytes;
 	}
 
-	
-	public void generatePO()
-	{
-		
+	public void generatePO() {
+
 	}
-	
+
 	/*
 	 * Get the data in excel file. Return: 2D String list contains specified row
 	 * data. excelFilePath : The exist file path need to copy. excelSheetName :

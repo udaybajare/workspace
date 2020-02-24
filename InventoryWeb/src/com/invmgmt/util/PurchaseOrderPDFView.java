@@ -10,13 +10,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.NumberToTextConverter;
+import org.apache.poi.xwpf.usermodel.VerticalAlign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
@@ -29,6 +35,9 @@ public class PurchaseOrderPDFView extends AbstractView {
 
     @Autowired
     Principal principal;
+    
+    @Autowired
+    NumberWordConverter numberWordConverter; 
 
     @Override
     protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
@@ -146,10 +155,23 @@ public class PurchaseOrderPDFView extends AbstractView {
 		cellToUpdate1.setCellValue(poDetails.getPoNumber());
 		Cell cellToUpdate2 = sheet.getRow(13).getCell(10);
 		cellToUpdate2.setCellValue(poDetails.getPoDate());
+		
+		
+		Font font = workBook.createFont();
+		font.setFontHeightInPoints((short)14);
+		font.setBold(true);
+		
+		CellStyle cellStyleVenderName  = workBook.createCellStyle();
+		cellStyleVenderName.setFont(font);
+		cellStyleVenderName.setVerticalAlignment(VerticalAlignment.CENTER);
+		
 		Cell cellToUpdate3 = sheet.getRow(14).getCell(2);
+		cellToUpdate3.setCellStyle(cellStyleVenderName);
 		cellToUpdate3.setCellValue(poDetails.getVendorName());
+		
+		
 		Cell cellToUpdate4 = sheet.getRow(15).getCell(1);
-		cellToUpdate4.setCellValue("Pune");
+		cellToUpdate4.setCellValue("PUNE");
 		Cell cellToUpdate5 = sheet.getRow(16).getCell(3);
 		cellToUpdate5.setCellValue(poDetails.getContactName());
 		Cell cellToUpdate6 = sheet.getRow(17).getCell(3);
@@ -159,24 +181,49 @@ public class PurchaseOrderPDFView extends AbstractView {
 
 	    double cGstTotal = 0;
 	    double subTotal = 0;
-	    double grandTotal = 0;
 	    
-	    int currentRow = 22;
+	    int currentRow = 21;
+	    
+	    Font calibri8Font = workBook.createFont();
+	    calibri8Font.setFontName("Calibri");
+	    calibri8Font.setFontHeightInPoints((short)8);
+	    
+	    CellStyle detailsCellStyle = workBook.createCellStyle();
+	    detailsCellStyle.setFont(calibri8Font);
+	    detailsCellStyle.setWrapText(true);
+	    
+	    detailsCellStyle.setBorderBottom(BorderStyle.THIN);  
+	    detailsCellStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+	    detailsCellStyle.setBorderLeft(BorderStyle.THIN);
+	    detailsCellStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+	    detailsCellStyle.setBorderRight(BorderStyle.THIN);
+	    detailsCellStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+	    detailsCellStyle.setBorderTop(BorderStyle.THIN);
+	    detailsCellStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+	    
+	    CellStyle cellStyle = workBook.createCellStyle();
+	    
 		for(int i=0; i < poLines.length; i++)
 		{
 			String[] values = poLines[i].split(",");
 			
 			Cell cellToUpdate8 = sheet.getRow(currentRow).getCell(1,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate8.setCellStyle(detailsCellStyle);
 			cellToUpdate8.setCellValue(values[0]);
 			Cell cellToUpdate9 = sheet.getRow(currentRow).getCell(2,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate9.setCellStyle(detailsCellStyle);
 			cellToUpdate9.setCellValue("");
 			Cell cellToUpdate10 = sheet.getRow(currentRow).getCell(4,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate10.setCellStyle(detailsCellStyle);
 			cellToUpdate10.setCellValue(values[1]);
 			Cell cellToUpdate11 = sheet.getRow(currentRow).getCell(9,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate11.setCellStyle(detailsCellStyle);
 			cellToUpdate11.setCellValue(values[2]);
 			Cell cellToUpdate12 = sheet.getRow(currentRow).getCell(10,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate12.setCellStyle(detailsCellStyle);
 			cellToUpdate12.setCellValue("NB");
 			Cell cellToUpdate13 = sheet.getRow(currentRow).getCell(11,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate13.setCellStyle(detailsCellStyle);
 			cellToUpdate13.setCellValue(values[3]);
 			
 			
@@ -185,18 +232,19 @@ public class PurchaseOrderPDFView extends AbstractView {
 
 			cGstTotal = cGstTotal + cgst;
 			subTotal = subTotal + amount;
-
-			grandTotal = cgst + amount;
 			
 			Cell cellToUpdate14 = sheet.getRow(currentRow).getCell(12,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate14.setCellStyle(detailsCellStyle);
 			cellToUpdate14.setCellValue(cgst);
 			Cell cellToUpdate15 = sheet.getRow(currentRow).getCell(13,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate15.setCellStyle(detailsCellStyle);
 			cellToUpdate15.setCellValue(cgst);
 			Cell cellToUpdate16 = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate16.setCellStyle(detailsCellStyle);
 			cellToUpdate16.setCellValue(amount);
 		
 			currentRow++;
-			CellStyle cellStyle = workBook.createCellStyle();
+			
 			Font dataFont = workBook.createFont();
 			dataFont.setFontName("Calibri");
 			dataFont.setFontHeightInPoints((short) 8);
@@ -205,56 +253,68 @@ public class PurchaseOrderPDFView extends AbstractView {
 			sheet.createRow(currentRow).setRowStyle(cellStyle);
 		}
 		
+		System.out.println("currentRow before cgst,sgst and total : " + currentRow);
 		Cell cellToUpdate17 = sheet.getRow(currentRow).getCell(12,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		cellToUpdate17.setCellStyle(cellStyle);
 		cellToUpdate17.setCellValue(cGstTotal);
 		Cell cellToUpdate18 = sheet.getRow(currentRow).getCell(13,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		cellToUpdate18.setCellStyle(cellStyle);
 		cellToUpdate18.setCellValue(cGstTotal);
+		Cell cellToUpdate19 = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		cellToUpdate19.setCellStyle(cellStyle);
+		cellToUpdate19.setCellValue(subTotal);
+				
+		//Move to next row
+		currentRow = currentRow + 1;
 		
+		System.out.println("currentRow subTotal : " + currentRow);
+		Cell cellToUpdateSubTotal = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		cellToUpdateSubTotal.setCellValue(subTotal);
 		
 		//Move to next row
 		currentRow++;
 		
-		Cell cellToUpdate19 = sheet.getRow(currentRow).getCell(4,MissingCellPolicy.CREATE_NULL_AS_BLANK);
-		cellToUpdate19.setCellValue("Amounts in words goes here");
-		Cell cellToUpdate20 = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
-		cellToUpdate20.setCellValue(subTotal);
+		double grandTotal = (cGstTotal * 2) + subTotal;
+		String amountsInWords = numberWordConverter.convert((int)grandTotal);
+		Cell cellToUpdate20 = sheet.getRow(currentRow).getCell(4,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		CellStyle amountInWordsStyle = workBook.createCellStyle();
+		amountInWordsStyle.setWrapText(true);
+		amountInWordsStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		amountInWordsStyle.setAlignment(HorizontalAlignment.CENTER);
+		cellToUpdate20.setCellStyle(amountInWordsStyle);
+		cellToUpdate20.setCellValue(amountsInWords);
 		
-		// Move to next row
-		currentRow++;
 		Cell cellToUpdate21 = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		cellToUpdate21.setCellValue(cGstTotal * 2);
-
+		
 		// Move to next row
 		currentRow++;
 		Cell cellToUpdate22 = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
-		cellToUpdate22.setCellValue((cGstTotal * 2) + subTotal);
+		cellToUpdate22.setCellValue(grandTotal);
 
-		currentRow = currentRow+1;
+		currentRow = currentRow+2;
 		String[] terms = poDetails.getTerm();
-
+		
+		Font dataFont = workBook.createFont();
+		dataFont.setFontName("Calibri");
+		dataFont.setFontHeightInPoints((short)9);
+		
+		cellStyle.setFont(dataFont);
+		
 		for (int i = 0; i < terms.length; i++)
 		{
 			Cell cellToUpdate = sheet.getRow(currentRow).getCell(1,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate.setCellStyle(cellStyle);
 			cellToUpdate.setCellValue(i+1);
 			Cell cellToUpdateN = sheet.getRow(currentRow).getCell(2,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdateN.setCellStyle(cellStyle);
 			cellToUpdateN.setCellValue(terms[i]);
 			
 			currentRow++;
-			CellStyle cellStyle = workBook.createCellStyle();
-			Font dataFont = workBook.createFont();
-			dataFont.setFontName("Calibri");
-			dataFont.setFontHeightInPoints((short) 8);
-			
-			cellStyle.setFont(dataFont);
-			
-			sheet.createRow(currentRow).setRowStyle(cellStyle);
 		}
 		
 		inputStream.close();
-
-		
 		workBook.write(response.getOutputStream());
-		
 		// Closing the workbook
 		workBook.close();
 

@@ -70,7 +70,7 @@
                    <div class="col-md-8">
                      <div class="navbar navbar-default navbar-static-top container" style="margin-left: 0px; margin-right: 0px;">
                       <div class="navbar-header" style="width: 200px;">
-                       <img src="./loginPage/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
+                       <img src="./images/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
                      </div>
                    </div>
                  </div> 
@@ -154,5 +154,14 @@
 <script src="js/template.js"></script>
 <!-- Custom Scripts -->
 <script src="js/custom.js"></script>
+
+<script>
+  $('.projects').hover(function(){
+    $(this).css("background-color", "#09afdf");
+  }, function(){
+    $(this).css("background-color", "white");
+  });
+</script>
+
 </body>
 </html>

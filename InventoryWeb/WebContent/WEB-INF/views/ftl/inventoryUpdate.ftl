@@ -49,7 +49,7 @@
   <div class="scrollToTop circle"><i class="fa fa-angle-up"></i></div>
   <div class="page-wrapper">
     <div class="header-container">
-      <header class="header fixed fixed-desktop clearfix">
+      <div class="sticky-wrapper" style="height: 111px;"><div class="sticky-wrapper" style="height: 110px;"><header class="header fixed fixed-desktop clearfix object-visible">
         <div class="container">
           <div class="col-md-auto hidden-md-down">
             <div class="header-first clearfix">
@@ -57,7 +57,7 @@
                <div class="col-md-8">
                  <div class="navbar navbar-default navbar-static-top container" style="margin-left: 0px; margin-right: 0px;">
                   <div class="navbar-header" style="width: 200px;">
-                   <img src="./loginPage/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
+                   <img src="./images/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
                  </div>
                </div>
              </div> 
@@ -82,7 +82,7 @@
     </div>
   </header>
 </div>
-<div class="banner padding-bottom-clear" style="width:80%;margin-left: 10%;">
+<div class="banner padding-bottom-clear" style="width:80%;margin-left: 10%;margin-top: 2%;">
   <div class="container">
     <div class="row justify-content-lg-center">
       <div class="col-lg-8 text-center pv-20">
@@ -95,15 +95,15 @@
     <div class="container-fluid">
       <div class="sorting-filters text-center mb-20 d-flex justify-content-center">
         <form class="form-inline">
-          <div class="form-group ml-1">
+          <div class="form-group ml-2">
             <h3 style="color: #ffffff;">Project</h3>
             <select class="form-control" id="projectId" onChange="populatePOList($('#projectId').val());">                 
             </select>
           </div>
-          <div class="form-group ml-5">
+          <div class="form-group ml-2">
           </div>
-          <div class="form-group ml-1">
-            <h3 style="color: #ffffff;">Purchase Order</h3>
+          <div class="form-group ml-5">
+            <h3 style="color: #ffffff;">Purchase Order to Vendors</h3>
             <select class="form-control" id="poList" onChange="populatePODetails($('#poList').val());">
               <option></option>
             </select>
@@ -121,7 +121,7 @@
           <thead>
            <tr>
             <th></th>
-            <th>Inventory</th>
+            <th>Item</th>
             <th>Material</th>
             <th>Type</th>
             <th>Manifacturing Method</th>
@@ -154,10 +154,10 @@
      <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
       <br>
       <div class="form-check">
-       <input class="form-check-input" type="checkbox" id="addBillDetails" value="">
+       <!--<input class="form-check-input" type="checkbox" id="addBillDetails" value="">
        <label class="form-check-label">
          Add Bill Details
-       </label>
+       </label>-->
      </div>
    </div>
  </div>
@@ -177,36 +177,36 @@
 <input type="hidden" name="addBillDetails" id="aBD" value=""/>
 <input type="hidden" name="project" id="project" value=""/>
 </div>
-<div class="row" style="margin-left: -11%;">
-  <div class="col-md-2">
+<div class="row" style="margin-left: 0%;">
+  <div class="col-md-3">
    <div class="ph-20 feature-box text-center">
      <br>
-     <button type="submit" id="updateButton" class="btn btn-default" >Update Inventory</button>
+     <button type="submit" id="updateButton" class="btn btn-default">Update Item</button>
    </div> 
  </div> 
- <div class="col-md-2 ">
+ <div class="col-md-3 ">
   <div class="ph-20 feature-box text-center" >
    <br>
    <button type="button" onClick="hideOthers('challan')" data-toggle="collapse" data-target="#challan" class="btn btn-default">Challan Details</button>
  </div>
 </div>
-<div class="col-md-2 ">
+   <!-- <div class="col-md-2 ">
  <div class="ph-20 feature-box text-center " >
    <br>
    <button type="button" onClick="hideOthers('bill')" data-toggle="collapse" data-target="#bill" class="btn btn-default">Bill Details</button>
  </div>
-</div>
-<div class="col-md-2 ">
+</div>-->
+<div class="col-md-3 ">
  <div class="ph-20 feature-box text-center" >
    <br>
    <button type="button" onClick="hideOthers('invoice')" data-toggle="collapse" data-target="#invoice" class="btn btn-default">Invoice Details</button>
  </div> 
 </div>
-<div class="col-md-2">
+<div class="col-md-3">
   <div class="ph-20 feature-box text-center" >
-     <br>
-  <button type="button" data-toggle="modal" data-target="#availableInventoryModal" class="btn btn-default" onClick="showInventory();" >Show Available Inventory</button>
-</div>
+   <br>
+   <button type="button" data-toggle="modal" data-target="#availableInventoryModal" class="btn btn-default" onclick="showInventory();">Show Available Item</button>
+ </div>
 </div>
 </div>
 <div class="collapse border border-info" id="challan" style="width:115%; margin-left: -8%; padding: 1%;">
@@ -289,7 +289,7 @@
 <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100"></div>
 <div class="modal fade bd-example-modal-lg" id="availableInventoryModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
  <div class="modal-dialog modal-lg" role="document">
-  <div class="modal-content" style="width:120%;margin-left:-12%;">
+  <div class="modal-content" style="width:100%;">
    <div class="modal-header">
     <h4 class="modal-title" id="myModalLabel">Available Inventory</h4>
   </div>
@@ -299,7 +299,7 @@
         <thead>
           <tr>
            <th></th>
-           <th>Inventory</th>
+           <th>Item</th>
            <th>Material</th>
            <th>Type</th>
            <th>Manifacturing Method</th>
@@ -503,10 +503,10 @@
     {
       $('#gI1').val('1');
     }
-    if($('#addBillDetails:checked').val() != undefined)
+/*    if($('#addBillDetails:checked').val() != undefined)
     {
       $('#aBD').val('1');
-    }
+    }*/
     if($('#addAccessory:checked').val() != undefined)
     {
       $('#aAcc').val('1');
@@ -571,58 +571,58 @@
 
 </script>
 <script>
-function statusTo(inventoryId) {
+  function statusTo(inventoryId) {
 
-  var length = $('#'+inventoryId).find('input').length;
-  var nameValMap = new Map();
+    var length = $('#'+inventoryId).find('input').length;
+    var nameValMap = new Map();
     
-  for( var i=0;i<length;i++)
-  {
-    var name = $('#'+inventoryId).find('input')[i].name;
-    var valu = $('#'+inventoryId).find('input')[i].value;
+    for( var i=0;i<length;i++)
+    {
+      var name = $('#'+inventoryId).find('input')[i].name;
+      var valu = $('#'+inventoryId).find('input')[i].value;
+      
+      nameValMap.set(name,valu);
+    }
     
-    nameValMap.set(name,valu);
-  }
-  
-  nameValMap.set($('#'+inventoryId).find('select')[0].name,$('#'+inventoryId).find('select')[0].value);
-  
-  var quantity    = nameValMap.get('quantity');
-  var inventoryStr    = nameValMap.get('inventoryStr');
-  var materialStr   = nameValMap.get('materialStr');
-  var typeStr     = nameValMap.get('typeStr');
-  var manifMethodStr  = nameValMap.get('manifMethodStr');
-  var gradeOrClassStr = nameValMap.get('gradeOrClassStr');
-  var endsStr     = nameValMap.get('endsStr');
-  var sizeStr     = nameValMap.get('sizeStr');
-  var purchaseRateStr = nameValMap.get('purchaseRateStr');
-  var projectStr    = nameValMap.get('project');
-  var locationStr   = nameValMap.get('locationStr');
-  var statusTo    = nameValMap.get('status');
-  
-  if(statusTo !== '')
-  {
-    $.ajax({
-      url: "release",
-      data: { 'inventoryStr' :  inventoryStr,
-          'materialStr' :   materialStr,    
-          'typeStr' :     typeStr,      
-          'manifMethodStr' :  manifMethodStr, 
-          'gradeOrClassStr' : gradeOrClassStr, 
-          'endsStr' :     endsStr,      
-          'sizeStr' :     sizeStr,      
-          'purchaseRateStr' : purchaseRateStr, 
-          'projectStr' :    projectStr,   
-          'locationStr' :   locationStr,
-          'quantity'   :    quantity,   
-          'statusTo' :    statusTo},
-      type: 'post',
-      success: function(data) {
-        console.log(data);
-      }
-    });
-  } 
+    nameValMap.set($('#'+inventoryId).find('select')[0].name,$('#'+inventoryId).find('select')[0].value);
+    
+    var quantity    = nameValMap.get('quantity');
+    var inventoryStr    = nameValMap.get('inventoryStr');
+    var materialStr   = nameValMap.get('materialStr');
+    var typeStr     = nameValMap.get('typeStr');
+    var manifMethodStr  = nameValMap.get('manifMethodStr');
+    var gradeOrClassStr = nameValMap.get('gradeOrClassStr');
+    var endsStr     = nameValMap.get('endsStr');
+    var sizeStr     = nameValMap.get('sizeStr');
+    var purchaseRateStr = nameValMap.get('purchaseRateStr');
+    var projectStr    = nameValMap.get('project');
+    var locationStr   = nameValMap.get('locationStr');
+    var statusTo    = nameValMap.get('status');
+    
+    if(statusTo !== '')
+    {
+      $.ajax({
+        url: "release",
+        data: { 'inventoryStr' :  inventoryStr,
+        'materialStr' :   materialStr,    
+        'typeStr' :     typeStr,      
+        'manifMethodStr' :  manifMethodStr, 
+        'gradeOrClassStr' : gradeOrClassStr, 
+        'endsStr' :     endsStr,      
+        'sizeStr' :     sizeStr,      
+        'purchaseRateStr' : purchaseRateStr, 
+        'projectStr' :    projectStr,   
+        'locationStr' :   locationStr,
+        'quantity'   :    quantity,   
+        'statusTo' :    statusTo},
+        type: 'post',
+        success: function(data) {
+          console.log(data);
+        }
+      });
+    } 
 
-};
+  };
 </script>
 </body>
 </html>

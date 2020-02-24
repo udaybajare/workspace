@@ -40,7 +40,7 @@ public class OrderController {
 
 	@RequestMapping(value = "/generateOrderForm", method = RequestMethod.POST)
 	public ModelAndView generateOfferFrom(String[] inventoryName, String[] material, String[] type,
-			String[] manifMethod, String[] classOrGrade, String[] ends, String[] size, String[] quantity,
+			String[] manifMetod, String[] classOrGrade, String[] ends, String[] size, String[] quantity,
 			String[] supplyRate, String projectId) {
 		StringBuffer lineItemData = new StringBuffer();
 
@@ -54,7 +54,7 @@ public class OrderController {
 		for (int i = 0; i < length; i++) {
 
 			String description = inventoryUtils.createDescriptionLine(material[i], type[i], inventoryName[i],
-					classOrGrade[i], manifMethod[i], ends[i], size[i]);
+					classOrGrade[i], manifMetod[i], ends[i], size[i]);
 			String index = String.valueOf(i + 1);
 			String lineItem = getInventoryDetailsRow(index, description, quantity[i], supplyRate[i]);
 			lineItemData.append(lineItem);

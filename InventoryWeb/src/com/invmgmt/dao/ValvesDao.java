@@ -21,7 +21,7 @@ public class ValvesDao {
 	{
 		Session session = sessionFactory.getCurrentSession();
 		
-		String sqlStr = " From ValveDetails";
+		String sqlStr = "From Valves";
 		
 		Query query = session.createQuery(sqlStr);
 		

@@ -30,11 +30,10 @@
 	<classpathentry kind="lib" path="C:/Dependancies/aspectj-weaver.jar"/>
 	<classpathentry kind="lib" path="C:/Dependancies/aspectjrt.jar"/>
 	<classpathentry kind="lib" path="C:/Dependancies/spring-aop-5.1.4.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Dependancies/thymeleaf-3.0.9.RELEASE.jar"/>
-	<classpathentry kind="lib" path="C:/Dependancies/thymeleaf-spring5-3.0.9.RELEASE.jar"/>
 	<classpathentry kind="lib" path="C:/Dependancies/openhtmltopdf-core-0.0.1-RC13.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Dependancies/itextpdf-5.1.0.jar"/>
 	<classpathentry kind="lib" path="C:/Dependancies/mail.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/aws-java-sdk-ses-1.11.24.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

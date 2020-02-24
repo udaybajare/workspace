@@ -73,7 +73,7 @@ public class InventoryUtils {
 				+ "<td>InventoryVal</td>    <td>MaterialVal</td>    <td>TypeVal</td>"
 				+ "<td>ManifMethodVal</td><td>gradeOrClassVal</td>    <td>endsVal</td>" + "<td>sizeVal</td>" + "<td>"
 				+ (isConsumed ? "availableQuantity"
-						: "<input type=\"text\" class=\"form-control\" name=\"quantity\" value=\"availableQuantity\" ></td>")
+						: "<input type=\"text\" style=\"width:45px;\" name=\"quantity\" value=\"availableQuantity\" ></td>")
 				+ "<td>purchaseRateVal</td>"
 				+ (needProjectList
 						? "<td><select class='form-control currentProjectList' name='project' name='projectName' ><option></option></td>"

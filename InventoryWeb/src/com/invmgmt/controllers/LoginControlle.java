@@ -1,5 +1,9 @@
 package com.invmgmt.controllers;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,40 +12,83 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.invmgmt.dao.LoginInfoDao;
+import com.invmgmt.dao.SessionDao;
 import com.invmgmt.entity.LoginInfo;
+import com.invmgmt.entity.SessionEntry;
 
 @Controller
 @EnableWebMvc
 public class LoginControlle {
 
-    @Autowired
-    LoginInfoDao loginInfoDao;
+	@Autowired
+	LoginInfoDao loginInfoDao;
 
-    @RequestMapping(value = "login", method = RequestMethod.POST)
-    public ModelAndView login(LoginInfo loginInfo) {
+	@Autowired
+	SessionDao sessionDao;
 
-	String view = "";
-	boolean validaLogin = validateLogin(loginInfo);
-	if (validaLogin) {
-	    view = "Home";
-	} else {
-	    view = "LandingPage";
+	final static String VIEW = "LandingPage";
+
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		ModelAndView modelAndView = new ModelAndView(VIEW);
+
+		return modelAndView;
 	}
 
-	ModelAndView mav = new ModelAndView(view);
+	@RequestMapping(value = "/submit", method = RequestMethod.POST)
+	protected ModelAndView login(LoginInfo loginInfo, HttpSession session) {
 
-	return mav;
-    }
+		String view = "";
+		boolean validaLogin = validateLogin(loginInfo);
+		if (validaLogin) {
 
-    private boolean validateLogin(LoginInfo loginInfo) {
-	boolean validLogin = false;
+			double sessionId = 0;
+			// Call session DAO and add the entry of the sessionId created above
+			// for the current userName
 
-	String validPassword = loginInfoDao.gePasswordToValidate(new LoginInfo(loginInfo.getUserName(), ""));
+			boolean sessionSaved = false;
 
-	if (validPassword.equalsIgnoreCase(loginInfo.getPassword())) {
-	    validLogin = true;
+			while (!sessionSaved) {
+				sessionId = Math.random();
+				sessionSaved = sessionDao
+						.saveSession(new SessionEntry(String.valueOf(sessionId), loginInfo.getUserName()));
+			}
+
+			session.setAttribute("userName", loginInfo.getUserName());
+			session.setAttribute("sessionId", sessionId);
+
+			view = "home";
+		} else {
+			view = "Login";
+
+		}
+
+		ModelAndView modelAndView = new ModelAndView(view);
+
+		return modelAndView;
+
 	}
 
-	return validLogin;
-    }
+	private boolean validateLogin(LoginInfo loginInfo)
+	{
+		boolean validLogin = false;
+		String validPassword = loginInfoDao.gePasswordToValidate(new LoginInfo(loginInfo.getUserName(), ""));
+
+		if (validPassword.equalsIgnoreCase(loginInfo.getPassword())) {
+			validLogin = true;
+		}
+		return validLogin;
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.POST)
+	protected ModelAndView logout(HttpSession session)
+	{
+		double sessionId = (double) session.getAttribute("sessionId");
+		boolean sessionDelete = true;
+		String userName = (String) session.getAttribute("userName");
+		sessionDelete = sessionDao.deleteSession(String.valueOf(sessionId));
+		return new ModelAndView("redirect:login");
+	}
 }

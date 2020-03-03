@@ -321,7 +321,7 @@ public class BOQController {
 		ArrayList<String> quotationNames = new ArrayList<String>();
 
 		if (!Boolean.valueOf(isOffer)) {
-			for (int i = 1; i < 20; i++) {
+			for (int i = 0; i < 20; i++) {
 				boqNameRevisionStr = boqName + "_R" + String.valueOf(i);
 				if (boqRevisions.contains(boqNameRevisionStr))
 					continue;
@@ -329,7 +329,7 @@ public class BOQController {
 					break;
 			}
 		} else {
-			for (int i = 1; i < 20; i++) {
+			for (int i = 0; i < 20; i++) {
 				boqNameRevisionStr = "Inquiry_" + boqName + "_R" + String.valueOf(i);
 				if (quorationRevisions.contains(boqNameRevisionStr))
 					continue;
@@ -556,6 +556,7 @@ public class BOQController {
 
 		StringBuilder dropdownContent = new StringBuilder();
 
+		String modelString = model.split(":").length>0?model.split(":")[1]:model;
 		ArrayList<String> results = new ArrayList<String>();
 		try {
 
@@ -565,7 +566,7 @@ public class BOQController {
 
 			for (Valves vDetails : valveDetailsList) {
 
-				if (vDetails.getModel().contains(model.trim())) {
+				if (vDetails.getModel().contains(modelString.trim())) {
 					String option = "";
 
 					switch (nextTagName) {

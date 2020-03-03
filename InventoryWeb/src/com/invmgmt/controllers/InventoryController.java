@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,6 +22,8 @@ import com.invmgmt.dao.BillDetailsDao;
 import com.invmgmt.dao.ChallanDao;
 import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.dao.ProjectDao;
+import com.invmgmt.dao.ProjectDetailsDao;
+import com.invmgmt.dao.ReceivedInventoryDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
 import com.invmgmt.entity.AccessoryDetails;
 import com.invmgmt.entity.BillDetails;
@@ -28,6 +31,8 @@ import com.invmgmt.entity.ChallanDetails;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
 import com.invmgmt.entity.Project;
+import com.invmgmt.entity.ProjectDetails;
+import com.invmgmt.entity.ReceivedInventory;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.entity.TaxInvoiceGenerator;
 import com.invmgmt.util.InventoryUtils;
@@ -54,6 +59,12 @@ public class InventoryController {
 
 	@Autowired
 	AccessoryDetailsDao accessoryDetailsDao;
+
+	@Autowired
+	ReceivedInventoryDao receivedInventoryDao;
+	
+	@Autowired
+	ProjectDetailsDao projectDetailsDao;
 
 	@Autowired
 	private InventoryUtils inventoryUtils;
@@ -101,6 +112,8 @@ public class InventoryController {
 		} else {
 			view = new ModelAndView("challan");
 		}
+
+		int projectId = projectDao.getProjectId(project[0]);
 
 		taxInvoiceDetails.setProjectName(project[0]);
 
@@ -233,7 +246,7 @@ public class InventoryController {
 
 			if (generateChallan.equals("1")) {
 				// get projectId before saving challan details.
-				int projectId = projectDao.getProjectId(project[0]);
+
 				taxInvoiceDetails.setProjectId(projectId);
 				challanDetails.setProjectId(String.valueOf(projectId));
 				ArrayList<String> lrList = (ArrayList<String>) challanDao.getLrNo(String.valueOf(projectId));
@@ -268,7 +281,16 @@ public class InventoryController {
 
 		}
 
+		String invoiceNo = null;
+		String invoiceDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+		
+		
+		
 		if (generateInvoice.equals("1")) {
+			
+			ProjectDetails projectDetails = projectDetailsDao.getProjectDetails(projectId);
+			
 			String lasttaxInvoiceNo = taxInvoiceDetailsDao.getLastTaxIvoiceNo();
 
 			int lastNo = 0;
@@ -276,16 +298,32 @@ public class InventoryController {
 				lastNo = Integer.parseInt(lasttaxInvoiceNo.substring(lasttaxInvoiceNo.lastIndexOf("/") + 1));
 			}
 
-			String invoiceNo = "Invoice/" + clientShortName + "/" + String.valueOf(lastNo + 1);
+			invoiceNo = "Invoice/" + clientShortName + "/" + String.valueOf(lastNo + 1);
 			taxInvoiceDetails.setInvoiceNo(invoiceNo);
 			taxInvoiceDetails.setTaxInvoiceNo(invoiceNo);
 
-			String invoiceDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:SS").format(new Date());
+			taxInvoiceDetails.setOrderNo(projectDetails.getPoNumber());
+			
 			taxInvoiceDetails.setTaxInvoiceDate(invoiceDate);
 
 			String totalAmount = getTotalAmount(purchaseRate, quantity);
-
-			Double doubleVal = Double.parseDouble(totalAmount);
+			
+			//Add if any miscellaneous charges are included
+			
+			String miscCharges = taxInvoiceDetails.getMiscCharges();
+			
+			double totalAmountInt = Double.parseDouble(totalAmount);
+			if(miscCharges!=null && !("".equals(miscCharges)))
+			{
+				totalAmountInt = totalAmountInt + Double.parseDouble(miscCharges);
+			}
+			
+			double cGST = totalAmountInt*9/100;
+			double sGST = totalAmountInt*9/100;
+			
+			taxInvoiceDetails.setcGst(String.valueOf(cGST));
+						
+			Double doubleVal = totalAmountInt+cGST+sGST;
 
 			String amountsToWord = numberWordConverter.convert((int) Math.round(doubleVal));
 
@@ -300,6 +338,19 @@ public class InventoryController {
 			}
 
 			taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
+		}
+
+		try {
+			for (int i = 0; i < inventoryName.length; i++) {
+				receivedInventoryDao.saveOrUpdateInventory(new ReceivedInventory(
+						new InventorySpec(inventoryName[i], material[i], type[i], manifMethod[i], gradeOrClass[i],
+								ends[i], size[i], String.valueOf(projectId), status[i]),
+						purchaseRate[i], quantity[i], location[i], invoiceNo, invoiceDate));
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		view.addObject("itemList", lineItemData);
@@ -332,6 +383,95 @@ public class InventoryController {
 		return view;
 	}
 
+	@RequestMapping(value="/generateInvoice", method=RequestMethod.POST)
+	public @ResponseBody String generateInvoice(int projectId, String[] inventoryName, String[] material,
+			String[] type, String[] manifMetod, String[] classOrGrade, String[] ends, String[] size,
+			String[] purchaseRate, int[] receivedQuantity, String[] location, String[] receivedDate,
+			TaxInvoiceDetails taxInvoiceDetails)
+	{
+		taxInvoiceDetails.setProjectId(projectId);
+
+		String lasttaxInvoiceNo = taxInvoiceDetailsDao.getLastTaxIvoiceNo();
+		String clientShortName = "";
+		Project project = projectDao.getProject(projectId);
+
+		String projectName = project.getProjectName();
+
+		int lastNo = 0;
+		if (lasttaxInvoiceNo.length() > 0) {
+			lastNo = Integer.parseInt(lasttaxInvoiceNo.substring(lasttaxInvoiceNo.lastIndexOf("/") + 1));
+		}
+
+		String temp = projectName;
+
+		if (projectName.contains(" ") && projectName.length() >= 7) {
+			clientShortName = projectName.substring(0, 3) + new String(temp.getBytes(), temp.indexOf(" "), 3);
+		} else {
+			clientShortName = projectName.substring(0, 3);
+		}
+		
+		ProjectDetails projectDetails = projectDetailsDao.getProjectDetails(projectId);
+
+		String invoiceNo = "Invoice/" + clientShortName + "/" + String.valueOf(lastNo + 1);
+		taxInvoiceDetails.setInvoiceNo(invoiceNo);
+		taxInvoiceDetails.setTaxInvoiceNo(invoiceNo);
+		taxInvoiceDetails.setOrderNo(projectDetails.getPoNumber());
+		taxInvoiceDetails.setGstNo(projectDetails.getGstNumber());
+		
+		taxInvoiceDetails.setProjectName(projectName);
+		
+		String invoiceDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+		taxInvoiceDetails.setTaxInvoiceDate(invoiceDate);
+
+		String totalAmount = getTotalAmount(purchaseRate, receivedQuantity);
+		
+		//Add if any miscellaneous charges are included
+		
+		String miscCharges = taxInvoiceDetails.getMiscCharges();
+		
+		double totalAmountInt = Double.parseDouble(totalAmount);
+		if(miscCharges!=null && !("".equals(miscCharges)))
+		{
+			totalAmountInt = totalAmountInt + Double.parseDouble(miscCharges);
+		}
+		
+		double cGST = totalAmountInt*9/100;
+		double sGST = totalAmountInt*9/100;
+					
+		Double doubleVal = totalAmountInt+cGST+sGST;
+
+		String amountsToWord = numberWordConverter.convert((int) Math.round(doubleVal));
+
+		taxInvoiceDetails.setRate(totalAmount);
+
+		if (amountsToWord.length() > 40) {
+			taxInvoiceDetails.setAmtInwrd1((String) amountsToWord.substring(0, 39));
+			taxInvoiceDetails.setAmtInwrd2((String) amountsToWord.substring(40));
+		} else {
+			taxInvoiceDetails.setAmtInwrd1(amountsToWord);
+			taxInvoiceDetails.setAmtInwrd2("");
+		}
+
+		taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
+		
+		try {
+			for (int i = 0; i < inventoryName.length; i++) {
+				receivedInventoryDao.saveOrUpdateInventory(new ReceivedInventory(
+						new InventorySpec(inventoryName[i], material[i], type[i], manifMetod[i], classOrGrade[i],
+								ends[i], size[i], String.valueOf(projectId), "assigned"),
+						purchaseRate[i], receivedQuantity[i], location[i], invoiceNo, receivedDate[i]));
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "FAILURE";
+		}
+
+		return "SUCCESS";
+	}
+	
 	@RequestMapping(value = "/release", method = RequestMethod.POST)
 	private ModelAndView releaseInventory(String inventoryStr, String materialStr, String typeStr,
 			String manifMethodStr, String gradeOrClassStr, String endsStr, String sizeStr, String purchaseRateStr,
@@ -533,7 +673,11 @@ public class InventoryController {
 	}
 
 	private String getInventoryDetailsRow(String sr_no, String size, String description, String quantity, String unit) {
-		String template = "<tr><td>&emsp;sr_no&emsp;&emsp;&emsp;size</td><td>Description</td><td>quantity</td><td>unit</td></tr>";
+		String template = "<tr><td style=\"text-align:center;\" >&emsp;sr_no&emsp;&emsp;&emsp;size</td>"
+				+ "<td style=\"text-align:center;\">Description</td>"
+				+ "<td style=\"text-align:center;\">quantity</td>"
+				+ "<td style=\"text-align:center;\">unit</td>"
+				+ "</tr>";
 		String stringToReturn = template.replace("sr_no", sr_no).replace("size", size)
 				.replace("Description", description).replace("quantity", quantity).replace("unit", unit);
 

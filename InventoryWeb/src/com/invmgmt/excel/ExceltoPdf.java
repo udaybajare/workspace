@@ -20,7 +20,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class ExceltoPdf {
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 
 		File file = new File("C:\\Users\\Uday\\Desktop\\Projects\\Humdule\\HI PO SUPPLIER  19-20.xlsx");
 		try {
@@ -29,7 +29,7 @@ public class ExceltoPdf {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	public Document convertToPdf(File file, String poName) throws IOException, DocumentException
 	{

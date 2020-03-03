@@ -16,9 +16,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.invmgmt.dao.PODetailsDao;
 import com.invmgmt.dao.ProjectDao;
+import com.invmgmt.dao.ReceivedInventoryDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
+import com.invmgmt.entity.InventorySpec;
 import com.invmgmt.entity.PODetails;
 import com.invmgmt.entity.Project;
+import com.invmgmt.entity.ReceivedInventory;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.util.InventoryUtils;
 
@@ -37,11 +40,14 @@ public class OrderController {
 
 	@Autowired
 	ProjectDao projectDao;
+	
+	@Autowired
+	ReceivedInventoryDao receivedInventoryDao;
 
 	@RequestMapping(value = "/generateOrderForm", method = RequestMethod.POST)
-	public ModelAndView generateOfferFrom(String[] inventoryName, String[] material, String[] type,
-			String[] manifMetod, String[] classOrGrade, String[] ends, String[] size, String[] quantity,
-			String[] supplyRate, String projectId) {
+	public ModelAndView generateOfferFrom(String[] inventoryName, String[] material, String[] type, String[] manifMetod,
+			String[] classOrGrade, String[] ends, String[] size, String[] quantity, String[] supplyRate,
+			String projectId) {
 		StringBuffer lineItemData = new StringBuffer();
 
 		StringBuffer lineItemDataSiple = new StringBuffer();
@@ -72,7 +78,7 @@ public class OrderController {
 	}
 
 	@RequestMapping(value = "/generateOrder", method = RequestMethod.POST)
-	public ModelAndView generateOffer(PODetails poDetails, String lineItemSimple) {
+	public String generateOffer(PODetails poDetails, String lineItemSimple, Model model) {
 
 		ModelAndView mav = new ModelAndView("purchaseOrder");
 
@@ -140,9 +146,21 @@ public class OrderController {
 
 		poDetailsDao.savePO(poDetails);
 
-		mav.addObject("lineItems", poDetails.getLineItem());
-		mav.addObject("lineItemSimple", lineItemSimple);
-		return mav;
+		/*
+		 * mav.addObject("lineItems", poDetails.getLineItem());
+		 * mav.addObject("lineItemSimple", lineItemSimple); return mav;
+		 */
+
+		String lineItemSimpleStr = poDetails.getLineItemNoHtml();
+
+		System.out.println("showPO : " + lineItemSimpleStr);
+
+		model.addAttribute("poDetails", poDetails);
+
+		model.addAttribute("poLineDetails", lineItemSimpleStr);
+
+		return "purchaseOrderView";
+
 	}
 
 	@RequestMapping(value = "/showInvoice", method = { RequestMethod.POST, RequestMethod.GET })
@@ -204,25 +222,23 @@ public class OrderController {
 				int instanceofEnds = findIndex(details, "Ends");
 				int instanceofsize = findIndex(details, "size");
 				int instanceofManifMethod = findIndex(details, "Method");
-				
-				String inventoryNameVal = details[instanceofOF-1];
+
+				String inventoryNameVal = details[instanceofOF - 1];
 				String materialVal = details[0];
-				
+
 				String typeVal = "";
-				
-				for(int i=instanceofOF-2;i>0;i--)
-				{
-					typeVal = details[i] + typeVal;	
+
+				for (int i = instanceofOF - 2; i > 0; i--) {
+					typeVal = details[i] + typeVal;
 				}
-				 				
-				String manifacturingMethod = details[instanceofManifMethod+2];
-				String gradeOrClassVal = details[instanceofAS+1];
-				String endsVal = details[instanceofEnds+1];
-				String sizeVal = details[instanceofsize+1];
+
+				String manifacturingMethod = details[instanceofManifMethod + 2];
+				String gradeOrClassVal = details[instanceofAS + 1];
+				String endsVal = details[instanceofEnds + 2];
+				String sizeVal = details[instanceofsize + 1];
 				String purchaseRate = words[3];
 				String poQuantity = words[2];
 				String projectNameVal = project.getProjectName();
-				
 
 				itemsStr = itemsStr.replace("inventoryNameVal", inventoryNameVal);
 				itemsStr = itemsStr.replace("materialVal", materialVal);
@@ -234,7 +250,7 @@ public class OrderController {
 				itemsStr = itemsStr.replace("poQuantity", poQuantity);
 				itemsStr = itemsStr.replace("projectNameVal", projectNameVal);
 				itemsStr = itemsStr.replace("purchaseRateVal", purchaseRate);
-				
+
 				rowToReturn = rowToReturn + itemsStr;
 			}
 		}
@@ -242,16 +258,45 @@ public class OrderController {
 		return rowToReturn;
 	}
 
+	@RequestMapping(value = "/getNoInvoiceInventory", method = RequestMethod.POST)
+	public @ResponseBody String getNoInvoiceInventory(int projectId) throws Exception {
+		String rowToReturn = "";
+		
+		ArrayList<ReceivedInventory> receivedInvListNoInvoice = receivedInventoryDao.getNoInvoiceInventory(projectId);
+		
+		for (ReceivedInventory receivedInventory : receivedInvListNoInvoice) 
+		{
+			
+			InventorySpec invSpec = receivedInventory.getInventorySpec();
+			String itemsStr = noInvoiceInventoryRow;
+			itemsStr = itemsStr.replace("inventoryNameVal", invSpec.getInventoryName());
+			itemsStr = itemsStr.replace("materialVal", invSpec.getMaterial());
+			itemsStr = itemsStr.replace("typeVal", invSpec.getType());
+			itemsStr = itemsStr.replace("manifacturingMethod", invSpec.getManifMethod());
+			itemsStr = itemsStr.replace("gradeOrClassVal", invSpec.getGradeOrClass());
+			itemsStr = itemsStr.replace("endsVal", invSpec.getEnds());
+			itemsStr = itemsStr.replace("sizeVal", invSpec.getSize());
+			itemsStr = itemsStr.replace("receivedQuantityVal", String.valueOf(receivedInventory.getQuantity()));
+			itemsStr = itemsStr.replace("projectNameVal", invSpec.getAssignedProject());
+			itemsStr = itemsStr.replace("purchaseRateVal", receivedInventory.getPurchaseRate());
+			itemsStr = itemsStr.replace("locationVal", receivedInventory.getLocation());
+			itemsStr = itemsStr.replace("receivedDateVal", receivedInventory.getReceivedDate().substring(0,10));
+			
+			rowToReturn = rowToReturn + itemsStr;
+		}
+
+		return rowToReturn;
+	}
+
 	// Function to find the index of an element in a primitive array in Java
-	public static int findIndex(String[] a, String target)
-	{
+	public static int findIndex(String[] a, String target) {
 		for (int i = 0; i < a.length; i++) {
 			if (a[i].equals(target))
 				return i;
 		}
 		return -1;
 	}
-	
+
 	private String getInventoryDetailsRow(String sr_no, String description, String quantity, String supplyRate) {
 		String template = "<TR>" + "	<TD class=\"tr8 td38\"><P class=\"p16 ft8\">sr_no</P></TD>               "
 				+ "	<TD class=\"tr8 td27\"><P class=\"p0 ft0\"></P></TD>               "
@@ -313,11 +358,27 @@ public class OrderController {
 			+ "    <td> <input type='hidden' name='gradeOrClass' value='gradeOrClassVal'></input>gradeOrClassVal</td>"
 			+ "    <td> <input type='hidden' name='ends' value='endsVal'></input>endsVal</td>"
 			+ "    <td> <input type='hidden' name='size' value='sizeVal'></input>sizeVal</td>"
-			+ "	   <td> <input type='hidden' name='purchaseRate' value='purchaseRateVal'></input> purchaseRateVal </td>" 
+			+ "	   <td> <input type='hidden' name='purchaseRate' value='purchaseRateVal'></input> purchaseRateVal </td>"
 			+ "	   <td> poQuantity </td>"
 			+ "	   <td><input type='text' class='form-control' name='quantity' value=''></input><input type='hidden' name='projectName' id='projectNm' value='projectNameVal'></td>"
-			+ "	   <td><input type='text' class='form-control' name='location' value=''></input></td>" 
-			+ "	   <input type='hidden' name='status' value='assigned'>"
-			+ "    </tr>";
+			+ "	   <td><input type='text' class='form-control' name='location' value=''></input></td>"
+			+ "	   <input type='hidden' name='status' value='assigned'>" + "    </tr>";
+	
+	private static final String noInvoiceInventoryRow = "	   <tr>"
+			+ "    <td> <input type=\"checkbox\" name=\"checkbox\" class=\"checkbox\" /></td>"
+			+ "    <td> <input type='hidden' name='inventoryName' value='inventoryNameVal'></input> inventoryNameVal </td>"
+			+ "    <td> <input type='hidden' name='material' value='materialVal'></input>materialVal</td>"
+			+ "    <td> <input type='hidden' name='type' value='typeVal'></input>typeVal</td>"
+			+ "    <td> <input type='hidden' name='manifMethod' value='manifacturingMethod'></input>manifacturingMethod</td>"
+			+ "    <td> <input type='hidden' name='gradeOrClass' value='gradeOrClassVal'></input>gradeOrClassVal</td>"
+			+ "    <td> <input type='hidden' name='ends' value='endsVal'></input>endsVal</td>"
+			+ "    <td> <input type='hidden' name='size' value='sizeVal'></input>sizeVal</td>"
+			+ "	   <td> <input type='hidden' name='purchaseRate' value='purchaseRateVal'></input> purchaseRateVal </td>"
+			+ "	   <td> <input type='hidden' name='receivedQuantity' value='receivedQuantityVal'></input>"
+			+ "			receivedQuantityVal <input type='hidden' name='projectName' id='projectNm' value='projectNameVal'></td>"
+			+ "	   <td> <input type='hidden' name='location' value='locationVal'></input>locationVal</td>"
+			+ "	   <td style='width:10%;'> <input type='hidden' name='receivedDate'  value='receivedDateVal'></input>receivedDateVal</td>"
+			+ "	   <input type='hidden' name='status' value='assigned'>" + "    </tr>";
+
 
 }

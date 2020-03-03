@@ -49,9 +49,11 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 
 		<!--PROD -->
-		<!-- <property name="url" value="jdbc:mysql://inventorymgmt.ckvjglniutlo.us-east-2.rds.amazonaws.com:3306/inventoryMgmt" 
-			/> <property name="username" value="InvMgmtUser" /> <property name="password" 
-			value="InvMgmtUser9933" /> -->
+<!-- 		<property name="url"
+			value="jdbc:mysql://inventorymgmt.ckvjglniutlo.us-east-2.rds.amazonaws.com:3306/inventoryMgmt" />
+		<property name="username" value="InvMgmtUser" />
+		<property name="password" value="InvMgmtUser9933" /> -->
+		
 		<!--UAT -->
 		<!-- <property name="url" value="jdbc:mysql://hamdule.cmbzdfvjyats.us-east-2.rds.amazonaws.com:3306/inventoryMgmt" 
 			/> <property name="username" value="mhamdule" /> <property name="password" 
@@ -70,11 +72,15 @@
 
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+			<!-- LOCAL -->
+				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop> -->
+			<!-- PROD -->	
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>				
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.connection.autocommit">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.jdbc.batch_size">5</prop>
 			</props>
 		</property>
 	</bean>

@@ -34,23 +34,13 @@ public class TaxInvoicePDFView extends AbstractView {
 		PDDocument document = null;
 
 		try {
-			File file = ResourceUtils.getFile("classpath:InvoiceTemplate.pdf");
+			File file = ResourceUtils.getFile("classpath:InvoiceTemplateUpdated.pdf");
 			document = PDDocument.load(file);
 
 			int rateInt = (int) Double.parseDouble(taxInvoiceDetails.getRate());
 			int cGst = rateInt * 9 / 100;
 
 			String[] address = taxInvoiceDetails.getAddressedto1().split(",");
-
-			/*for (int j = 0; j < address.length; j++) {
-				document = principal.replaceText(document, "ADDRESSEDTO" + j + 1, address[j]);
-			}
-
-			int moreEle = 4 - address.length;
-
-			for (int k = 4; k <= moreEle; k++) {
-				document = principal.replaceText(document, "ADDRESSEDTO" + k, " ");
-			}*/
 
 			String amtWrd1 = "";
 			String amtWrd2 = "";
@@ -64,39 +54,61 @@ public class TaxInvoicePDFView extends AbstractView {
 			String cGstString = String.valueOf(cGst);
 
 			if (address.length > 0)
-				document = principal.replaceText(document, "addressedto1", address[0]);
+				document = principal.replaceText(document, "ADDR1AAAAAAAAAAAAAAAA", address[0]);
 			else
-				document = principal.replaceText(document, "addressedto1", " ");
-			
+				document = principal.replaceText(document, "ADDR1AAAAAAAAAAAAAAAA", " ");
+
 			if (address.length > 1)
-				document = principal.replaceText(document, "addressedto2", address[1]);
+				document = principal.replaceText(document, "ADDR2AAAAAAAAAAAAAAAA", address[1]);
 			else
-				document = principal.replaceText(document, "addressedto2", " ");
-			
+				document = principal.replaceText(document, "ADDR2AAAAAAAAAAAAAAAA", " ");
+
 			if (address.length > 2)
-				document = principal.replaceText(document, "addressedto3", address[2]);
+				document = principal.replaceText(document, "ADDR3AAAAAAAAAAAAAAAA", address[2]);
 			else
-				document = principal.replaceText(document, "addressedto3", " ");
-			
+				document = principal.replaceText(document, "ADDR3AAAAAAAAAAAAAAAA", " ");
+
 			if (address.length > 3)
-				document = principal.replaceText(document, "addressedto4", address[3]);
+				document = principal.replaceText(document, "ADDR4AAAAAAAAAAAAAAAA", address[3]);
 			else
-				document = principal.replaceText(document, "addressedto4", " ");
-			
-			document = principal.replaceText(document, "invoiceNo", taxInvoiceDetails.getInvoiceNo());
+				document = principal.replaceText(document, "ADDR4AAAAAAAAAAAAAAAA", " ");
+
+			document = principal.replaceText(document, "invoiceNoAAA", taxInvoiceDetails.getInvoiceNo());
 			document = principal.replaceText(document, "date",
 					LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-			document = principal.replaceText(document, "orderNo", taxInvoiceDetails.getOrderNo());
+			document = principal.replaceText(document, "orderNoAAA", taxInvoiceDetails.getOrderNo());
 			document = principal.replaceText(document, "orderDate", taxInvoiceDetails.getOrderDate());
 			document = principal.replaceText(document, "contactName", taxInvoiceDetails.getContactName());
 			document = principal.replaceText(document, "mobileNo", taxInvoiceDetails.getMobileNo());
 			document = principal.replaceText(document, "hsnOrSac", taxInvoiceDetails.getHsnOrSac());
 			document = principal.replaceText(document, "rate", taxInvoiceDetails.getRate());
+
+			if (taxInvoiceDetails.getMiscChargesDesc() != null) {
+				document = principal.replaceText(document, "SRNO", "1");
+				document = principal.replaceText(document, "MQTY", "1");
+				document = principal.replaceText(document, "MUN", "Job");
+				document = principal.replaceText(document, "MISCELLANEOUSDESCRIPTION Charges",
+						taxInvoiceDetails.getMiscChargesDesc());
+				document = principal.replaceText(document, "MISCRATE", taxInvoiceDetails.getMiscCharges());
+				document = principal.replaceText(document, "MISCAMT", taxInvoiceDetails.getMiscCharges());
+			} else {
+				document = principal.replaceText(document, "SRNO", "");
+				document = principal.replaceText(document, "MQTY", "");
+				document = principal.replaceText(document, "MUN", "");
+				document = principal.replaceText(document, "MISCELLANEOUSDESCRIPTION Charges", "");
+				document = principal.replaceText(document, "MISCRATE", "");
+				document = principal.replaceText(document, "MISCAMT", "");
+			}
+
 			document = principal.replaceText(document, "amtInwrd1", amtWrd1);
 			document = principal.replaceText(document, "amtInwrd2", "-" + amtWrd2);
 			document = principal.replaceText(document, "cGst", cGstString);
-			document = principal.replaceText(document, "total", total);
-			document = principal.replaceText(document, "gstNo", taxInvoiceDetails.getGstNo());
+			document = principal.replaceText(document, "SUBTOTAL", String.valueOf(rateInt));
+			document = principal.replaceText(document, "totalAMT", total);
+			document = principal.replaceText(document, "GSTNUMBERAAAAAAAA",
+					null != taxInvoiceDetails.getGstNo() ? taxInvoiceDetails.getGstNo() : "-");
+			document = principal.replaceText(document, "PROJECTNAME", taxInvoiceDetails.getProjectName() + " )");
+			document = principal.replaceText(document, "INOICETYPE", taxInvoiceDetails.getInvoiceType() + " )");
 
 			document.save(response.getOutputStream());
 			document.close();

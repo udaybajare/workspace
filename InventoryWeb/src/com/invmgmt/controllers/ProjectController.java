@@ -474,7 +474,14 @@ public class ProjectController {
 			ArrayList<TaxInvoiceDetails> taxinvoiceDetailsList = taxInvoiceDao.getTaxIvoiceData("taxInvoiceNo",
 					taxInvoiceNumber);
 
-			String totalAmount = taxinvoiceDetailsList.get(0).getRate();
+			double totalAmount = Double.parseDouble(taxinvoiceDetailsList.get(0).getRate());
+			totalAmount = totalAmount + Double.parseDouble(taxinvoiceDetailsList.get(0).getcGst()) * 2;
+			
+			if(taxinvoiceDetailsList.get(0).getMiscCharges()!=null)
+			{
+				totalAmount =  totalAmount + Double.parseDouble(taxinvoiceDetailsList.get(0).getMiscCharges());
+			}
+
 			String dateReceived = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss aa").format(new Date());
 
 			String pendingAmount = "";
@@ -485,9 +492,9 @@ public class ProjectController {
 						Double.parseDouble(payDetails.getPendingAmount()) - Double.parseDouble(receivedAmount));
 
 			} else {
-				pendingAmount = String.valueOf(Double.parseDouble(totalAmount) - Double.parseDouble(receivedAmount));
-				payDetails = new PaymentDetails(taxInvoiceNumber, totalAmount, receivedAmount, pendingAmount,
-						paymentMode, dateReceived, projectId);
+				pendingAmount = String.valueOf(totalAmount - Double.parseDouble(receivedAmount));
+				payDetails = new PaymentDetails(taxInvoiceNumber, String.valueOf(totalAmount), receivedAmount,
+						pendingAmount, paymentMode, dateReceived, projectId);
 			}
 
 			paymentDetailsDao.savePaymentDetails(new PaymentDetails(taxInvoiceNumber, payDetails.getTotalAmount(),

@@ -21,6 +21,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xwpf.usermodel.VerticalAlign;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,104 +34,115 @@ import com.invmgmt.entity.PODetails;
 @Component("purchaseOrderView")
 public class PurchaseOrderPDFView extends AbstractView {
 
-    @Autowired
-    Principal principal;
-    
-    @Autowired
-    NumberWordConverter numberWordConverter; 
+	@Autowired
+	Principal principal;
 
-    @Override
-    protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
-	    HttpServletResponse response) throws Exception {
+	@Autowired
+	NumberWordConverter numberWordConverter;
 
-	PODetails poDetails = (PODetails) model.get("poDetails");
-	String poLineDetails = (String) model.get("poLineDetails");
+	@Override
+	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 
-	String[] poLines = poLineDetails.split(";");
+		PODetails poDetails = (PODetails) model.get("poDetails");
+		String poLineDetails = (String) model.get("poLineDetails");
 
-	response.setHeader("Content-Disposition", "attachment; filename=" + poDetails.getPoNumber() + ".xlsx");
-	
-	try {
-	 generatePOExcel(poDetails, poLineDetails, response);
-	 
-	/*PDDocument document = null;
+		String[] poLines = poLineDetails.split(";");
 
-	
-	    File file = ResourceUtils.getFile("classpath:Purchase-Order-converted.pdf");
-	    document = PDDocument.load(file);
+		response.setHeader("Content-Disposition", "attachment; filename=" + poDetails.getPoNumber() + ".xlsx");
 
-	    document = principal.replaceText(document, "vendorName", poDetails.getVendorName());
-	    document = principal.replaceText(document, "contactName", poDetails.getContactName());
-	    document = principal.replaceText(document, "contactNo", poDetails.getContactNumber());
-	    document = principal.replaceText(document, "contactEmail", poDetails.getContactEmail());
-	    document = principal.replaceText(document, "poNumber", poDetails.getPoNumber());
-	    document = principal.replaceText(document, "poDate", poDetails.getPoDate());
+		try {
+			generatePOExcel(poDetails, poLineDetails, response);
 
-	    double cGstTotal = 0;
-	    double subTotal = 0;
-	    double grandTotal = 0;
+			/*
+			 * PDDocument document = null;
+			 * 
+			 * 
+			 * File file =
+			 * ResourceUtils.getFile("classpath:Purchase-Order-converted.pdf");
+			 * document = PDDocument.load(file);
+			 * 
+			 * document = principal.replaceText(document, "vendorName",
+			 * poDetails.getVendorName()); document =
+			 * principal.replaceText(document, "contactName",
+			 * poDetails.getContactName()); document =
+			 * principal.replaceText(document, "contactNo",
+			 * poDetails.getContactNumber()); document =
+			 * principal.replaceText(document, "contactEmail",
+			 * poDetails.getContactEmail()); document =
+			 * principal.replaceText(document, "poNumber",
+			 * poDetails.getPoNumber()); document =
+			 * principal.replaceText(document, "poDate", poDetails.getPoDate());
+			 * 
+			 * double cGstTotal = 0; double subTotal = 0; double grandTotal = 0;
+			 * 
+			 * for (int i = 0; i < poLines.length; i++) { String[] attrs =
+			 * poLines[i].split(",");
+			 * 
+			 * int j = i + 1; int k = 0;
+			 * 
+			 * document = principal.replaceText(document, "sr" + j, attrs[k]);
+			 * document = principal.replaceText(document, "des" + j, attrs[k +
+			 * 1]);
+			 * 
+			 * String qty = attrs[k + 2]; String unitPrice = attrs[k + 3];
+			 * 
+			 * document = principal.replaceText(document, "qty" + j, qty);
+			 * document = principal.replaceText(document, "unitPrc" + j,
+			 * unitPrice);
+			 * 
+			 * double amount = Double.parseDouble(qty) *
+			 * Double.parseDouble(unitPrice); double cgst = amount * 9 / 100;
+			 * 
+			 * cGstTotal = cGstTotal + cgst; subTotal = subTotal + amount;
+			 * 
+			 * grandTotal = cgst + amount;
+			 * 
+			 * document = principal.replaceText(document, "cgst" + j,
+			 * String.valueOf(cgst)); document = principal.replaceText(document,
+			 * "sGst" + j, String.valueOf(cgst)); document =
+			 * principal.replaceText(document, "amount" + j,
+			 * String.valueOf(amount)); }
+			 * 
+			 * document = principal.replaceText(document, "cGstTotal",
+			 * String.valueOf(cGstTotal)); document =
+			 * principal.replaceText(document, "sGstTotal",
+			 * String.valueOf(cGstTotal));
+			 * 
+			 * document = principal.replaceText(document, "amtInwrd1",
+			 * "Amount1"); document = principal.replaceText(document,
+			 * "amtInwrd2", "Amount2");
+			 * 
+			 * document = principal.replaceText(document, "subTotal",
+			 * String.valueOf(subTotal)); document =
+			 * principal.replaceText(document, "taxTotak",
+			 * String.valueOf(cGstTotal * 2)); document =
+			 * principal.replaceText(document, "grandTotal",
+			 * String.valueOf(grandTotal));
+			 * 
+			 * String[] terms = poDetails.getTerm();
+			 * 
+			 * for (int l = 0; l < terms.length; l++) { int j = l + 1; document
+			 * = principal.replaceText(document, "term" + j, terms[l]); }
+			 * 
+			 * String addr = poDetails.getLocation();
+			 * 
+			 * document = principal.replaceText(document, "shipAddr1",
+			 * addr.substring(0, addr.lastIndexOf(",") - 1)); document =
+			 * principal.replaceText(document, "shipAddr2",
+			 * addr.substring(addr.lastIndexOf(",") - 1));
+			 * document.save(response.getOutputStream()); document.close();
+			 */
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 
-	    for (int i = 0; i < poLines.length; i++) {
-		String[] attrs = poLines[i].split(",");
-
-		int j = i + 1;
-		int k = 0;
-
-		document = principal.replaceText(document, "sr" + j, attrs[k]);
-		document = principal.replaceText(document, "des" + j, attrs[k + 1]);
-
-		String qty = attrs[k + 2];
-		String unitPrice = attrs[k + 3];
-
-		document = principal.replaceText(document, "qty" + j, qty);
-		document = principal.replaceText(document, "unitPrc" + j, unitPrice);
-
-		double amount = Double.parseDouble(qty) * Double.parseDouble(unitPrice);
-		double cgst = amount * 9 / 100;
-
-		cGstTotal = cGstTotal + cgst;
-		subTotal = subTotal + amount;
-
-		grandTotal = cgst + amount;
-
-		document = principal.replaceText(document, "cgst" + j, String.valueOf(cgst));
-		document = principal.replaceText(document, "sGst" + j, String.valueOf(cgst));
-		document = principal.replaceText(document, "amount" + j, String.valueOf(amount));
-	    }
-
-	    document = principal.replaceText(document, "cGstTotal", String.valueOf(cGstTotal));
-	    document = principal.replaceText(document, "sGstTotal", String.valueOf(cGstTotal));
-
-	    document = principal.replaceText(document, "amtInwrd1", "Amount1");
-	    document = principal.replaceText(document, "amtInwrd2", "Amount2");
-
-	    document = principal.replaceText(document, "subTotal", String.valueOf(subTotal));
-	    document = principal.replaceText(document, "taxTotak", String.valueOf(cGstTotal * 2));
-	    document = principal.replaceText(document, "grandTotal", String.valueOf(grandTotal));
-
-	    String[] terms = poDetails.getTerm();
-
-	    for (int l = 0; l < terms.length; l++) {
-		int j = l + 1;
-		document = principal.replaceText(document, "term" + j, terms[l]);
-	    }
-
-	    String addr = poDetails.getLocation();
-
-	    document = principal.replaceText(document, "shipAddr1", addr.substring(0, addr.lastIndexOf(",") - 1));
-	    document = principal.replaceText(document, "shipAddr2", addr.substring(addr.lastIndexOf(",") - 1));
-	    document.save(response.getOutputStream());
-	    document.close();*/
-	} catch (Exception ex) {
-	    ex.printStackTrace();
 	}
 
-    }
-    
-    public void generatePOExcel(PODetails poDetails, String poLineDetails, HttpServletResponse response) throws IOException
-	{
-    	String[] poLines = poLineDetails.split(";");
-    	
+	public void generatePOExcel(PODetails poDetails, String poLineDetails, HttpServletResponse response)
+			throws IOException {
+		String[] poLines = poLineDetails.split(";");
+
 		Workbook workBook = null;
 		FileInputStream inputStream = null;
 		try {
@@ -155,21 +167,19 @@ public class PurchaseOrderPDFView extends AbstractView {
 		cellToUpdate1.setCellValue(poDetails.getPoNumber());
 		Cell cellToUpdate2 = sheet.getRow(13).getCell(10);
 		cellToUpdate2.setCellValue(poDetails.getPoDate());
-		
-		
+
 		Font font = workBook.createFont();
-		font.setFontHeightInPoints((short)14);
+		font.setFontHeightInPoints((short) 14);
 		font.setBold(true);
-		
-		CellStyle cellStyleVenderName  = workBook.createCellStyle();
+
+		CellStyle cellStyleVenderName = workBook.createCellStyle();
 		cellStyleVenderName.setFont(font);
 		cellStyleVenderName.setVerticalAlignment(VerticalAlignment.CENTER);
-		
+
 		Cell cellToUpdate3 = sheet.getRow(14).getCell(2);
 		cellToUpdate3.setCellStyle(cellStyleVenderName);
 		cellToUpdate3.setCellValue(poDetails.getVendorName());
-		
-		
+
 		Cell cellToUpdate4 = sheet.getRow(15).getCell(1);
 		cellToUpdate4.setCellValue("PUNE");
 		Cell cellToUpdate5 = sheet.getRow(16).getCell(3);
@@ -179,144 +189,194 @@ public class PurchaseOrderPDFView extends AbstractView {
 		Cell cellToUpdate7 = sheet.getRow(18).getCell(3);
 		cellToUpdate7.setCellValue(poDetails.getContactEmail());
 
-	    double cGstTotal = 0;
-	    double subTotal = 0;
-	    
-	    int currentRow = 21;
-	    
-	    Font calibri8Font = workBook.createFont();
-	    calibri8Font.setFontName("Calibri");
-	    calibri8Font.setFontHeightInPoints((short)8);
-	    
-	    CellStyle detailsCellStyle = workBook.createCellStyle();
-	    detailsCellStyle.setFont(calibri8Font);
-	    detailsCellStyle.setWrapText(true);
-	    
-	    detailsCellStyle.setBorderBottom(BorderStyle.THIN);  
-	    detailsCellStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
-	    detailsCellStyle.setBorderLeft(BorderStyle.THIN);
-	    detailsCellStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
-	    detailsCellStyle.setBorderRight(BorderStyle.THIN);
-	    detailsCellStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
-	    detailsCellStyle.setBorderTop(BorderStyle.THIN);
-	    detailsCellStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
-	    
-	    CellStyle cellStyle = workBook.createCellStyle();
-	    
-		for(int i=0; i < poLines.length; i++)
-		{
+		double cGstTotal = 0;
+		double subTotal = 0;
+
+		int currentRow = 21;
+
+		Font calibri8Font = workBook.createFont();
+		calibri8Font.setFontName("Calibri");
+		calibri8Font.setFontHeightInPoints((short) 8);
+
+		CellStyle detailsCellStyle = workBook.createCellStyle();
+		detailsCellStyle.setFont(calibri8Font);
+		detailsCellStyle.setWrapText(true);
+		detailsCellStyle.setAlignment(HorizontalAlignment.CENTER);
+		detailsCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+				
+		detailsCellStyle.setBorderBottom(BorderStyle.THIN);
+		detailsCellStyle.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		detailsCellStyle.setBorderLeft(BorderStyle.THIN);
+		detailsCellStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		detailsCellStyle.setBorderRight(BorderStyle.THIN);
+		detailsCellStyle.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		detailsCellStyle.setBorderTop(BorderStyle.THIN);
+		detailsCellStyle.setTopBorderColor(IndexedColors.BLACK.getIndex());
+
+		CellStyle thickBorderLeft = workBook.createCellStyle();
+		thickBorderLeft.setFont(calibri8Font);
+		thickBorderLeft.setWrapText(true);
+		thickBorderLeft.setAlignment(HorizontalAlignment.CENTER);
+		thickBorderLeft.setVerticalAlignment(VerticalAlignment.CENTER);
+		thickBorderLeft.setBorderLeft(BorderStyle.MEDIUM);
+		thickBorderLeft.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+
+		CellStyle thickBorderRight = workBook.createCellStyle();
+		thickBorderRight.setFont(calibri8Font);
+		thickBorderRight.setWrapText(true);
+		thickBorderRight.setAlignment(HorizontalAlignment.CENTER);
+		thickBorderRight.setVerticalAlignment(VerticalAlignment.CENTER);
+		thickBorderRight.setBorderRight(BorderStyle.MEDIUM);
+		thickBorderRight.setRightBorderColor(IndexedColors.BLACK.getIndex());
+
+		CellStyle cellStyle = workBook.createCellStyle();
+
+		for (int i = 0; i < poLines.length; i++) {
 			String[] values = poLines[i].split(",");
-			
-			Cell cellToUpdate8 = sheet.getRow(currentRow).getCell(1,MissingCellPolicy.CREATE_NULL_AS_BLANK);
-			cellToUpdate8.setCellStyle(detailsCellStyle);
+
+			Cell cellToUpdate8 = sheet.getRow(currentRow).getCell(1, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate8.setCellStyle(thickBorderLeft);
 			cellToUpdate8.setCellValue(values[0]);
-			Cell cellToUpdate9 = sheet.getRow(currentRow).getCell(2,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			Cell cellToUpdate9 = sheet.getRow(currentRow).getCell(2, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 			cellToUpdate9.setCellStyle(detailsCellStyle);
 			cellToUpdate9.setCellValue("");
-			Cell cellToUpdate10 = sheet.getRow(currentRow).getCell(4,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			Cell cellToUpdate10 = sheet.getRow(currentRow).getCell(4, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 			cellToUpdate10.setCellStyle(detailsCellStyle);
 			cellToUpdate10.setCellValue(values[1]);
-			Cell cellToUpdate11 = sheet.getRow(currentRow).getCell(9,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			Cell cellToUpdate11 = sheet.getRow(currentRow).getCell(9, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 			cellToUpdate11.setCellStyle(detailsCellStyle);
 			cellToUpdate11.setCellValue(values[2]);
-			Cell cellToUpdate12 = sheet.getRow(currentRow).getCell(10,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			Cell cellToUpdate12 = sheet.getRow(currentRow).getCell(10, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 			cellToUpdate12.setCellStyle(detailsCellStyle);
 			cellToUpdate12.setCellValue("NB");
-			Cell cellToUpdate13 = sheet.getRow(currentRow).getCell(11,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			Cell cellToUpdate13 = sheet.getRow(currentRow).getCell(11, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 			cellToUpdate13.setCellStyle(detailsCellStyle);
 			cellToUpdate13.setCellValue(values[3]);
-			
-			
+
 			double amount = Double.parseDouble(values[2]) * Double.parseDouble(values[3]);
 			double cgst = amount * 9 / 100;
 
 			cGstTotal = cGstTotal + cgst;
 			subTotal = subTotal + amount;
-			
-			Cell cellToUpdate14 = sheet.getRow(currentRow).getCell(12,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+
+			Cell cellToUpdate14 = sheet.getRow(currentRow).getCell(12, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 			cellToUpdate14.setCellStyle(detailsCellStyle);
 			cellToUpdate14.setCellValue(cgst);
-			Cell cellToUpdate15 = sheet.getRow(currentRow).getCell(13,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			Cell cellToUpdate15 = sheet.getRow(currentRow).getCell(13, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 			cellToUpdate15.setCellStyle(detailsCellStyle);
 			cellToUpdate15.setCellValue(cgst);
-			Cell cellToUpdate16 = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
-			cellToUpdate16.setCellStyle(detailsCellStyle);
+			Cell cellToUpdate16 = sheet.getRow(currentRow).getCell(14, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdate16.setCellStyle(thickBorderRight);
 			cellToUpdate16.setCellValue(amount);
-		
+
+			sheet.addMergedRegion(new CellRangeAddress(currentRow,currentRow,2,3));
+			sheet.addMergedRegion(new CellRangeAddress(currentRow,currentRow,4,8));
 			currentRow++;
-			
-			Font dataFont = workBook.createFont();
-			dataFont.setFontName("Calibri");
-			dataFont.setFontHeightInPoints((short) 8);
-			
-			cellStyle.setFont(dataFont);
-			sheet.createRow(currentRow).setRowStyle(cellStyle);
 		}
 		
+		//delete remaining rows
+		/*int rowRemoved = 0;
+		for(int j=currentRow;j<98;j++)
+		{
+			sheet.removeRow(sheet.getRow(j));
+			rowRemoved++;
+		}
+		
+		
+		sheet.shiftRows(99, 122, -(79-poLines.length));*/
+		
+		
+		for(int i=30;i<101;i++)
+		{
+			sheet.removeRow(sheet.getRow(i));
+		}
+		
+		sheet.shiftRows(101, 122, -(80-poLines.length));
+
+		Font dataFont = workBook.createFont();
+		dataFont.setFontName("Calibri");
+		dataFont.setFontHeightInPoints((short) 8);
+		cellStyle.setFont(dataFont);
+		
 		System.out.println("currentRow before cgst,sgst and total : " + currentRow);
-		Cell cellToUpdate17 = sheet.getRow(currentRow).getCell(12,MissingCellPolicy.CREATE_NULL_AS_BLANK);
-		cellToUpdate17.setCellStyle(cellStyle);
+		Cell cellToUpdate17 = sheet.getRow(currentRow).getCell(12, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		cellToUpdate17.setCellStyle(detailsCellStyle);
 		cellToUpdate17.setCellValue(cGstTotal);
-		Cell cellToUpdate18 = sheet.getRow(currentRow).getCell(13,MissingCellPolicy.CREATE_NULL_AS_BLANK);
-		cellToUpdate18.setCellStyle(cellStyle);
+		Cell cellToUpdate18 = sheet.getRow(currentRow).getCell(13, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		cellToUpdate18.setCellStyle(detailsCellStyle);
 		cellToUpdate18.setCellValue(cGstTotal);
-		Cell cellToUpdate19 = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
-		cellToUpdate19.setCellStyle(cellStyle);
+		Cell cellToUpdate19 = sheet.getRow(currentRow).getCell(14, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		cellToUpdate19.setCellStyle(thickBorderRight);
 		cellToUpdate19.setCellValue(subTotal);
-				
-		//Move to next row
+
+		// Move to next row
 		currentRow = currentRow + 1;
-		
+
 		System.out.println("currentRow subTotal : " + currentRow);
-		Cell cellToUpdateSubTotal = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		Cell cellToUpdateSubTotal = sheet.getRow(currentRow).getCell(14, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		cellToUpdateSubTotal.setCellValue(subTotal);
-		
-		//Move to next row
+
+		// Move to next row
 		currentRow++;
-		
+
 		double grandTotal = (cGstTotal * 2) + subTotal;
-		String amountsInWords = numberWordConverter.convert((int)grandTotal);
-		Cell cellToUpdate20 = sheet.getRow(currentRow).getCell(4,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		String amountsInWords = numberWordConverter.convert((int) grandTotal);
+		Cell cellToUpdate20 = sheet.getRow(currentRow).getCell(4, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		CellStyle amountInWordsStyle = workBook.createCellStyle();
 		amountInWordsStyle.setWrapText(true);
+		amountInWordsStyle.setFont(dataFont);
 		amountInWordsStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		amountInWordsStyle.setAlignment(HorizontalAlignment.CENTER);
 		cellToUpdate20.setCellStyle(amountInWordsStyle);
 		cellToUpdate20.setCellValue(amountsInWords);
 		
-		Cell cellToUpdate21 = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		/*sheet.addMergedRegion(new CellRangeAddress(currentRow,currentRow,4,8));*/
+
+		Cell cellToUpdate21 = sheet.getRow(currentRow).getCell(14, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		cellToUpdate21.setCellValue(cGstTotal * 2);
-		
+
 		// Move to next row
 		currentRow++;
-		Cell cellToUpdate22 = sheet.getRow(currentRow).getCell(14,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		Cell cellToUpdate22 = sheet.getRow(currentRow).getCell(14, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 		cellToUpdate22.setCellValue(grandTotal);
 
-		currentRow = currentRow+2;
+		currentRow = currentRow + 7;
 		String[] terms = poDetails.getTerm();
-		
-		Font dataFont = workBook.createFont();
-		dataFont.setFontName("Calibri");
-		dataFont.setFontHeightInPoints((short)9);
-		
+
+		dataFont.setFontHeightInPoints((short) 9);
+
 		cellStyle.setFont(dataFont);
+		cellStyle.setBorderLeft(BorderStyle.MEDIUM);
+		cellStyle.setLeftBorderColor(IndexedColors.BLACK.getIndex());		
+		cellStyle.setAlignment(HorizontalAlignment.CENTER);
+
+/*		detailsCellStyle.setWrapText(false);
+		detailsCellStyle.setFont(dataFont);
+		detailsCellStyle.setAlignment(HorizontalAlignment.GENERAL);*/
 		
-		for (int i = 0; i < terms.length; i++)
-		{
-			Cell cellToUpdate = sheet.getRow(currentRow).getCell(1,MissingCellPolicy.CREATE_NULL_AS_BLANK);
+		for (int i = 6; i < terms.length+6; i++) {
+
+			Cell cellToUpdate = sheet.createRow(currentRow).getCell(1, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 			cellToUpdate.setCellStyle(cellStyle);
-			cellToUpdate.setCellValue(i+1);
-			Cell cellToUpdateN = sheet.getRow(currentRow).getCell(2,MissingCellPolicy.CREATE_NULL_AS_BLANK);
-			cellToUpdateN.setCellStyle(cellStyle);
-			cellToUpdateN.setCellValue(terms[i]);
+			cellToUpdate.setCellValue(String.valueOf(i));
+
+			Cell cellToUpdateN = sheet.getRow(currentRow).getCell(2, MissingCellPolicy.CREATE_NULL_AS_BLANK);
 			
+			CellStyle cellStyle1 = workBook.createCellStyle();
+			cellStyle1.setFont(dataFont);
+			cellStyle1.setVerticalAlignment(VerticalAlignment.CENTER);
+
+			cellToUpdateN.setCellStyle(cellStyle1);
+			cellToUpdateN.setCellValue(terms[i-6]);
+			
+			Cell cellToUpdateEnd = sheet.getRow(currentRow).getCell(14, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+			cellToUpdateEnd.setCellStyle(thickBorderRight);
 			currentRow++;
 		}
-		
+
 		inputStream.close();
 		workBook.write(response.getOutputStream());
 		// Closing the workbook
 		workBook.close();
-
 	}
 }

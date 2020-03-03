@@ -583,117 +583,134 @@
             <td>
              <div class="form-group">
                <select class="form-control" name="model" id="model" onchange="getValveDetails('material');">
-                 <option></option>
-                 <option value="API-600"    >API-600  </option>
-                 <option value="API6D"     >API6D    </option>
-                 <option value="MSS SP-81" >MSS SP-81</option>
-                 <option value="ARC 014"   >ARC 014  </option>
-                 <option value="API 602"   >API 602  </option>
-                 <option value="BS-5352"   >BS-5352  </option>
-                 <option value="ARC-024"   >ARC-024  </option>
-                 <option value="BS-5156"   >BS-5156  </option>
-                 <option value="API 526"   >API 526  </option>
-                 <option value="IS 12268"  >IS 12268 </option>
-                 <option value="API 600"   >API 600  </option>
-                 <option value="API 6D"    >API 6D   </option>
-                 <option value="MSS SP-81" >MSS SP-81</option>
-                 <option value="BS-1873"   >BS-1873  </option>
-                 <option value="ND-16"     >ND-16    </option>
-                 <option value="ND-40"     >ND-40    </option>
-                 <option value="BS-1868"   >BS-1868  </option>
-                 <option value="API 6D"    >API 6D   </option>
-                 <option value="BS-5351"   >BS-5351  </option>
-                 <option value="API 6D"    >API 6D   </option>
-                 <option value="BS5159"    >BS5159   </option>
-                 <option value="ISO 17292" >ISO 17292</option>
-                 <option value="BS-5155"   >BS-5155  </option>
-                 <option value="API 609"   >API 609  </option>
-                 <option value="AWWA C504" >AWWA C504</option>
-                 <option value="IS 13095"  >IS 13095 </option>
-                 <option value="API 6D"    >API 6D   </option>
-                 <option value="API 594"   >API 594  </option>
-               </select>
-             </div>
-           </td>
-           <td>
-             <div class="form-group">
-               <select class="form-control" name="material" id="materialVal" onchange="getValveDetails('end');">
-                 <option></option>
-               </select>
-             </div>
-           </td>
-           <td>
-             <div class="form-group">
-               <select class="form-control" name="end" id="endVal" onchange="getValveDetails('type');">
-                 <option></option>
-               </select>
-             </div>
-           </td>
-           <td>
-             <div class="form-group">
-               <select class="form-control" name="type" id="typeVal" onchange="getValveDetails('pressureRatings');">
-                 <option></option>
-               </select>
-             </div>
-           </td>
-           <td>
-             <div class="form-group">
-               <select class="form-control" name="pressureRatings" id="pressureRatingsVal" onchange="getValveDetails('maxInletPressure');" >
-                 <option value='-'>-</option>
-               </select>
-             </div>
-           </td>
-           <td>
-             <div class="form-group">
-               <select class="form-control" name="maxInletPressure" id="maxInletPressureVal" onchange="getValveDetails('operations');">
-                 <option value='-'>-</option>
-               </select>
-             </div>
-           </td>
-           <td>
-             <div class="form-group">
-               <select class="form-control" name="operations" id="operationsVal" onchange="getValveDetails('seatAndSeals');">
-                 <option value='-'>-</option>
-               </select>
-             </div>
-           </td>
-           <td>
-             <div class="form-group">
-               <select class="form-control" name="seatAndSeals" id="seatAndSealsVal">
-                 <option value='-'>-</option>
-               </select>
-             </div>
-           </td>
-           <td>
-             <div class="form-group">
-              <select class="form-control" name="valveSize" id="valveSize">
-                <option value='15NB-1/2"'>15NB-1/2" </option>
-                <option value='20NB-3/4"'>20NB-3/4" </option>
-                <option value='25NB-1"'>25NB-1"   </option>
-                <option value='32NB-1:1/4"'>32NB-1:1/4" </option> 
-                <option value='40NB-1:1/2"'>40NB-1:1/2" </option> 
-                <option value='50NB-2"'>50NB-2"   </option>
-                <option value='65NB-2:1/2"'>65NB-2:1/2" </option> 
-                <option value='80NB-3"'>80NB-3"   </option>
-                <option value='100NB-4"'>100NB-4" </option>
-                <option value='125NB-5"'>125NB-5" </option>
-                <option value='150NB-6"'>150NB-6" </option>
-                <option value='200NB-8"'>200NB-8" </option>
-                <option value='250NB-10"'>250NB-10" </option>
-                <option value='300NB-12"'>300NB-12" </option>
-                <option value='350NB-14"'>350NB-14" </option>
-                <option value='400NB-16"'>400NB-16" </option>
-                <option value='450NB-18"'>450NB-18" </option>
-                <option value='500NB-20"'>500NB-20" </option>
-                <option value='550NB-22"'>550NB-22" </option>
-                <option value='600NB-24"'>600NB-24" </option>
+                <option></option>
+                <option value="CAST_IRON_GATE:API-600"  >CAST IRON GATE-API-600 </option>
+                <option value="CAST_IRON_GATE:API6D"  >CAST IRON GATE-API6D </option>
+                <option value="CAST_IRON_GATE:MSS-SP-81"  >CAST IRON GATE-MSS SP-81</option>
+                <option value="CAST_IRON_GLOBE:API-600"  >CAST IRON GLOBE-API-600</option>
+                <option value="CAST_IRON_GLOBE:API6D"  >CAST IRON GLOBE-API6D</option>
+                <option value="CAST_IRON_GLOBE:MSS-SP-81"  >CAST IRON GLOBE-MSS SP-81</option>
+                <option value="SLUICE_&_REFLUX:API-600"  >SLUICE & REFLUX-API-600</option>
+                <option value="SLUICE_&_REFLUX:API6D"  >SLUICE & REFLUX-API6D</option>
+                <option value="SLUICE_&_REFLUX:MSS-SP-81"  >SLUICE & REFLUX-MSS SP-81</option>
+                <option value="STAINERS:ARC 014 "  >STAINERS-ARC 014  </option>
+                <option value="GATE:API 602"  >GATE-API 602  </option>
+                <option value="GATE:BS-5352"  >GATE-BS-5352  </option>
+                <option value="GATE:ARC-024"  >GATE-ARC-024  </option>
+                <option value="GLOBE:API 602"  >GLOBE-API 602  </option>
+                <option value="GLOBE:BS-5352"  >GLOBE-BS-5352  </option>
+                <option value="GLOBE:ARC-024"  >GLOBE-ARC-024  </option>
+                <option value="CHECK:API 602"  >CHECK-API 602  </option>
+                <option value="CHECK:BS-5352"  >CHECK-BS-5352  </option>
+                <option value="CHECK:ARC-024"  >CHECK-ARC-024  </option>
+                <option value="DIAPHRAGM:BS-5156"  >DIAPHRAGM-BS-5156  </option>
+                <option value="SAFETY:API 526"  >SAFETY-API 526  </option>
+                <option value="STEAM_TRAPS:IS 12268"  >STEAM TRAPS-IS 12268 </option>
+                <option value="GATE:API 600"  > GATE-API 600  </option>
+                <option value="GATE:API-6D"  > GATE-API 6D   </option>
+                <option value="GATE:MSS SP-81"  > GATE-MSS SP-81</option>
+                <option value="KNIFE_EDGE_GATE:API 600"  >KNIFE EDGE GATE-API 600  </option>
+                <option value="KNIFE_EDGE_GATE:API-6D"  >KNIFE EDGE GATE-API 6D   </option>
+                <option value="KNIFE_EDGE_GATE:MSS SP-81"  >KNIFE EDGE GATE-MSS SP-81</option>
+                <option value="GLOBE:BS-1873"  >GLOBE-BS-1873  </option>
+                <option value="GLOBE:ND-16"  >GLOBE-ND-16    </option>
+                <option value="GLOBE:ND-40"  >GLOBE-ND-40    </option>
+                <option value="NON_RETURN:BS-1868"  >NON RETURN-BS-1868  </option>
+                <option value="NON_RETURN:API~6D"  >NON RETURN-API 6D   </option>
+                <option value="FLOATING&TRUNION:BS-5351"  >FLOATING&TRUNION-BS-5351 </option>
+                <option value="FLOATING&TRUNION:API_6D"  >FLOATING&TRUNION-API 6D </option>
+                <option value="FLOATING&TRUNION:BS5159"  >FLOATING&TRUNION-BS5159 </option>
+                <option value="FLOATING&TRUNION:ISO 17292" >FLOATING&TRUNION-ISO 17292</option>
+                <option value="BUTTERFLY:BS-5155"  >BUTTERFLY-BS-5155</option>
+                <option value="BUTTERFLY:API 609"  >BUTTERFLY-API 609  </option>
+                <option value="BUTTERFLY:AWWA C504"  >BUTTERFLY-AWWA C504</option>
+                <option value="BUTTERFLY:IS 13095"  >BUTTERFLY-IS 13095 </option>
+                <option value="WAFER:API.6D"  >WAFER-API 6D  </option>
+                <option value="WAFER:API 594"  >WAFER-API 594  </option>
+                <option value="DUALPLATE_CHECK:API.6D"  >DUALPLATE CHECK-API 6D</option>
+                <option value="DUALPLATE_CHECK:API 594" >DUALPLATE CHECK-API 594</option>
               </select>
             </div>
           </td>
-        </tr> 
-      </tbody>
-    </table>
-  </div>
+          <td>
+           <div class="form-group">
+             <select class="form-control" name="material" id="materialVal" onchange="getValveDetails('end');">
+               <option></option>
+             </select>
+           </div>
+         </td>
+         <td>
+           <div class="form-group">
+             <select class="form-control" name="end" id="endVal" onchange="getValveDetails('type');">
+               <option></option>
+             </select>
+           </div>
+         </td>
+         <td>
+           <div class="form-group">
+             <select class="form-control" name="type" id="typeVal" onchange="getValveDetails('pressureRatings');">
+               <option></option>
+             </select>
+           </div>
+         </td>
+         <td>
+           <div class="form-group">
+             <select class="form-control" name="pressureRatings" id="pressureRatingsVal" onchange="getValveDetails('maxInletPressure');" >
+               <option value='-'>-</option>
+             </select>
+           </div>
+         </td>
+         <td>
+           <div class="form-group">
+             <select class="form-control" name="maxInletPressure" id="maxInletPressureVal" onchange="getValveDetails('operations');">
+               <option value='-'>-</option>
+             </select>
+           </div>
+         </td>
+         <td>
+           <div class="form-group">
+             <select class="form-control" name="operations" id="operationsVal" onchange="getValveDetails('seatAndSeals');">
+               <option value='-'>-</option>
+             </select>
+           </div>
+         </td>
+         <td>
+           <div class="form-group">
+             <select class="form-control" name="seatAndSeals" id="seatAndSealsVal">
+               <option value='-'>-</option>
+             </select>
+           </div>
+         </td>
+         <td>
+           <div class="form-group">
+            <select class="form-control" name="valveSize" id="valveSize">
+              <option value='15NB-1/2"'>15NB-1/2" </option>
+              <option value='20NB-3/4"'>20NB-3/4" </option>
+              <option value='25NB-1"'>25NB-1"   </option>
+              <option value='32NB-1:1/4"'>32NB-1:1/4" </option> 
+              <option value='40NB-1:1/2"'>40NB-1:1/2" </option> 
+              <option value='50NB-2"'>50NB-2"   </option>
+              <option value='65NB-2:1/2"'>65NB-2:1/2" </option> 
+              <option value='80NB-3"'>80NB-3"   </option>
+              <option value='100NB-4"'>100NB-4" </option>
+              <option value='125NB-5"'>125NB-5" </option>
+              <option value='150NB-6"'>150NB-6" </option>
+              <option value='200NB-8"'>200NB-8" </option>
+              <option value='250NB-10"'>250NB-10" </option>
+              <option value='300NB-12"'>300NB-12" </option>
+              <option value='350NB-14"'>350NB-14" </option>
+              <option value='400NB-16"'>400NB-16" </option>
+              <option value='450NB-18"'>450NB-18" </option>
+              <option value='500NB-20"'>500NB-20" </option>
+              <option value='550NB-22"'>550NB-22" </option>
+              <option value='600NB-24"'>600NB-24" </option>
+            </select>
+          </div>
+        </td>
+      </tr> 
+    </tbody>
+  </table>
+</div>
 </div>
 <div class="row createBOQ" style="display: none;">
  <div class="col-md-2">
@@ -951,7 +968,6 @@
             </div>
             <div class="modal-body">
               <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
-
                 <div class="col-md-3 "style="margin-left:5%";>
                  <h4>TaxInvoice List</h4>
                  <select class="form-control" onchange="downloadInvoice($('#taxInvoiceList').val());" id="taxInvoiceList">
@@ -962,8 +978,11 @@
               <div class="col-md-3" style="margin-top: 1.5%;">      
                 <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#payDetails" >Received Payment Details</button>
               </div>
-              <div class="col-md-3" style="margin-top: 1.5%;">      
+              <div class="col-md-3" style="margin-left:-3%;margin-top: 1.5%;">      
                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#createProjectModal5">Add Payment Details</button>
+             </div>
+             <div class="col-md-3" style="margin-left:-6%;margin-top: 1.5%;">      
+               <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#generateInvoice" id="generateInvoiceFrNInv" >Generate Invoice for received Inventory</button>
              </div>
            </div>
            <div class="collapse" id="createProjectModal5">
@@ -1013,6 +1032,118 @@
       </table>
     </div>		
   </div>
+  <div class="collapse border border-info" id="generateInvoice" >
+    <section class="main-container">
+      <div class="container">
+        <form action="generateInvoice" id="updateInventory" method="POST">
+          <dir class="row" style="padding-left:6%;margin-left: -9%;">          
+            <table class="table table-colored">
+              <thead>
+               <tr>
+                <th></th>
+                <th>Item</th>
+                <th>Material</th>
+                <th>Type</th>
+                <th>Manifacturing Method</th>
+                <th>Class/Schedule</th>
+                <th>Ends</th>
+                <th>Size</th>
+                <th>Purchase Rate</th>
+                <th>Received Quantity</th>                
+                <th>Location</th>
+                <th>Received Date</th>
+              </tr>
+            </thead>
+            <tbody id="generateInvoiceTable">              
+            </tbody>
+          </table>        
+        </dir>
+
+        <div class="collapse border border-info" id="invoice" style="padding-left:3%;"> 
+          <label><h3></h3></label>  
+          <div class="form-row">  
+            <div class="form-group col-md-3">
+              <label>Contact Name</label>
+              <input type="text" class="form-control" name="contactName">
+            </div>
+            <div class="form-group col-md-3">
+              <label>Mobile No</label>
+              <input type="text" class="form-control" name="mobileNo">
+            </div>
+            <div class="form-group col-md-3">
+              <label>Addressed To</label>
+              <input type="text" class="form-control" name="addressedto1">
+            </div>
+            <div class="form-group col-md-3">
+              <label>Order Date</label>
+              <input type="text" class="form-control" name="orderDate">
+            </div>
+          </div>
+          <div class="form-row">              
+           <div class="form-group col-md-3">
+            <label>Email</label>
+            <input type="text" class="form-control" name="emailAddress">
+          </div>
+          <div class="form-group col-md-3">
+            <label>Invoice Type</label>
+            <select class="form-control" name="invoiceType" id="invoiceType">
+              <option></option>
+              <option value="Supply">Supply</option>
+              <option value="Labour">Labour</option>
+              <option value="Supply&amp;Labour">Supply&amp;Labour</option>
+            </select>
+          </div>
+          <div class="form-group col-md-3">
+            <label>Hsn/Sac</label>
+            <input type="text" class="form-control" name="hsnOrSac">
+          </div>
+          <div class="form-group col-md-3">
+            <br/>
+            <input type="button" class="btn btn-default" data-toggle="collapse" data-target="#miscChargesSection" value="Miscellaneous Cahrges">
+          </div>
+          <input type="hidden" name="orderNo" value="">
+        </div>
+        <div class="collapse" id="miscChargesSection">              
+          <div class="form-row">
+           <div class="form-group col-md-3">
+            <br/>
+            <label>Miscellaneous Charges</label>
+          </div>
+          <div class="form-group col-md-3">
+            <label>Description</label>
+            <input type="text" class="form-control" name="miscChargesDesc">
+          </div>
+          <div class="form-group col-md-3">
+            <label>Charges</label>
+            <input type="text" class="form-control" name="miscCharges">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-left: 0%;">
+
+      <div class="col-md-3 ">
+       <div class="ph-20 feature-box text-center">
+         <br>
+         <button type="button" onclick="hideOthers('invoice')" data-toggle="collapse" data-target="#invoice" class="btn btn-default">Invoice Details</button>
+       </div> 
+     </div>
+     <div class="col-md-3">
+       <div class="ph-20 feature-box text-center">
+         <br>
+         <button type="button" id="updateButton" onclick="generateInvoice();" class="btn btn-default">Generate Invoice</button>
+       </div> 
+     </div>
+   </div>
+ </form>
+ <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100">
+ </div>
+ <div class="row" style="margin-left: -11%;">
+ </div>
+</div>
+</section>
+</div>
+
 </div>
 </div>
 </div>
@@ -1282,7 +1413,7 @@
 
   function hideLoading()
   {
-    this.setTimeout($.unblockUI,2000);
+    this.setTimeout($.unblockUI,1000);
     //$.unblockUI();
 
   }
@@ -1819,6 +1950,7 @@ function cleanArray(actual)
       if($('#tableContentPOSec input')[i].value === "")
       {
         alert('Please provide the supply Rates and retry.!!');
+        hideLoading();
         return;
       }
       var temp = $('#tableContentPOSec input')[i];
@@ -2346,6 +2478,180 @@ function cleanArray(actual)
     $(document.body).append(newForm);
     newForm.submit();
   }
+</script>
+<script type="text/javascript">
+
+  function generateInvoice() 
+  {
+
+    showLoading();
+
+    var CheckeleCount = $('#generateInvoiceTable input.checkbox').length;
+
+    var selectedElements = [];
+    var i;
+
+    for(i=0; i < CheckeleCount; i++)
+    {
+      if($('#generateInvoiceTable input.checkbox')[i].checked)
+      {
+       selectedElements[i] = i;
+     }
+   }
+
+   var eleCount = $('#generateInvoiceTable input').length;
+
+
+   var inventoryName        = [];
+   var material             = [];
+   var type                 = [];
+   var manifacturingMethod  = [];
+   var classOrGrade         = [];
+   var ends                 = [];
+   var size                 = [];
+   var purchaseRate       = [];
+   var receivedQuantity     = [];
+   var location         = [];
+   var receivedDate         = [];
+
+   var contactName          = $('[name="contactName"]')[0].value;
+   var mobileNo           = $('[name="mobileNo"]')[0].value;
+   var addressedto1         = $('[name="addressedto1"]')[0].value;
+   var orderDate          = $('[name="orderDate"]')[0].value;
+   var emailAddress       = $('[name="emailAddress"]')[0].value;
+   var invoiceType        = $('[name="invoiceType"]')[0].value;
+   var hsnOrSac         = $('[name="hsnOrSac"]')[0].value;
+
+   var j;
+   var k = 0;
+   var n = 1;
+   for(k=0;k<selectedElements.length;k++)
+   {
+
+     if(selectedElements[k] != undefined)
+     {
+      var start = 1 + 14*parseFloat(selectedElements[k]);
+
+      inventoryName[k]      = $('#generateInvoiceTable input')[start++].value;
+      material[k]       = $('#generateInvoiceTable input')[start++].value;
+      type[k]         = $('#generateInvoiceTable input')[start++].value;
+      manifacturingMethod[k]  = $('#generateInvoiceTable input')[start++].value;
+      classOrGrade[k]     = $('#generateInvoiceTable input')[start++].value;
+      ends[k]         = $('#generateInvoiceTable input')[start++].value;
+      size[k]         = $('#generateInvoiceTable input')[start++].value;
+      purchaseRate[k]     = $('#generateInvoiceTable input')[start++].value;                    
+      receivedQuantity[k]   = $('#generateInvoiceTable input')[start++].value;
+      start++;     
+      location[k]       = $('#generateInvoiceTable input')[start++].value;
+      receivedDate[k]     = $('#generateInvoiceTable input')[start++].value;
+
+    } 
+  }
+
+  var lastArray = 3 + 20*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
+
+
+  var formData = $(this).serializeArray();
+
+  formData.push({name: 'projectId', value: $('[name="projectId"]').val()});
+  
+  var inventoryName_string = cleanArray(inventoryName);
+  formData.push({name: 'inventoryName', value: inventoryName_string});
+  var material_string = cleanArray(material);
+  formData.push({name: 'material', value: material_string});
+  var type_string = cleanArray(type);
+  formData.push({name: 'type', value: type_string});
+  var manifacturingMethod_string = cleanArray(manifacturingMethod);
+  formData.push({name: 'manifMetod', value: manifacturingMethod_string});
+  var classOrGrade_string = cleanArray(classOrGrade);
+  formData.push({name: 'classOrGrade', value: classOrGrade_string});
+  var ends_string = cleanArray(ends);
+  formData.push({name: 'ends', value: ends_string});
+  var size_string = cleanArray(size);
+  formData.push({name: 'size', value: size_string});
+  var purchaseRate_string = cleanArray(purchaseRate);
+  formData.push({name: 'purchaseRate', value: purchaseRate_string});
+  var receivedQuantity_string = cleanArray(receivedQuantity);
+  formData.push({name: 'receivedQuantity', value: receivedQuantity_string});
+  var location_string = cleanArray(location);
+  formData.push({name: 'location', value: location_string});
+  var receivedDate_string = cleanArray(receivedDate);
+  formData.push({name: 'receivedDate', value: receivedDate_string});
+  
+  formData.push({name: 'contactName', value: contactName});
+  formData.push({name: 'mobileNo', value: mobileNo});
+  formData.push({name: 'addressedto1', value: addressedto1});
+  formData.push({name: 'orderDate', value: orderDate});
+  formData.push({name: 'emailAddress', value: emailAddress});
+  formData.push({name: 'invoiceType', value: invoiceType});
+  formData.push({name: 'hsnOrSac', value: hsnOrSac});
+  
+  $.ajax({
+   url: "generateInvoice",
+   data: formData,
+   type: 'post',
+   success: function(data)
+   {
+
+    var CheckeleCount1 = $('#generateInvoiceTable input.checkbox').length;
+
+    var selectedElements1 = [];
+    var j;
+
+    for(j=0; j < CheckeleCount1; j++)
+    {
+      if($('#generateInvoiceTable input.checkbox')[j].checked)
+      {
+       selectedElements1[j] = j;
+     }
+   }
+
+   var deleted = 0;
+   for(var d=0;d<selectedElements1.length;d++)
+   {
+     if(selectedElements1[d] != undefined)
+     {
+      $('#generateInvoiceTable tr')[d-deleted].remove();
+      deleted++;
+    }
+  }
+
+}
+});
+  hideLoading();
+}
+
+function cleanArray(actual)
+{
+  var newArray = new Array();
+  for(var i = 0; i<actual.length; i++)
+  {
+    if (actual[i])
+    {
+      newArray.push(actual[i]);
+    }
+  }
+  return newArray;
+}
+</script>
+<script type="text/javascript">
+  $('#generateInvoiceFrNInv').on('click', function(){
+
+    showLoading();
+
+    $.ajax({
+     type : 'POST',
+     data :  {'projectId' : $('[name="projectId"]')[0].value},
+     url : 'getNoInvoiceInventory',
+     success : function(data) 
+     {
+      $('#generateInvoiceTable').append(data);
+    }
+  });
+
+    hideLoading();
+
+  });
 </script>
 </body>
 </html>

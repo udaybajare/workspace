@@ -3,6 +3,7 @@ package com.invmgmt.entity;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 import com.invmgmt.interfaces.BOQData;
 
 @Entity
+@Embeddable
 @Table(name = "inventory")
 public class Inventory implements Serializable, BOQData {
 

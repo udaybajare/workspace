@@ -143,12 +143,14 @@ public class ExcelWriter {
 			int index = 0;
 			int nextRow = 9;
 			int i = 1;
+			int pushBy = 0;
 
 			for (int invIndx = startIndex; invIndx < lastIndex; invIndx++) {
 				BOQLineData inventory = boqLineDataDetails.get(invIndx);
 
 				int presentIndex = processedInventory.indexOf(inventory);
-
+				// Reset pushBy to 0
+				pushBy = 0;
 				System.out.println("presentIndex is : " + presentIndex);
 
 				if (presentIndex != -1) {
@@ -181,13 +183,14 @@ public class ExcelWriter {
 
 					if (erectionAmount.length > 0)
 						cellToUpdate10.setCellValue(erectionAmount[index]);
-					i++;
+					
 				} else {
 					processedInventory.add(inventory);
 
+					String invCategory = "null" != inventory.getCategory()
+							? inventory.getCategory() : "";
 					Cell cellToUpdateInv = sheet.getRow(nextRow - 1).getCell(1);
-					cellToUpdateInv.setCellValue(inventory.getInventoryName() + " " + null != inventory.getCategory()
-							? inventory.getCategory() : "");
+					cellToUpdateInv.setCellValue(inventory.getInventoryName() + " " + invCategory);
 
 					Cell cellToUpdate = sheet.getRow(nextRow).getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 					cellToUpdate.setCellValue(inventory.getStdLine());
@@ -222,30 +225,40 @@ public class ExcelWriter {
 						Cell cellToUpdate3 = sheet.getRow(++nextRow).getCell(1,
 								Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 						cellToUpdate3.setCellValue(inventory.getSpecLine());
+					} else {
+						pushBy++;
 					}
 
 					if (null != inventory.getGrdLine() && !("".equals(inventory.getGrdLine()))) {
 						Cell cellToUpdate1 = sheet.getRow(++nextRow).getCell(1,
 								Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 						cellToUpdate1.setCellValue(inventory.getGrdLine());
+					} else {
+						pushBy++;
 					}
 
 					if (null != inventory.getEndsLine() && !("".equals(inventory.getEndsLine()))) {
 						Cell cellToUpdate4 = sheet.getRow(++nextRow).getCell(1,
 								Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 						cellToUpdate4.setCellValue(inventory.getEndsLine());
+					} else {
+						pushBy++;
 					}
 
 					if (null != inventory.getMakesLine() && !("".equals(inventory.getMakesLine()))) {
 						Cell cellToUpdate7 = sheet.getRow(++nextRow).getCell(1,
 								Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 						cellToUpdate7.setCellValue(inventory.getMakesLine());
+					} else {
+						pushBy++;
 					}
-					nextRow = nextRow + 2 + i;
+
+					nextRow = nextRow + pushBy + 2+i;
 				}
 
 				index++;
 
+				System.out.println("Next Row is : " + nextRow);
 				System.out.println("Next start index is : " + startIndex);
 			}
 

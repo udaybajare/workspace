@@ -62,7 +62,7 @@ public class TaxInvoiceDetailsDao {
 		String lastTaxInvoiceno = "";
 		try {
 			Session session = sessionFactory.getCurrentSession();
-			String sql = "select taxInvoiceNo from TaxInvoiceDetails order by taxInvoiceDate DESC";
+			String sql = "SELECT taxInvoiceNo FROM TaxInvoiceDetails ORDER BY STR_TO_DATE(taxInvoiceDate, '%Y-%m-%d %H:%i:%S')  DESC";
 
 			Query query = session.createQuery(sql);
 
@@ -72,11 +72,7 @@ public class TaxInvoiceDetailsDao {
 			{
 				lastTaxInvoiceno = (String) results.get(0);	
 			}
-			else
-			{
-				lastTaxInvoiceno = "";
-			}
-			
+				
 
 		} catch (Exception ex) {
 			ex.printStackTrace();

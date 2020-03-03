@@ -20,44 +20,49 @@ public class BOQLineDataDao {
 
 	@Autowired
 	SessionFactory sessionFactory;
-	
+
 	@Transactional
-	public BOQLineData getLineData(String material, String inventoryName)
-	{
+	public BOQLineData getLineData(String material, String inventoryName) {
 		ArrayList<BOQLineData> boqLineDataList = new ArrayList<BOQLineData>();
-		
+
+		String[] inventoryNameSplited = inventoryName.split(":");
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			Query sqlQuery = null;
-			
-			if(inventoryName.equals("Pipe"))
-			{
-				sqlQuery = session.createQuery("from BOQLineData as lineData where lineData.material=:material and lineData.inventoryName=:inventoryName");	
+
+			if (inventoryName.equals("Pipe")) {
+				sqlQuery = session.createQuery(
+						"from BOQLineData as lineData where lineData.material=:material and lineData.inventoryName=:inventoryName");
 				sqlQuery.setParameter("material", material);
 				System.out.println("Getting data for : " + material);
+			} else {
+				sqlQuery = session
+						.createQuery("from BOQLineData as lineData where lineData.inventoryName=:inventoryName");
 			}
-			else
-			{
-				sqlQuery = session.createQuery("from BOQLineData as lineData where lineData.inventoryName=:inventoryName");
+
+			if (inventoryNameSplited.length > 1) {
+				inventoryName = inventoryNameSplited[1];
 			}
-						
 			sqlQuery.setParameter("inventoryName", inventoryName);
-			
+
 			List results = sqlQuery.getResultList();
 			Iterator itr = results.iterator();
-			
-			while(itr.hasNext())
-			{
-				boqLineDataList.add((BOQLineData)itr.next());
+
+			while (itr.hasNext()) {
+				boqLineDataList.add((BOQLineData) itr.next());
 			}
 		} catch (HibernateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
-		return boqLineDataList.get(0);
+		BOQLineData boqLineData = boqLineDataList.get(0);
+
+		if (inventoryNameSplited.length > 1) {
+			boqLineData.setInventoryName(inventoryNameSplited[0] + ":" + boqLineData.getInventoryName());
+		}
+
+		return boqLineData;
 	}
 }

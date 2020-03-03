@@ -123,7 +123,7 @@
                <div class="form-group col-md-4">
                 <label>Add Vendor</label>
                 <br/>
-                <button type="button" class="addVendorForm">+</button>
+                <button type="button" data-toggle="modal" data-target="#addVeenderModel" >+</button>
               </div>
             </div>
             <div class="form-row">
@@ -162,33 +162,46 @@
   </div>
 </section>
 
-<div id="textOverlaySearch" style="display:none;">
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label>Vendor Name</label>
-      <input type="text" class="form-control" name="vendorNameStr">	
-    </div>
-    <div class="form-group col-md-6">
-      <label>Vendor Location</label>
-      <input type="text" class="form-control" name="vendorAddress">
-    </div>
+<div class="modal fade bd-example-modal-lg" id="addVeenderModel" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+ <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+   <div class="modal-header">
+    <h4 class="modal-title" >Add New Vender</h4>
   </div>
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label>Contact Name</label>
-      <input type="text" class="form-control" name="vendorContactName">
+  <div class="modal-body">
+
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label>Vendor Name</label>
+        <input type="text" class="form-control" name="vendorNameStr"> 
+      </div>
+      <div class="form-group col-md-4">
+        <label>Vendor Location</label>
+        <input type="text" class="form-control" name="vendorAddress">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contact Name</label>
+        <input type="text" class="form-control" name="vendorContactName">
+      </div>
     </div>
-    <div class="form-group col-md-4">
-      <label>Contact Number</label>
-      <input type="text" class="form-control" name="vendorNumber">
-    </div>
-    <div class="form-group col-md-4">
-      <label>Contact Email</label>
-      <input type="text" class="form-control" name="vendorEmail">
-    </div>
-  </div>                
-  <button type="button" class="btn btn-default" onClick="addVendor();">Add</button>
-  <button type="button" class="btn btn-default" onClick="closeOverlay('textOverlaySearch');" >Cancel</button>
+    <div class="form-row">    
+      <div class="form-group col-md-4">
+        <label>Contact Number</label>
+        <input type="text" class="form-control" name="vendorNumber">
+      </div>
+      <div class="form-group col-md-4">
+        <label>Contact Email</label>
+        <input type="text" class="form-control" name="vendorEmail">
+      </div>
+      <div class="form-group col-md-4">
+        <label></label>
+        <button type="button" class="btn btn-default" onClick="addVendor();">Add</button>
+      </div>
+    </div>              
+
+  </div>
+</div>  
+</div>  
 </div>
 
 <div class="space"></div>
@@ -236,6 +249,30 @@
 <script src="js/custom.js"></script>
 
 <script>
+  function showLoading()
+  {
+    $.blockUI({ css: { 
+      border: 'none', 
+      padding: '15px', 
+      backgroundColor: '#fff', 
+      '-webkit-border-radius': '10px', 
+      '-moz-border-radius': '10px', 
+      opacity: .5, 
+      color: '#000',
+      images : 'images/img/loading-blue.gif'
+    } }); 
+
+  }
+
+  function hideLoading()
+  {
+    this.setTimeout($.unblockUI,1000);
+    //$.unblockUI();
+
+  }
+</script>
+
+<script>
 
   var i = 1;
 
@@ -281,6 +318,7 @@
   function addVendor()
   {
 
+    showLoading();
     $.ajax({
      type : 'POST',
      data :  {'vendorName' : $('[name="vendorNameStr"]').val(), 'vendorAddress': $('[name="vendorAddress"]').val(), 'contactName': $('[name="vendorContactName"]').val(), 'contactNumber': $('[name="vendorNumber"]').val(), 'contactEmail': $('[name="vendorEmail"]').val()},
@@ -292,6 +330,7 @@
 
       document.getElementById("textOverlaySearch").style.display = "none";     			       
     }
+    hideLoading();
   });
 
 

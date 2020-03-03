@@ -31,9 +31,7 @@ public class LoginControlle {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
 		ModelAndView modelAndView = new ModelAndView(VIEW);
-
 		return modelAndView;
 	}
 
@@ -59,9 +57,9 @@ public class LoginControlle {
 			session.setAttribute("userName", loginInfo.getUserName());
 			session.setAttribute("sessionId", sessionId);
 
-			view = "home";
+			view = "Home";
 		} else {
-			view = "Login";
+			view = "LandingPage";
 
 		}
 

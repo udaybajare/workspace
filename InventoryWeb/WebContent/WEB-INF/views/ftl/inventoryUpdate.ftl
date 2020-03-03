@@ -282,7 +282,27 @@
     <label>Hsn/Sac</label>
     <input type="text" class="form-control" name="hsnOrSac">
   </div>
+  <div class="form-group col-md-3">
+    <br/>
+    <input type="button" class="btn btn-default" data-toggle="collapse" data-target="#miscChargesSection" value="Miscellaneous Cahrges">
+  </div>
   <input type="hidden" name="orderNo" value=""/>
+</div>
+<div class="collapse" id="miscChargesSection">              
+  <div class="form-row">
+   <div class="form-group col-md-3">
+    <br/>
+    <label>Miscellaneous Charges</label>
+  </div>
+  <div class="form-group col-md-3">
+    <label>Description</label>
+    <input type="text" class="form-control" name="miscChargesDesc">
+  </div>
+  <div class="form-group col-md-3">
+    <label>Charges</label>
+    <input type="text" class="form-control" name="miscCharges">
+  </div>
+</div>
 </div>
 </div>
 </form>

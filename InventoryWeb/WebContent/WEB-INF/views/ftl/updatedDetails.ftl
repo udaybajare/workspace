@@ -46,180 +46,173 @@
   <link href="css/custom.css" rel="stylesheet">
 
 </head>
+<body class="" cz-shortcut-listen="true">
 
-<!-- body classes:  -->
-<!-- "boxed": boxed layout mode e.g. <body "projDetails"boxed"> -->
-  <!-- "pattern-1 ... pattern-9": background patterns for boxed layout mode e.g. <body class="boxed pattern-1"> -->
-    <!-- "transparent-header": makes the header transparent and pulls the banner to top -->
-    <!-- "gradient-background-header": applies gradient background to header -->
-    <!-- "page-loader-1 ... page-loader-6": add a page loader to the page (more info @components-page-loaders.html) -->
-    <body class="" cz-shortcut-listen="true">
+  <!-- scrollToTop -->
+  <!-- ================ -->
+  <div class="scrollToTop circle fadeToTop"><i class="fa fa-angle-up"></i></div>
 
-      <!-- scrollToTop -->
-      <!-- ================ -->
-      <div class="scrollToTop circle fadeToTop"><i class="fa fa-angle-up"></i></div>
-
-      <!-- page wrapper start -->
-      <!-- ================ -->
-      <div class="page-wrapper">
-        <!-- header-container start -->
-        <div class="header-container">
-          <div class="sticky-wrapper" style="height: 111px;"><div class="sticky-wrapper" style="height: 110px;"><header class="header fixed fixed-desktop clearfix object-visible">
-            <div class="container">
-              <div class="col-md-auto hidden-md-down">
-                <div class="header-first clearfix">
-                 <div class="row">
-                   <div class="col-md-8">
-                     <div class="navbar navbar-default navbar-static-top container" style="margin-left: 0px; margin-right: 0px;">
-                      <div class="navbar-header" style="width: 200px;">
-                       <img src="./images/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
-                     </div>
-                   </div>
-                 </div> 
-                 <div class="col-md-2">
-                   <form class="form-horizontal" action="home" method="POST" style="margin-left: 100px;margin-top: 30px;">
-                    <button type="submit" class="btn btn-default btn-animated">Home<i class="fa fa-user"></i></button>
-                  </form>
-                </div>
-                <div class="col-md-2"> 
-                  <form class="form-horizontal" action="logout" method="POST" style="margin-left: 100px;margin-top: 30px;">
-                    <button type="submit" class="btn btn-default btn-animated">Log Out <i class="fa fa-user"></i></button>
-                  </form>
-                </div>
-                <div class="site-slogan">
-                </div>
-              </div>
+  <!-- page wrapper start -->
+  <!-- ================ -->
+  <div class="page-wrapper">
+    <!-- header-container start -->
+    <div class="header-container">
+      <div class="sticky-wrapper" style="height: 111px;"><div class="sticky-wrapper" style="height: 110px;"><header class="header fixed fixed-desktop clearfix object-visible">
+        <div class="container">
+          <div class="col-md-auto hidden-md-down">
+            <div class="header-first clearfix">
+             <div class="row">
+               <div class="col-md-8">
+                 <div class="navbar navbar-default navbar-static-top container" style="margin-left: 0px; margin-right: 0px;">
+                  <div class="navbar-header" style="width: 200px;">
+                   <img src="./images/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 20px;margin-left: -150px;">
+                 </div>
+               </div>
+             </div> 
+             <div class="col-md-2">
+               <form class="form-horizontal" action="home" method="POST" style="margin-left: 100px;margin-top: 30px;">
+                <button type="submit" class="btn btn-default btn-animated">Home<i class="fa fa-user"></i></button>
+              </form>
             </div>
-
-            <div class="col-auto hidden-md-down">
+            <div class="col-md-2"> 
+              <form class="form-horizontal" action="logout" method="POST" style="margin-left: 100px;margin-top: 30px;">
+                <button type="submit" class="btn btn-default btn-animated">Log Out <i class="fa fa-user"></i></button>
+              </form>
+            </div>
+            <div class="site-slogan">
             </div>
           </div>
         </div>
-      </header>
-    </div>
 
-    <!-- header end -->
-  </div>
-  <!-- main-container start -->
-  <!-- ================ -->
-  <section class="">
-    <!-- section -->
-    <!-- ================ -->
-    <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
-      <div class="container" style="max-width:98%;">
-        <div class="row">
-          <div class="col-md-7 ">
-            <div class="pv-30 ph-20 feature-box bordered shadow text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-              <h3>${projectName}</h3>
-              <div class="separator clearfix"></div>
-              <p>${projectDesc}</p>
-            </div>
-          </div> 
-          <aside class="col-md-5 col-xl-5 ml-xl-auto">
-            <div class="sidebar">
-              <div class="block clearfix">
-                <h3 class="title">Project Details</h3>
-                <div class="separator-2"></div>
-                <ul class="list margin-clear">
-                  <li>
-                    <strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 29%;">PO Number:</strong> <span>${poNumber}</span>
-                  </li>
-                  <li>
-                    <strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 25%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span>
-                  </li>
-                  <li>
-                    <strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 20%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span>
-                  </li>                    
-                  <li>
-                    <strong>GST #: </strong> <span class="text-right">${gstNumber}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </aside>			  
+        <div class="col-auto hidden-md-down">
         </div>
-        <br>
       </div>
-      <!-- Update project Section START -->
-      <div class="row" style="margin-left: 1%;margin-top: -1.8%;">
-        <div class="col-md-4">
-          <div class="pv-10 ph-10 feature-box bordered shadow text-center object-non-visible animated object-visible fadeInDownSmall __web-inspector-hide-shortcut__" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-            <div class="row">
-              <h3 class="select-menu" data-toggle="modal" data-target="#createProjectModal" style="margin-left: 6%;margin-top: 3%;"> + Project Section</h3>
-              <div class="container collapse" style="max-width:98%;" id="projectDetails">
-               <div class="col-md-12 ">
+    </div>
+  </header>
+</div>
 
-                <div class="modal fade bd-example-modal-lg" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                 <div class="modal-dialog modal-lg" role="document">
-                  <div class="modal-content" style="width:110%;margin-left:-4%;">
-                   <div class="modal-header">
-                    <h4 class="modal-title" >Project Details</h4>
-                  </div>
-                  <div class="modal-body">
-                   <form action="updateProject" class="projDetails" method="POST">
-                    <div class="row" style="margin-top: 2%;">
-                      <div class="col-md-3 ">
-                        <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                          <div class="form-group has-feedback">
-                            <label style="margin-left: -80%;">PO Date</label>
-                            <input type="text" name="poDate" class="form-control" value=" ">                   
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-3 ">
-                        <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                          <label style="margin-left: -75%;">PO Number</label>
-                          <input type="text" name="poNumber" class="form-control" value=" ">
-                        </div>
-                      </div>
-                      <div class="col-md-3 ">
-                        <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                         <label style="margin-left: -55%;">Contact Person Name</label>
-                         <input type="text" name="contactName" class="form-control">
-                       </div>
-                     </div>
-                     <div class="col-md-3 ">
-                      <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                        <label style="margin-left: -70%;">Contact Email</label>
-                        <input type="text" name="contactEmail" class="form-control">
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="row" style="margin-top: -3%;margin-bottom: 2%">
+<!-- header end -->
+</div>
+<!-- main-container start -->
+<!-- ================ -->
+<section class="">
+  <!-- section -->
+  <!-- ================ -->
+  <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
+    <div class="container" style="max-width:98%;">
+      <div class="row">
+        <div class="col-md-7 ">
+          <div class="pv-30 ph-20 feature-box bordered shadow text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+            <h3>${projectName}</h3>
+            <div class="separator clearfix"></div>
+            <p>${projectDesc}</p>
+          </div>
+        </div> 
+        <aside class="col-md-5 col-xl-5 ml-xl-auto">
+          <div class="sidebar">
+            <div class="block clearfix">
+              <h3 class="title">Project Details</h3>
+              <div class="separator-2"></div>
+              <ul class="list margin-clear">
+                <li>
+                  <strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 29%;">PO Number:</strong> <span>${poNumber}</span>
+                </li>
+                <li>
+                  <strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 25%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span>
+                </li>
+                <li>
+                  <strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 20%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span>
+                </li>                    
+                <li>
+                  <strong>GST #: </strong> <span class="text-right">${gstNumber}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </aside>			  
+      </div>
+      <br>
+    </div>
+    <!-- Update project Section START -->
+    <div class="row" style="margin-left: 1%;margin-top: -1.8%;">
+      <div class="col-md-4">
+        <div class="pv-10 ph-10 feature-box bordered shadow text-center object-non-visible animated object-visible fadeInDownSmall __web-inspector-hide-shortcut__" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+          <div class="row">
+            <h3 class="select-menu" data-toggle="modal" data-target="#createProjectModal" style="margin-left: 6%;margin-top: 3%;"> + Project Section</h3>
+            <div class="container collapse" style="max-width:98%;" id="projectDetails">
+             <div class="col-md-12 ">
+
+              <div class="modal fade bd-example-modal-lg" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+               <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content" style="width:110%;margin-left:-4%;">
+                 <div class="modal-header">
+                  <h4 class="modal-title" >Project Details</h4>
+                </div>
+                <div class="modal-body">
+                 <form action="updateProject" class="projDetails" method="POST">
+                  <div class="row" style="margin-top: 2%;">
                     <div class="col-md-3 ">
                       <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                       <label style="margin-left: -70%;">Contact Phone</label>
-                       <input type="text" name="contactPhone" class="form-control">
+                        <div class="form-group has-feedback">
+                          <label style="margin-left: -80%;">PO Date</label>
+                          <input type="text" name="poDate" class="form-control" value=" ">                   
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3 ">
+                      <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                        <label style="margin-left: -75%;">PO Number</label>
+                        <input type="text" name="poNumber" class="form-control" value=" ">
+                      </div>
+                    </div>
+                    <div class="col-md-3 ">
+                      <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                       <label style="margin-left: -55%;">Contact Person Name</label>
+                       <input type="text" name="contactName" class="form-control">
                      </div>
                    </div>
                    <div class="col-md-3 ">
                     <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                     <label style="margin-left: -70%;">GST Number</label>
-                     <input type="text" name="gstNumber" class="form-control" value=" ">
+                      <label style="margin-left: -70%;">Contact Email</label>
+                      <input type="text" name="contactEmail" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div class="row" style="margin-top: -3%;margin-bottom: 2%">
+                  <div class="col-md-3 ">
+                    <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                     <label style="margin-left: -70%;">Contact Phone</label>
+                     <input type="text" name="contactPhone" class="form-control">
                    </div>
                  </div>
                  <div class="col-md-3 ">
                   <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                   <label style="margin-left: -80%;">Address</label>
-                   <input type="text" name="address" class="form-control">
+                   <label style="margin-left: -70%;">GST Number</label>
+                   <input type="text" name="gstNumber" class="form-control" value=" ">
                  </div>
                </div>
+               <div class="col-md-3 ">
+                <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                 <label style="margin-left: -80%;">Address</label>
+                 <input type="text" name="address" class="form-control">
+               </div>
+             </div>
 
-               <div class="col-md-3 " style="margin-left: -2%;">
-                 <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                  <label></label>
-                  <br>
-                  <button type="submit" class="btn btn-default">Update Project</button>
-                </div>          
-              </div>
+             <div class="col-md-3 " style="margin-left: -2%;">
+               <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                <label></label>
+                <br>
+                <button type="submit" class="btn btn-default">Update Project</button>
+              </div>          
             </div>
-            <input type="hidden" name="projectId" value="${projectId}">
-          </form></div>
-        </div>  
-      </div>
+          </div>
+          <input type="hidden" name="projectId" value="${projectId}">
+        </form></div>
+      </div>  
     </div>
   </div>
+</div>
 </div>
 </div>
 </div>
@@ -295,37 +288,31 @@
             <input type="text" name="pressure" class="form-control" value="">
           </div>
         </div>
-  <!-- <div class="col-md-2 col-sm-2">
-   <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-    <label>Project</label>
-    <input type="text" name="project" class="form-control" value="">
+        <div class="col-md-2 col-sm-2" style="margin-left: 0%;">
+         <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+          <label>Temperature</label>
+          <input type="text" name="temperature" class="form-control" value="">
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin-left: 8%;margin-top: 1%;">
+      <div class="col-md-2 col-sm-2">
+       <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+        <label>Doc Number</label>
+        <input type="text" class="form-control" name="dNo" value="" >
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-2">
+     <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+      <label>Client</label>
+      <input type="text" name="client" class="form-control" value="">
+    </div>
   </div>
-</div>-->
-<div class="col-md-2 col-sm-2" style="margin-left: 0%;">
- <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-  <label>Temperature</label>
-  <input type="text" name="temperature" class="form-control" value="">
-</div>
-</div>
-</div>
-<div class="row" style="margin-left: 8%;margin-top: 1%;">
   <div class="col-md-2 col-sm-2">
    <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-    <label>Doc Number</label>
-    <input type="text" class="form-control" name="dNo" value="" >
+    <label>Site</label>
+    <input type="text" name="site" class="form-control" value="">
   </div>
-</div>
-<div class="col-md-2 col-sm-2">
- <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-  <label>Client</label>
-  <input type="text" name="client" class="form-control" value="">
-</div>
-</div>
-<div class="col-md-2 col-sm-2">
- <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-  <label>Site</label>
-  <input type="text" name="site" class="form-control" value="">
-</div>
 </div>
 <div class="col-md-2 col-sm-2">
   <label class="createBOQ" style="margin-top: 1%; display: none;">BOQ Name : </label>
@@ -337,54 +324,9 @@
   <button type="submit" name="generateBOQButton" class="btn btn-default generateBOQButton">Generate Quotation</button>
 </div>  
 </div>
-<div class="row" style="margin-top:2%;">
- <div class="col-md-12 ">
-   <div class="table-responsive">                
-    <table class="table table-colored inventoryDetails inventoryTableHeader" style="display: none;">
-     <thead>
-       <tr>
-        <th>#</th>
-        <th>Invnt</th>
-        <th>Material</th>
-        <th>Type</th>
-        <th>Method</th>
-        <th>Grd/Cls</th>
-        <th>Ends</th>
-        <th>Size</th>
-        <th>Avai Qty</th>
-        <th>Qty</th>
-        <th>Base Supply Rate</th>
-        <th>Supply Rate</th>
-        <th>Base Erection Rate</th>
-        <th>Erection Rate</th>
-        <th>Supply Amount</th>
-        <th>Erection Amount</th>
-      </tr>
-      <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th><input type="text" style="width:45px;" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
-        <th></th>
-        <th><input type="text" style="width:45px;" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="tableContentDetails">
-    </tbody>
-  </table>
-</div>
-</div>
-
+<ul class="nav nav-tabs style-1" role="tablist" id="sheetListtableContentDetails">
+</ul>
+<div class="tab-content" id="tableContentDetails">  
 </div>
 <div class="row" style="margin-top: 2%;">
   <div class="col-md-12">
@@ -392,18 +334,40 @@
   </div>
 </div>
 </form>
-<div class="row createBOQ" style="display: none;margin-top: 2%;margin-bottom: 2%;max-width:98%;">
+<!-- <div class="row createBOQ" style="display: none;margin-top: 2%;margin-bottom: 2%;max-width:98%;">
   <div class="col-md-4 " style="margin-left: 15%" ;>
     <br>
-    <h4 data-toggle="collapse" onClick="hideOthers('item1')" data-target="#addInventory">Add Item</h4>
+    <h4 data-toggle="collapse" onClick="addNewSheet()" >Add New Sheet</h4>
   </div>
-  <div class="col-md-4" style="margin-left: -15%">
+  <div class="col-md-4 " style="margin-left: 15%" ;>
     <br>
-    <h4 data-toggle="collapse" onClick="hideOthers('accessory1')" data-target="#addAccessory">Add Accessory</h4> 
+    <input type="text" name="newSheetName">
   </div>
-  <div class="col-md-4" style="margin-left: -5%">
+</div> -->  
+<div class="row createBOQ" style="display: none;margin-top: 2%;margin-bottom: 2%;max-width:98%;">
+  <div class="col-md-3" style="margin-left: 5%";>
     <br>
-    <h4 data-toggle="collapse" onClick="hideOthers('valve1')" data-target="#addValve">Add Valve</h4>
+    <h4 class="btn btn-default" data-toggle="collapse" onClick="hideOthers('item1')" data-target="#addInventory">Add Item</h4>
+  </div>
+  <div class="col-md-3" style="margin-left: -5%">
+    <br>
+    <h4 class="btn btn-default" data-toggle="collapse" onClick="hideOthers('accessory1')" data-target="#addAccessory">Add Accessory</h4> 
+  </div>
+  <div class="col-md-3" style="margin-left: -5%">
+    <br>
+    <h4 class="btn btn-default" data-toggle="collapse" onClick="hideOthers('valve1')" data-target="#addValve">Add Valve</h4>
+  </div>
+  <div class="col-md-3" style="margin-left: -5%">
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <h4 class="btn btn-default" data-toggle="collapse" onClick="addNewSheet()">Add New Sheet</h4>
+      </div>
+      <div class="col-md-6">
+        <br>
+        <input type="text" name="newSheetName">
+      </div>  
+    </div>
   </div>
 </div>
 <div class="container collapse" id="item1" style="max-width:98%;" id="addInventory">
@@ -760,7 +724,6 @@
 </div>
 </div>
 </div>
-
 <!--Create BOQ Start-->
 <div class="row" style="margin-left: 1%;margin-top: -1.8%;">
   <div class="col-md-5">
@@ -775,91 +738,47 @@
               <h4 class="modal-title" >Inquiries</h4>
             </div>
             <div class="modal-body">
-              <div class="row">
-               <div class="col-md-12 ">
-                 <div class="table-responsive">                
-                  <table class="table table-colored tableContentInqSec" style="display: none;">
-                   <thead>
-                     <tr>                 
-                      <th>#</th>
-                      <th>Invnt</th>
-                      <th>Material</th>
-                      <th>Type</th>
-                      <th>Method</th>
-                      <th>Grd/Cls</th>
-                      <th>Ends</th>
-                      <th>Size</th>
-                      <th>Avai Qty</th>
-                      <th>Qty</th>
-                      <th>Base Supply Rate</th>
-                      <th>Supply Rate</th>
-                      <th>Base Erection Rate</th>
-                      <th>Erection Rate</th>
-                      <th>Supply Amount</th>
-                      <th>Erection Amount</th>
-                    </tr>
-                    <tr>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th><input type="text" style="width:45px;" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
-                      <th></th>
-                      <th><input type="text" style="width:45px;" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody id="tableContentInqSec">
-                  </tbody>
-                </table>
+              <ul class="nav nav-tabs style-1" role="tablist" id="sheetListtableContentInqSec">
+              </ul>
+              <div class="tab-content" id="tableContentInqSec">  
               </div>
-            </div>
-          </div>
-          <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
-           <div class="col-md-3">
-             <h4>Quotation Revisions</h4>
-             <select class="form-control revisionSection" onchange="download($(this).val(), 'tableContentInqSec');">
-              <option></option>
-            </select>                
-          </div>
-          <div class="col-md-3 ">
-            <h4>Inquiry List</h4>
-            <select class="form-control offerRevisionSection" onchange="download($(this).val(),'tableContentInqSec');" >
-              <option></option>
-            </select>
-          </div> 
-          <div class="col-md-3">
-            <h4>Inquiry Name</h4>
-            <input type="text" class="form-control" name="inquiryName">
-          </div>
-          <div class="col-md-3" id="generateQuot" style="margin-top: 2%;margin-left: -6%;" >
-            <div class="row" >
-              <div class="col-md-6">
-                <button type="button" onclick="createInquiry();" class="btn btn-default">Generate Inquiry</button>
-                <label>
-                  <input type="hidden" name="boqNameList" value="${boqNameList}">
-                  <input type="hidden" name="quotationNamesList" value="${quotationNamesList}">
-                </label>
+              <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
+               <div class="col-md-3">
+                 <h4>Quotation Revisions</h4>
+                 <select class="form-control revisionSection" onchange="download($(this).val(), 'tableContentInqSec');">
+                  <option></option>
+                </select>                
               </div>
-              <div class="col-md-6" style="padding-left:12%;">
-                <button type="button" onclick="downloadInquiry();" class="btn btn-default">Download Inquiry</button>
+              <div class="col-md-3 ">
+                <h4>Inquiry List</h4>
+                <select class="form-control offerRevisionSection" onchange="download($(this).val(),'tableContentInqSec');" >
+                  <option></option>
+                </select>
+              </div> 
+              <div class="col-md-3">
+                <h4>Inquiry Name</h4>
+                <input type="text" class="form-control" name="inquiryName">
               </div>
+              <div class="col-md-3" id="generateQuot" style="margin-top: 2%;margin-left: -6%;" >
+                <div class="row" >
+                  <div class="col-md-6">
+                    <button type="button" onclick="createInquiry();" class="btn btn-default">Generate Inquiry</button>
+                    <label>
+                      <input type="hidden" name="boqNameList" value="${boqNameList}">
+                      <input type="hidden" name="quotationNamesList" value="${quotationNamesList}">
+                    </label>
+                  </div>
+                  <div class="col-md-6" style="padding-left:12%;">
+                    <button type="button" onclick="downloadInquiry();" class="btn btn-default">Download Inquiry</button>
+                  </div>
+                </div>    
+              </div>    
             </div>    
-          </div>    
-        </div>    
-      </div>
+          </div>
+        </div>
+      </div>    
     </div>
-  </div>    
-</div>
-</div>
+  </div>
 </div>
 </div>
 </div>
@@ -869,7 +788,6 @@
     <div class="pv-10 ph-10 feature-box bordered shadow text-center object-non-visible animated object-visible fadeInDownSmall __web-inspector-hide-shortcut__" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
       <div class="row" style="margin-top: -2%;margin-left: 1%;">
         <h3 class="mt-4" data-toggle="modal" data-target="#createProjectModal3" style="margin-left: 3%;"> + Purchase Order Section</h3>
-
         <div class="container collapse" style="max-width:98%;" id="purchaseDetails">
          <div class="modal fade bd-example-modal-lg" id="createProjectModal3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
            <div class="modal-dialog modal-lg" role="document">
@@ -878,71 +796,28 @@
               <h4 class="modal-title" >Purchase Details</h4>
             </div>
             <div class="modal-body">
-              <div class="row">
-               <div class="col-md-12 ">
-                 <div class="table-responsive">                
-                  <table class="table table-colored tableContentPOSec" style="display: none;">
-                   <thead>
-                     <tr>
-                       <th>Select</th>
-                       <th>Inventory</th>
-                       <th>Material</th>
-                       <th>Type</th>
-                       <th>Manifacturing Method</th>
-                       <th>Grade/Class</th>
-                       <th>Ends</th>
-                       <th>Size</th>
-                       <th>Available Quantity</th>
-                       <th>Quantity</th>
-                       <th>Base Supply Rate</th>
-                       <th>Supply Rate</th>
-                       <th>Base Erection Rate</th>
-                       <th>Erection Rate</th>
-                       <th>Supply Amount</th>
-                       <th>Erection Amount</th>
-                     </tr>
-                     <tr>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                      <th><input type="text" style="width:45px;" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>
-                      <th></th>
-                      <th><input type="text" style="width:45px;" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>
-                      <th></th>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody id="tableContentPOSec">
-                  </tbody>
-                </table>
+              <ul class="nav nav-tabs style-1" role="tablist" id="sheetListtableContentPOSec">
+              </ul>
+              <div class="tab-content" id="tableContentPOSec">  
               </div>
-            </div>
-          </div>
-          <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
+              <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
+                <div class="col-md-3" style="margin-left:5%";>
+                  <h4>Inquiry List</h4>
+                  <select class="form-control offerRevisionSection" onchange="download($(this).val(),'tableContentPOSec');">
+                    <option></option>
+                  </select>
+                </div>
+                <div class="col-md-3 ">
+                  <h4>PO List:</h4> 
+                  <select class="form-control" onchange="downloadPO($('#poList').val());" id="poList">
+                    <option></option>
+                    <option value=""></option></select>
 
-            <div class="col-md-3" style="margin-left:5%";>
-              <h4>Inquiry List</h4>
-              <select class="form-control offerRevisionSection" onchange="download($(this).val(),'tableContentPOSec');">
-                <option></option>
-              </select>
-            </div>
-            <div class="col-md-3 ">
-              <h4>PO List:</h4> 
-              <select class="form-control" onchange="downloadPO($('#poList').val());" id="poList">
-                <option></option>
-                <option value=""></option></select>
-
-              </div>  
-              <div class="col-md-3" style="margin-top: 1.5%;">      
-                <button type="button" onclick="generatePO();" class="btn btn-default">Generate PO</button>
+                  </div>  
+                  <div class="col-md-3" style="margin-top: 1.5%;">      
+                    <button type="button" onclick="generatePO();" class="btn btn-default">Generate PO</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -950,8 +825,6 @@
       </div>
     </div>
   </div>
-</div>
-</div>
 </div>
 </div>
 <div class="row"style="margin-left: 1%;margin-top: -1.8%;">
@@ -1715,17 +1588,40 @@
     formData.push({name: 'projectId', value: projectId});
     formData.push({name: 'boqName', value: name});
 
+
     $.ajax({
      type : 'GET',
      data :  formData,
      url : 'downloadBoq',
      success : function(data)
-     {            
-       $('#'+sectionName+'').html(data);
-       $('#LoadingImage').hide();
-     }
+     { 
 
-   });
+       var details = data.split('::');
+
+       $('#sheetList'+sectionName).html('');
+
+       var isFirst = true;
+       for(var i=0;i<details.length-1;i++)
+       {
+        var sheetName = details[i];
+        var className = '';
+
+        if(isFirst)
+        {
+          className = 'active show';
+        } 
+
+        $('#sheetList'+sectionName).append('<li class="nav-item"><a class="nav-link '+sheetName+' '+className+'" href="#'+sheetName+'" role="tab" data-toggle="tab" aria-selected="true">'+sheetName+'<i class="fa fa-times pr-2" onClick="removeSheet('+sheetName+');" style="margin-left:5px;"></i></a></li>');
+      
+        isFirst = false;
+      }
+
+      var tagData = details[details.length-1]; 
+      $('#'+sectionName+'').html(tagData);
+      $('#LoadingImage').hide();
+    }
+
+  });
 
     var generateQuot = document.getElementById("generateQuot");                                         
     generateQuot.style.display = "block";
@@ -1747,65 +1643,70 @@
 
     showLoading();
 
-    var CheckeleCount = $('#tableContentInqSec input.checkbox').length;
+    var inventoryName       = [];
+    var material            = [];
+    var type                = [];
+    var manifacturingMethod = [];
+    var classOrGrade        = [];
+    var ends                = [];
+    var size                = [];
+    var quantity            = [];
+    var baseSupplyRate      = [];
+    var supplyRate          = [];
+    var baseErectionRate    = [];
+    var erectionRate        = [];
+    var supplyAmount        = [];
+    var erectionAmount      = [];
+    var sheetDetails        = "";
 
-    var selectedElements = [];
-    var i;
-
-    for(i=0; i < CheckeleCount; i++)
+    var tabs = $('.tab-pane');
+    for(var r=0;r<tabs.length;r++)
     {
-      if($('#tableContentInqSec input.checkbox')[i].checked)
+
+      var CheckeleCount = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input:checkbox').length;
+
+      var selectedElements = [];
+      var i;
+      var checkedEle = 0;
+      for(i=0; i < CheckeleCount; i++)
       {
-       selectedElements[i] = i;
+        if($($('#tableContentInqSec').find('.tab-pane')[r]).find('input:checkbox')[i].checked)
+        {
+         selectedElements[i] = i;
+         checkedEle++;
+       }
      }
-   }
 
-   var eleCount = $('#tableContentInqSec input').length;
-
-
-   var inventoryName       = [];
-   var material            = [];
-   var type                = [];
-   var manifacturingMethod = [];
-   var classOrGrade        = [];
-   var ends                = [];
-   var size                = [];
-   var quantity            = [];
-   var baseSupplyRate      = [];
-   var supplyRate          = [];
-   var baseErectionRate    = [];
-   var erectionRate        = [];
-   var supplyAmount        = [];
-   var erectionAmount      = [];
-
-   var j;
-   var k = 0;
-   var n = 1;
-   for(k=0;k<selectedElements.length;k++)
-   {
-
-     if(selectedElements[k] != undefined)
+     sheetDetails = sheetDetails + $($('#tableContentInqSec').find('.tab-pane')[r]).attr('id')+','+checkedEle+',';
+     var eleCount = $('#tableContentInqSec input').length;
+     var j;
+     var k = 0;
+     var n = 1;
+     for(k=0;k<selectedElements.length;k++)
      {
-      var start = 1 + 15*parseFloat(selectedElements[k]);
-      console.log('Start is : '+start);
 
-      quantity[k]           = $('#tableContentInqSec input')[start++].value;
-      baseSupplyRate[k]     = $('#tableContentInqSec input')[start++].value;
-      supplyRate[k]         = $('#tableContentInqSec input')[start++].value;
-      baseErectionRate[k]   = $('#tableContentInqSec input')[start++].value;
-      erectionRate[k]       = $('#tableContentInqSec input')[start++].value;
-      supplyAmount[k]       = $('#tableContentInqSec input')[start++].value;
-      erectionAmount[k]     = $('#tableContentInqSec input')[start++].value;
-      inventoryName[k] 	    = $('#tableContentInqSec input')[start++].value;							      
-      material[k]      	    = $('#tableContentInqSec input')[start++].value;     
-      type[k]               = $('#tableContentInqSec input')[start++].value;
-      manifacturingMethod[k]= $('#tableContentInqSec input')[start++].value;
-      classOrGrade[k]       = $('#tableContentInqSec input')[start++].value;
-      ends[k]               = $('#tableContentInqSec input')[start++].value;
-      size[k]               = $('#tableContentInqSec input')[start++].value;
-    }	
+       if(selectedElements[k] != undefined)
+       {
+        var start = 3 + 15*parseFloat(selectedElements[k]);
+        console.log('Start is : '+start);
+
+        quantity[quantity.length+k]           = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        baseSupplyRate[baseSupplyRate.length+k]     = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        supplyRate[supplyRate.length+k]         = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        baseErectionRate[baseErectionRate.length+k]   = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        erectionRate[erectionRate.length+k]       = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        supplyAmount[supplyAmount.length+k]       = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        erectionAmount[erectionAmount.length+k]     = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        inventoryName[inventoryName.length+k] 	    = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;							      
+        material[material.length+k]      	    = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;     
+        type[type.length+k]               = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        manifacturingMethod[manifacturingMethod.length+k]= $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        classOrGrade[classOrGrade.length+k]       = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        ends[ends.length+k]               = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+        size[size.length+k]               = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+      }	
+    }
   }
-
   var lastArray = 3 + 20*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
 
 
@@ -1847,6 +1748,7 @@
   formData.push({name: 'erectionAmount', value: erectionAmount_string});
 
   formData.push({name: 'isOffer', value: 'true'});
+  formData.push({name: 'sheetDetails', value: sheetDetails});
 
   var inquiryNameList = $('.offerRevisionSection')[0].options; 
 
@@ -2009,7 +1911,6 @@ function cleanArray(actual)
     + "    <td> <input type='hidden' name='classOrGrade' value='"+classOrGrade+"'></input>"+classOrGrade+"</td>"
     + "    <td> <input type='hidden' name='ends' value='"+ends+"'></input>"+ends+"</td>"
     + "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
-    + "    <td></td>"
     + "	   <td><input class='form-control' style='width:60px;' type='text' name='quantity' value=''></input></td>"
     + "	   <td><input class='form-control' style='width:60px;' type='text' name='baseSupplyRate' value=''></input></td>"
     + "	   <td><input class='form-control' style='width:60px;' type='text' name='supplyRate' value=''></input></td>"
@@ -2020,17 +1921,20 @@ function cleanArray(actual)
 
     console.log(template);
     $('.inventoryDetails').css("display","block");          	
-    if($('.inventry').length>0)
+
+    var sheet = $('.nav-link.active.show').attr('href').substring(1);
+
+    if($('#'+sheet).find('tbody#tableContentDetails.inventry').length>0)
     {
-     $('.inventry').last().after(template);
+     $('#'+sheet).find('tbody#tableContentDetails.inventry').last().after(template);
    }
-   else if($('.accessoryTr').length>0)
+   else if($('#'+sheet).find('tbody#tableContentDetails.accessoryTr').length>0)
    {
-     $('.accessoryTr').first().before(template);
+     $('#'+sheet).find('tbody#tableContentDetails.accessoryTr').first().before(template);
    }
    else
    {
-     $('#tableContentDetails').append(template);
+     $('#'+sheet).find('tbody#tableContentDetails').append(template);
    }         	
  }
 
@@ -2061,7 +1965,6 @@ function cleanArray(actual)
     + "    <td> <input type='hidden' name='desc4' value='"+desc4+"'></input>"+desc4+"</td>"
     + "    <td> <input type='hidden' name='desc5' value='"+desc5+"'></input>"+desc5+"</td>"
     + "    <td> <input type='hidden' name='size' value='-'></input>-</td>"
-    + "	   <td>	</td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='quantity' value=''></input></td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='baseSupplyRate' value=''></input></td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='supplyRate' value=''></input></td>"
@@ -2073,19 +1976,20 @@ function cleanArray(actual)
     console.log(template);
     $('.inventoryDetails').css("display","block");
 
+    var sheet = $('.nav-link.active.show').attr('href').substring(1);
 
-    if($('.accessoryTr').length>0)
+    if($('#'+sheet).find('tbody#tableContentDetails.inventry').length>0)
     {
-     $('.accessoryTr').last().after(template);
+     $('#'+sheet).find('tbody#tableContentDetails.inventry').last().after(template);
    }
-   else if($('.inventry').length>0)
+   else if($('#'+sheet).find('tbody#tableContentDetails.accessoryTr').length>0)
    {
-     $('.inventry').last().after(template);
+     $('#'+sheet).find('tbody#tableContentDetails.accessoryTr').first().before(template);
    }
    else
    {
-     $('#tableContentDetails').append(template);
-   }
+     $('#'+sheet).find('tbody#tableContentDetails').append(template);
+   }  
  }
 </script>
 
@@ -2115,7 +2019,6 @@ function cleanArray(actual)
     + "    <td> <input type='hidden' name='pressureRatings' value='"+pressureRatings+"-"+maxInletPressure+"'></input>"+pressureRatings+"-"+maxInletPressure+"</td>"
     + "    <td> <input type='hidden' name='endVal' value='"+end+"'></input>"+end+"</td>"
     + "    <td> <input type='hidden' name='size' value='"+valveSize+"'></input>"+valveSize+"</td>"
-    + "    <td> </td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='quantity' value=''></input></td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='baseSupplyRate' value=''></input></td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='supplyRate' value=''></input></td>"
@@ -2128,18 +2031,20 @@ function cleanArray(actual)
     $('.inventoryDetails').css("display","block");
 
 
-    if($('.accessoryTr').length>0)
+    var sheet = $('.nav-link.active.show').attr('href').substring(1);
+
+    if($('#'+sheet).find('tbody#tableContentDetails.inventry').length>0)
     {
-     $('.accessoryTr').last().after(template);
+     $('#'+sheet).find('tbody#tableContentDetails.inventry').last().after(template);
    }
-   else if($('.inventry').length>0)
+   else if($('#'+sheet).find('tbody#tableContentDetails.accessoryTr').length>0)
    {
-     $('.inventry').last().after(template);
+     $('#'+sheet).find('tbody#tableContentDetails.accessoryTr').first().before(template);
    }
    else
    {
-     $('#tableContentDetails').append(template);
-   }
+     $('#'+sheet).find('tbody#tableContentDetails').append(template);
+   }  
  }
 </script>
 
@@ -2415,6 +2320,16 @@ function cleanArray(actual)
       var ele1 = $('[name="quantity"]');
       var length = $('#tableContentDetails').find(ele1).length;
       var stopNow = false;
+
+      var sheetCount = $('[name="sheetDetails"]');
+      
+      for(var i=0;i<sheetCount.length;i++)
+      {
+        var eleLength = $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="inventoryName"]').length;
+        
+        $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="sheetDetails"]').attr('value',sheetCount[i].value+','+eleLength);
+      }
+
       for(var i=0; i < length; i++)
       {
         if($('#tableContentDetails').find(ele1)[i].value === "")
@@ -2652,6 +2567,31 @@ function cleanArray(actual)
     hideLoading();
 
   });
+</script>
+<script>
+  function addNewSheet()
+  {
+    var sheetName = $('[name="newSheetName"]').val();
+    var tab = '<li class="nav-item"><a class="nav-link '+sheetName+'" href="#'+sheetName+'" role="tab" data-toggle="tab" aria-selected="true">'+sheetName+'<i class="fa fa-times pr-2" onClick="removeSheet('+sheetName+');" style="margin-left:5px;"></i></a></li>';
+
+    $('#sheetListtableContentDetails').append(tab);
+
+    var tabPane = '<div class="tab-pane fade" id="'+sheetName+'" role="tabpanel"><div class="row" style="margin-top:2%;">     <div class="col-md-12 ">       <div class="table-responsive">                        <table class="table table-colored inventoryDetails inventoryTableHeader" style="display: none;">         <thead>           <tr>            <th>#</th>            <th>Invnt</th>            <th>Material</th>            <th>Type</th>            <th>Method</th>            <th>Grd/Cls</th>            <th>Ends</th>            <th>Size</th>            <th>Qty</th>            <th>Base Supply Rate</th>            <th>Supply Rate</th>            <th>Base Erection Rate</th>            <th>Erection Rate</th>            <th>Supply Amount</th>            <th>Erection Amount</th>          </tr>          <tr>            <th></th>            <th></th>            <th></th>            <th></th>            <th></th>            <th></th>            <th></th>            <th></th>            <th></th>            <th><input type="text" style="width:45px;" name="supplyPrsnt" onChange="updateSupplyRate($(this));"/></th>            <th></th>            <th><input type="text" style="width:45px;" name="erectionPrsnt" onChange="updateErectionRate($(this));"/></th>            <th></th>            <th></th>            <th></th>          </tr>        </thead>        <tbody id="tableContentDetails">        </tbody>      </table>    </div>  </div></div></div>';
+
+    $($('.tab-content')[0]).append(tabPane); 
+
+    $('#'+sheetName).find('tbody#tableContentDetails').append('<input type="hidden" name="sheetDetails" id="sd'+sheetName+'" value="'+sheetName+'">');  
+
+  }
+</script>
+<script type="text/javascript">
+  function removeSheet(sheetName)
+  {
+   console.log(sheetName);
+   var name = sheetName.attributes.id.value;
+   $('.'+name).remove();
+   /*$('#'+name).remove();*/
+ }
 </script>
 </body>
 </html>

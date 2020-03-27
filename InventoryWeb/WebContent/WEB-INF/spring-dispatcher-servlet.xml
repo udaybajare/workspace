@@ -60,7 +60,7 @@
 			value="mhamdule9933" /> -->
 
 		<!--LOCAL -->
-		<property name="url" value="jdbc:mysql://localhost:3306/inventoryMgmt" />
+	<property name="url" value="jdbc:mysql://localhost:3306/inventoryMgmt" />
 		<property name="username" value="admin" />
 		<property name="password" value="admin123" />
 	</bean>

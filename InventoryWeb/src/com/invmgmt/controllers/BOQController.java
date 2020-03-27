@@ -42,6 +42,7 @@ import com.invmgmt.entity.Valves;
 import com.invmgmt.excel.ExcelReader;
 import com.invmgmt.excel.ExcelWriter;
 import com.invmgmt.interfaces.BOQData;
+import com.invmgmt.util.HTMLElements;
 import com.invmgmt.util.InventoryUtils;
 
 @Controller
@@ -130,6 +131,9 @@ public class BOQController {
 
 		BOQHeader header = boqHeaderDao.getBOQHeaderFromName(boqName, projectId);
 
+		String sheetDetails = header.getSheetDetails();
+		String[] sheetDetailsArray = sheetDetails.split(",");
+
 		List<Inventory> inventoryList = null;
 		List<String> supplyAmtList = new ArrayList<String>();
 		List<String> erectionAmtList = new ArrayList<String>();
@@ -138,7 +142,6 @@ public class BOQController {
 
 		List<String> supplyRateList = new ArrayList<String>();
 		List<String> erectionRateList = new ArrayList<String>();
-		List<String> sheetNameList = new ArrayList<String>();
 
 		String tableContent = "";
 		try {
@@ -153,7 +156,6 @@ public class BOQController {
 				erectionRateList.add(boqDetail.getErectionRate());
 				baseSupplyAmtList.add(boqDetail.getBaseSupplyRate());
 				baseErectionAmtList.add(boqDetail.getBaseErectionRate());
-				sheetNameList.add(boqDetail.getSheetName());
 			}
 
 			Map<BOQData, String> inventoryQtyMap = new LinkedHashMap<BOQData, String>();
@@ -168,7 +170,7 @@ public class BOQController {
 			}
 			inventoryQtyMap.put(header, "header");
 			tableContent = createBOQContent(inventoryQtyMap, supplyRateList, erectionRateList, supplyAmtList,
-					erectionAmtList, baseSupplyAmtList, baseErectionAmtList, sheetNameList);
+					erectionAmtList, baseSupplyAmtList, baseErectionAmtList, sheetDetailsArray);
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -556,7 +558,7 @@ public class BOQController {
 
 		StringBuilder dropdownContent = new StringBuilder();
 
-		String modelString = model.split(":").length>0?model.split(":")[1]:model;
+		String modelString = model.split(":").length > 0 ? model.split(":")[1] : model;
 		ArrayList<String> results = new ArrayList<String>();
 		try {
 
@@ -610,29 +612,78 @@ public class BOQController {
 
 	private String createBOQContent(Map<BOQData, String> inventoryMap, List<String> supplyRateList,
 			List<String> erectionRateList, List<String> supplyAmtList, List<String> erectionAmtList,
-			List<String> baseSupplyRateList, List<String> baseErectionRateList, List<String> sheetNameList) {
+			List<String> baseSupplyRateList, List<String> baseErectionRateList, String[] sheetNameList) {
 
 		StringBuilder tableContent = new StringBuilder();
-		int index = 0;
 
-		for (Map.Entry<BOQData, String> entry : inventoryMap.entrySet()) {
-			if (entry.getKey() instanceof Inventory) {
-				if (erectionAmtList != null) {
-					tableContent.append(createInventoryRow((Inventory) entry.getKey(), supplyRateList.get(index),
-							erectionRateList.get(index), supplyAmtList.get(index), erectionAmtList.get(index),
-							baseSupplyRateList.get(index), baseErectionRateList.get(index), (String) entry.getValue()));
-				} else {
-					tableContent.append(createInventoryRow((Inventory) entry.getKey(), "", "", "", "", "", "",
-							(String) entry.getValue()));
-				}
+		String sheetNames = "";
 
-				index++;
-			} else if (entry.getKey() instanceof BOQHeader) {
-				tableContent.append(getBOQHeaderData((BOQHeader) entry.getKey()));
+		int startIndex = 0;
+		int stopIndex = 0;
+		boolean isFirstSheet = true;
+		for (int k = 0; k < sheetNameList.length; k++) {
+
+			if (k % 2 != 0) {
+				continue;
 			}
-		}
+			sheetNames = sheetNames + sheetNameList[k] + "::";
+			System.out.println("Working on sheet : " + sheetNameList[k]);
+			if (k != 0) {
+				startIndex = stopIndex + 1;
+			}
 
-		return tableContent.toString();
+			stopIndex = startIndex + Integer.parseInt(sheetNameList[k + 1]) - 1;
+
+			int index = 0;
+			int loopIndex = 0;
+
+			for (Map.Entry<BOQData, String> entry : inventoryMap.entrySet()) {
+
+				if (loopIndex < startIndex) {
+					System.out.println(loopIndex + "<" + startIndex);
+				} else if (loopIndex > stopIndex) {
+					System.out.println(loopIndex + ">" + stopIndex);
+				} else {
+
+					if (entry.getKey() instanceof Inventory) {
+
+						if (loopIndex == startIndex) {
+
+							String start = HTMLElements.SHEET_DETAILS_START.replace("SHEET_NAME", sheetNameList[k]);
+
+							if (isFirstSheet) {
+								start = start.replace("IS_FIRST", "active show");
+							}
+							tableContent = tableContent.append(start);
+						}
+
+						if (erectionAmtList != null) {
+							tableContent.append(createInventoryRow((Inventory) entry.getKey(),
+									supplyRateList.get(index), erectionRateList.get(index), supplyAmtList.get(index),
+									erectionAmtList.get(index), baseSupplyRateList.get(index),
+									baseErectionRateList.get(index), (String) entry.getValue()));
+						} else {
+							tableContent.append(createInventoryRow((Inventory) entry.getKey(), "", "", "", "", "", "",
+									(String) entry.getValue()));
+						}
+
+						System.out.println(
+								"Added pipe with size : " + ((Inventory) entry.getKey()).getInventorySpec().getSize());
+						if (loopIndex == stopIndex) {
+							tableContent = tableContent.append(HTMLElements.SHEET_DETAILS_END);
+						}
+
+						index++;
+					} else if (entry.getKey() instanceof BOQHeader) {
+						tableContent.append(getBOQHeaderData((BOQHeader) entry.getKey()));
+					}
+				}
+				loopIndex++;
+			}
+
+			isFirstSheet = false;
+		}
+		return sheetNames + tableContent.toString();
 	}
 
 	private String createInventoryRow(Inventory inv, String supplyRate, String erectionRate, String supplyAmt,
@@ -645,7 +696,10 @@ public class BOQController {
 				+ "    <td style=\"padding: 0px 0px;text-align:center;\">classOrGradeVal</td>"
 				+ "    <td style=\"padding: 0px 0px;text-align:center;\">endsVal</td>"
 				+ "    <td style=\"padding: 0px 0px;text-align:center;\">sizeVal</td>"
-				+ "    <td style=\"padding: 0px 0px;text-align:center;\">availableQty</td>"
+				/*
+				 * +
+				 * "    <td style=\"padding: 0px 0px;text-align:center;\">availableQty</td>"
+				 */
 				+ "    <td><input type=\"text\" style=\"width:45px;\" name=\"quantity\" value=\"quantityVal\" /></td>"
 				+ "    <td><input type=\"text\" style=\"width:45px;\" name=\"baseSupplyRate\" dblclick=\"updateVal();\" value=\"baseSupplyRateVal\" id=\"baseSupplyRate\" /></td>"
 				+ "    <td><input type=\"text\" style=\"width:45px;\" name=\"supplyRate\" value=\"supplyRate\" /></td>"
@@ -659,7 +713,7 @@ public class BOQController {
 				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"manifMetod\" value=\"manifMetodVal\" />"
 				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"classOrGrade\" value=\"classOrGradeVal\" />"
 				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"ends\" value=\"endsVal\" />"
-				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"size\" value=\"sizeVal\" />" + "    </tr>";
+				+ "    <input type=\"hidden\" style=\"width:45px;\" name=\"size\" value='sizeVal' />" + "    </tr>";
 
 		String rowToReturn = template;
 		rowToReturn = rowToReturn.replace("inventoryVal", inv.getInventorySpec().getInventoryName());
@@ -669,7 +723,7 @@ public class BOQController {
 		rowToReturn = rowToReturn.replace("classOrGradeVal", inv.getInventorySpec().getGradeOrClass());
 		rowToReturn = rowToReturn.replace("endsVal", inv.getInventorySpec().getEnds());
 		rowToReturn = rowToReturn.replace("sizeVal", inv.getInventorySpec().getSize());
-		rowToReturn = rowToReturn.replace("availableQty", availableQty);
+		/* rowToReturn = rowToReturn.replace("availableQty", availableQty); */
 
 		String requiredQuantity = Integer.toString(inv.getQuantity());
 		rowToReturn = rowToReturn.replace("quantityVal", returnStringIfNULL(requiredQuantity));

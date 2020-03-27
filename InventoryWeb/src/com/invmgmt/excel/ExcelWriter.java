@@ -110,6 +110,8 @@ public class ExcelWriter {
 		int startIndex = 0;
 		int lastIndex = 0;
 
+		int index = 0;
+
 		for (int s = 1; s <= sheetNames.size(); s++) {
 			ArrayList<BOQLineData> processedInventory = new ArrayList<BOQLineData>();
 			Sheet sheet = workBook.getSheetAt(s);
@@ -140,7 +142,6 @@ public class ExcelWriter {
 				sheet.getRow(5).getCell(3).setCellValue(header.getdNo());
 			}
 
-			int index = 0;
 			int nextRow = 9;
 			int i = 1;
 			int pushBy = 0;
@@ -156,7 +157,7 @@ public class ExcelWriter {
 				if (presentIndex != -1) {
 					// int row = presentIndex * 7 + 9 + i;
 
-					int row = nextRow - 6;
+					int row = nextRow - 6 + index;
 
 					Cell cellToUpdate0 = sheet.getRow(row).getCell(2);
 					cellToUpdate0.setCellValue(size[index]);
@@ -183,12 +184,11 @@ public class ExcelWriter {
 
 					if (erectionAmount.length > 0)
 						cellToUpdate10.setCellValue(erectionAmount[index]);
-					
+
 				} else {
 					processedInventory.add(inventory);
 
-					String invCategory = "null" != inventory.getCategory()
-							? inventory.getCategory() : "";
+					String invCategory = "null" != inventory.getCategory() ? inventory.getCategory() : "";
 					Cell cellToUpdateInv = sheet.getRow(nextRow - 1).getCell(1);
 					cellToUpdateInv.setCellValue(inventory.getInventoryName() + " " + invCategory);
 
@@ -253,7 +253,7 @@ public class ExcelWriter {
 						pushBy++;
 					}
 
-					nextRow = nextRow + pushBy + 2+i;
+					nextRow = nextRow + pushBy + 2 + i;
 				}
 
 				index++;
@@ -263,6 +263,10 @@ public class ExcelWriter {
 			}
 
 			startIndex = startIndex + inventoryCount;
+
+			for (int j = 0; j < 8; j++) {
+				sheet.autoSizeColumn(j);
+			}
 		}
 
 		workBook.removeSheetAt(0);

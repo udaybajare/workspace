@@ -1,9 +1,9 @@
 package com.invmgmt.controllers;
 
-import java.text.SimpleDateFormat;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -13,16 +13,38 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.invmgmt.entity.InventorySpec;
+
 @Controller
 @EnableWebMvc
 public class TestController {
 	
 	public static void main(String[] args) 
 	{
-		String templateDesc = "material type inventory of Grade(OR Class) as classOrgrade, Ends as endsVal of size sizeVal";
-		String lasttaxInvoiceNo = "Invoice/Pro/9";
-		System.out.println(new SimpleDateFormat("dd-MM-yyyy HH:mm:SS").format(new Date()));
+		
+		InventorySpec spec = new InventorySpec();
+		spec.setInventoryName("abc");
+		
+		InventorySpec spec0 = spec;
+
+		System.out.println("spec before method is : "+spec);
+		System.out.println("spec0 before method is : "+spec0);
+		
+		spec = changeThis(spec);
+		
+		System.out.println("spec after method is : "+spec);
+		System.out.println("spec0 after method is : "+spec0);
+		
 	}
+	
+	public static InventorySpec changeThis(InventorySpec spec2)
+	{
+		spec2.setInventoryName("xyz");
+		
+		return spec2;
+		
+	}
+	
 	
 	public static int findIndex(String[] a, String target)
 	{

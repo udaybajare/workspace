@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Project Inventory manager</title>
+  <title>Hamdule Project</title>
   <meta name="description" content="The Project a Bootstrap-based, Responsive HTML5 Template">
   <meta name="author" content="author">
 
@@ -391,17 +391,7 @@
          <div class="form-group">
            <select class="form-control" name="inventoryName" id="inventoryName" onchange="myFunction(this.value,'inventoryName','material');">
              <option></option>
-             <option value="Pipe">Pipe</option>
-             <option value="Flange">Flange</option>
-             <option value="Elbow">Elbow</option>
-             <option value="Socket">Socket</option>
-             <option value="Barrel Nipple">Barrel Nipple</option>
-             <option value="Coupling">Coupling</option>
-             <option value="Reducer">Reducer</option>
-             <option value="Tee">Tee</option>
-             <option value="Gasket">Gasket</option>
-             <option value="Nut Bolt">Nut Bolt</option>
-             <option value="Support">Support</option>
+             ${items}
            </select>
          </div>
        </td>
@@ -743,42 +733,44 @@
               <div class="tab-content" id="tableContentInqSec">  
               </div>
               <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
-               <div class="col-md-3">
+               <div class="col-md-3" style="margin-left: 5%;">
                  <h4>Quotation Revisions</h4>
                  <select class="form-control revisionSection" onchange="download($(this).val(), 'tableContentInqSec');">
                   <option></option>
-                </select>                
-              </div>
-              <div class="col-md-3 ">
+                </select>
+                <br>
                 <h4>Inquiry List</h4>
                 <select class="form-control offerRevisionSection" onchange="download($(this).val(),'tableContentInqSec');" >
                   <option></option>
+                </select>                
+              </div>
+              <div class="col-md-3" style="margin-left: -5%;">
+                <input type="hidden" name="venderList" value="${venderList}">
+                <h4>Vender List</h4>
+                <select class="form-control venderList" name="selectedVenderName">
+                  <option></option>
                 </select>
               </div> 
-              <div class="col-md-3">
+              <div class="col-md-3" style="margin-left: -5%;">
                 <h4>Inquiry Name</h4>
                 <input type="text" class="form-control" name="inquiryName">
               </div>
-              <div class="col-md-3" id="generateQuot" style="margin-top: 2%;margin-left: -6%;" >
-                <div class="row" >
-                  <div class="col-md-6">
-                    <button type="button" onclick="createInquiry();" class="btn btn-default">Generate Inquiry</button>
-                    <label>
-                      <input type="hidden" name="boqNameList" value="${boqNameList}">
-                      <input type="hidden" name="quotationNamesList" value="${quotationNamesList}">
-                    </label>
-                  </div>
-                  <div class="col-md-6" style="padding-left:12%;">
-                    <button type="button" onclick="downloadInquiry();" class="btn btn-default">Download Inquiry</button>
-                  </div>
-                </div>    
-              </div>    
-            </div>    
-          </div>
+              <div class="col-md-3" style="margin-left: -5%;">
+                <input type="hidden" name="boqNameList" value="${boqNameList}">
+                <input type="hidden" name="quotationNamesList" value="${quotationNamesList}">
+                <br>
+                <button type="button" onclick="createInquiry();" class="btn btn-default" >Generate & Send Inquiry</button>
+                <br>
+                <br>
+                <button type="button" onclick="downloadInquiry();" class="btn btn-default" style="width:67%;">Download Inquiry</button>
+              </div>
+            </div>
+          </div>    
         </div>
-      </div>    
-    </div>
+      </div>
+    </div>    
   </div>
+</div>
 </div>
 </div>
 </div>
@@ -927,11 +919,10 @@
                 <th>Received Date</th>
               </tr>
             </thead>
-            <tbody id="generateInvoiceTable">              
+            <tbody id="generateInvoiceTable">
             </tbody>
-          </table>        
+          </table>
         </dir>
-
         <div class="collapse border border-info" id="invoice" style="padding-left:3%;"> 
           <label><h3></h3></label>  
           <div class="form-row">  
@@ -994,7 +985,6 @@
       </div>
     </div>
     <div class="row" style="margin-left: 0%;">
-
       <div class="col-md-3 ">
        <div class="ph-20 feature-box text-center">
          <br>
@@ -1016,7 +1006,6 @@
 </div>
 </section>
 </div>
-
 </div>
 </div>
 </div>
@@ -1055,7 +1044,7 @@
             <div class="container collapse" id="aitem" style="max-width:98%;" id="assignedInventory">
               <div class="col-md-12 ">
                 <div class="table-responsive">                
-                  <table class="table table-colored assignedInventorySec" >
+                  <table class="table table-colored assignedInventorySec border border-info" >
                     <thead>
                       <tr>
                        <th></th>
@@ -1070,14 +1059,13 @@
                        <th>Purchase Rate</th>
                        <th>Project</th>
                        <th>Location</th>
-                       <th>Mark as</th>
                      </tr>
                    </thead>
                    <tbody id="tableContentDetails">
                     ${assignedInventory}
                   </tbody>
                 </table>
-                <table class="table table-colored assignedInventorySec">
+                <table class="table table-colored assignedInventorySec border border-info">
                   <thead>
                     <tr>
                      <th></th>
@@ -1092,7 +1080,6 @@
                      <th>Purchase Rate</th>
                      <th>Project</th>
                      <th>Location</th>
-                     <th>Mark as</th>
                    </tr>
                  </thead>
                  <tbody id="tableContentDetails">
@@ -1104,9 +1091,8 @@
         </div>
         <div class="container collapse" id="citem" style="max-width:98%;" id="consumedInventory">
           <div class="col-md-12 ">
-            <div class="table-responsive">                
-
-              <table class="table table-colored">
+            <div class="table-responsive">               
+              <table class="table table-colored border border-info">
                 <thead>
                   <tr>
                    <th></th>
@@ -1127,7 +1113,7 @@
                 ${consumedInventory}
               </tbody>
             </table>
-            <table class="table table-colored">
+            <table class="table table-colored border border-info">
               <thead>
                 <tr>
                  <th></th>
@@ -1160,8 +1146,6 @@
 </div>
 </div>
 </div>
-
-
 <div class="form-row">
 </div>	
 <br>
@@ -1612,7 +1596,7 @@
         } 
 
         $('#sheetList'+sectionName).append('<li class="nav-item"><a class="nav-link '+sheetName+' '+className+'" href="#'+sheetName+'" role="tab" data-toggle="tab" aria-selected="true">'+sheetName+'<i class="fa fa-times pr-2" onClick="removeSheet('+sheetName+');" style="margin-left:5px;"></i></a></li>');
-      
+
         isFirst = false;
       }
 
@@ -1623,17 +1607,17 @@
 
   });
 
-    var generateQuot = document.getElementById("generateQuot");                                         
-    generateQuot.style.display = "block";
+/*    var generateQuot = document.getElementById("generateQuot");                                         
+generateQuot.style.display = "block";*/
 
-    var generateBOQ = document.getElementById("generate");
-    generateBOQ.style.display = "block";
-    hideLoading();
-  }
-  function adjustWidthDn() 
-  {
-   console.log('Inside adjustWidth');
- }
+/*    var generateBOQ = document.getElementById("generate");
+generateBOQ.style.display = "block";*/
+hideLoading();
+}
+function adjustWidthDn() 
+{
+ console.log('Inside adjustWidth');
+}
 </script>
 
 
@@ -1747,6 +1731,7 @@
   var erectionAmount_string = cleanArray(erectionAmount);
   formData.push({name: 'erectionAmount', value: erectionAmount_string});
 
+  formData.push({name: 'venderName', value: $('[name="selectedVenderName"]').val()});
   formData.push({name: 'isOffer', value: 'true'});
   formData.push({name: 'sheetDetails', value: sheetDetails});
 
@@ -2300,10 +2285,6 @@ function cleanArray(actual)
      data :  {'nextTagName' : nextTagName, 'model' : model},
      url : 'getValveDetails',
      success : function(data) {
-
-      console.log(data);
-      console.log($(tag));
-
       var blank = "<option> </option> <option value='-'>-</option>";
       $(tag+'Val').html(blank);
       $(tag+'Val').append(data);
@@ -2325,9 +2306,21 @@ function cleanArray(actual)
       
       for(var i=0;i<sheetCount.length;i++)
       {
-        var eleLength = $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="inventoryName"]').length;
-        
-        $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="sheetDetails"]').attr('value',sheetCount[i].value+','+eleLength);
+        var eleLength = 0;
+
+        if(sheetCount[i].value.startsWith('Valves'))
+        {
+          eleLength = $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="model"]').length;
+        }
+        else if(sheetCount[i].value.startsWith('Accessories'))
+        {
+         eleLength = $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="accessoryName"]').length; 
+        }
+        else
+        {
+          eleLength = $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="inventoryName"]').length;
+        }
+        $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="sheetDetails"]').attr('value',sheetCount[i].value.split(',')[0]+','+eleLength);
       }
 
       for(var i=0; i < length; i++)
@@ -2415,7 +2408,6 @@ function cleanArray(actual)
    }
 
    var eleCount = $('#generateInvoiceTable input').length;
-
 
    var inventoryName        = [];
    var material             = [];
@@ -2560,6 +2552,7 @@ function cleanArray(actual)
      url : 'getNoInvoiceInventory',
      success : function(data) 
      {
+      $('#generateInvoiceTable').html('');
       $('#generateInvoiceTable').append(data);
     }
   });
@@ -2592,6 +2585,20 @@ function cleanArray(actual)
    $('.'+name).remove();
    /*$('#'+name).remove();*/
  }
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    var vList = $('[name="venderList"]').val().split(',');
+    for(var i = 0; i < vList.length ; i++)
+      {
+       var venderName = vList[i];
+
+       if(venderName != "")
+        $("[name='selectedVenderName']").append("<option value=" + venderName + ">" + venderName + "</option>");
+      }
+
+  });
 </script>
 </body>
 </html>

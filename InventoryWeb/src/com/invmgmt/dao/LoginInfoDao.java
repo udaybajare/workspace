@@ -16,23 +16,36 @@ import com.invmgmt.entity.LoginInfo;
 @Repository
 public class LoginInfoDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+	@Autowired
+	private SessionFactory sessionFactory;
 
-    @Transactional
-    public String gePasswordToValidate(LoginInfo loginInfo) {
+	@Transactional
+	public String gePasswordToValidate(LoginInfo loginInfo) {
 
-	Session session = sessionFactory.getCurrentSession();
-	
-	String selectHql = " FROM LoginInfo logI where logI.userName='";
-	
-	Query query = session.createQuery(selectHql + loginInfo.getUserName() + "'");
-	List results = query.getResultList();
+		Session session = sessionFactory.getCurrentSession();
 
-	Iterator itr = results.iterator();
+		String selectHql = " FROM LoginInfo logI where logI.userName='";
 
-	loginInfo = (LoginInfo)itr.next();
-	
-	return loginInfo.getPassword();
-    }
+		Query query = session.createQuery(selectHql + loginInfo.getUserName() + "'");
+		List results = query.getResultList();
+
+		Iterator itr = results.iterator();
+
+		loginInfo = (LoginInfo) itr.next();
+
+		return loginInfo.getPassword();
+	}
+
+	@Transactional
+	public boolean addLoginInfo(LoginInfo loginInfo) {
+
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.save(loginInfo);
+			return true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
 }

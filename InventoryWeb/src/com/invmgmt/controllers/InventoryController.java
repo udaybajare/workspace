@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,18 +23,20 @@ import com.invmgmt.dao.AccessoryDetailsDao;
 import com.invmgmt.dao.BillDetailsDao;
 import com.invmgmt.dao.ChallanDao;
 import com.invmgmt.dao.InventoryDao;
+import com.invmgmt.dao.MappingsDao;
 import com.invmgmt.dao.ProjectDao;
 import com.invmgmt.dao.ProjectDetailsDao;
 import com.invmgmt.dao.ReceivedInventoryDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
+import com.invmgmt.dao.UserDetailsDao;
 import com.invmgmt.entity.AccessoryDetails;
 import com.invmgmt.entity.BillDetails;
 import com.invmgmt.entity.ChallanDetails;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
+import com.invmgmt.entity.Mappings;
 import com.invmgmt.entity.Project;
 import com.invmgmt.entity.ProjectDetails;
-import com.invmgmt.entity.ReceivedInventory;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.entity.TaxInvoiceGenerator;
 import com.invmgmt.util.InventoryUtils;
@@ -62,9 +66,12 @@ public class InventoryController {
 
 	@Autowired
 	ReceivedInventoryDao receivedInventoryDao;
-	
+
 	@Autowired
 	ProjectDetailsDao projectDetailsDao;
+
+	@Autowired
+	UserDetailsDao userDetailsDao;
 
 	@Autowired
 	private InventoryUtils inventoryUtils;
@@ -75,7 +82,10 @@ public class InventoryController {
 	@Autowired
 	NumberWordConverter numberWordConverter;
 
-	private static final String updateViewName = "updateInventory";
+	@Autowired
+	MappingsDao mappingsDao;
+
+	private static final String updateViewName = "updateInvPO";
 
 	@RequestMapping(value = "/updateInventoryForm", method = RequestMethod.GET)
 	protected ModelAndView updateInventoryForm() {
@@ -98,7 +108,7 @@ public class InventoryController {
 			String[] purchaseRate, /* String[] rate, */ String[] project, String[] location, String[] status,
 			String invoiceType, TaxInvoiceDetails taxInvoiceDetails, BillDetails billDetails,
 			AccessoryDetails accessoryDetails, String generateChallan, String generateInvoice, String addAccessory,
-			String addBillDetails) {
+			String addBillDetails, HttpSession session) {
 
 		System.out.println("generateChallan is " + generateChallan);
 		System.out.println("generateInvoice is " + generateInvoice);
@@ -107,8 +117,8 @@ public class InventoryController {
 
 		ModelAndView view = null;
 
-		if (!(generateChallan.equals("1") || generateInvoice.equals("1") || addBillDetails.equals("1"))) {
-			view = new ModelAndView(updateViewName);
+		if (!(generateChallan.equals("1"))) {
+			view = new ModelAndView("redirect:/" + updateViewName);
 		} else {
 			view = new ModelAndView("challan");
 		}
@@ -121,6 +131,8 @@ public class InventoryController {
 
 		List<InventorySpec> inventorySpec = inventoryUtils.createInventorySpecList(inventoryName, material, type,
 				manifMethod, gradeOrClass, ends, size, project, status);
+
+		ArrayList<Inventory> receivedInventoryList = new ArrayList<Inventory>();
 
 		String clientShortName = "";
 
@@ -140,7 +152,7 @@ public class InventoryController {
 
 				if (project[0] != null && project[0] != "") {
 
-					int assignedQty = inventoryDao.getQuantityByStatus(inventory, status[i]);
+					int assignedQty = inventoryDao.getQuantityByStatus(inventory, status[i], false);
 
 					System.out.println("assignedQty is : " + assignedQty);
 
@@ -279,18 +291,17 @@ public class InventoryController {
 					String.valueOf(quantity[i]), "NB");
 			lineItemData.append(lineItem);
 
+			inventory.setInventoryRowId(inventoryRowId);
+			receivedInventoryList.add(inventory);
 		}
 
 		String invoiceNo = null;
 		String invoiceDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-		
-		
-		
 		if (generateInvoice.equals("1")) {
-			
+
 			ProjectDetails projectDetails = projectDetailsDao.getProjectDetails(projectId);
-			
+
 			String lasttaxInvoiceNo = taxInvoiceDetailsDao.getLastTaxIvoiceNo();
 
 			int lastNo = 0;
@@ -303,27 +314,26 @@ public class InventoryController {
 			taxInvoiceDetails.setTaxInvoiceNo(invoiceNo);
 
 			taxInvoiceDetails.setOrderNo(projectDetails.getPoNumber());
-			
+
 			taxInvoiceDetails.setTaxInvoiceDate(invoiceDate);
 
 			String totalAmount = getTotalAmount(purchaseRate, quantity);
-			
-			//Add if any miscellaneous charges are included
-			
+
+			// Add if any miscellaneous charges are included
+
 			String miscCharges = taxInvoiceDetails.getMiscCharges();
-			
+
 			double totalAmountInt = Double.parseDouble(totalAmount);
-			if(miscCharges!=null && !("".equals(miscCharges)))
-			{
+			if (miscCharges != null && !("".equals(miscCharges))) {
 				totalAmountInt = totalAmountInt + Double.parseDouble(miscCharges);
 			}
-			
-			double cGST = totalAmountInt*9/100;
-			double sGST = totalAmountInt*9/100;
-			
+
+			double cGST = totalAmountInt * 9 / 100;
+			double sGST = totalAmountInt * 9 / 100;
+
 			taxInvoiceDetails.setcGst(String.valueOf(cGST));
-						
-			Double doubleVal = totalAmountInt+cGST+sGST;
+
+			Double doubleVal = totalAmountInt + cGST + sGST;
 
 			String amountsToWord = numberWordConverter.convert((int) Math.round(doubleVal));
 
@@ -337,20 +347,28 @@ public class InventoryController {
 				taxInvoiceDetails.setAmtInwrd2("");
 			}
 
-			taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
-		}
+			String sender = userDetailsDao.getEmailAddress((String) session.getAttribute("userName"));
 
-		try {
-			for (int i = 0; i < inventoryName.length; i++) {
-				receivedInventoryDao.saveOrUpdateInventory(new ReceivedInventory(
-						new InventorySpec(inventoryName[i], material[i], type[i], manifMethod[i], gradeOrClass[i],
-								ends[i], size[i], String.valueOf(projectId), status[i]),
-						purchaseRate[i], quantity[i], location[i], invoiceNo, invoiceDate));
+			taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails, sender);
+
+			try {
+				for (int i = 0; i < receivedInventoryList.size(); i++) {
+
+					Inventory inventory = receivedInventoryList.get(i);
+					inventory.setInvoiceNo(invoiceNo);
+					inventory.setReceivedDate(invoiceDate);
+
+					try {
+						inventoryDao.updateWhenSaveFailed(inventory);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 		view.addObject("itemList", lineItemData);
@@ -383,12 +401,11 @@ public class InventoryController {
 		return view;
 	}
 
-	@RequestMapping(value="/generateInvoice", method=RequestMethod.POST)
-	public @ResponseBody String generateInvoice(int projectId, String[] inventoryName, String[] material,
-			String[] type, String[] manifMetod, String[] classOrGrade, String[] ends, String[] size,
-			String[] purchaseRate, int[] receivedQuantity, String[] location, String[] receivedDate,
-			TaxInvoiceDetails taxInvoiceDetails)
-	{
+	@RequestMapping(value = "/generateInvoice", method = RequestMethod.POST)
+	public @ResponseBody String generateInvoice(int projectId, String[] inventoryName, String[] material, String[] type,
+			String[] manifMetod, String[] classOrGrade, String[] ends, String[] size, String[] purchaseRate,
+			int[] receivedQuantity, String[] location, String[] receivedDate, TaxInvoiceDetails taxInvoiceDetails,
+			HttpSession session) {
 		taxInvoiceDetails.setProjectId(projectId);
 
 		String lasttaxInvoiceNo = taxInvoiceDetailsDao.getLastTaxIvoiceNo();
@@ -409,7 +426,7 @@ public class InventoryController {
 		} else {
 			clientShortName = projectName.substring(0, 3);
 		}
-		
+
 		ProjectDetails projectDetails = projectDetailsDao.getProjectDetails(projectId);
 
 		String invoiceNo = "Invoice/" + clientShortName + "/" + String.valueOf(lastNo + 1);
@@ -417,29 +434,28 @@ public class InventoryController {
 		taxInvoiceDetails.setTaxInvoiceNo(invoiceNo);
 		taxInvoiceDetails.setOrderNo(projectDetails.getPoNumber());
 		taxInvoiceDetails.setGstNo(projectDetails.getGstNumber());
-		
+
 		taxInvoiceDetails.setProjectName(projectName);
-		
+
 		String invoiceDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
 		taxInvoiceDetails.setTaxInvoiceDate(invoiceDate);
 
 		String totalAmount = getTotalAmount(purchaseRate, receivedQuantity);
-		
-		//Add if any miscellaneous charges are included
-		
+
+		// Add if any miscellaneous charges are included
+
 		String miscCharges = taxInvoiceDetails.getMiscCharges();
-		
+
 		double totalAmountInt = Double.parseDouble(totalAmount);
-		if(miscCharges!=null && !("".equals(miscCharges)))
-		{
+		if (miscCharges != null && !("".equals(miscCharges))) {
 			totalAmountInt = totalAmountInt + Double.parseDouble(miscCharges);
 		}
-		
-		double cGST = totalAmountInt*9/100;
-		double sGST = totalAmountInt*9/100;
-					
-		Double doubleVal = totalAmountInt+cGST+sGST;
+
+		double cGST = totalAmountInt * 9 / 100;
+		double sGST = totalAmountInt * 9 / 100;
+
+		Double doubleVal = totalAmountInt + cGST + sGST;
 
 		String amountsToWord = numberWordConverter.convert((int) Math.round(doubleVal));
 
@@ -453,14 +469,23 @@ public class InventoryController {
 			taxInvoiceDetails.setAmtInwrd2("");
 		}
 
-		taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails);
-		
+		String sender = userDetailsDao.getEmailAddress((String) session.getAttribute("userName"));
+
+		taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails, sender);
+
 		try {
 			for (int i = 0; i < inventoryName.length; i++) {
-				receivedInventoryDao.saveOrUpdateInventory(new ReceivedInventory(
+
+				Inventory inventory = new Inventory(
 						new InventorySpec(inventoryName[i], material[i], type[i], manifMetod[i], classOrGrade[i],
 								ends[i], size[i], String.valueOf(projectId), "assigned"),
-						purchaseRate[i], receivedQuantity[i], location[i], invoiceNo, receivedDate[i]));
+						purchaseRate[i], receivedQuantity[i], location[i], invoiceNo, receivedDate[i]);
+
+				try {
+					inventoryDao.updateWhenSaveFailed(inventory);
+				} catch (Exception ex) {
+
+				}
 			}
 
 		} catch (Exception e) {
@@ -471,16 +496,16 @@ public class InventoryController {
 
 		return "SUCCESS";
 	}
-	
+
 	@RequestMapping(value = "/release", method = RequestMethod.POST)
 	private ModelAndView releaseInventory(String inventoryStr, String materialStr, String typeStr,
 			String manifMethodStr, String gradeOrClassStr, String endsStr, String sizeStr, String purchaseRateStr,
 			String projectStr, String locationStr, String quantity, String projectId, String projectName,
 			String projectDesc, String statusTo, RedirectAttributes redirectAttributes) {
 		Inventory inventory = new Inventory(new InventorySpec(inventoryStr, materialStr, typeStr, manifMethodStr,
-				gradeOrClassStr, endsStr, sizeStr, projectStr, "assigned"), purchaseRateStr, 0, locationStr);
+				gradeOrClassStr, endsStr, sizeStr, projectStr, "assigned"), purchaseRateStr, 0, locationStr, "", "");
 
-		int assignedQty = inventoryDao.getQuantityByStatus(inventory, "assigned");
+		int assignedQty = inventoryDao.getQuantityByStatus(inventory, "assigned", false);
 
 		int qty = 0;
 
@@ -533,7 +558,7 @@ public class InventoryController {
 		} else {
 			// Inventory is available. Just increase the
 			// quantity
-			int quantityToGo = inventoryDao.getQuantityByStatus(releasedInventory, statusTo);
+			int quantityToGo = inventoryDao.getQuantityByStatus(releasedInventory, statusTo, false);
 
 			int quantityToUpdate = 0;
 
@@ -577,7 +602,7 @@ public class InventoryController {
 			String desc3, String desc4, String desc5, String accessoryName, String project, String locationStr,
 			String projectId, String projectName, String projectDesc, RedirectAttributes redirectAttributes) {
 		AccessoryDetails accessory = new AccessoryDetails(accessoryName, desc1, desc2, desc3, desc4, desc5, project,
-				locationStr, "assigned", quantity);
+				locationStr, "assigned", quantity, "", "");
 
 		String assignedQty = accessoryDetailsDao.getAccessoryDetailsByStatus(accessory, "assigned");
 		String qty = "";
@@ -591,7 +616,7 @@ public class InventoryController {
 
 		// Add new entry or update existing one without project
 		AccessoryDetails accessoryToRelease = new AccessoryDetails(accessoryName, desc1, desc2, desc3, desc4, desc5,
-				project, locationStr, accessoryStatusTo, quantity);
+				project, locationStr, accessoryStatusTo, quantity, "", "");
 
 		boolean isAccessoryPresentinDB = false;
 		boolean isToBeAssigned = false;
@@ -672,12 +697,18 @@ public class InventoryController {
 		return new ModelAndView("inventoryUpdate").addObject("projectNames", projectNames.toString());
 	}
 
+	@RequestMapping(value = "/getExistingMappings", method = RequestMethod.GET)
+	private @ResponseBody String getExistingMappings() {
+		StringBuilder mappingsHTML = new StringBuilder();
+		ArrayList<Mappings> mappingsList = mappingsDao.getAllMappinsData();
+
+		return mappingsHTML.toString();
+	}
+
 	private String getInventoryDetailsRow(String sr_no, String size, String description, String quantity, String unit) {
 		String template = "<tr><td style=\"text-align:center;\" >&emsp;sr_no&emsp;&emsp;&emsp;size</td>"
-				+ "<td style=\"text-align:center;\">Description</td>"
-				+ "<td style=\"text-align:center;\">quantity</td>"
-				+ "<td style=\"text-align:center;\">unit</td>"
-				+ "</tr>";
+				+ "<td style=\"text-align:center;\">Description</td>" + "<td style=\"text-align:center;\">quantity</td>"
+				+ "<td style=\"text-align:center;\">unit</td>" + "</tr>";
 		String stringToReturn = template.replace("sr_no", sr_no).replace("size", size)
 				.replace("Description", description).replace("quantity", quantity).replace("unit", unit);
 

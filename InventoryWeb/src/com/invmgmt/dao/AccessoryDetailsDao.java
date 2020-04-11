@@ -56,11 +56,19 @@ public class AccessoryDetailsDao {
 	public ArrayList<AccessoryDetails> getAccessoryDetailsByStatus(String project, String status) {
 		ArrayList<AccessoryDetails> accessoryList = new ArrayList<AccessoryDetails>();
 		Session session = sessionFactory.getCurrentSession();
-		String hql = "FROM AccessoryDetails accessD where accessD.assignedProject=:assignedProject and accessD.status=:status";
+		String hql = "FROM AccessoryDetails accessD where accessD.assignedProject=:assignedProject ";
 
+		if(status.equalsIgnoreCase("consumed"))
+		{
+			hql = hql + " and accessD.invoiceNo is NOT null";
+		}
+		else if(status.equalsIgnoreCase("assigned"))
+		{
+			hql = hql + " and accessD.invoiceNo is null";
+		}
+		
 		Query query = session.createQuery(hql);
 		query.setParameter("assignedProject", project);
-		query.setParameter("status", status);
 
 		List results = query.getResultList();
 

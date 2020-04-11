@@ -18,7 +18,7 @@ public class ReceivedInventoryDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Transactional
+/*	@Transactional
 	public boolean saveOrUpdateInventory(ReceivedInventory inventory) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
 
@@ -30,9 +30,9 @@ public class ReceivedInventoryDao {
 			return false;
 		}
 		return true;
-	}
+	}*/
 
-	@Transactional
+	/*@Transactional
 	public ArrayList<ReceivedInventory> getAllInventory() throws Exception {
 		Session session = sessionFactory.getCurrentSession();
 
@@ -48,8 +48,8 @@ public class ReceivedInventoryDao {
 		}
 		return results;
 	}
-
-	@Transactional
+*/
+/*	@Transactional
 	public ArrayList<ReceivedInventory> getNoInvoiceInventory(int projectId) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
 
@@ -66,5 +66,5 @@ public class ReceivedInventoryDao {
 			throw hibernateException;
 		}
 		return results;
-	}
+	}*/
 }

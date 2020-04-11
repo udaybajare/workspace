@@ -40,7 +40,7 @@ public class BOQDetailsDao {
 		Session session = sessionFactory.getCurrentSession();
 		String selectHql = " FROM BOQDetails boqD where boqD.boqName='";
 
-		Query query = session.createQuery(selectHql + boqName + "' and projectId='"+projectId+"'");
+		Query query = session.createQuery(selectHql + boqName + "' and projectId='" + projectId + "'");
 		List results = query.getResultList();
 
 		Iterator itr = results.iterator();
@@ -71,16 +71,16 @@ public class BOQDetailsDao {
 
 		return boqDetailsNameList;
 	}
-	
+
 	@Transactional
 	public ArrayList<String> getMatchingBOQNames(String boqName, String projectId) {
 
 		ArrayList<String> boqNames = new ArrayList<String>();
 
 		Session session = sessionFactory.getCurrentSession();
-		String selectHql = "SELECT boqD.boqName FROM BOQDetails boqD where boqD.boqName like '%" ;
+		String selectHql = "SELECT boqD.boqName FROM BOQDetails boqD where boqD.boqName like '%";
 
-		Query query = session.createQuery(selectHql + boqName + "%' and boqD.projectId='"+projectId+"'");
+		Query query = session.createQuery(selectHql + boqName + "%' and boqD.projectId='" + projectId + "'");
 		List results = query.getResultList();
 
 		Iterator itr = results.iterator();
@@ -90,5 +90,17 @@ public class BOQDetailsDao {
 		}
 
 		return boqNames;
-	}	
+	}
+
+	@Transactional
+	public String getRecentProject() {
+		String projectId = "";
+		Session session = sessionFactory.getCurrentSession();
+		String queryString = "SELECT projectId FROM BOQDetails WHERE id IN (SELECT MAX(id) FROM BOQDetails)";
+		Query query = session.createQuery(queryString);
+
+		projectId = (String) query.getSingleResult();
+		
+		return projectId;
+	}
 }

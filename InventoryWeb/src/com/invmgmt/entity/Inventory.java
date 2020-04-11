@@ -4,21 +4,22 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.invmgmt.interfaces.BOQData;
+import com.sun.istack.internal.Nullable;
 
 @Entity
 @Embeddable
 @Table(name = "inventory")
 public class Inventory implements Serializable, BOQData {
 
-	@EmbeddedId
-	private InventorySpec inventorySpec;
-
+	@Id
 	private int inventoryRowId;
+
+	private InventorySpec inventorySpec;
 
 	@Column(name = "purchaseRate")
 	private String purchaseRate;
@@ -29,12 +30,20 @@ public class Inventory implements Serializable, BOQData {
 	@Column(name = "location")
 	private String location;
 
-	public Inventory(InventorySpec inventorySpec, String purchaseRate, int quantity, String location) {
+	@Nullable
+	private String invoiceNo;
+
+	private String receivedDate;
+
+	public Inventory(InventorySpec inventorySpec, String purchaseRate, int quantity, String location, String invoiceNo,
+			String receivedDate) {
 		super();
 		this.inventorySpec = inventorySpec;
 		this.purchaseRate = purchaseRate;
 		this.quantity = quantity;
 		this.location = location;
+		this.invoiceNo = invoiceNo;
+		this.receivedDate = receivedDate;
 	}
 
 	public Inventory() {
@@ -79,6 +88,22 @@ public class Inventory implements Serializable, BOQData {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}	
+
+	public String getInvoiceNo() {
+		return invoiceNo;
+	}
+
+	public void setInvoiceNo(String invoiceNo) {
+		this.invoiceNo = invoiceNo;
+	}
+
+	public String getReceivedDate() {
+		return receivedDate;
+	}
+
+	public void setReceivedDate(String receivedDate) {
+		this.receivedDate = receivedDate;
 	}
 
 	public Inventory copyObject(Inventory invt) {
@@ -95,8 +120,8 @@ public class Inventory implements Serializable, BOQData {
 
 	@Override
 	public String toString() {
-		return "Inventory [inventorySpec=" + inventorySpec.toString() + "; inventoryRowId=" + inventoryRowId
-				+ "; purchaseRate=" + purchaseRate + "; quantity=" + quantity + "; location=" + location + "]";
+		return "Inventory [inventorySpec=" + inventorySpec + ", inventoryRowId=" + inventoryRowId + ", purchaseRate="
+				+ purchaseRate + ", quantity=" + quantity + ", location=" + location + ", invoiceNo=" + invoiceNo
+				+ ", receivedDate=" + receivedDate + "]";
 	}
-
 }

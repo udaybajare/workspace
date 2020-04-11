@@ -29,7 +29,7 @@ public class InventoryDao {
 			 System.out.println("Before calling save");
 			 session.save(inventory);
 			 System.out.println("After calling save");
-			 
+			 session.flush();
 		} catch (Exception hibernateException) 
 		{
 			throw hibernateException;
@@ -41,9 +41,9 @@ public class InventoryDao {
 	@Transactional
 	public int updateWhenSaveFailed(Inventory inventory) {
 		Session session = sessionFactory.getCurrentSession();
-			
+					
 			try
-			{
+			{				
 				session.update(inventory);
 			}
 			catch(Exception updateHibernateException)
@@ -102,7 +102,7 @@ public class InventoryDao {
 	}
 
 	@Transactional
-	public int getQuantityByStatus(Inventory inventory, String status) {
+	public int getQuantityByStatus(Inventory inventory, String status, boolean noInvoiceNum ) {
 		int availableQuantity = 0;
 		InventorySpec inventorySpec = inventory.getInventorySpec();
 
@@ -115,6 +115,11 @@ public class InventoryDao {
 				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
 				+ inventorySpec.getEnds() + "' and  " + "invD.inventorySpec.assignedProject = '"
 				+ inventorySpec.getAssignedProject() + "' and invD.inventorySpec.status='"+status+"'";
+		
+		if(noInvoiceNum)
+		{
+			selectHql = selectHql + " and invD.invoiceNo is null";
+		}
 		try {
 			session = sessionFactory.openSession();
 			Query query = session.createQuery(selectHql);
@@ -140,9 +145,10 @@ public class InventoryDao {
 				+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
 				+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
 				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
-				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.assignedProject = '"
-				+ inventorySpec.getAssignedProject() + "' and  " + "invD.inventorySpec.ends = '"
-				+ inventorySpec.getEnds() + "'";
+				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " 
+				+ "invD.inventorySpec.assignedProject = '" + inventorySpec.getAssignedProject() + "' and  " 
+				+ "invD.inventorySpec.ends = '"	+ inventorySpec.getEnds() + "' and  "
+				+ "invD.invoiceNo is null ";
 		
 		if(!statusTo.equals("%%"))
 		{
@@ -168,7 +174,7 @@ public class InventoryDao {
 	}
 
 	@Transactional
-	public double getPurchaseRate(Inventory inventory) {
+	public double getPurchaseRate(Inventory inventory, boolean noInvoiceNum) {
 		double purchaseRate = 0;
 		InventorySpec inventorySpec = inventory.getInventorySpec();
 
@@ -182,6 +188,16 @@ public class InventoryDao {
 				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
 				+ inventorySpec.getEnds() + "'  and  " + "invD.inventorySpec.assignedProject = '"
 				+ inventorySpec.getAssignedProject() + "' and invD.inventorySpec.status='"+ inventory.getInventorySpec().getStatus() +"'";
+		
+		if(noInvoiceNum)
+		{
+			selectHql = selectHql + " and invD.invoiceNo is null";
+		}
+		else
+		{
+			selectHql = selectHql + " and invD.invoiceNo is NOT null";
+		}
+		
 		try {
 			session = sessionFactory.openSession();
 			Query query = session.createQuery(selectHql);
@@ -202,7 +218,7 @@ public class InventoryDao {
 
 		Session session = null;
 		String selectHql = "FROM Inventory invD where " + "invD.inventorySpec.assignedProject = '" + projectName + "' and "
-				+ "invD.inventorySpec.status = 'assigned'";
+				+ "invD.inventorySpec.status = 'assigned' and invD.invoiceNo is null";
 		try {
 			session = sessionFactory.openSession();
 			Query query = session.createQuery(selectHql);
@@ -222,7 +238,7 @@ public class InventoryDao {
 
 		Session session = null;
 		String selectHql = "FROM Inventory invD where " + "invD.inventorySpec.assignedProject = '" + projectName + "' and "
-				+ "invD.inventorySpec.status = 'consumed'";
+				+ " invD.invoiceNo is NOT null";
 		try {
 			session = sessionFactory.openSession();
 			Query query = session.createQuery(selectHql);
@@ -244,5 +260,24 @@ public class InventoryDao {
 		Query query = session.createQuery(selectHql);
 		int inventoryEntryNo = query.uniqueResult() == null ? 0 : (int) query.uniqueResult();
 		return inventoryEntryNo;
+	}
+	
+	@Transactional
+	public ArrayList<Inventory> getNoInvoiceInventory(String projectName) throws Exception {
+		Session session = sessionFactory.getCurrentSession();
+
+		ArrayList<Inventory> results = new ArrayList<>();
+		try {
+			String queryStr = " from Inventory WHERE invoiceNo is null and assignedProject=:projectId";
+
+			Query query = session.createQuery(queryStr);
+			query.setParameter("projectId", projectName);
+			
+			results = (ArrayList<Inventory>) query.getResultList();
+
+		} catch (Exception hibernateException) {
+			throw hibernateException;
+		}
+		return results;
 	}
 }

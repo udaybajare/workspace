@@ -24,20 +24,22 @@ public class TaxInvoiceGenerator {
 	@Autowired
 	EmailUtils emailUtils;
 
-	public void generateAndSendTaxInvoice(TaxInvoiceDetails taxInvoiceDetails) {
+	public void generateAndSendTaxInvoice(TaxInvoiceDetails taxInvoiceDetails, String sender) {
 
 		taxInvoiceDetailsDao.saveTaxIvoice(taxInvoiceDetails);
 
 		invoiceGenerator.createInvoice(taxInvoiceDetails);
 
-		emailUtils.sendMessageWithAttachment(taxInvoiceDetails.getEmailAddress(), taxInvoiceDetails.getTaxInvoiceNo(), false);
+		emailUtils.sendMessageWithAttachment(sender, taxInvoiceDetails.getEmailAddress(), taxInvoiceDetails.getTaxInvoiceNo(),
+				false, TAX_INVOICE_ATTACHMENT_NAME);
 
 		try {
-			FileUtils.forceDelete(new File(System.getProperty("java.io.tmpdir") + "/TaxInvoice.pdf"));
+			FileUtils.forceDelete(new File(System.getProperty("java.io.tmpdir") + "/" + TAX_INVOICE_ATTACHMENT_NAME));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	private final String TAX_INVOICE_ATTACHMENT_NAME = "TaxInvoice.pdf";
 }

@@ -2,6 +2,9 @@ package com.invmgmt.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Properties;
 
@@ -32,7 +35,7 @@ import com.amazonaws.services.simpleemail.model.SendRawEmailRequest;
 
 @ManagedBean
 public class EmailUtils {
-	
+
 	@Autowired
 	ConfigProperties configProperties;
 
@@ -63,7 +66,8 @@ public class EmailUtils {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void sendMessageWithAttachment(String recipient, String taxInvoiceName, boolean reminder) {
+	public void sendMessageWithAttachment(String sender, String recipient, String taxInvoiceName, boolean reminder,
+			String fileToAttach) {
 
 		String subject = "Tax Invoice : Hamdule Industries";
 		String text = "Please find attached the Tax Invoice.";
@@ -74,29 +78,43 @@ public class EmailUtils {
 			text = "Gentel reminder for pending payment. Please see attached tax invoice for pending amount.";
 		}
 
-		String pathToAttachment = System.getProperty("java.io.tmpdir") + "/TaxInvoice.pdf";
-		// FileSystemResource file = new FileSystemResource(new
-		// File(pathToAttachment));
+		String pathToAttachment = System.getProperty("java.io.tmpdir") + "/" + fileToAttach;
 
 		File file = new File(pathToAttachment);
-		/*
-		 * MimeMessage message = getJavaMailSender().createMimeMessage();
-		 * 
-		 * MimeMessageHelper helper; try { helper = new
-		 * MimeMessageHelper(message, true); helper.setTo(to);
-		 * helper.setSubject(subject); helper.setText(text);
-		 * 
-		 * FileSystemResource file = new FileSystemResource(new
-		 * File(pathToAttachment)); helper.addAttachment(taxInvoiceName +
-		 * ".pdf", file);
-		 * 
-		 * } catch (MessagingException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); }
-		 * 
-		 * getJavaMailSender().send(message);
-		 */
+		sendEmail(subject, sender, recipient, text, file);
 
+	}
+
+	public void sendInquiry(String sender, String recipient, byte[] fileBytes, String inquiryName) {
+		String subject = "Hamdule Projects : Inventory Inquiry";
+
+		String text = "Greeting of thr day from hamdule Industries. Please find attached the Inventory requirment. PLeaase update the same and respond.";
+
+		String pathToAttachment = System.getProperty("java.io.tmpdir") + "/" + inquiryName + ".xls";
+		File file = new File(pathToAttachment);
+
+		FileOutputStream fos;
 		try {
+			fos = new FileOutputStream(file);
+			fos.write(fileBytes);
+			fos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		sendEmail(subject, sender, recipient, text, file);
+	}
+
+	public void sendEmail(String subject, String sender, String recipient, String text, File file) {
+		try {
+			if(sender.isEmpty())
+			{
+				sender = "ProjectInvManager@gmail.com";
+			}
 			final String awsAccessKeyId = configProperties.getPropValues("AWS_ACCESS_KEY_ID");
 			final String awsSecretAccessKey = configProperties.getPropValues("AWS_SECRET_ACCESS_KEY");
 			final AWSCredentials reqCredentials = new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey);
@@ -110,7 +128,7 @@ public class EmailUtils {
 
 			// Add subject, from and to lines.
 			message.setSubject(subject, "UTF-8");
-			message.setFrom(new InternetAddress("ProjectInvManager@gmail.com"));
+			message.setFrom(new InternetAddress(sender));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
 
 			// Create a multipart/alternative child container.

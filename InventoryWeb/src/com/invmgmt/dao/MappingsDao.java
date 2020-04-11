@@ -9,6 +9,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.invmgmt.entity.Mappings;
+
 @Repository
 public class MappingsDao {
 
@@ -20,7 +22,9 @@ public class MappingsDao {
 		Session session = null;
 		String selectHql = "";
 
-		if (superSetVal.equalsIgnoreCase("null")) {
+		if (inventory == null) {
+			selectHql = "SELECT distinct mpng." + subSet + " FROM Mappings mpng";
+		} else if (superSetVal.equalsIgnoreCase("null")) {
 			selectHql = "SELECT distinct mpng." + subSet + " FROM Mappings mpng where mpng." + superSet + " is "
 					+ superSetVal;
 		} else {
@@ -28,7 +32,7 @@ public class MappingsDao {
 					+ "' and mpng." + superSet + " = '" + superSetVal + "'";
 		}
 
-		if (!(inventory.trim().equals("Pipe"))) {
+		if (inventory != null && !(inventory.trim().equals("Pipe"))) {
 			selectHql = "SELECT distinct mpng." + subSet + " FROM Mappings mpng where mpng.inventoryName='" + inventory
 					+ "'";
 		}
@@ -42,5 +46,20 @@ public class MappingsDao {
 			session.close();
 		}
 		return associatedValues;
+	}
+
+	public ArrayList<Mappings> getAllMappinsData() {
+		ArrayList<Mappings> mappingsList = new ArrayList<Mappings>();
+		Session session = null;
+		try {
+			String selectHql = "From Mappings";
+			session = sessionFactory.openSession();
+			Query query = session.createQuery(selectHql);
+
+			mappingsList = (ArrayList<Mappings>) query.getResultList();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return mappingsList;
 	}
 }

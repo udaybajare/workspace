@@ -392,8 +392,7 @@
 
        if(venderName != "")
         $("[name='vendorName']").append("<option value=" + venderName + ">" + venderName + "</option>");
-
-    }
+      }
   }
 
 });

@@ -8,40 +8,43 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.sun.istack.internal.Nullable;
+
 @Table
 @Entity
 public class AccessoryDetails implements Serializable {
 
 	@Id
+	private int accessoryRowId;
+
 	private String accessoryName;
-	@Id
 	private String desc1;
-	@Id
 	private String desc2;
-	@Id
 	private String desc3;
-	@Id
 	private String desc4;
-	@Id
 	private String desc5;
 
-	@Id
 	@ColumnDefault("''")
 	private String assignedProject;
 
 	private String location;
 
-	@Id
 	private String status;
 
 	private String quantity;
-	
+
+	@Nullable
+	private String invoiceNo;
+
+	private String receivedDate;
+
 	public AccessoryDetails() {
 
 	}
 
 	public AccessoryDetails(String accessoryName, String desc1, String desc2, String desc3, String desc4, String desc5,
-			String assignedProject, String location, String status, String quantity) {
+			String assignedProject, String location, String status, String quantity, String invoiceNo,
+			String receivedDate) {
 		super();
 		this.accessoryName = accessoryName;
 		this.desc1 = desc1;
@@ -53,6 +56,16 @@ public class AccessoryDetails implements Serializable {
 		this.location = location;
 		this.status = status;
 		this.quantity = quantity;
+		this.invoiceNo = invoiceNo;
+		this.receivedDate = receivedDate;
+	}
+
+	public int getAccessoryRowId() {
+		return accessoryRowId;
+	}
+
+	public void setAccessoryRowId(int accessoryRowId) {
+		this.accessoryRowId = accessoryRowId;
 	}
 
 	public String getAccessoryName() {
@@ -133,5 +146,22 @@ public class AccessoryDetails implements Serializable {
 
 	public void setQuantity(String quantity) {
 		this.quantity = quantity;
-	}	
+	}
+
+	public String getInvoiceNo() {
+		return invoiceNo;
+	}
+
+	public void setInvoiceNo(String invoiceNo) {
+		this.invoiceNo = invoiceNo;
+	}
+
+	public String getReceivedDate() {
+		return receivedDate;
+	}
+
+	public void setReceivedDate(String receivedDate) {
+		this.receivedDate = receivedDate;
+	}
+
 }

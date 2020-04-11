@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -31,7 +32,9 @@ import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.dao.InventoryDefinitionDao;
 import com.invmgmt.dao.MappingsDao;
 import com.invmgmt.dao.ProjectDao;
+import com.invmgmt.dao.UserDetailsDao;
 import com.invmgmt.dao.ValvesDao;
+import com.invmgmt.dao.VendorDetailsDao;
 import com.invmgmt.entity.AccessoryDetails;
 import com.invmgmt.entity.BOQDetails;
 import com.invmgmt.entity.BOQHeader;
@@ -39,11 +42,14 @@ import com.invmgmt.entity.BOQLineData;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
 import com.invmgmt.entity.Valves;
+import com.invmgmt.entity.VendorDetails;
 import com.invmgmt.excel.ExcelReader;
 import com.invmgmt.excel.ExcelWriter;
 import com.invmgmt.interfaces.BOQData;
+import com.invmgmt.util.EmailUtils;
 import com.invmgmt.util.HTMLElements;
 import com.invmgmt.util.InventoryUtils;
+import com.invmgmt.util.MappingsUtil;
 
 @Controller
 @EnableWebMvc
@@ -84,9 +90,21 @@ public class BOQController {
 
 	@Autowired
 	BOQLineDataDao boqLineDataDao;
+	
+	@Autowired
+	UserDetailsDao userDetailsDao;
 
 	@Autowired
 	InventoryUtils inventoryUtils;
+
+	@Autowired
+	MappingsUtil mappingsUtil;
+
+	@Autowired
+	EmailUtils emailUtils;
+
+	@Autowired
+	VendorDetailsDao vendorDetailsDao;
 
 	ArrayList<Valves> valveDetailsList = null;
 
@@ -267,7 +285,7 @@ public class BOQController {
 		boqlineData = getBOQLineDataList(material, type, ends, classOrGrade, inventoryName, manifMetod);
 		try {
 			excelByts = writer.writeExcel(boqlineData, size, quantity, supplyRate, erectionRate, supplyAmount,
-					erectionAmount, "", header);
+					erectionAmount, "", header, false);
 			response.setHeader("Content-disposition", "attachment; filename=" + docNameToDownload + ".xls");
 
 			OutputStream out = response.getOutputStream();
@@ -293,7 +311,7 @@ public class BOQController {
 			String[] desc3, String[] desc4, String[] desc5, String[] model, String[] materialVal, String[] typeVal,
 			String[] pressureRatings, String[] endVal, String isOffer, String[] client, String[] site, String[] project,
 			String[] dName, String[] utility, String[] pressure, String[] temp, String[] dNo, String[] sheetDetails,
-			RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException {
+			String venderName, RedirectAttributes redirectAttributes, HttpServletResponse response, HttpSession session) throws IOException {
 		StringBuilder sheetdetailsStr = new StringBuilder();
 
 		int accessIndex = 0;
@@ -323,7 +341,7 @@ public class BOQController {
 		ArrayList<String> quotationNames = new ArrayList<String>();
 
 		if (!Boolean.valueOf(isOffer)) {
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < 50; i++) {
 				boqNameRevisionStr = boqName + "_R" + String.valueOf(i);
 				if (boqRevisions.contains(boqNameRevisionStr))
 					continue;
@@ -377,7 +395,7 @@ public class BOQController {
 				erectionAmount = new String[] {};
 			}
 			excelByts = writer.writeExcel(boqInventoryDetails, size, quantity, supplyRate, erectionRate, supplyAmount,
-					erectionAmount, boqNameRevisionStr, header);
+					erectionAmount, boqNameRevisionStr, header, Boolean.valueOf(isOffer));
 
 			ArrayList<BOQDetails> boqInventoryDetailsList = new ArrayList<BOQDetails>();
 			if (inventoryName != null) {
@@ -437,21 +455,15 @@ public class BOQController {
 
 		}
 
-		/*
-		 * if (boqNames != null && !boqNames.equals("")) {
-		 * mav.addObject("boqNameList", String.join(",", boqNames)); } else {
-		 * mav.addObject("boqNameList", ""); }
-		 * 
-		 * if (quotationNames != null && !quotationNames.equals("")) {
-		 * mav.addObject("quotationNamesList", String.join(",",
-		 * quotationNames)); } else { mav.addObject("quotationNamesList", ""); }
-		 * 
-		 * mav.addObject("projectId", projectId); mav.addObject("projectName",
-		 * project.getProjectName()); mav.addObject("projectDesc",
-		 * project.getProjectDesc());
-		 * 
-		 * return mav;
-		 */
+		if (Boolean.valueOf(isOffer) && (venderName != null && !(venderName.isEmpty()))) 
+		{
+			//Fetch associated email address
+			String sender = userDetailsDao.getEmailAddress((String)session.getAttribute("userName"));
+			
+			VendorDetails vendorDetails = vendorDetailsDao.getVendorDetails(venderName);
+			emailUtils.sendInquiry(sender, vendorDetails.getContactEmail(), excelByts, boqNameRevisionStr);
+		}
+
 		response.setHeader("Content-disposition", "attachment; filename=" + boqNameRevisionStr + ".xls");
 
 		OutputStream out = response.getOutputStream();
@@ -533,8 +545,14 @@ public class BOQController {
 
 		try {
 
-			ArrayList<String> results = (ArrayList<String>) mappingsDao.getAssociatedOptions(currentTag, value,
-					nextTagName, inventory);
+			ArrayList<String> results = new ArrayList<String>();
+
+			if (inventory.equals("Pipe")) {
+				results = (ArrayList<String>) mappingsDao.getAssociatedOptions(currentTag, value, nextTagName,
+						inventory);
+			} else {
+				results = mappingsUtil.getDetails(inventory, nextTagName);
+			}
 
 			for (int i = 0; i < results.size(); i++) {
 				String option = String.valueOf(results.get(i));
@@ -838,7 +856,7 @@ public class BOQController {
 							new InventorySpec(boqDetails.getInventoryName(), boqDetails.getMaterial(),
 									boqDetails.getType(), boqDetails.getManifacturingMethod(),
 									boqDetails.getClassOrGrade(), boqDetails.getEnds(), boqDetails.getSize(), "", ""),
-							"", Integer.parseInt(boqDetails.getQuantity()), ""));
+							"", Integer.parseInt(boqDetails.getQuantity()), "","",""));
 		}
 		return inventoryList;
 	}

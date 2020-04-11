@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.dao.PODetailsDao;
 import com.invmgmt.dao.ProjectDao;
-import com.invmgmt.dao.ReceivedInventoryDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
+import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
 import com.invmgmt.entity.PODetails;
 import com.invmgmt.entity.Project;
-import com.invmgmt.entity.ReceivedInventory;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.util.InventoryUtils;
 
@@ -42,7 +42,7 @@ public class OrderController {
 	ProjectDao projectDao;
 	
 	@Autowired
-	ReceivedInventoryDao receivedInventoryDao;
+	InventoryDao inventoryDao;
 
 	@RequestMapping(value = "/generateOrderForm", method = RequestMethod.POST)
 	public ModelAndView generateOfferFrom(String[] inventoryName, String[] material, String[] type, String[] manifMetod,
@@ -262,9 +262,10 @@ public class OrderController {
 	public @ResponseBody String getNoInvoiceInventory(int projectId) throws Exception {
 		String rowToReturn = "";
 		
-		ArrayList<ReceivedInventory> receivedInvListNoInvoice = receivedInventoryDao.getNoInvoiceInventory(projectId);
+		Project project = projectDao.getProject(projectId);
+		ArrayList<Inventory> receivedInvListNoInvoice = inventoryDao.getNoInvoiceInventory(project.getProjectName());
 		
-		for (ReceivedInventory receivedInventory : receivedInvListNoInvoice) 
+		for (Inventory receivedInventory : receivedInvListNoInvoice) 
 		{
 			
 			InventorySpec invSpec = receivedInventory.getInventorySpec();
@@ -280,7 +281,7 @@ public class OrderController {
 			itemsStr = itemsStr.replace("projectNameVal", invSpec.getAssignedProject());
 			itemsStr = itemsStr.replace("purchaseRateVal", receivedInventory.getPurchaseRate());
 			itemsStr = itemsStr.replace("locationVal", receivedInventory.getLocation());
-			itemsStr = itemsStr.replace("receivedDateVal", receivedInventory.getReceivedDate().substring(0,10));
+			itemsStr = itemsStr.replace("receivedDateVal", (receivedInventory.getReceivedDate()==null?"":receivedInventory.getReceivedDate().substring(0,10)));
 			
 			rowToReturn = rowToReturn + itemsStr;
 		}

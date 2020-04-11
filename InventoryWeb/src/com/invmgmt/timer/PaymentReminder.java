@@ -39,8 +39,8 @@ public class PaymentReminder {
 			taxInvoiceDetails.setRate(pendingPaymentDetails.getPendingAmount());
 			invoiceGenerator.createInvoice(taxInvoiceDetails);
 
-			emailUtils.sendMessageWithAttachment(taxInvoiceDetails.getEmailAddress(),
-					taxInvoiceDetails.getTaxInvoiceNo(), true);
+			emailUtils.sendMessageWithAttachment("",taxInvoiceDetails.getEmailAddress(),
+					taxInvoiceDetails.getTaxInvoiceNo(), true, TAX_INVOICE_ATTACHMENT_NAME);
 
 			try {
 				FileUtils.forceDelete(new File(System.getProperty("java.io.tmpdir") + "/TaxInvoice.pdf"));
@@ -51,4 +51,6 @@ public class PaymentReminder {
 
 		}
 	}
+
+	private final String TAX_INVOICE_ATTACHMENT_NAME = "TaxInvoice.pdf";
 }

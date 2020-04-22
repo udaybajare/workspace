@@ -120,6 +120,10 @@ public class InventoryDao {
 		{
 			selectHql = selectHql + " and invD.invoiceNo is null";
 		}
+		else
+		{
+			selectHql = selectHql + " and invD.invoiceNo is NOT null";
+		}
 		try {
 			session = sessionFactory.openSession();
 			Query query = session.createQuery(selectHql);

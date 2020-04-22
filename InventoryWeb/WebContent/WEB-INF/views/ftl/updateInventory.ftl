@@ -1071,17 +1071,24 @@ function accessoryStatusTo(accessoryId){
   if(accessoryStatusTo !== '')
   {
     $.ajax({
-      url: "releaseAccessory",
-      data: { 'quantity'      : quantity,
-          'accessoryStatusTo' : accessoryStatusTo,
-          'desc1'       : desc1,
-          'desc2'       : desc2,
-          'desc3'       : desc3,
-          'desc4'       : desc4,
-          'desc5'       : desc5,
-          'accessoryName'   : accessoryName,
+      url: "release",
+      data: { 
+      	  'quantity'      : quantity,
+          'statusTo' : accessoryStatusTo,
+          'materialStr'       : desc1,
+          'typeStr'       : desc2,
+          'manifMethodStr'       : desc3,
+          'gradeOrClassStr'       : desc4,
+          'endsStr'       : desc5,
+          'sizeStr'			: ''
+          'purchaseRateStr'	: purchaseRateStr,
+          'inventoryStr'   : accessoryName,
           'project'       : project,
-          'locationStr'     : locationStr},
+          'locationStr'   : locationStr,
+          'projectId'	  : $('#projectId'),
+		  'projectName'   : project,
+		  'projectDesc'   : 'projectDesc'
+		  },
       type: 'post',
       success: function(data) {
         console.log(data);

@@ -16,7 +16,7 @@ import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
 
 @Repository
-public class AccessoryDetailsDao {
+public class AccessoryDetailsDao {/*
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -187,4 +187,4 @@ public class AccessoryDetailsDao {
 		}
 		return Integer.valueOf(requestedQuantity);
 	}
-}
+*/}

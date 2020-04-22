@@ -28,7 +28,6 @@ import com.invmgmt.dao.ProjectDetailsDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
 import com.invmgmt.dao.ValvesDao;
 import com.invmgmt.dao.VendorDetailsDao;
-import com.invmgmt.entity.AccessoryDetails;
 import com.invmgmt.entity.BOQDetails;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.PaymentDetails;
@@ -101,12 +100,12 @@ public class ProjectController {
 
 		int projId = projectDao.addProject(project);
 		StringBuilder items = new StringBuilder();
-		
-		ArrayList<String> inventoryList = (ArrayList<String>)mappingsDao.getAssociatedOptions("null","null","inventoryName",null);
-		
-		for(String inventory : inventoryList)
-		{
-			items.append(optionsHTMLOpen+inventory.trim()+"\">"+inventory.trim()+optionsHTMLClose);
+
+		ArrayList<String> inventoryList = (ArrayList<String>) mappingsDao.getAssociatedOptions("null", "null",
+				"inventoryName", null);
+
+		for (String inventory : inventoryList) {
+			items.append(optionsHTMLOpen + inventory.trim() + "\">" + inventory.trim() + optionsHTMLClose);
 		}
 		System.out.println("New project created with ID : " + projId);
 
@@ -122,7 +121,7 @@ public class ProjectController {
 		mav.addObject("projectId", project.getProjectId());
 		mav.addObject("projectName", project.getProjectName());
 		mav.addObject("projectDesc", project.getProjectDesc());
-		mav.addObject("items",items.toString());
+		mav.addObject("items", items.toString());
 		mav.addObject("address", "");
 		mav.addObject("contactEmail", "");
 		mav.addObject("contactName", "");
@@ -151,7 +150,7 @@ public class ProjectController {
 
 		System.out.println("projectDetails.getProjectId() is : " + projectDetails.getProjectId());
 		Project project = projectDao.getProject(projectDetails.getProjectId());
-		
+
 		ModelAndView mav = new ModelAndView("redirect:/projectDetails");
 		mav.addObject("projectId", project.getProjectId());
 		mav.addObject("projectName", project.getProjectName());
@@ -170,7 +169,7 @@ public class ProjectController {
 		else if (null != projevtDesc && projevtDesc != "")
 			projectList = projectDao.getProject("projevtDesc", projevtDesc);
 		else if (null != companyName && companyName != "")
-			projectList = projectDao.getProject("companyName", projectName);
+			projectList = projectDao.getProject("companyName", companyName);
 
 		ModelAndView mav = new ModelAndView(searchProjectviewName);
 
@@ -238,14 +237,18 @@ public class ProjectController {
 		}
 
 		// Assigned accessories
-		ArrayList<AccessoryDetails> assignedAccessory = accessoryDetailsDao
-				.getAccessoryDetailsByStatus(project.getProjectName(), "assigned");
+		/*
+		 * ArrayList<AccessoryDetails> assignedAccessory = accessoryDetailsDao
+		 * .getAccessoryDetailsByStatus(project.getProjectName(), "assigned");
+		 */
 
-		StringBuffer assignedAccessoryStr = new StringBuffer();
-
-		for (AccessoryDetails accessory : assignedAccessory) {
-			assignedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(accessory, false) + projectDetalsHTML);
-		}
+		/*
+		 * StringBuffer assignedAccessoryStr = new StringBuffer();
+		 * 
+		 * for (AccessoryDetails accessory : assignedAccessory) {
+		 * assignedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(
+		 * accessory, false) + projectDetalsHTML); }
+		 */
 
 		// ArrayList<Valves> assignedValves =
 		// valveDetailsDao.getValveDetailsByStatus(project.getProjectName(),"assigned");
@@ -268,33 +271,34 @@ public class ProjectController {
 			consumedInventoryStr.append(inventoryUtils.createInventoryRowTable(inv, true) + projectDetalsHTML);
 		}
 
-		ArrayList<AccessoryDetails> consumedAccessory = accessoryDetailsDao
-				.getAccessoryDetailsByStatus(project.getProjectName(), "consumed");
-		StringBuffer consumedAccessoryStr = new StringBuffer();
-
-		for (AccessoryDetails accessory : consumedAccessory) {
-			consumedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(accessory, true) + projectDetalsHTML);
-		}
-		
+		/*
+		 * ArrayList<AccessoryDetails> consumedAccessory = accessoryDetailsDao
+		 * .getAccessoryDetailsByStatus(project.getProjectName(), "consumed");
+		 * StringBuffer consumedAccessoryStr = new StringBuffer();
+		 * 
+		 * for (AccessoryDetails accessory : consumedAccessory) {
+		 * consumedAccessoryStr.append(inventoryUtils.createAccessoryRowTable(
+		 * accessory, true) + projectDetalsHTML); }
+		 */
 		StringBuilder items = new StringBuilder();
-		
-		ArrayList<String> inventoryList = (ArrayList<String>)mappingsDao.getAssociatedOptions("null","null","inventoryName",null);
-		
-		for(String inventory : inventoryList)
-		{
-			if(!(inventory.trim().equals("")))
-			items.append(optionsHTMLOpen+inventory.trim()+"\">"+inventory.trim()+optionsHTMLClose);
+
+		ArrayList<String> inventoryList = (ArrayList<String>) mappingsDao.getAssociatedOptions("null", "null",
+				"inventoryName", null);
+
+		for (String inventory : inventoryList) {
+			if (!(inventory.trim().equals("")))
+				items.append(optionsHTMLOpen + inventory.trim() + "\">" + inventory.trim() + optionsHTMLClose);
 		}
 
 		mav.addObject("items", items.toString());
-		
+
 		mav.addObject("assignedInventory", assignedInventoryStr);
-		mav.addObject("assignedAccessory", assignedAccessoryStr);
+		mav.addObject("assignedAccessory", ""/* assignedAccessoryStr */);
 		mav.addObject("assignedValves", assignedValveStr);
 
 		// TODO : Add Consumed Inventory and Consumed Accessory
 		mav.addObject("consumedInventory", consumedInventoryStr);
-		mav.addObject("consumedAccessory", consumedAccessoryStr);
+		mav.addObject("consumedAccessory", ""/* consumedAccessoryStr */);
 
 		if (projectDetails.getAddress() == null) {
 			mav.addObject("address", "No Details");
@@ -342,21 +346,30 @@ public class ProjectController {
 		} else {
 			mav.addObject("quotationNamesList", "");
 		}
-		
+
 		ArrayList<String> vendors = vendorDetailsDao.getVendorList();
 		String vendorsList = vendors.toString();
 
 		vendorsList = vendorsList.substring(1).substring(0, vendorsList.length() - 2);
-		
+
 		mav.addObject("venderList", vendorsList);
-		
+
 		mav.addObject("taxInvoiceNamesList", taxInvoiceNames != null ? taxInvoiceNames : " ");
 		mav.addObject("projectId", project.getProjectId());
 		mav.addObject("projectName", project.getProjectName());
 		mav.addObject("projectDesc", project.getProjectDesc());
 		mav.addObject("paymentDetails", payDetailsString);
 		mav.addObject("poNamesList", poNames != null ? poNames : " ");
-		
+
+		project = projectDao.getProject(Integer.parseInt(projectId));
+
+		mav.addObject("clientName", project.getCompanyName() == null ? "" : project.getCompanyName());
+
+		mav.addObject("emailAddress", projectDetails.getContactEmail() == null ? "" : projectDetails.getContactEmail());
+		mav.addObject("addressedTo", projectDetails.getAddress() == null ? "" : projectDetails.getAddress());
+		mav.addObject("mobileNo", projectDetails.getContactPhone() == null ? "" : projectDetails.getContactPhone());
+		mav.addObject("contactName", projectDetails.getContactName() == null ? "" : projectDetails.getContactName());
+
 		return mav;
 	}
 
@@ -459,10 +472,9 @@ public class ProjectController {
 
 			double totalAmount = Double.parseDouble(taxinvoiceDetailsList.get(0).getRate());
 			totalAmount = totalAmount + Double.parseDouble(taxinvoiceDetailsList.get(0).getcGst()) * 2;
-			
-			if(taxinvoiceDetailsList.get(0).getMiscCharges()!=null)
-			{
-				totalAmount =  totalAmount + Double.parseDouble(taxinvoiceDetailsList.get(0).getMiscCharges());
+
+			if (taxinvoiceDetailsList.get(0).getMiscCharges() != null) {
+				totalAmount = totalAmount + Double.parseDouble(taxinvoiceDetailsList.get(0).getMiscCharges());
 			}
 
 			String dateReceived = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss aa").format(new Date());

@@ -50,4 +50,19 @@ public class BOQHeaderDao {
 		}
 		return header;
 	}
+	
+	@Transactional
+	public void	deleteHeaderData(String docNameToDownload, String projectId)
+	{
+		Session session = sessionFactory.getCurrentSession();
+		
+		String sql = "delete from BOQHeader BH where BH.boqName=:boqName and BH.projectId=:projectId";
+		
+		Query query = session.createQuery(sql);
+		
+		query.setParameter("boqName", docNameToDownload);
+		query.setParameter("projectId",projectId);
+		
+		query.executeUpdate();
+	}
 }

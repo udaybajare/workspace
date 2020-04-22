@@ -142,4 +142,11 @@ public class BOQHeader implements BOQData {
 		this.sheetDetails = sheetDetails;
 	}
 
+	@Override
+	public String toString() {
+		return "BOQHeader [id=" + id + ", projectId=" + projectId + ", boqName=" + boqName + ", client=" + client
+				+ ", site=" + site + ", project=" + project + ", dName=" + dName + ", utility=" + utility
+				+ ", pressure=" + pressure + ", temp=" + temp + ", dNo=" + dNo + ", sheetDetails=" + sheetDetails + "]";
+	}
+	
 }

@@ -99,6 +99,7 @@ public class InventoryController {
 		}
 
 		view.addObject("projectNames", projectNames.toString());
+
 		return view;
 	}
 
@@ -139,7 +140,7 @@ public class InventoryController {
 		for (int i = 0; i < inventorySpec.size(); i++) {
 			Inventory inventory = new Inventory();
 			inventory.setInventorySpec(inventorySpec.get(i));
-			inventory.setPurchaseRate(purchaseRate[i]);
+			inventory.setPurchaseRate(String.valueOf(Double.parseDouble(purchaseRate[i])));
 			inventory.setQuantity(quantity[i]);
 			inventory.setLocation(location[i]);
 
@@ -148,11 +149,14 @@ public class InventoryController {
 			System.out.println("inventoryRowId is : " + inventoryRowId);
 
 			if (inventoryRowId != 0) {
+
+				inventory.setInventoryRowId(inventoryRowId);
+
 				int availableQuantity = inventoryDao.getAvailableQuantity(inventory);
 
 				if (project[0] != null && project[0] != "") {
 
-					int assignedQty = inventoryDao.getQuantityByStatus(inventory, status[i], false);
+					int assignedQty = inventoryDao.getQuantityByStatus(inventory, status[i], true);
 
 					System.out.println("assignedQty is : " + assignedQty);
 
@@ -279,10 +283,6 @@ public class InventoryController {
 			if ("1".equals(addBillDetails) && billDetails.getBillNumber() != null
 					&& billDetails.getBillNumber() != "") {
 				billDao.saveBill(billDetails);
-			}
-
-			if (accessoryDetails.getAccessoryName() != null && accessoryDetails.getAccessoryName() != "") {
-				accessoryDetailsDao.saveAccessory(accessoryDetails);
 			}
 
 			String description = inventoryUtils.createDescriptionLine(material[i], type[i], inventoryName[i],
@@ -503,9 +503,9 @@ public class InventoryController {
 			String projectStr, String locationStr, String quantity, String projectId, String projectName,
 			String projectDesc, String statusTo, RedirectAttributes redirectAttributes) {
 		Inventory inventory = new Inventory(new InventorySpec(inventoryStr, materialStr, typeStr, manifMethodStr,
-				gradeOrClassStr, endsStr, sizeStr, projectStr, "assigned"), purchaseRateStr, 0, locationStr, "", "");
+				gradeOrClassStr, endsStr, sizeStr, projectStr, "assigned"), purchaseRateStr, 0, locationStr, null, "");
 
-		int assignedQty = inventoryDao.getQuantityByStatus(inventory, "assigned", false);
+		int assignedQty = inventoryDao.getQuantityByStatus(inventory, "assigned", true);
 
 		int qty = 0;
 
@@ -514,6 +514,8 @@ public class InventoryController {
 		} else {
 			qty = Integer.valueOf(assignedQty) - Integer.valueOf(quantity);
 		}
+
+		inventory.setInventoryRowId(inventoryDao.isEntityPresent(inventory));
 
 		// Reduce the assigned quantity
 		inventory.setQuantity(qty);
@@ -597,94 +599,91 @@ public class InventoryController {
 		return new ModelAndView("redirect:/projectDetails");
 	}
 
-	@RequestMapping(value = "/releaseAccessory", method = RequestMethod.POST)
-	private ModelAndView releaseAccessory(String quantity, String accessoryStatusTo, String desc1, String desc2,
-			String desc3, String desc4, String desc5, String accessoryName, String project, String locationStr,
-			String projectId, String projectName, String projectDesc, RedirectAttributes redirectAttributes) {
-		AccessoryDetails accessory = new AccessoryDetails(accessoryName, desc1, desc2, desc3, desc4, desc5, project,
-				locationStr, "assigned", quantity, "", "");
-
-		String assignedQty = accessoryDetailsDao.getAccessoryDetailsByStatus(accessory, "assigned");
-		String qty = "";
-		if (accessoryStatusTo.equals("assigned")) {
-			qty = String.valueOf(Integer.valueOf(assignedQty) + Integer.valueOf(quantity));
-		} else {
-			qty = String.valueOf(Integer.valueOf(assignedQty) - Integer.valueOf(quantity));
-		}
-		// Reduce the assigned quantity
-		accessory.setQuantity(qty);
-
-		// Add new entry or update existing one without project
-		AccessoryDetails accessoryToRelease = new AccessoryDetails(accessoryName, desc1, desc2, desc3, desc4, desc5,
-				project, locationStr, accessoryStatusTo, quantity, "", "");
-
-		boolean isAccessoryPresentinDB = false;
-		boolean isToBeAssigned = false;
-		if (accessoryStatusTo.equals("release")) {
-			accessoryStatusTo = "available";
-			accessoryToRelease.setAssignedProject("");
-			accessoryToRelease.setStatus(accessoryStatusTo);
-			isAccessoryPresentinDB = accessoryDetailsDao.isEntityPresent(accessoryToRelease);
-		} else if (accessoryStatusTo.equals("consumed")) {
-			accessoryToRelease.setStatus("consumed");
-			isAccessoryPresentinDB = accessoryDetailsDao.isEntityPresent(accessoryToRelease, accessoryStatusTo);
-		} else if (accessoryStatusTo.equals("assigned")) {
-			isToBeAssigned = true;
-			accessoryStatusTo = "available";
-			accessoryToRelease.setAssignedProject("");
-			accessoryToRelease.setStatus("available");
-			isAccessoryPresentinDB = true;
-		}
-
-		if (!isAccessoryPresentinDB) {
-			// Inventory is not available. Add a new entry to DB
-			accessoryToRelease.setQuantity(quantity);
-		} else {
-			// Inventory is available. Just increase the
-			// quantity
-			int quantityToGo = accessoryDetailsDao.getQuantityByStatus(accessoryToRelease, accessoryStatusTo);
-			String qtytoUpdate = "";
-
-			if (isToBeAssigned) {
-				qtytoUpdate = String.valueOf(quantityToGo - Integer.valueOf(quantity));
-			} else {
-				qtytoUpdate = String.valueOf(quantityToGo + Integer.valueOf(quantity));
-			}
-
-			accessoryToRelease.setQuantity(qtytoUpdate);
-		}
-
-		try {
-			accessoryDetailsDao.saveAccessory(accessory);
-		} catch (Exception ex) {
-			System.out.println("calling update");
-			accessoryDetailsDao.updateWhenSaveFailed(accessory);
-		}
-
-		try {
-			accessoryDetailsDao.saveAccessory(accessoryToRelease);
-		} catch (Exception ex) {
-			System.out.println("calling update");
-			accessoryDetailsDao.updateWhenSaveFailed(accessoryToRelease);
-		}
-
-		if (isToBeAssigned) {
-			return new ModelAndView("redirect:/updateInventoryForm");
-		}
-
-		redirectAttributes.addAttribute("projectId", projectId);
-		redirectAttributes.addAttribute("projectName", projectName);
-		redirectAttributes.addAttribute("projectDesc", projectDesc);
-
-		return new ModelAndView("redirect:/projectDetails");
-	}
-
-	@RequestMapping(value = "/saveAccessory", method = RequestMethod.POST)
-	private ModelAndView saveAccessory(AccessoryDetails accessoryDetails) {
-		accessoryDetailsDao.saveAccessory(accessoryDetails);
-
-		return new ModelAndView("redirect:/updateInventoryForm");
-	}
+	// Following methods have been commented as the Accessory details will be
+	// saved in Inventory Table instead of AccessoryDetails.
+	/*
+	 * @RequestMapping(value = "/releaseAccessory", method = RequestMethod.POST)
+	 * private ModelAndView releaseAccessory(String quantity, String
+	 * accessoryStatusTo, String desc1, String desc2, String desc3, String
+	 * desc4, String desc5, String accessoryName, String project, String
+	 * locationStr, String projectId, String projectName, String projectDesc,
+	 * String purchaseRate, RedirectAttributes redirectAttributes) {
+	 * AccessoryDetails accessory = new AccessoryDetails(accessoryName, desc1,
+	 * desc2, desc3, desc4, desc5, project, locationStr, "assigned", quantity,
+	 * "", "");
+	 * 
+	 * InventorySpec invSpec = new InventorySpec(accessoryName,desc1, desc2,
+	 * desc3, desc4, desc5, "", project, "assigned"); Inventory inventory = new
+	 * Inventory(invSpec, purchaseRate, Integer.parseInt(quantity), locationStr,
+	 * "", "");
+	 * 
+	 * //String assignedQty =
+	 * accessoryDetailsDao.getAccessoryDetailsByStatus(accessory, "assigned");
+	 * int assignedQty = inventoryDao.getQuantityByStatus(inventory, "assigned",
+	 * true); String qty = ""; if (accessoryStatusTo.equals("assigned")) { qty =
+	 * String.valueOf(Integer.valueOf(assignedQty) + Integer.valueOf(quantity));
+	 * } else { qty = String.valueOf(Integer.valueOf(assignedQty) -
+	 * Integer.valueOf(quantity)); } // Reduce the assigned quantity
+	 * accessory.setQuantity(qty);
+	 * 
+	 * // Add new entry or update existing one without project AccessoryDetails
+	 * accessoryToRelease = new AccessoryDetails(accessoryName, desc1, desc2,
+	 * desc3, desc4, desc5, project, locationStr, accessoryStatusTo, quantity,
+	 * "", "");
+	 * 
+	 * boolean isAccessoryPresentinDB = false; boolean isToBeAssigned = false;
+	 * if (accessoryStatusTo.equals("release")) { accessoryStatusTo =
+	 * "available"; inventory.setAssignedProject("");
+	 * inventory.setStatus(accessoryStatusTo); isAccessoryPresentinDB =
+	 * inventoryDao.isEntityPresent(inventory)!=0?true:false;
+	 * //accessoryDetailsDao.isEntityPresent(accessoryToRelease); } else if
+	 * (accessoryStatusTo.equals("consumed")) {
+	 * accessoryToRelease.setStatus("consumed"); isAccessoryPresentinDB =
+	 * accessoryDetailsDao.isEntityPresent(accessoryToRelease,
+	 * accessoryStatusTo); } else if (accessoryStatusTo.equals("assigned")) {
+	 * isToBeAssigned = true; accessoryStatusTo = "available";
+	 * accessoryToRelease.setAssignedProject("");
+	 * accessoryToRelease.setStatus("available"); isAccessoryPresentinDB = true;
+	 * }
+	 * 
+	 * if (!isAccessoryPresentinDB) { // Inventory is not available. Add a new
+	 * entry to DB accessoryToRelease.setQuantity(quantity); } else { //
+	 * Inventory is available. Just increase the // quantity int quantityToGo =
+	 * accessoryDetailsDao.getQuantityByStatus(accessoryToRelease,
+	 * accessoryStatusTo); String qtytoUpdate = "";
+	 * 
+	 * if (isToBeAssigned) { qtytoUpdate = String.valueOf(quantityToGo -
+	 * Integer.valueOf(quantity)); } else { qtytoUpdate =
+	 * String.valueOf(quantityToGo + Integer.valueOf(quantity)); }
+	 * 
+	 * accessoryToRelease.setQuantity(qtytoUpdate); }
+	 * 
+	 * try { //accessoryDetailsDao.saveAccessory(accessory);
+	 * 
+	 * inventoryDao.saveInventory();
+	 * 
+	 * } catch (Exception ex) { System.out.println("calling update");
+	 * accessoryDetailsDao.updateWhenSaveFailed(accessory); }
+	 * 
+	 * try { accessoryDetailsDao.saveAccessory(accessoryToRelease); } catch
+	 * (Exception ex) { System.out.println("calling update");
+	 * accessoryDetailsDao.updateWhenSaveFailed(accessoryToRelease); }
+	 * 
+	 * if (isToBeAssigned) { return new
+	 * ModelAndView("redirect:/updateInventoryForm"); }
+	 * 
+	 * redirectAttributes.addAttribute("projectId", projectId);
+	 * redirectAttributes.addAttribute("projectName", projectName);
+	 * redirectAttributes.addAttribute("projectDesc", projectDesc);
+	 * 
+	 * return new ModelAndView("redirect:/projectDetails"); }
+	 * 
+	 * @RequestMapping(value = "/saveAccessory", method = RequestMethod.POST)
+	 * private ModelAndView saveAccessory(AccessoryDetails accessoryDetails) {
+	 * accessoryDetailsDao.saveAccessory(accessoryDetails);
+	 * 
+	 * return new ModelAndView("redirect:/updateInventoryForm"); }
+	 */
 
 	@RequestMapping(value = "/updateInvPO", method = RequestMethod.GET)
 	private ModelAndView updateInvPO() {

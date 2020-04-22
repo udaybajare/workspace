@@ -42,7 +42,7 @@
             <table class="table table-colored table-bordered" style="margin-bottom:0rem;">
               <thead >
                 <tr >
-                  <th colspan="4"style="background-color: #c2cdd1;border-color:#c2cdd1;"><b><h3 class="text-center text-light font-weight-bold" style="margin-top: 1%;">RETURNABLE CHALLAN</h3></b></th>
+                  <th colspan="4"style="background-color: #c2cdd1;border-color:#c2cdd1;"><b><h3 class="text-center text-light font-weight-bold" style="margin-top: 1%;">SALE CHALLAN</h3></b></th>
                 </tr>
               </thead>
               <tbody>

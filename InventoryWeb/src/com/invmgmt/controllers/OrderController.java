@@ -17,11 +17,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.dao.PODetailsDao;
 import com.invmgmt.dao.ProjectDao;
+import com.invmgmt.dao.ProjectDetailsDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
 import com.invmgmt.entity.PODetails;
 import com.invmgmt.entity.Project;
+import com.invmgmt.entity.ProjectDetails;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.util.InventoryUtils;
 
@@ -40,6 +42,9 @@ public class OrderController {
 
 	@Autowired
 	ProjectDao projectDao;
+	
+	@Autowired
+	ProjectDetailsDao projectDetailsDao;
 	
 	@Autowired
 	InventoryDao inventoryDao;
@@ -194,9 +199,13 @@ public class OrderController {
 	@RequestMapping(value = "/getPoList", method = { RequestMethod.POST, RequestMethod.GET })
 	private @ResponseBody String getPoList(String projectName) {
 		int projectID = projectDao.getProjectId(projectName);
+		
+		ProjectDetails projectDetails = projectDetailsDao.getProjectDetails(projectID);
+		
+		
 		String poNames = inventoryUtils.getPONames(String.valueOf(projectID));
 
-		return poNames;
+		return poNames+"::"+projectDetails.toString();
 	}
 
 	@RequestMapping(value = "/getPoDetails", method = { RequestMethod.POST, RequestMethod.GET })
@@ -255,7 +264,7 @@ public class OrderController {
 			}
 		}
 
-		return rowToReturn;
+		return rowToReturn+"::"+((PODetails)poDetailsList.get(0)).toString();
 	}
 
 	@RequestMapping(value = "/getNoInvoiceInventory", method = RequestMethod.POST)

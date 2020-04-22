@@ -73,24 +73,14 @@ public class InventoryUtils {
 		String template = "<tr id=\"" + inventoryId + "\"><form><td></td>"
 				+ "<td>InventoryVal</td>    <td>MaterialVal</td>    <td>TypeVal</td>"
 				+ "<td>ManifMethodVal</td><td>gradeOrClassVal</td>    <td>endsVal</td>" + "<td>sizeVal</td>" + "<td>"
-				/* + (isConsumed ? "availableQuantity": */
-				+ "availableQuantity</td>"
-				/*
-				 * "<input type=\"text\" style=\"width:45px;\" name=\"quantity\" value=\"availableQuantity\" >"
-				 * )
-				 */
+				+ (isConsumed ? "availableQuantity</td>" : "<input type=\"text\" style=\"width:45px;\" name=\"quantity\" value=\"availableQuantity\" > </td>")				 
 				+ "<td>purchaseRateVal</td>"
 				+ (needProjectList
 						? "<td><select class='form-control currentProjectList' name='project' name='projectName' ><option></option></td>"
 						: "<td>projectVal</td>")
 				+ "<td>locationVal</td>"
 
-				+ (needProjectList ? "<td><input type=\"submit\" class=\"btn btn-default \" onClick=\"statusTo('"
-						+ inventoryId + "');\"  value=\"Assign\"></td>" : (isConsumed ? "" : "" /*
-																								 * "<select class=\"form-control statusTo\" name=\"statusTo\" > <option></option> <option value=\"release\">Release</option>"
-																								 * +
-																								 * "<option value=\"consumed\">Consumed</option></select>"
-																								 */))
+				+ (isConsumed ? "" : "<td><input type=\"button\" class=\"btn btn-default statusTo \" value=\"release\"></td>")
 				+ "<input type=\"hidden\" name=\"inventoryStr\" value=\"InventoryVal\" >"
 				+ "<input type=\"hidden\" name=\"materialStr\" value=\"MaterialVal\" >"
 				+ "<input type=\"hidden\" name=\"typeStr\" value=\"TypeVal\" >"
@@ -113,7 +103,7 @@ public class InventoryUtils {
 		rowToReturn = rowToReturn.replace("sizeVal", inv.getInventorySpec().getSize());
 
 		// check assigned quantity
-		int availableQuantity = inventoryDao.getQuantityByStatus(inv, inv.getInventorySpec().getStatus(), true);
+		int availableQuantity = inventoryDao.getQuantityByStatus(inv, inv.getInventorySpec().getStatus(), !isConsumed);
 
 		rowToReturn = rowToReturn.replace("availableQuantity", Integer.toString(availableQuantity));
 

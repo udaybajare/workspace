@@ -1,5 +1,7 @@
 package com.invmgmt.entity;
 
+import java.util.Arrays;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -134,4 +136,15 @@ public class PODetails {
 	this.poDate = poDate;
 	this.projectId = projectId;
     }
+
+	@Override
+	public String toString() {
+		return "PODetails [poNumber=" + poNumber + ": vendorName=" + vendorName + ": location=" + location
+				+ ": contactName=" + contactName + ": contactNumber=" + contactNumber + ": contactEmail=" + contactEmail
+				+ ": term=" + Arrays.toString(term) + ": lineItem=" + lineItem + ": lineItemNoHtml=" + lineItemNoHtml
+				+ ": poDate=" + poDate + ": projectId=" + projectId + "]";
+	}
+    
+    
+    
 }

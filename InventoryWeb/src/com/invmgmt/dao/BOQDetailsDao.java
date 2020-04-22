@@ -51,6 +51,19 @@ public class BOQDetailsDao {
 
 		return boqDetailsList;
 	}
+	
+	@Transactional
+	public void	deleteBoqData(String docNameToDownload, String projectId)
+	{
+		Session session = sessionFactory.getCurrentSession();
+		String selectHql = "delete FROM BOQDetails boqD where boqD.boqName=:boqName and projectId=:projectId";
+		
+		Query query = session.createQuery(selectHql);
+		query.setParameter("boqName", docNameToDownload);
+		query.setParameter("projectId", projectId);
+		
+		query.executeUpdate();
+	}
 
 	@Transactional
 	public ArrayList<String> getAssociatedBOQNames(String projectId) {

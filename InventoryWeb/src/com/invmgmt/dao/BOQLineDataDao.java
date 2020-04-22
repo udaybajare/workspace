@@ -57,9 +57,12 @@ public class BOQLineDataDao {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		BOQLineData boqLineData = boqLineDataList.get(0);
 
-		if (inventoryNameSplited.length > 1) {
+		BOQLineData boqLineData = null;
+		if (boqLineDataList.size() > 0)
+			boqLineData = boqLineDataList.get(0);
+
+		if (boqLineData != null && inventoryNameSplited.length > 1) {
 			boqLineData.setInventoryName(inventoryNameSplited[0] + ":" + boqLineData.getInventoryName());
 		}
 

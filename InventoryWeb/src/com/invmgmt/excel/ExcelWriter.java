@@ -4,7 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,7 +22,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -38,7 +40,7 @@ import com.invmgmt.entity.BOQLineData;
 public class ExcelWriter {
 
 	public byte[] writeExcel(ArrayList<BOQLineData> boqLineDataDetails, String[] size, String[] quantity,
-			String[] supplyRate, String[] erectionRate, String[] sypplyAmount, String[] erectionAmount,
+			String[] supplyRate, String[] erectionRate, String[] supplyAmount, String[] erectionAmount,
 			String boqNameRevisionStr, BOQHeader header, boolean isOffer) throws IOException {
 
 		Workbook workBook = null;
@@ -117,6 +119,8 @@ public class ExcelWriter {
 		int lastIndex = 0;
 
 		int index = 0;
+		
+		
 
 		CellStyle whiteBackGround = workBook.createCellStyle();
 
@@ -212,8 +216,8 @@ public class ExcelWriter {
 			int invRepeateCount = 0;
 			int rowB4Push = 0;
 
-			double supplyRateTotal = 0;
-			double erectionRateTotal = 0;
+			double supplyAmountTotal = 0;
+			double erectionAmountTotal = 0;
 
 			for (int invIndx = startIndex; invIndx < lastIndex; invIndx++) {
 				BOQLineData inventory = boqLineDataDetails.get(invIndx);
@@ -255,34 +259,37 @@ public class ExcelWriter {
 
 					if (supplyRate.length > 0) {
 						cellToUpdate6.setCellValue(supplyRate[index]);
-						if (!(supplyRate[index].isEmpty())) {
-							supplyRateTotal = supplyRateTotal + Double.parseDouble(supplyRate[index]);
-						}
 
 					}
 					cellToUpdate6.setCellStyle(whiteBackGroundTextCenter);
 
-					Cell cellToUpdate8 = sheet.getRow(row).getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+					Cell cellToUpdate9 = sheet.getRow(row).getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
-					Cell cellToUpdate9 = sheet.getRow(row).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+					if (supplyAmount.length > 0) {
+						cellToUpdate9.setCellValue(supplyAmount[index]);
 
-					if (sypplyAmount.length > 0)
-						cellToUpdate9.setCellValue(sypplyAmount[index]);
+						if (!(supplyAmount[index].isEmpty())) {
+							supplyAmountTotal = supplyAmountTotal + Double.parseDouble(supplyAmount[index]);
+						}
+					}
 					cellToUpdate9.setCellStyle(whiteBackGroundTextCenter);
 
+					Cell cellToUpdate8 = sheet.getRow(row).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 					if (erectionRate.length > 0) {
 						cellToUpdate8.setCellValue(erectionRate[index]);
-						if (!(erectionRate[index].isEmpty())) {
-							erectionRateTotal = erectionRateTotal + Double.parseDouble(erectionRate[index]);
-						}
 
 					}
 					cellToUpdate8.setCellStyle(whiteBackGroundTextCenter);
 
 					Cell cellToUpdate10 = sheet.getRow(row).getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
-					if (erectionAmount.length > 0)
+					if (erectionAmount.length > 0) {
 						cellToUpdate10.setCellValue(erectionAmount[index]);
+						if (!(erectionAmount[index].isEmpty())) {
+							erectionAmountTotal = erectionAmountTotal + Double.parseDouble(erectionAmount[index]);
+						}
+
+					}
 					cellToUpdate10.setCellStyle(whiteBackGroundTextCenter);
 
 					invRepeateCount++;
@@ -296,18 +303,23 @@ public class ExcelWriter {
 					 * if(invRepeateCount>6) { nextRow = nextRow +
 					 * (inventoryCount-6); }
 					 */
+					sheet.createRow(nextRow - 2);
 					sheet.createRow(nextRow - 1);
 					sheet.createRow(nextRow);
 
-					/*if (invIndx != 0) {
-						sheet.createRow(nextRow - 2);
-						for (int n = 0; n < 8; n++) {
-							Cell cell0 = sheet.getRow(nextRow - 2).getCell(n,
-									Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-							cell0.setCellStyle(whiteBackGround);
-						}
-					}*/
+					/*
+					 * if (invIndx != 0) { sheet.createRow(nextRow - 2); for
+					 * (int n = 0; n < 8; n++) { Cell cell0 =
+					 * sheet.getRow(nextRow - 2).getCell(n,
+					 * Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+					 * cell0.setCellStyle(whiteBackGround); } }
+					 */
 
+					for (int n = 0; n < 8; n++) {
+						Cell cell0 = sheet.getRow(nextRow - 2).getCell(n, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+						cell0.setCellStyle(whiteBackGround);
+					}
+					
 					for (int n = 0; n < 8; n++) {
 						Cell cell0 = sheet.getRow(nextRow - 1).getCell(n, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 						cell0.setCellStyle(whiteBackGround);
@@ -318,7 +330,11 @@ public class ExcelWriter {
 						cell0.setCellStyle(whiteBackGround);
 					}
 
-					String invCategory = "null" != inventory.getCategory() ? inventory.getCategory() : "";
+					Cell serialNumberCell = sheet.getRow(nextRow - 1).getCell(0,
+							Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+					serialNumberCell.setCellValue(index + 1);
+
+					String invCategory = null != inventory.getCategory() ? inventory.getCategory() : "";
 					Cell cellToUpdateInv = sheet.getRow(nextRow - 1).getCell(1,
 							Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 					cellToUpdateInv.setCellValue(inventory.getInventoryName() + " " + invCategory);
@@ -344,24 +360,24 @@ public class ExcelWriter {
 					if (supplyRate.length > 0) {
 						cellToUpdate6.setCellValue(supplyRate[index]);
 						if (!(supplyRate[index].isEmpty())) {
-							supplyRateTotal = supplyRateTotal + Double.parseDouble(supplyRate[index]);
+							supplyAmountTotal = supplyAmountTotal + Double.parseDouble(supplyAmount[index]);
 						}
 
 					}
 					cellToUpdate6.setCellStyle(whiteBackGroundTextCenter);
 
-					Cell cellToUpdate9 = sheet.getRow(nextRow).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+					Cell cellToUpdate9 = sheet.getRow(nextRow).getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
-					if (sypplyAmount.length > 0)
-						cellToUpdate9.setCellValue(sypplyAmount[index]);
+					if (supplyAmount.length > 0)
+						cellToUpdate9.setCellValue(supplyAmount[index]);
 					cellToUpdate9.setCellStyle(whiteBackGroundTextCenter);
 
-					Cell cellToUpdate8 = sheet.getRow(nextRow).getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+					Cell cellToUpdate8 = sheet.getRow(nextRow).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 
 					if (erectionRate.length > 0) {
 						cellToUpdate8.setCellValue(erectionRate[index]);
 						if (!(erectionRate[index].isEmpty())) {
-							erectionRateTotal = erectionRateTotal + Double.parseDouble(erectionRate[index]);
+							erectionAmountTotal = erectionAmountTotal + Double.parseDouble(erectionAmount[index]);
 						}
 					}
 					cellToUpdate8.setCellStyle(whiteBackGroundTextCenter);
@@ -482,10 +498,30 @@ public class ExcelWriter {
 			sheet.createRow(nextRow - 2);
 
 			sheet.getRow(nextRow - 2).getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue("SubTotal");
-			sheet.getRow(nextRow - 2).getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
-					.setCellValue(supplyRateTotal);
-			sheet.getRow(nextRow - 2).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
-					.setCellValue(erectionRateTotal);
+			sheet.getRow(nextRow - 2).getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
+					.setCellValue(supplyAmountTotal);
+			sheet.getRow(nextRow - 2).getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
+					.setCellValue(erectionAmountTotal);
+
+			
+
+			Sheet annexture = workBook.getSheetAt(1);
+
+			annexture.getRow(4 + s).getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(s);
+			annexture.getRow(4 + s).getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
+					.setCellValue(sheet.getSheetName());
+			annexture.getRow(4 + s).getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
+					.setCellValue(supplyAmountTotal);
+			annexture.getRow(4 + s).getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
+					.setCellValue(erectionAmountTotal);
+
+			Cell supplyTotalCell = annexture.getRow(15).getCell(3);
+			Cell erectionTotalCell = annexture.getRow(15).getCell(4);
+
+			FormulaEvaluator evaluator = workBook.getCreationHelper().createFormulaEvaluator();
+			
+			evaluator.evaluateFormulaCell(supplyTotalCell);
+			evaluator.evaluateFormulaCell(erectionTotalCell);
 
 			for (int k = 0; k < 8; k++) {
 				Cell lastCell = sheet.getRow(nextRow - 2).getCell(k, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
@@ -504,6 +540,32 @@ public class ExcelWriter {
 			workBook.removeSheetAt(0);
 			workBook.removeSheetAt(0);
 		} else {
+
+			Sheet cover = workBook.getSheetAt(0);
+
+			cover.getRow(6).getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
+					.setCellValue(new SimpleDateFormat("dd-MMMM-yyyy").format(new Date()));
+			cover.getRow(7).getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue("");
+
+			cover.getRow(7).getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(header.getClient());
+			cover.getRow(8).getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(header.getSite());
+
+			cover.getRow(10).getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
+					.setCellValue(cover.getRow(10).getCell(2).getStringCellValue() + "");
+
+			cover.getRow(12).getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
+					.setCellValue(cover.getRow(12).getCell(2).getStringCellValue() + header.getClient());
+			
+			FormulaEvaluator evaluator1 = workBook.getCreationHelper().createFormulaEvaluator();
+			
+			evaluator1.evaluateFormulaCell(cover.getRow(23).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+			evaluator1.evaluateFormulaCell(cover.getRow(23).getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+			evaluator1.evaluateFormulaCell(cover.getRow(24).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+			evaluator1.evaluateFormulaCell(cover.getRow(24).getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+			evaluator1.evaluateFormulaCell(cover.getRow(25).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+			evaluator1.evaluateFormulaCell(cover.getRow(26).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+			evaluator1.evaluateFormulaCell(cover.getRow(27).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+
 			workBook.removeSheetAt(2);
 		}
 
@@ -579,9 +641,6 @@ public class ExcelWriter {
 	}
 
 	private static void copyCell(Cell oldCell, Cell newCell) {
-
-		System.out.println("newCell is : " + newCell);
-		System.out.println("oldCell is : " + oldCell);
 
 		newCell.setCellStyle(oldCell.getCellStyle());
 

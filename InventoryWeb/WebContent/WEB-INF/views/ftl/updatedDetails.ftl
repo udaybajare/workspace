@@ -83,7 +83,6 @@
             </div>
           </div>
         </div>
-
         <div class="col-auto hidden-md-down">
         </div>
       </div>
@@ -101,7 +100,7 @@
   <section class="light-gray-bg pv-30 padding-bottom-clear clearfix">
     <div class="container" style="max-width:98%;">
       <div class="row">
-        <div class="col-md-7 ">
+        <div class="col-md-7" >
           <div class="pv-30 ph-20 feature-box bordered shadow text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
             <h3>${projectName}</h3>
             <div class="separator clearfix"></div>
@@ -147,6 +146,7 @@
                 <div class="modal-content" style="width:110%;margin-left:-4%;">
                  <div class="modal-header">
                   <h4 class="modal-title" >Project Details</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
                 </div>
                 <div class="modal-body">
                  <form action="updateProject" class="projDetails" method="POST">
@@ -232,99 +232,95 @@
            <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content" style="width:110%;margin-left:-4%;">
              <div class="modal-header">
-              <h4 class="modal-title" >Project Details</h4>
+              <h4 class="modal-title" >BOQ Section</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
-              <div class="row" style="margin-top: 2%;margin-bottom: 2%;margin-left: 12%">
-               <div class="col-md-3" style="margin-top: -1%">
-                <h4>Quotation Revisions</h4>
-                <select class="form-control revisionSection" onchange="download($('.revisionSection').val(),'tableContentDetails');">
-                  <option></option>
-                </select>
-              </div> 
-              <div class="col-md-3 "style="margin-left:-2%; margin-top: 1%";>
-               <button type="button" class="btn btn-default" onclick="toggleCreateBOQSec();">Create BOQ</button>
+              <div class="row">
+                <div class="col-md-4" align="center">
+                  <h4>Quotation Revisions</h4>
+                  <select class="form-control revisionSection" onchange="download($('.revisionSection').val(),'tableContentDetails');">
+                    <option></option>
+                  </select>
+                </div> 
+                <div class="col-md-4" align="center">
+                  <br/>
+                  <button type="button" class="btn btn-default" onclick="toggleCreateBOQSec();">Create BOQ</button>
+                </div>
+                <div class="col-md-4" align="center">
+                  <br/>
+                  <form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data" style="margin: 0px">
+                   <button class="btn btn-default" name="uploadFile">Upload</button>
+                   <label for="choose">Choose File</label>
+                   <input id="choose" type="file" name="file" onClick="toggleImportSec();" style="display:none;" class="btn btn-default">
+                 </form>  
+               </div>
              </div>
-             <div class="col-md-3 "style="margin-left:-2%; margin-top: 1%";>
-               <form name="fileUploadForm" action="import" method="post" enctype="multipart/form-data" style="margin: 0px">
-                 <button class="btn btn-default" name="uploadFile">Upload</button>
-                 <label for="choose">Choose File</label>
-                 <input id="choose" type="file" name="file" onClick="toggleImportSec();" style="display:none;" class="btn btn-default">
-               </form>  
-             </div>
-             <div class="col-md-3" id="generate" style="margin-left:-2%;margin-top: 1%";>
-
-             </div>
-           </div>
-           <div class="row" style="margin-left: 2%";>
-            <input class="form-control" type="hidden" name="boqNameList" value="${boqNameList}" style="margin-left: 3%;margin-bottom: 6%;">
-            <input class="form-control" type="hidden" name="quotationNamesList" value="${quotationNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
-            <input class="form-control" type="hidden" name="taxInvoiceNamesList" value="${taxInvoiceNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
-            <input class="form-control" type="hidden" name="poNamesList" value="${poNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
-          </div>
-
-          <div class="row" style="margin-bottom: 2%;">
-            <div class="col-md-12">
-              <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100"></div>
+             <div class="row" style="margin-left: 2%";>
+              <input class="form-control" type="hidden" name="boqNameList" value="${boqNameList}" style="margin-left: 3%;margin-bottom: 6%;">
+              <input class="form-control" type="hidden" name="quotationNamesList" value="${quotationNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
+              <input class="form-control" type="hidden" name="taxInvoiceNamesList" value="${taxInvoiceNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
+              <input class="form-control" type="hidden" name="poNamesList" value="${poNamesList}" style="margin-left: 3%;margin-bottom: 6%;">
             </div>
-          </div>
-          <form name="generateBOQ" action="generateNew" class="createBOQ" method="POST" style="display: none;">
-            <div class="row" style="margin-left: 8%;">
-              <div class="col-md-2 col-sm-2" >
-               <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-                <label>Doc Name</label>
-                <input type="text" name="dName" class="form-control" value="">
+
+            <div class="row" style="margin-bottom: 2%;">
+              <div class="col-md-12">
+                <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100"></div>
               </div>
             </div>
-            <div class="col-md-2 col-sm-2">
+            <form name="generateBOQ" action="generateNew" class="createBOQ" method="POST" style="display: none;">
+              <div class="row" style="margin-left: 8%;">
+                <div class="col-md-3 col-sm-3" >
+                 <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                  <label>Doc Name</label>
+                  <input type="text" name="dName" class="form-control" value="">
+                </div>
+              </div>
+              <div class="col-md-3 col-sm-3">
+               <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+                <label>Utility</label>
+                <input type="text" name="utility" class="form-control" value="">
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-3">
              <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-              <label>Utility</label>
-              <input type="text" name="utility" class="form-control" value="">
+              <label>Pressure</label>
+              <input type="text" name="pressure" class="form-control" value="">
             </div>
           </div>
-          <div class="col-md-2 col-sm-2">
+          <div class="col-md-3 col-sm-3" style="margin-left: 0%;">
            <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-            <label>Pressure</label>
-            <input type="text" name="pressure" class="form-control" value="">
+            <label>Temperature</label>
+            <input type="text" name="temperature" class="form-control" value="">
           </div>
         </div>
-        <div class="col-md-2 col-sm-2" style="margin-left: 0%;">
+      </div>
+      <div class="row" style="margin-left: 8%;margin-top: 1%;">
+        <div class="col-md-3 col-sm-3">
          <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-          <label>Temperature</label>
-          <input type="text" name="temperature" class="form-control" value="">
+          <label>Doc Number</label>
+          <input type="text" class="form-control" name="dNo" value="" >
         </div>
       </div>
-    </div>
-    <div class="row" style="margin-left: 8%;margin-top: 1%;">
-      <div class="col-md-2 col-sm-2">
+      <div class="col-md-3 col-sm-3">
        <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-        <label>Doc Number</label>
-        <input type="text" class="form-control" name="dNo" value="" >
+        <label>Client</label>
+        <input type="text" name="client" class="form-control" value="${clientName}">
       </div>
     </div>
-    <div class="col-md-2 col-sm-2">
+    <div class="col-md-3 col-sm-3">
      <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-      <label>Client</label>
-      <input type="text" name="client" class="form-control" value="">
+      <label>Site</label>
+      <input type="text" name="site" class="form-control" value="">
     </div>
   </div>
-  <div class="col-md-2 col-sm-2">
-   <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
-    <label>Site</label>
-    <input type="text" name="site" class="form-control" value="">
-  </div>
+  <div class="col-md-3 col-sm-3">
+    <label class="createBOQ" style="margin-top: 1%; display: none;">BOQ Name : </label>
+    <input class="createBOQ form-control" style="display: none;" type="text" id="boqName" name="boqName" value="" project="">
+    <input type="hidden" name="projectId" value="${projectId}"/>
+  </div>  
 </div>
-<div class="col-md-2 col-sm-2">
-  <label class="createBOQ" style="margin-top: 1%; display: none;">BOQ Name : </label>
-  <input class="createBOQ form-control" style="display: none;" type="text" id="boqName" name="boqName" value="" project="">
-  <input type="hidden" name="projectId" value="${projectId}"/>
-</div>
-<div class="col-md-2 col-sm-2">
-  <br>
-  <button type="submit" name="generateBOQButton" class="btn btn-default generateBOQButton">Generate Quotation</button>
-</div>  
-</div>
-<ul class="nav nav-tabs style-1" role="tablist" id="sheetListtableContentDetails">
+<ul class="nav nav-tabs style-1" role="tablist" id="sheetListtableContentDetails" style="margin-top:3%;">
 </ul>
 <div class="tab-content" id="tableContentDetails">  
 </div>
@@ -333,43 +329,58 @@
     <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100"></div>
   </div>
 </div>
+<div class="row" style="margin-top: 2%;">
+  <div class="col-md-1" align="center">
+  </div>
+  <div class="col-md-2" align="center">
+    <input type="text" class="form-control" style="margin-top: 5%;" name="newSheetName">
+  </div>
+  <div class="col-md-2" align="center">
+    <h4 class="btn btn-default" data-toggle="collapse" onClick="addNewSheet()">Add New Sheet</h4>
+  </div>
+  <div class="col-md-2" align="center">
+    <input type="button" class="btn btn-default" name="deleteBoqButton" onclick="deleteRevision('boq');" value="Delete This BOQ">
+  </div>
+  <div class="col-md-2" align="center">
+    <input type="button" class="btn btn-default" name="downloadBoqButton" onclick="downloadInquiry('boq');" value="Download This BOQ">
+  </div>
+  <div class="col-md-2" align="center">
+    <button type="submit" name="generateBOQButton" class="btn btn-default generateBOQButton">Generate Quotation</button>
+  </div>
+  <div class="col-md-1" align="center">
+  </div>
+</div>
+<div class="row" style="margin-top: 2%;">
+  <div class="col-md-12">
+    <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100"></div>
+  </div>
+</div>
 </form>
-<!-- <div class="row createBOQ" style="display: none;margin-top: 2%;margin-bottom: 2%;max-width:98%;">
-  <div class="col-md-4 " style="margin-left: 15%" ;>
-    <br>
-    <h4 data-toggle="collapse" onClick="addNewSheet()" >Add New Sheet</h4>
-  </div>
-  <div class="col-md-4 " style="margin-left: 15%" ;>
-    <br>
-    <input type="text" name="newSheetName">
-  </div>
-</div> -->  
 <div class="row createBOQ" style="display: none;margin-top: 2%;margin-bottom: 2%;max-width:98%;">
-  <div class="col-md-3" style="margin-left: 5%";>
+  <div class="col-md-4" align="center">
     <br>
     <h4 class="btn btn-default" data-toggle="collapse" onClick="hideOthers('item1')" data-target="#addInventory">Add Item</h4>
   </div>
-  <div class="col-md-3" style="margin-left: -5%">
+  <div class="col-md-4" align="center">
     <br>
     <h4 class="btn btn-default" data-toggle="collapse" onClick="hideOthers('accessory1')" data-target="#addAccessory">Add Accessory</h4> 
   </div>
-  <div class="col-md-3" style="margin-left: -5%">
+  <div class="col-md-4" align="center">
     <br>
     <h4 class="btn btn-default" data-toggle="collapse" onClick="hideOthers('valve1')" data-target="#addValve">Add Valve</h4>
   </div>
-  <div class="col-md-3" style="margin-left: -5%">
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <h4 class="btn btn-default" data-toggle="collapse" onClick="addNewSheet()">Add New Sheet</h4>
-      </div>
-      <div class="col-md-6">
-        <br>
-        <input type="text" name="newSheetName">
-      </div>  
-    </div>
-  </div>
 </div>
+<!-- <div class="row createBOQ" style="display: none;margin-top: 2%;margin-bottom: 2%;max-width:98%;">
+  <div class="col-md-4" >
+    
+  </div>
+  <div class="col-md-4" align="center">
+    
+  </div>  
+  <div class="col-md-4" align="center">
+    
+  </div>
+</div> -->
 <div class="container collapse" id="item1" style="max-width:98%;" id="addInventory">
   <div class="row createBOQ" style="display: none;">
     <div class="col-md-12 form-inline">
@@ -726,6 +737,7 @@
             <div class="modal-content" style="width:110%;margin-left:-4%;">
              <div class="modal-header">
               <h4 class="modal-title" >Inquiries</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
               <ul class="nav nav-tabs style-1" role="tablist" id="sheetListtableContentInqSec">
@@ -754,6 +766,8 @@
               <div class="col-md-3" style="margin-left: -5%;">
                 <h4>Inquiry Name</h4>
                 <input type="text" class="form-control" name="inquiryName">
+                <br>
+                <button type="button" onclick="deleteRevision('inquiry');" class="btn btn-default" style="width:67%;margin-top:10%;">Delete Inquiry</button> 
               </div>
               <div class="col-md-3" style="margin-left: -5%;">
                 <input type="hidden" name="boqNameList" value="${boqNameList}">
@@ -762,7 +776,7 @@
                 <button type="button" onclick="createInquiry();" class="btn btn-default" >Generate & Send Inquiry</button>
                 <br>
                 <br>
-                <button type="button" onclick="downloadInquiry();" class="btn btn-default" style="width:67%;">Download Inquiry</button>
+                <button type="button" onclick="downloadInquiry('inquiry');" class="btn btn-default" style="width:67%;margin-top:7.5%;">Download Inquiry</button>
               </div>
             </div>
           </div>    
@@ -786,6 +800,7 @@
             <div class="modal-content" style="width:110%;margin-left:-4%;">
              <div class="modal-header">
               <h4 class="modal-title" >Purchase Details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
               <ul class="nav nav-tabs style-1" role="tablist" id="sheetListtableContentPOSec">
@@ -830,6 +845,7 @@
             <div class="modal-content" style="width:110%;margin-left:-4%;">
              <div class="modal-header">
               <h4 class="modal-title" >Invoice Details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body">
               <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
@@ -928,15 +944,15 @@
           <div class="form-row">  
             <div class="form-group col-md-3">
               <label>Contact Name</label>
-              <input type="text" class="form-control" name="contactName">
+              <input type="text" class="form-control" name="contactName" value="${contactName}">
             </div>
             <div class="form-group col-md-3">
               <label>Mobile No</label>
-              <input type="text" class="form-control" name="mobileNo">
+              <input type="text" class="form-control" name="mobileNo" value="${mobileNo}">
             </div>
             <div class="form-group col-md-3">
               <label>Addressed To</label>
-              <input type="text" class="form-control" name="addressedto1">
+              <input type="text" class="form-control" name="addressedto1" value="${addressedTo}">
             </div>
             <div class="form-group col-md-3">
               <label>Order Date</label>
@@ -946,7 +962,7 @@
           <div class="form-row">              
            <div class="form-group col-md-3">
             <label>Email</label>
-            <input type="text" class="form-control" name="emailAddress">
+            <input type="text" class="form-control" name="emailAddress" value="${emailAddress}">
           </div>
           <div class="form-group col-md-3">
             <label>Invoice Type</label>
@@ -963,47 +979,32 @@
           </div>
           <div class="form-group col-md-3">
             <br/>
-            <input type="button" class="btn btn-default" data-toggle="collapse" data-target="#miscChargesSection" value="Miscellaneous Cahrges">
+            
           </div>
           <input type="hidden" name="orderNo" value="">
         </div>
-        <div class="collapse" id="miscChargesSection">              
-          <div class="form-row">
-           <div class="form-group col-md-3">
-            <br/>
-            <label>Miscellaneous Charges</label>
-          </div>
-          <div class="form-group col-md-3">
-            <label>Description</label>
-            <input type="text" class="form-control" name="miscChargesDesc">
-          </div>
-          <div class="form-group col-md-3">
-            <label>Charges</label>
-            <input type="text" class="form-control" name="miscCharges">
-          </div>
-        </div>
+        
       </div>
-    </div>
-    <div class="row" style="margin-left: 0%;">
-      <div class="col-md-3 ">
-       <div class="ph-20 feature-box text-center">
-         <br>
-         <button type="button" onclick="hideOthers('invoice')" data-toggle="collapse" data-target="#invoice" class="btn btn-default">Invoice Details</button>
-       </div> 
+      <div class="row" style="margin-left: 0%;">
+        <div class="col-md-3 ">
+         <div class="ph-20 feature-box text-center">
+           <br>
+           <button type="button" onclick="hideOthers('invoice')" data-toggle="collapse" data-target="#invoice" class="btn btn-default">Invoice Details</button>
+         </div> 
+       </div>
+       <div class="col-md-3">
+         <div class="ph-20 feature-box text-center">
+           <br>
+           <button type="button" id="updateButton" onclick="generateInvoice();" class="btn btn-default">Generate Invoice</button>
+         </div> 
+       </div>
      </div>
-     <div class="col-md-3">
-       <div class="ph-20 feature-box text-center">
-         <br>
-         <button type="button" id="updateButton" onclick="generateInvoice();" class="btn btn-default">Generate Invoice</button>
-       </div> 
-     </div>
+   </form>
+   <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100">
    </div>
- </form>
- <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100">
+   <div class="row" style="margin-left: -11%;">
+   </div>
  </div>
- <div class="row" style="margin-left: -11%;">
- </div>
-</div>
 </section>
 </div>
 </div>
@@ -1027,6 +1028,7 @@
              <div class="modal-content" style="width:110%;margin-left:-4%;">
                <div class="modal-header">
                 <h4 class="modal-title" >Inventory Details</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
               </div>
               <div class="modal-body">
                 <div class="row" style="margin-top: 2%;margin-bottom: 2%;">
@@ -1059,13 +1061,14 @@
                        <th>Purchase Rate</th>
                        <th>Project</th>
                        <th>Location</th>
+                       <th>Action</th>
                      </tr>
                    </thead>
                    <tbody id="tableContentDetails">
                     ${assignedInventory}
                   </tbody>
                 </table>
-                <table class="table table-colored assignedInventorySec border border-info">
+                <!-- <table class="table table-colored assignedInventorySec border border-info">
                   <thead>
                     <tr>
                      <th></th>
@@ -1085,7 +1088,7 @@
                  <tbody id="tableContentDetails">
                   ${assignedAccessory}
                 </tbody>
-              </table>
+              </table> -->
             </div> 
           </div>
         </div>
@@ -1107,13 +1110,14 @@
                    <th>Purchase Rate</th>
                    <th>Project</th>
                    <th>Location</th>
+                   <th>Action</th>
                  </tr>
                </thead>
                <tbody>
                 ${consumedInventory}
               </tbody>
             </table>
-            <table class="table table-colored border border-info">
+            <!-- <table class="table table-colored border border-info">
               <thead>
                 <tr>
                  <th></th>
@@ -1133,7 +1137,7 @@
              <tbody>
                ${consumedAccessory}
              </tbody>
-           </table>
+           </table> -->
          </div> 
        </div>
      </div>
@@ -1582,11 +1586,26 @@
 
        var details = data.split('::');
 
-       $('#sheetList'+sectionName).html('');
+       var headerDetails = details[0];
 
-       var isFirst = true;
-       for(var i=0;i<details.length-1;i++)
+       var headerHTML = $.parseHTML(headerDetails);
+
+       for(var k=0;k<headerHTML.length-2;k++)
        {
+        var ele = headerHTML[k];
+        var val = headerHTML[k].value;
+
+        $('[name="'+ele.name+'"]').attr('value',val);
+      }
+
+      var sheetDetailsHTML = headerHTML[headerHTML.length-1];
+      $('[name="generateBOQ"]').append(sheetDetailsHTML);
+
+      $('#sheetList'+sectionName).html('');
+
+      var isFirst = true;
+      for(var i=1;i<details.length-1;i++)
+      {
         var sheetName = details[i];
         var className = '';
 
@@ -1603,21 +1622,17 @@
       var tagData = details[details.length-1]; 
       $('#'+sectionName+'').html(tagData);
       $('#LoadingImage').hide();
+
     }
 
   });
 
-/*    var generateQuot = document.getElementById("generateQuot");                                         
-generateQuot.style.display = "block";*/
-
-/*    var generateBOQ = document.getElementById("generate");
-generateBOQ.style.display = "block";*/
-hideLoading();
-}
-function adjustWidthDn() 
-{
- console.log('Inside adjustWidth');
-}
+    hideLoading();
+  }
+  function adjustWidthDn() 
+  {
+   console.log('Inside adjustWidth');
+ }
 </script>
 
 
@@ -1943,12 +1958,12 @@ function cleanArray(actual)
 
     var template = "<tr class='accessoryTr'>" 
     + "     <td></td>"
-    + "    <td> <input type='hidden' name='accessoryName' value='"+accessoryName+"'></input>"+accessoryName+"</td>"
-    + "    <td> <input type='hidden' name='desc1' value='"+desc1+"'></input>"+desc1+"</td>"
-    + "    <td> <input type='hidden' name='desc2' value='"+desc2+"'></input>"+desc2+"</td>"
-    + "    <td> <input type='hidden' name='desc3' value='"+desc3+"'></input>"+desc3+"</td>"
-    + "    <td> <input type='hidden' name='desc4' value='"+desc4+"'></input>"+desc4+"</td>"
-    + "    <td> <input type='hidden' name='desc5' value='"+desc5+"'></input>"+desc5+"</td>"
+    + "    <td> <input type='hidden' name='inventoryName' value='"+accessoryName+"'></input>"+accessoryName+"</td>"
+    + "    <td> <input type='hidden' name='material' value='"+desc1+"'></input>"+desc1+"</td>"
+    + "    <td> <input type='hidden' name='type' value='"+desc2+"'></input>"+desc2+"</td>"
+    + "    <td> <input type='hidden' name='ends' value='"+desc3+"'></input>"+desc3+"</td>"
+    + "    <td> <input type='hidden' name='classOrGrade' value='"+desc4+"'></input>"+desc4+"</td>"
+    + "    <td> <input type='hidden' name='manifMetod' value='"+desc5+"'></input>"+desc5+"</td>"
     + "    <td> <input type='hidden' name='size' value='-'></input>-</td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='quantity' value=''></input></td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='baseSupplyRate' value=''></input></td>"
@@ -1997,13 +2012,13 @@ function cleanArray(actual)
 
     var template = "<tr class='accessoryTr'>" 
     + "     <td></td>"
-    + "    <td> <input type='hidden' name='model' value='"+model+"'></input>"+model+"</td>"
-    + "    <td> <input type='hidden' name='materialVal' value='"+material+"'></input>"+material+"</td>"    
-    + "    <td> <input type='hidden' name='typeVal' value='"+type+"-"+operations+"-"+seatAndSeals+"'></input>"+type+"-"+operations+"-"+seatAndSeals+"</td>"
+    + "    <td> <input type='hidden' name='inventoryName' value='"+model+"'></input>"+model+"</td>"
+    + "    <td> <input type='hidden' name='material' value='"+material+"'></input>"+material+"</td>"    
+    + "    <td> <input type='hidden' name='type' value='"+type+"-"+operations+"-"+seatAndSeals+"'></input>"+type+"-"+operations+"-"+seatAndSeals+"</td>"
     + "    <td>-</td>"
-    + "    <td> <input type='hidden' name='pressureRatings' value='"+pressureRatings+"-"+maxInletPressure+"'></input>"+pressureRatings+"-"+maxInletPressure+"</td>"
-    + "    <td> <input type='hidden' name='endVal' value='"+end+"'></input>"+end+"</td>"
-    + "    <td> <input type='hidden' name='size' value='"+valveSize+"'></input>"+valveSize+"</td>"
+    + "    <td> <input type='hidden' name='classOrGrade' value='"+pressureRatings+"-"+maxInletPressure+"'></input>"+pressureRatings+"-"+maxInletPressure+"</td>"
+    + "    <td> <input type='hidden' name='ends' value='"+end+"'></input>"+end+"</td>"
+    + "    <td> <input type='hidden' name='manifMetod' value=''> <input type='hidden' name='size' value='"+valveSize+"'></input>"+valveSize+"</td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='quantity' value=''></input></td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='baseSupplyRate' value=''></input></td>"
     + "    <td> <input class='form-control' style='width:60px;' type='text' name='supplyRate' value=''></input></td>"
@@ -2135,7 +2150,7 @@ function cleanArray(actual)
   hideLoading();
 </script>
 <script>
-  $('.statusTo').on('change',function() {
+  $('.statusTo').on('click',function() {
 
    showLoading();
 
@@ -2147,7 +2162,7 @@ function cleanArray(actual)
    var manifMethodStr	= $(this.form.elements)[5].value;
    var gradeOrClassStr = $(this.form.elements)[6].value;
    var endsStr			= $(this.form.elements)[7].value;
-   var sizeStr			= $(this.form.elements)[8].value;
+   var sizeStr			= $(this.form.elements)[8].value + '"';
    var purchaseRateStr = $(this.form.elements)[9].value;
    var projectStr		= $(this.form.elements)[10].value;
    var locationStr		= $(this.form.elements)[11].value;
@@ -2304,23 +2319,21 @@ function cleanArray(actual)
 
       var sheetCount = $('[name="sheetDetails"]');
       
-      for(var i=0;i<sheetCount.length;i++)
+      try
       {
-        var eleLength = 0;
+        for(var i=0;i<sheetCount.length;i++)
+        {
+          var eleLength = 0;
 
-        if(sheetCount[i].value.startsWith('Valves'))
-        {
-          eleLength = $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="model"]').length;
-        }
-        else if(sheetCount[i].value.startsWith('Accessories'))
-        {
-         eleLength = $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="accessoryName"]').length; 
-        }
-        else
-        {
+
           eleLength = $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="inventoryName"]').length;
+
+          $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="sheetDetails"]').attr('value',sheetCount[i].value.split(',')[0]+','+eleLength);
         }
-        $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="sheetDetails"]').attr('value',sheetCount[i].value.split(',')[0]+','+eleLength);
+      }
+      catch(e)
+      {
+        console.log(e);
       }
 
       for(var i=0; i < length; i++)
@@ -2369,8 +2382,28 @@ function cleanArray(actual)
   });
 </script>
 <script>
-  function downloadInquiry()
+  function downloadInquiry(docType)
   {
+    var fileToDownloadName = '';
+    if(docType==='inquiry')
+    {
+      if($('.offerRevisionSection option:selected').val()==='')
+      {
+        alert('Please select the Inquiry to download');
+        return;
+      }
+      fileToDownloadName = $('.offerRevisionSection option:selected').val();
+    }
+    else if(docType==='boq')
+    {
+      if($('#boqName')[0].value==='')
+      {
+        alert('Please select the BOQ to download');
+        return;
+      }
+      fileToDownloadName = $('#boqName')[0].value;
+    }
+
     var newForm = jQuery('<form>', {
       'action': 'download',
       'method': 'POST'
@@ -2380,13 +2413,57 @@ function cleanArray(actual)
       'type': 'hidden'
     })).append(jQuery('<input>', {
       'name': 'docNameToDownload',
-      'value': $('.offerRevisionSection option:selected').val(),
+      'value': fileToDownloadName,
       'type': 'hidden'
     }));
     $(document.body).append(newForm);
     newForm.submit();
   }
 </script>
+
+<script type="text/javascript">
+  function deleteRevision(docType)
+  {
+    var fileToDownloadName = '';
+    if(docType==='inquiry')
+    {
+      if($('.offerRevisionSection option:selected').val()==='')
+      {
+        alert('Please select the Inquiry to delete');
+        return;
+      }
+
+      fileToDownloadName = $('.offerRevisionSection option:selected').val();
+    }
+    else if(docType==='boq')
+    {
+      if($('#boqName')[0].value==='')
+      {
+        alert('Please select the BOQ to delete');
+        return;
+      }
+
+      fileToDownloadName = $('#boqName')[0].value;
+    }
+
+    var newForm = jQuery('<form>', {
+      'action': 'delete',
+      'method': 'POST'
+    }).append(jQuery('<input>', {
+      'name': 'projectId',
+      'value': $('[name="projectId"]')[0].value,
+      'type': 'hidden'
+    })).append(jQuery('<input>', {
+      'name': 'docNameToDownload',
+      'value': fileToDownloadName,
+      'type': 'hidden'
+    }));
+    $(document.body).append(newForm);
+    newForm.submit();
+  }
+</script>
+
+
 <script type="text/javascript">
 
   function generateInvoice() 
@@ -2591,14 +2668,14 @@ function cleanArray(actual)
 
     var vList = $('[name="venderList"]').val().split(',');
     for(var i = 0; i < vList.length ; i++)
-      {
-       var venderName = vList[i];
+    {
+     var venderName = vList[i];
 
-       if(venderName != "")
-        $("[name='selectedVenderName']").append("<option value=" + venderName + ">" + venderName + "</option>");
-      }
+     if(venderName != "")
+      $("[name='selectedVenderName']").append("<option value=" + venderName + ">" + venderName + "</option>");
+  }
 
-  });
+});
 </script>
 </body>
 </html>

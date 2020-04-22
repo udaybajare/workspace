@@ -980,7 +980,7 @@ function myFunction(value, tagName, nextTagName) {
             
             console.log(data);
             console.log($(tag));
-            			$(tag).html("<option></option>");
+            $(tag).html("<option></option>");
 						$(tag).append(data);
                         }
         });

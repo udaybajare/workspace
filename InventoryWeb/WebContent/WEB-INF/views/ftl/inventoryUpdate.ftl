@@ -222,11 +222,11 @@
   </div>
   <div class="form-group col-md-3">
     <label>From</label>
-    <input type="text" class="form-control" name="receivedFrom">
+    <input type="text" class="form-control" name="receivedFrom" value="Hamdule Industries">
   </div>
   <div class="form-group col-md-3">
     <label>Consignee</label>
-    <input type="text" class="form-control" name="Consignee">
+    <input type="text" class="form-control" name="Consignee" value="">
   </div>
 </div>
 <div class="form-row">
@@ -284,25 +284,8 @@
   </div>
   <div class="form-group col-md-3">
     <br/>
-    <input type="button" class="btn btn-default" data-toggle="collapse" data-target="#miscChargesSection" value="Miscellaneous Cahrges">
   </div>
   <input type="hidden" name="orderNo" value=""/>
-</div>
-<div class="collapse" id="miscChargesSection">              
-  <div class="form-row">
-   <div class="form-group col-md-3">
-    <br/>
-    <label>Miscellaneous Charges</label>
-  </div>
-  <div class="form-group col-md-3">
-    <label>Description</label>
-    <input type="text" class="form-control" name="miscChargesDesc">
-  </div>
-  <div class="form-group col-md-3">
-    <label>Charges</label>
-    <input type="text" class="form-control" name="miscCharges">
-  </div>
-</div>
 </div>
 </div>
 </form>
@@ -409,12 +392,44 @@
      data :  {'projectName' : projectId},
      url : 'getPoList',
      success : function(data) {
-      console.log(data);
-
+      
       var blank = "<option> </option>";
       $('#poList').html(blank);
 
-      var inputArray = data.split(",");
+      var poVals = data.split("::");
+      var inputArray = poVals[0].split(",");
+
+      console.log(poVals[1]);
+
+      var projectDetails = poVals[1].substring(poVals[1].indexOf('['), poVals[1].indexOf(']'));
+
+      var projectDetailsArray = projectDetails.split(':');
+
+
+      for(var k =0;k<projectDetailsArray.length;k++)
+      {
+        if(projectDetailsArray[k].indexOf('contactName') !== -1)
+        {
+          $('[name="contactName"]').attr('value',projectDetailsArray[k].substring(projectDetailsArray[k].indexOf('=')+1));
+        }
+        else if(projectDetailsArray[k].indexOf('contactPhone') !== -1)
+        {
+          $('[name="mobileNo"]').attr('value',projectDetailsArray[k].substring(projectDetailsArray[k].indexOf('=')+1));
+        }
+        else if(projectDetailsArray[k].indexOf('contactEmail') !== -1)
+        {
+          $('[name="emailAddress"]').attr('value',projectDetailsArray[k].substring(projectDetailsArray[k].indexOf('=')+1));
+        }
+        else if(projectDetailsArray[k].indexOf('address') !== -1)
+        {
+          $('[name="addressedto1"]').attr('value',projectDetailsArray[k].substring(projectDetailsArray[k].indexOf('=')+1));
+        }
+        else if(projectDetailsArray[k].indexOf('gstNumber') !== -1)
+        {
+          $('[name="gstNo"]').attr('value',projectDetailsArray[k].substring(projectDetailsArray[k].indexOf('=')+1));
+        }
+        
+      }
 
       var names = [];
       $.each(inputArray, function(i, el){
@@ -442,9 +457,26 @@
      data :  {'poNumber' : poNo},
      url : 'getPoDetails',
      success : function(data) {
-      console.log(data);
+            
       $("[name='orderNo']")[0].value = poNo;
-      $('#poDetailsTable').html(data);
+
+      var htmlData = data.split('::');
+      $('#poDetailsTable').html(htmlData[0]);
+
+      console.log(htmlData[1]);
+
+      var poDetailsArray = htmlData[1].split(':');
+      for(var k=0;k < poDetailsArray.length;k++)
+      {
+        if(poDetailsArray[k].indexOf('poNumber') !== -1)
+        {
+          $('[name="poNo"]').attr('value',poDetailsArray[k].substring(poDetailsArray[k].indexOf('=')+1));
+        }
+        else if(poDetailsArray[k].indexOf('poDate') !== -1)
+        {
+          $('[name="poDate"]').attr('value',poDetailsArray[k].substring(poDetailsArray[k].indexOf('=')+1));
+        }
+      }
     }
   });
  }

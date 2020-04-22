@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -41,11 +43,13 @@ import com.invmgmt.entity.BOQHeader;
 import com.invmgmt.entity.BOQLineData;
 import com.invmgmt.entity.Inventory;
 import com.invmgmt.entity.InventorySpec;
+import com.invmgmt.entity.Project;
 import com.invmgmt.entity.Valves;
 import com.invmgmt.entity.VendorDetails;
 import com.invmgmt.excel.ExcelReader;
 import com.invmgmt.excel.ExcelWriter;
 import com.invmgmt.interfaces.BOQData;
+import com.invmgmt.util.ConfigProperties;
 import com.invmgmt.util.EmailUtils;
 import com.invmgmt.util.HTMLElements;
 import com.invmgmt.util.InventoryUtils;
@@ -90,7 +94,7 @@ public class BOQController {
 
 	@Autowired
 	BOQLineDataDao boqLineDataDao;
-	
+
 	@Autowired
 	UserDetailsDao userDetailsDao;
 
@@ -105,6 +109,9 @@ public class BOQController {
 
 	@Autowired
 	VendorDetailsDao vendorDetailsDao;
+
+	@Autowired
+	ConfigProperties configProperties;
 
 	ArrayList<Valves> valveDetailsList = null;
 
@@ -204,7 +211,8 @@ public class BOQController {
 		ArrayList<AccessoryDetails> accessoryDetailsList = null;
 		try {
 			inventoryList = inventoryDao.getAvailableInventory();
-			accessoryDetailsList = accessoryDetailsDao.getAccessoryDetailsByStatus();
+			// accessoryDetailsList =
+			// accessoryDetailsDao.getAccessoryDetailsByStatus();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -239,6 +247,28 @@ public class BOQController {
 
 		String tableContent = createInvtTable(inventoryList, null);
 		return tableContent;
+	}
+
+	@RequestMapping(value = { "/delete" }, method = RequestMethod.POST)
+	protected ModelAndView deleteRevision(String docNameToDownload, String projectId, HttpServletResponse response) {
+		String isDeleted = "true";
+
+		try {
+			boqHeaderDao.deleteHeaderData(docNameToDownload, projectId);
+			boqDao.deleteBoqData(docNameToDownload, projectId);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			isDeleted = "false";
+		}
+		Project project = projectDao.getProject(Integer.parseInt(projectId));
+		
+		ModelAndView mav = new ModelAndView("redirect:/projectDetails");
+		mav.addObject("projectId", project.getProjectId());
+		mav.addObject("projectName", project.getProjectName());
+		mav.addObject("projectDesc", project.getProjectDesc());
+		
+		return mav;
+		
 	}
 
 	@RequestMapping(value = { "/download" }, method = RequestMethod.POST)
@@ -311,7 +341,8 @@ public class BOQController {
 			String[] desc3, String[] desc4, String[] desc5, String[] model, String[] materialVal, String[] typeVal,
 			String[] pressureRatings, String[] endVal, String isOffer, String[] client, String[] site, String[] project,
 			String[] dName, String[] utility, String[] pressure, String[] temp, String[] dNo, String[] sheetDetails,
-			String venderName, RedirectAttributes redirectAttributes, HttpServletResponse response, HttpSession session) throws IOException {
+			String venderName, RedirectAttributes redirectAttributes, HttpServletResponse response, HttpSession session)
+			throws IOException {
 		StringBuilder sheetdetailsStr = new StringBuilder();
 
 		int accessIndex = 0;
@@ -370,20 +401,29 @@ public class BOQController {
 
 		ArrayList<BOQLineData> boqInventoryDetails = new ArrayList<BOQLineData>();
 
+		/*
+		 * String[] sheetDetailsArray = header.getSheetDetails().split(",");
+		 * 
+		 * int noOfEntries = material.length;
+		 * 
+		 * for (int i = 0; i < noOfEntries; i++) {
+		 * System.out.println("Getting details for : " + material[i] + " , " +
+		 * type[i] + " , " + classOrGrade[i] + " , " + ends[i]);
+		 * 
+		 * if (material[i] != null && !material[i].trim().equals("")) {
+		 * BOQLineData boqLineData = new BOQLineData(); try { boqLineData =
+		 * getBOQLineData(material[i].trim(), type[i].trim(),
+		 * classOrGrade[i].trim(), ends[i].trim(), inventoryName[i].trim()); }
+		 * catch (IndexOutOfBoundsException ex) {
+		 * 
+		 * // If you are here it means we are dealing with Accessory boqLineData
+		 * = new BOQLineData(material[i], type[i], manifMetod[i],
+		 * classOrGrade[i], ends[i], "", inventoryName[i], ""); }
+		 * boqInventoryDetails.add(boqLineData); } }
+		 */
+
 		if (material != null) {
 			boqInventoryDetails = getBOQLineDataList(material, type, ends, classOrGrade, inventoryName, manifMetod);
-		}
-
-		if (accessoryName != null) {
-			for (int l = 0; l < accessoryName.length; l++) {
-				boqInventoryDetails.add(
-						new BOQLineData("", desc1[l], desc2[l], desc3[l], desc4[l], desc5[l], accessoryName[l], ""));
-			}
-		}
-
-		if (model != null) {
-			boqInventoryDetails
-					.addAll(getBOQLineDataList(materialVal, typeVal, endVal, pressureRatings, model, manifMetod));
 		}
 
 		byte[] excelByts = null;
@@ -455,11 +495,10 @@ public class BOQController {
 
 		}
 
-		if (Boolean.valueOf(isOffer) && (venderName != null && !(venderName.isEmpty()))) 
-		{
-			//Fetch associated email address
-			String sender = userDetailsDao.getEmailAddress((String)session.getAttribute("userName"));
-			
+		if (Boolean.valueOf(isOffer) && (venderName != null && !(venderName.isEmpty()))) {
+			// Fetch associated email address
+			String sender = userDetailsDao.getEmailAddress((String) session.getAttribute("userName"));
+
 			VendorDetails vendorDetails = vendorDetailsDao.getVendorDetails(venderName);
 			emailUtils.sendInquiry(sender, vendorDetails.getContactEmail(), excelByts, boqNameRevisionStr);
 		}
@@ -517,20 +556,49 @@ public class BOQController {
 			break;
 		}
 
-		BOQLineData boqLineData = boqLineDataDao.getLineData(material, inventoryName);
+		// BOQLineData boqLineData = boqLineDataDao.getLineData(material,
+		// inventoryName);
 
-		boqLineData.setEndsLine(boqLineData.getEndsLine().replaceAll("ENDS_VAL", ends));
-		boqLineData.setGrdLine(boqLineData.getGrdLine().replaceAll("CLASS_VAL", classOrGrade));
+		/*
+		 * boqLineData.setEndsLine(boqLineData.getEndsLine().replaceAll(
+		 * "ENDS_VAL", ends));
+		 * boqLineData.setGrdLine(boqLineData.getGrdLine().replaceAll(
+		 * "CLASS_VAL", classOrGrade));
+		 * 
+		 * if (boqLineData.getGrdLine().contains("TYPE_VAL")) {
+		 * boqLineData.setGrdLine(boqLineData.getGrdLine().replaceAll(
+		 * "TYPE_VAL", type)); }
+		 * 
+		 * if (boqLineData.getSpecLine().contains("TYPE_VAL")) {
+		 * boqLineData.setSpecLine(boqLineData.getSpecLine().replaceAll(
+		 * "TYPE_VAL", type)); }
+		 * 
+		 * boqLineData.setStdLine(boqLineData.getStdLine().replaceAll(
+		 * "VALVE_NAME", inventoryName));
+		 */
 
-		if (boqLineData.getGrdLine().contains("TYPE_VAL")) {
-			boqLineData.setGrdLine(boqLineData.getGrdLine().replaceAll("TYPE_VAL", type));
+		String standardype = "";
+
+		Set<Object> inventryKeys = configProperties.getStandardTypKeys();
+
+		for (Object key : inventryKeys) {
+			if (((String) key).contains(inventoryName)) {
+				standardype = configProperties.getStandardTypePorperties(((String) key));
+			}
 		}
+		BOQLineData boqLineData = new BOQLineData();
 
-		if (boqLineData.getSpecLine().contains("TYPE_VAL")) {
-			boqLineData.setSpecLine(boqLineData.getSpecLine().replaceAll("TYPE_VAL", type));
+		boqLineData.setStdLine("Standard/Type: " + (standardype.isEmpty() ? inventoryName : standardype));
+		boqLineData.setGrdLine("Grade/Class: " + classOrGrade);
+		boqLineData.setSpecLine("Material Spec: " + type);
+		boqLineData.setEndsLine("Ends: " + ends);
+		boqLineData.setMakesLine("Recommended Makes: ");
+
+		boqLineData.setInventoryName(inventoryName);
+
+		if (inventoryName.equals("Elbow")) {
+			boqLineData.setCategory(classOrGrade);
 		}
-
-		boqLineData.setStdLine(boqLineData.getStdLine().replaceAll("VALVE_NAME", inventoryName));
 
 		return boqLineData;
 	}
@@ -639,6 +707,8 @@ public class BOQController {
 		int startIndex = 0;
 		int stopIndex = 0;
 		boolean isFirstSheet = true;
+		BOQHeader header = null;
+
 		for (int k = 0; k < sheetNameList.length; k++) {
 
 			if (k % 2 != 0) {
@@ -652,6 +722,7 @@ public class BOQController {
 
 			stopIndex = startIndex + Integer.parseInt(sheetNameList[k + 1]) - 1;
 
+			int count = 0;
 			int index = 0;
 			int loopIndex = 0;
 
@@ -696,12 +767,21 @@ public class BOQController {
 						tableContent.append(getBOQHeaderData((BOQHeader) entry.getKey()));
 					}
 				}
+
+				if (count == (inventoryMap.entrySet().size() - 1)) {
+					header = (BOQHeader) entry.getKey();
+				}
 				loopIndex++;
+				count++;
 			}
 
 			isFirstSheet = false;
 		}
-		return sheetNames + tableContent.toString();
+
+		String headerDetails = getBOQHeaderData(header);
+		headerDetails = headerDetails + "::";
+
+		return headerDetails + sheetNames + tableContent.toString();
 	}
 
 	private String createInventoryRow(Inventory inv, String supplyRate, String erectionRate, String supplyAmt,
@@ -856,7 +936,7 @@ public class BOQController {
 							new InventorySpec(boqDetails.getInventoryName(), boqDetails.getMaterial(),
 									boqDetails.getType(), boqDetails.getManifacturingMethod(),
 									boqDetails.getClassOrGrade(), boqDetails.getEnds(), boqDetails.getSize(), "", ""),
-							"", Integer.parseInt(boqDetails.getQuantity()), "","",""));
+							"", Integer.parseInt(boqDetails.getQuantity()), "", "", ""));
 		}
 		return inventoryList;
 	}

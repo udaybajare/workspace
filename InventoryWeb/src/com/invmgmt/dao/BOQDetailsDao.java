@@ -51,17 +51,16 @@ public class BOQDetailsDao {
 
 		return boqDetailsList;
 	}
-	
+
 	@Transactional
-	public void	deleteBoqData(String docNameToDownload, String projectId)
-	{
+	public void deleteBoqData(String docNameToDownload, String projectId) {
 		Session session = sessionFactory.getCurrentSession();
 		String selectHql = "delete FROM BOQDetails boqD where boqD.boqName=:boqName and projectId=:projectId";
-		
+
 		Query query = session.createQuery(selectHql);
 		query.setParameter("boqName", docNameToDownload);
 		query.setParameter("projectId", projectId);
-		
+
 		query.executeUpdate();
 	}
 
@@ -107,13 +106,31 @@ public class BOQDetailsDao {
 
 	@Transactional
 	public String getRecentProject() {
-		String projectId = "";
+		String projectId = "0";
 		Session session = sessionFactory.getCurrentSession();
 		String queryString = "SELECT projectId FROM BOQDetails WHERE id IN (SELECT MAX(id) FROM BOQDetails)";
 		Query query = session.createQuery(queryString);
 
-		projectId = (String) query.getSingleResult();
-		
+		try {
+			projectId = (String) query.getSingleResult();
+		} catch (Exception ex) {
+			projectId = "0";
+		}
 		return projectId;
 	}
+
+	@Transactional
+	public String getLatestAssociatedBOQProject(String projectId) {
+		String boqName = "";
+		Session session = sessionFactory.getCurrentSession();
+		String queryString = "SELECT boqName FROM BOQDetails WHERE projectId='" + projectId
+				+ "' AND id IN (SELECT MAX(id) FROM BOQDetails WHERE projectId='" + projectId
+				+ "' AND boqName NOT LIKE 'Inquiry_%' )";
+		Query query = session.createQuery(queryString);
+
+		boqName = (String) query.getSingleResult();
+
+		return boqName;
+	}
+
 }

@@ -1,7 +1,14 @@
 package com.invmgmt.model;
 
 import java.io.File;
+import java.util.Date;
 
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+@EnableScheduling
 public class FilePojo {
 
     private File file;
@@ -22,4 +29,10 @@ public class FilePojo {
     public FilePojo()
     {	
     }
+    
+	@Scheduled(cron = "*/5 * * * * ?")
+	public void testSchedule()
+	{
+		System.out.println(new Date().toString());
+	}
 }

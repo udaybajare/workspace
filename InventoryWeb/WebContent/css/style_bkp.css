@@ -4560,7 +4560,6 @@ fieldset[disabled] .form-control {
   bottom: 0;
   width: 100%;
   content: "";
-  background-color: #ffffff;
   z-index: 2;
 }
 
@@ -9005,12 +9004,17 @@ input {
  border-radius: 5px;
  border-color: #e1e1e1;
  border: 1px solid #ced4da;
- width: 60%;
- padding: 0em;
 }
 
 .form-control {
 width: 60%;
-padding-right:5px;
-padding-left:5px;
 }
+
+/* .table {
+	border-left: 2px;
+    border-left-color: #09afdf;
+    border-left-style: solid;
+    border-right: 2px;
+    border-right-color: #09afdf;
+    border-right-style: solid;
+} */

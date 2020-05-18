@@ -1,5 +1,8 @@
 package com.invmgmt.controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +23,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.invmgmt.dao.AccessoryDetailsDao;
+import com.invmgmt.dao.BOQDetailsDao;
+import com.invmgmt.dao.BOQHeaderDao;
 import com.invmgmt.dao.BillDetailsDao;
 import com.invmgmt.dao.ChallanDao;
 import com.invmgmt.dao.InventoryDao;
@@ -30,6 +35,9 @@ import com.invmgmt.dao.ReceivedInventoryDao;
 import com.invmgmt.dao.TaxInvoiceDetailsDao;
 import com.invmgmt.dao.UserDetailsDao;
 import com.invmgmt.entity.AccessoryDetails;
+import com.invmgmt.entity.BOQDetails;
+import com.invmgmt.entity.BOQHeader;
+import com.invmgmt.entity.BOQLineData;
 import com.invmgmt.entity.BillDetails;
 import com.invmgmt.entity.ChallanDetails;
 import com.invmgmt.entity.Inventory;
@@ -39,8 +47,12 @@ import com.invmgmt.entity.Project;
 import com.invmgmt.entity.ProjectDetails;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.entity.TaxInvoiceGenerator;
+import com.invmgmt.excel.ExcelWriter;
 import com.invmgmt.util.InventoryUtils;
 import com.invmgmt.util.NumberWordConverter;
+import com.invmgmt.util.PurchaseOrderPDFView;
+
+import net.bytebuddy.dynamic.DynamicType.Builder.FieldDefinition.Optional.Valuable;
 
 @Controller
 @EnableWebMvc
@@ -84,6 +96,18 @@ public class InventoryController {
 
 	@Autowired
 	MappingsDao mappingsDao;
+
+	@Autowired
+	BOQDetailsDao boqDetailsDao;
+
+	@Autowired
+	BOQHeaderDao boqHeaderDao;
+
+	@Autowired
+	ExcelWriter writer;
+
+	@Autowired
+	BOQController boqController;
 
 	private static final String updateViewName = "updateInvPO";
 
@@ -349,6 +373,8 @@ public class InventoryController {
 
 			String sender = userDetailsDao.getEmailAddress((String) session.getAttribute("userName"));
 
+			createAnnexture(String.valueOf(projectId), material, type, ends, gradeOrClass, inventoryName, manifMethod,
+					size, quantity, invoiceNo);
 			taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails, sender);
 
 			try {
@@ -452,15 +478,21 @@ public class InventoryController {
 			totalAmountInt = totalAmountInt + Double.parseDouble(miscCharges);
 		}
 
-		double cGST = totalAmountInt * 9 / 100;
-		double sGST = totalAmountInt * 9 / 100;
-
-		Double doubleVal = totalAmountInt + cGST + sGST;
-
-		String amountsToWord = numberWordConverter.convert((int) Math.round(doubleVal));
-
 		taxInvoiceDetails.setRate(totalAmount);
 
+		String sender = userDetailsDao.getEmailAddress((String) session.getAttribute("userName"));
+
+		String totalInvoiceAmount = createAnnexture(String.valueOf(projectId), material, type, ends, classOrGrade,
+				inventoryName, manifMetod, size, receivedQuantity, invoiceNo);
+
+		taxInvoiceDetails.setTotal(totalInvoiceAmount);
+
+		double cGST = Double.parseDouble(totalInvoiceAmount) * 9 / 100;
+		double sGST = Double.parseDouble(totalInvoiceAmount) * 9 / 100;
+
+		Double doubleVal = Double.parseDouble(totalInvoiceAmount) + cGST + sGST;
+
+		String amountsToWord = numberWordConverter.convert((int) Math.round(doubleVal));
 		if (amountsToWord.length() > 40) {
 			taxInvoiceDetails.setAmtInwrd1((String) amountsToWord.substring(0, 39));
 			taxInvoiceDetails.setAmtInwrd2((String) amountsToWord.substring(40));
@@ -469,21 +501,33 @@ public class InventoryController {
 			taxInvoiceDetails.setAmtInwrd2("");
 		}
 
-		String sender = userDetailsDao.getEmailAddress((String) session.getAttribute("userName"));
-
+		taxInvoiceDetails.setcGst(String.valueOf(cGST));
 		taxInvoiceGenerator.generateAndSendTaxInvoice(taxInvoiceDetails, sender);
 
 		try {
+
 			for (int i = 0; i < inventoryName.length; i++) {
 
 				Inventory inventory = new Inventory(
 						new InventorySpec(inventoryName[i], material[i], type[i], manifMetod[i], classOrGrade[i],
-								ends[i], size[i], String.valueOf(projectId), "assigned"),
-						purchaseRate[i], receivedQuantity[i], location[i], invoiceNo, receivedDate[i]);
+								ends[i], size[i], projectName, "assigned"),
+						purchaseRate[i], receivedQuantity[i], location[i], "", "");
 
 				try {
+					// Check if exists get the inventoryRow Id
+
+					int rowId = inventoryDao.isEntityPresent(inventory);
+
+					if (rowId == 0) {
+						rowId = inventoryDao.getLatestInventoryEntryNo() + 1;
+					}
+					inventory.setInventoryRowId(rowId);
+
+					inventory.setInvoiceNo(invoiceNo);
+
 					inventoryDao.updateWhenSaveFailed(inventory);
 				} catch (Exception ex) {
+					ex.printStackTrace();
 
 				}
 			}
@@ -599,92 +643,6 @@ public class InventoryController {
 		return new ModelAndView("redirect:/projectDetails");
 	}
 
-	// Following methods have been commented as the Accessory details will be
-	// saved in Inventory Table instead of AccessoryDetails.
-	/*
-	 * @RequestMapping(value = "/releaseAccessory", method = RequestMethod.POST)
-	 * private ModelAndView releaseAccessory(String quantity, String
-	 * accessoryStatusTo, String desc1, String desc2, String desc3, String
-	 * desc4, String desc5, String accessoryName, String project, String
-	 * locationStr, String projectId, String projectName, String projectDesc,
-	 * String purchaseRate, RedirectAttributes redirectAttributes) {
-	 * AccessoryDetails accessory = new AccessoryDetails(accessoryName, desc1,
-	 * desc2, desc3, desc4, desc5, project, locationStr, "assigned", quantity,
-	 * "", "");
-	 * 
-	 * InventorySpec invSpec = new InventorySpec(accessoryName,desc1, desc2,
-	 * desc3, desc4, desc5, "", project, "assigned"); Inventory inventory = new
-	 * Inventory(invSpec, purchaseRate, Integer.parseInt(quantity), locationStr,
-	 * "", "");
-	 * 
-	 * //String assignedQty =
-	 * accessoryDetailsDao.getAccessoryDetailsByStatus(accessory, "assigned");
-	 * int assignedQty = inventoryDao.getQuantityByStatus(inventory, "assigned",
-	 * true); String qty = ""; if (accessoryStatusTo.equals("assigned")) { qty =
-	 * String.valueOf(Integer.valueOf(assignedQty) + Integer.valueOf(quantity));
-	 * } else { qty = String.valueOf(Integer.valueOf(assignedQty) -
-	 * Integer.valueOf(quantity)); } // Reduce the assigned quantity
-	 * accessory.setQuantity(qty);
-	 * 
-	 * // Add new entry or update existing one without project AccessoryDetails
-	 * accessoryToRelease = new AccessoryDetails(accessoryName, desc1, desc2,
-	 * desc3, desc4, desc5, project, locationStr, accessoryStatusTo, quantity,
-	 * "", "");
-	 * 
-	 * boolean isAccessoryPresentinDB = false; boolean isToBeAssigned = false;
-	 * if (accessoryStatusTo.equals("release")) { accessoryStatusTo =
-	 * "available"; inventory.setAssignedProject("");
-	 * inventory.setStatus(accessoryStatusTo); isAccessoryPresentinDB =
-	 * inventoryDao.isEntityPresent(inventory)!=0?true:false;
-	 * //accessoryDetailsDao.isEntityPresent(accessoryToRelease); } else if
-	 * (accessoryStatusTo.equals("consumed")) {
-	 * accessoryToRelease.setStatus("consumed"); isAccessoryPresentinDB =
-	 * accessoryDetailsDao.isEntityPresent(accessoryToRelease,
-	 * accessoryStatusTo); } else if (accessoryStatusTo.equals("assigned")) {
-	 * isToBeAssigned = true; accessoryStatusTo = "available";
-	 * accessoryToRelease.setAssignedProject("");
-	 * accessoryToRelease.setStatus("available"); isAccessoryPresentinDB = true;
-	 * }
-	 * 
-	 * if (!isAccessoryPresentinDB) { // Inventory is not available. Add a new
-	 * entry to DB accessoryToRelease.setQuantity(quantity); } else { //
-	 * Inventory is available. Just increase the // quantity int quantityToGo =
-	 * accessoryDetailsDao.getQuantityByStatus(accessoryToRelease,
-	 * accessoryStatusTo); String qtytoUpdate = "";
-	 * 
-	 * if (isToBeAssigned) { qtytoUpdate = String.valueOf(quantityToGo -
-	 * Integer.valueOf(quantity)); } else { qtytoUpdate =
-	 * String.valueOf(quantityToGo + Integer.valueOf(quantity)); }
-	 * 
-	 * accessoryToRelease.setQuantity(qtytoUpdate); }
-	 * 
-	 * try { //accessoryDetailsDao.saveAccessory(accessory);
-	 * 
-	 * inventoryDao.saveInventory();
-	 * 
-	 * } catch (Exception ex) { System.out.println("calling update");
-	 * accessoryDetailsDao.updateWhenSaveFailed(accessory); }
-	 * 
-	 * try { accessoryDetailsDao.saveAccessory(accessoryToRelease); } catch
-	 * (Exception ex) { System.out.println("calling update");
-	 * accessoryDetailsDao.updateWhenSaveFailed(accessoryToRelease); }
-	 * 
-	 * if (isToBeAssigned) { return new
-	 * ModelAndView("redirect:/updateInventoryForm"); }
-	 * 
-	 * redirectAttributes.addAttribute("projectId", projectId);
-	 * redirectAttributes.addAttribute("projectName", projectName);
-	 * redirectAttributes.addAttribute("projectDesc", projectDesc);
-	 * 
-	 * return new ModelAndView("redirect:/projectDetails"); }
-	 * 
-	 * @RequestMapping(value = "/saveAccessory", method = RequestMethod.POST)
-	 * private ModelAndView saveAccessory(AccessoryDetails accessoryDetails) {
-	 * accessoryDetailsDao.saveAccessory(accessoryDetails);
-	 * 
-	 * return new ModelAndView("redirect:/updateInventoryForm"); }
-	 */
-
 	@RequestMapping(value = "/updateInvPO", method = RequestMethod.GET)
 	private ModelAndView updateInvPO() {
 		ArrayList<Project> projectList = projectDao.getProject("projectName", "");
@@ -722,5 +680,97 @@ public class InventoryController {
 		}
 
 		return String.valueOf(total);
+	}
+
+	protected String createAnnexture(String projectId, String[] materialIn, String[] typeIn, String[] endsIn,
+			String[] classOrGradeIn, String[] inventoryNameIn, String[] manifMetodIn, String[] sizeIn, int billedQty[],
+			String invoiceNo) {
+
+		invoiceNo = invoiceNo.replace("/", "_");
+		String destination = System.getProperty("java.io.tmpdir") + "/" + invoiceNo + "_Annexture.xls";
+
+		String docNameToDownload = boqDetailsDao.getLatestAssociatedBOQProject(projectId);
+
+		byte[] excelByts = null;
+
+		ArrayList<BOQLineData> boqlineData = new ArrayList<BOQLineData>();
+
+		ArrayList<BOQDetails> itemDetails = boqDetailsDao.getBOQFromName(docNameToDownload, projectId);
+
+		Double supplyAmountTotal = 0.0;
+		Double erectionAmountTotal = 0.0;
+
+		int length = itemDetails.size();
+
+		String[] material = new String[length];
+		String[] type = new String[length];
+		String[] ends = new String[length];
+		String[] classOrGrade = new String[length];
+		String[] inventoryName = new String[length];
+		String[] manifMetod = new String[length];
+		String[] size = new String[length];
+		String[] quantity = new String[length];
+		String[] supplyRate = new String[length];
+		String[] erectionRate = new String[length];
+		String[] supplyAmount = new String[length];
+		String[] erectionAmount = new String[length];
+
+		for (int i = 0; i < length; i++) {
+			material[i] = itemDetails.get(i).getMaterial();
+			type[i] = itemDetails.get(i).getType();
+			ends[i] = itemDetails.get(i).getEnds();
+			classOrGrade[i] = itemDetails.get(i).getClassOrGrade();
+			inventoryName[i] = itemDetails.get(i).getInventoryName();
+			manifMetod[i] = itemDetails.get(i).getManifacturingMethod();
+			size[i] = itemDetails.get(i).getSize();
+			quantity[i] = "0";
+			supplyRate[i] = itemDetails.get(i).getSupplyRate();
+			erectionRate[i] = itemDetails.get(i).getErectionRate();
+			supplyAmount[i] = "0";
+			erectionAmount[i] = "0";
+
+		}
+
+		for (int k = 0; k < inventoryNameIn.length; k++) {
+			for (int i = 0; i < length; i++) {
+				if (materialIn[k].equalsIgnoreCase(itemDetails.get(i).getMaterial())
+						&& typeIn[k].equalsIgnoreCase(itemDetails.get(i).getType())
+						&& endsIn[k].equalsIgnoreCase(itemDetails.get(i).getEnds())
+						&& classOrGradeIn[k].equalsIgnoreCase(itemDetails.get(i).getClassOrGrade())
+						&& inventoryNameIn[k].equalsIgnoreCase(itemDetails.get(i).getInventoryName())
+						&& manifMetodIn[k].equalsIgnoreCase(itemDetails.get(i).getManifacturingMethod())
+						&& sizeIn[k].equalsIgnoreCase(itemDetails.get(i).getSize())) {
+					quantity[i] = String.valueOf(billedQty[k]);
+					supplyAmount[i] = String
+							.valueOf(billedQty[k] * Double.parseDouble(itemDetails.get(i).getSupplyRate()));
+					erectionAmount[i] = String
+							.valueOf(billedQty[k] * Double.parseDouble(itemDetails.get(i).getErectionRate()));
+
+					supplyAmountTotal += billedQty[k] * Double.parseDouble(itemDetails.get(i).getSupplyRate());
+					erectionAmountTotal += billedQty[k] * Double.parseDouble(itemDetails.get(i).getErectionRate());
+				}
+			}
+		}
+
+		BOQHeader header = boqHeaderDao.getBOQHeaderFromName(docNameToDownload, projectId);
+
+		boqlineData = boqController.getBOQLineDataList(material, type, ends, classOrGrade, inventoryName, manifMetod);
+		try {
+			excelByts = writer.writeExcel(boqlineData, size, quantity, supplyRate, erectionRate, supplyAmount,
+					erectionAmount, "", header, false);
+
+			FileOutputStream fOut = new FileOutputStream(new File(destination));
+
+			fOut.write(excelByts);
+
+			fOut.close();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return String.valueOf(erectionAmountTotal + supplyAmountTotal);
+
 	}
 }

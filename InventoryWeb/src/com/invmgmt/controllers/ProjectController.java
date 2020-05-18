@@ -36,12 +36,17 @@ import com.invmgmt.entity.ProjectDetails;
 import com.invmgmt.entity.TaxInvoiceDetails;
 import com.invmgmt.entity.VendorDetails;
 import com.invmgmt.excel.ExcelReader;
+import com.invmgmt.model.FilePojo;
 import com.invmgmt.util.InventoryUtils;
 
 @Controller
 @EnableWebMvc
+
 public class ProjectController {
 
+	@Autowired
+	FilePojo filePojo;
+	
 	@Autowired
 	private ProjectDao projectDao;
 
@@ -109,7 +114,13 @@ public class ProjectController {
 		}
 		System.out.println("New project created with ID : " + projId);
 
-		ModelAndView mav = new ModelAndView(updateProjectviewName);
+		ModelAndView mav = new ModelAndView("redirect:/projectDetails");
+		mav.addObject("projectId", projId);
+		mav.addObject("projectName", project.getProjectName());
+		mav.addObject("projectDesc", project.getProjectDesc());
+		return mav;
+		
+		/*ModelAndView mav = new ModelAndView(updateProjectviewName);
 
 		mav.addObject("boqNameList", String.join(",", ""));
 		mav.addObject("quotationNamesList", String.join(",", ""));
@@ -139,7 +150,7 @@ public class ProjectController {
 		mav.addObject("assignedInventory", "");
 		mav.addObject("assignedAccessory", "");
 
-		return mav;
+		return mav;*/
 	}
 
 	@RequestMapping(value = "/updateProject", method = RequestMethod.POST)
@@ -470,7 +481,7 @@ public class ProjectController {
 			ArrayList<TaxInvoiceDetails> taxinvoiceDetailsList = taxInvoiceDao.getTaxIvoiceData("taxInvoiceNo",
 					taxInvoiceNumber);
 
-			double totalAmount = Double.parseDouble(taxinvoiceDetailsList.get(0).getRate());
+			double totalAmount = Double.parseDouble(taxinvoiceDetailsList.get(0).getTotal());
 			totalAmount = totalAmount + Double.parseDouble(taxinvoiceDetailsList.get(0).getcGst()) * 2;
 
 			if (taxinvoiceDetailsList.get(0).getMiscCharges() != null) {
@@ -508,7 +519,9 @@ public class ProjectController {
 
 		StringBuffer invoiceNamesString = new StringBuffer();
 		for (TaxInvoiceDetails invoiceDetails : invoiceNames) {
-			invoiceNamesString.append(invoiceDetails.getTaxInvoiceNo() + ",");
+			if (!(invoiceDetails.getTaxInvoiceNo().isEmpty())) {
+				invoiceNamesString.append(invoiceDetails.getTaxInvoiceNo() + ",");
+			}
 		}
 
 		System.out.println("invoiceNamesString list is : " + invoiceNamesString.toString());

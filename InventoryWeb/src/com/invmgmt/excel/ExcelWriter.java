@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -119,8 +120,6 @@ public class ExcelWriter {
 		int lastIndex = 0;
 
 		int index = 0;
-		
-		
 
 		CellStyle whiteBackGround = workBook.createCellStyle();
 
@@ -131,19 +130,14 @@ public class ExcelWriter {
 		whiteBackGround.setBorderRight(BorderStyle.MEDIUM);
 		whiteBackGround.setRightBorderColor(IndexedColors.BLACK.index);
 
-		/*
-		 * CellStyle whiteBackGroundBaseLine = workBook.createCellStyle();
-		 * 
-		 * whiteBackGroundBaseLine.setFillBackgroundColor(IndexedColors.WHITE.
-		 * index);
-		 * whiteBackGroundBaseLine.setFillForegroundColor(IndexedColors.WHITE.
-		 * index); whiteBackGroundBaseLine.setFillPattern(FillPatternType.
-		 * SOLID_FOREGROUND);
-		 * 
-		 * whiteBackGroundBaseLine.setBorderBottom(BorderStyle.MEDIUM);
-		 * whiteBackGroundBaseLine.setBottomBorderColor(IndexedColors.BLACK.
-		 * index);
-		 */
+		Font boldFont = workBook.createFont();
+		boldFont.setBold(true);
+		boldFont.setFontHeightInPoints(Short.valueOf("10"));
+		boldFont.setFontName("Arial");
+
+		CellStyle whiteBackGroundBolFont = workBook.createCellStyle();
+		whiteBackGroundBolFont.cloneStyleFrom(whiteBackGround);
+		whiteBackGroundBolFont.setFont(boldFont);
 
 		CellStyle whiteBackGroundTextCenter = workBook.createCellStyle();
 
@@ -319,7 +313,7 @@ public class ExcelWriter {
 						Cell cell0 = sheet.getRow(nextRow - 2).getCell(n, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 						cell0.setCellStyle(whiteBackGround);
 					}
-					
+
 					for (int n = 0; n < 8; n++) {
 						Cell cell0 = sheet.getRow(nextRow - 1).getCell(n, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 						cell0.setCellStyle(whiteBackGround);
@@ -338,7 +332,7 @@ public class ExcelWriter {
 					Cell cellToUpdateInv = sheet.getRow(nextRow - 1).getCell(1,
 							Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
 					cellToUpdateInv.setCellValue(inventory.getInventoryName() + " " + invCategory);
-					cellToUpdateInv.setCellStyle(whiteBackGround);
+					cellToUpdateInv.setCellStyle(whiteBackGroundBolFont);
 
 					sheet.getRow(nextRow).getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
 							.setCellStyle(whiteBackGround);
@@ -503,8 +497,6 @@ public class ExcelWriter {
 			sheet.getRow(nextRow - 2).getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
 					.setCellValue(erectionAmountTotal);
 
-			
-
 			Sheet annexture = workBook.getSheetAt(1);
 
 			annexture.getRow(4 + s).getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(s);
@@ -519,7 +511,7 @@ public class ExcelWriter {
 			Cell erectionTotalCell = annexture.getRow(15).getCell(4);
 
 			FormulaEvaluator evaluator = workBook.getCreationHelper().createFormulaEvaluator();
-			
+
 			evaluator.evaluateFormulaCell(supplyTotalCell);
 			evaluator.evaluateFormulaCell(erectionTotalCell);
 
@@ -555,9 +547,9 @@ public class ExcelWriter {
 
 			cover.getRow(12).getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK)
 					.setCellValue(cover.getRow(12).getCell(2).getStringCellValue() + header.getClient());
-			
+
 			FormulaEvaluator evaluator1 = workBook.getCreationHelper().createFormulaEvaluator();
-			
+
 			evaluator1.evaluateFormulaCell(cover.getRow(23).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
 			evaluator1.evaluateFormulaCell(cover.getRow(23).getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
 			evaluator1.evaluateFormulaCell(cover.getRow(24).getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));

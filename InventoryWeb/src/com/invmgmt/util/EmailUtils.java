@@ -78,9 +78,11 @@ public class EmailUtils {
 			text = "Gentel reminder for pending payment. Please see attached tax invoice for pending amount.";
 		}
 
-		String pathToAttachment = System.getProperty("java.io.tmpdir") + "/" + fileToAttach;
+		String pathToInvoice = System.getProperty("java.io.tmpdir") + "/" + fileToAttach.replace("/", "_") + ".pdf";
+		String pathToAnnextur = System.getProperty("java.io.tmpdir") + "/" + fileToAttach.replace("/", "_")
+				+ "_Annexture.xls";
 
-		File file = new File(pathToAttachment);
+		File[] file = { new File(pathToInvoice), new File(pathToAnnextur) };
 		sendEmail(subject, sender, recipient, text, file);
 
 	}
@@ -105,14 +107,13 @@ public class EmailUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		sendEmail(subject, sender, recipient, text, file);
+		File[] filesToattach = { file };
+		sendEmail(subject, sender, recipient, text, filesToattach);
 	}
 
-	public void sendEmail(String subject, String sender, String recipient, String text, File file) {
+	public void sendEmail(String subject, String sender, String recipient, String text, File[] file) {
 		try {
-			if(sender.isEmpty())
-			{
+			if (sender.isEmpty()) {
 				sender = "ProjectInvManager@gmail.com";
 			}
 			final String awsAccessKeyId = configProperties.getPropValues("AWS_ACCESS_KEY_ID");
@@ -141,13 +142,6 @@ public class EmailUtils {
 			MimeBodyPart textPart = new MimeBodyPart();
 			textPart.setContent(text, "text/plain; charset=UTF-8");
 
-			/*
-			 * // Define the HTML part. MimeBodyPart htmlPart = new
-			 * MimeBodyPart();
-			 * htmlPart.setContent(BODY_HTML,"text/html; charset=UTF-8");
-			 * msg_body.addBodyPart(htmlPart);
-			 */
-
 			// Add the text and HTML parts to the child container.
 			msg_body.addBodyPart(textPart);
 
@@ -163,9 +157,6 @@ public class EmailUtils {
 			// Add the multipart/alternative part to the message.
 			msg.addBodyPart(wrap);
 
-			// Define the attachment
-			MimeBodyPart att = new MimeBodyPart();
-
 			MailcapCommandMap mc = (MailcapCommandMap) CommandMap.getDefaultCommandMap();
 			mc.addMailcap("text/html;; x-java-content-handler=com.sun.mail.handlers.text_html");
 			mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
@@ -173,13 +164,17 @@ public class EmailUtils {
 			mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
 			mc.addMailcap("message/rfc822;; x-java-content- handler=com.sun.mail.handlers.message_rfc822");
 
-			DataSource fds = new FileDataSource(file);
-			att.setDataHandler(new DataHandler(fds));
-			att.setFileName(fds.getName());
+			for (File file1 : file) {
+				// Define the attachment
+				MimeBodyPart att = new MimeBodyPart();
 
-			// Add the attachment to the message.
-			msg.addBodyPart(att);
+				DataSource fds = new FileDataSource(file1);
+				att.setDataHandler(new DataHandler(fds));
+				att.setFileName(fds.getName());
 
+				// Add the attachment to the message.
+				msg.addBodyPart(att);
+			}
 			// Send the email.
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			message.writeTo(outputStream);

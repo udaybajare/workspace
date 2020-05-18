@@ -25,14 +25,15 @@ public class InventoryUtils {
 
 	public String createDescriptionLine(String material, String type, String inventory, String classOrgrade,
 			String manifMethod, String ends, String size) {
-		String templateDesc = "material type inventory of Grade(OR Class) as classOrgrade with Ends as endsVal Manifacturing Method as manifMethod of size sizeVal";
+		//String templateDesc = "material type inventory of Grade(OR Class) as classOrgrade with Ends as endsVal Manifacturing Method as manifMethod of size sizeVal";
 
+		String templateDesc = "inventory~ material~ classOrgrade~ type~ endsVal~ manifMethod~ sizeVal";
+		
 		String description = templateDesc;
 
 		description = description.replace("material", material);
-
-		if (!type.equalsIgnoreCase("Default"))
-			description = description.replace("type", type);
+		
+		description = description.replace("type", type);
 
 		description = description.replace("inventory", inventory);
 		description = description.replace("classOrgrade", classOrgrade);
@@ -73,14 +74,16 @@ public class InventoryUtils {
 		String template = "<tr id=\"" + inventoryId + "\"><form><td></td>"
 				+ "<td>InventoryVal</td>    <td>MaterialVal</td>    <td>TypeVal</td>"
 				+ "<td>ManifMethodVal</td><td>gradeOrClassVal</td>    <td>endsVal</td>" + "<td>sizeVal</td>" + "<td>"
-				+ (isConsumed ? "availableQuantity</td>" : "<input type=\"text\" style=\"width:45px;\" name=\"quantity\" value=\"availableQuantity\" > </td>")				 
+				+ (isConsumed ? "availableQuantity</td>"
+						: "<input type=\"text\" style=\"width:45px;\" name=\"quantity\" value=\"availableQuantity\" > </td>")
 				+ "<td>purchaseRateVal</td>"
 				+ (needProjectList
 						? "<td><select class='form-control currentProjectList' name='project' name='projectName' ><option></option></td>"
 						: "<td>projectVal</td>")
 				+ "<td>locationVal</td>"
 
-				+ (isConsumed ? "" : "<td><input type=\"button\" class=\"btn btn-default statusTo \" value=\"release\"></td>")
+				+ (isConsumed ? ""
+						: "<td><input type=\"button\" class=\"btn btn-default statusTo \" value=\"release\"></td>")
 				+ "<input type=\"hidden\" name=\"inventoryStr\" value=\"InventoryVal\" >"
 				+ "<input type=\"hidden\" name=\"materialStr\" value=\"MaterialVal\" >"
 				+ "<input type=\"hidden\" name=\"typeStr\" value=\"TypeVal\" >"
@@ -108,7 +111,8 @@ public class InventoryUtils {
 		rowToReturn = rowToReturn.replace("availableQuantity", Integer.toString(availableQuantity));
 
 		// Purchse Rate
-		rowToReturn = rowToReturn.replace("purchaseRateVal", String.valueOf(inventoryDao.getPurchaseRate(inv, !isConsumed)));
+		rowToReturn = rowToReturn.replace("purchaseRateVal",
+				String.valueOf(inventoryDao.getPurchaseRate(inv, !isConsumed)));
 		rowToReturn = rowToReturn.replace("projectVal", inv.getInventorySpec().getAssignedProject());
 		rowToReturn = rowToReturn.replace("locationVal", inv.getLocation());
 		return rowToReturn;
@@ -215,7 +219,7 @@ public class InventoryUtils {
 			}
 
 			boqInventoryDetails.add(new BOQDetails(projectId, boqName, inventoryName[i], material[i], type[i],
-					manifMetod != null ? (manifMetod.length >= i ? manifMetod[i] : "-") : "-", classOrGrade[i], ends[i],
+					manifMetod != null ? (manifMetod.length > i ? manifMetod[i] : "-") : "-", classOrGrade[i], ends[i],
 					size[i], quantity[i], supplyRate.length > 0 ? supplyRate[i] : "",
 					erectionRate.length > 0 ? erectionRate[i] : "", supplyAmount.length > 0 ? supplyAmount[i] : "",
 					erectionAmount.length > 0 ? erectionAmount[i] : "",
@@ -232,7 +236,9 @@ public class InventoryUtils {
 
 		StringBuffer invoiceNamesString = new StringBuffer();
 		for (String poName : poNames) {
-			invoiceNamesString.append(poName + ",");
+			if (!(poName.isEmpty())) {
+				invoiceNamesString.append(poName + ",");
+			}
 		}
 
 		return invoiceNamesString.toString();

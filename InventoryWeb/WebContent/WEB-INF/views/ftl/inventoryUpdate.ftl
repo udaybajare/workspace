@@ -115,7 +115,7 @@
 </div>
 <section class="main-container">
   <div class="container">
-    <form action="updateInventory" id="updateInventory" method="POST">
+    <form action="updateInventory" name="updateInventory" id="updateInventory" method="POST">
       <dir class="row" style="width:120%;margin-left: -11%;">          
         <table class="table table-colored">
           <thead>
@@ -154,14 +154,10 @@
      <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
       <br>
       <div class="form-check">
-       <!--<input class="form-check-input" type="checkbox" id="addBillDetails" value="">
-       <label class="form-check-label">
-         Add Bill Details
-       </label>-->
-     </div>
-   </div>
- </div>
- <div class="col-md-3 ">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3 ">
    <div class="ph-20 feature-box text-center object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
     <br>
     <div class="form-check">
@@ -190,12 +186,6 @@
    <button type="button" onClick="hideOthers('challan')" data-toggle="collapse" data-target="#challan" class="btn btn-default">Challan Details</button>
  </div>
 </div>
-   <!-- <div class="col-md-2 ">
- <div class="ph-20 feature-box text-center " >
-   <br>
-   <button type="button" onClick="hideOthers('bill')" data-toggle="collapse" data-target="#bill" class="btn btn-default">Bill Details</button>
- </div>
-</div>-->
 <div class="col-md-3 ">
  <div class="ph-20 feature-box text-center" >
    <br>
@@ -457,7 +447,7 @@
      data :  {'poNumber' : poNo},
      url : 'getPoDetails',
      success : function(data) {
-            
+      
       $("[name='orderNo']")[0].value = poNo;
 
       var htmlData = data.split('::');
@@ -675,6 +665,22 @@
     } 
 
   };
+</script>
+<script type="text/javascript">
+  $(function(){ 
+    $('#updateButton').click(function(e) {
+      e.preventDefault();
+
+      if($('#poDetailsTable tr').length===0)
+      {
+        alert('Please select the PO from poList and try again..!!');
+        return;
+      }
+          //$('[name="updateInventory"]').validate();
+          $('[name="updateInventory"]').submit();
+        });
+
+  });
 </script>
 </body>
 </html>

@@ -9,38 +9,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Favicon -->
-  <link rel="shortcut icon" href="./images/favicon.ico">
 
-  <!-- Web Fonts -->
-  <link href="./loginPage/css" rel="stylesheet">
-  <link href="./loginPage/css(1)" rel="stylesheet">
-  <link href="./loginPage/css(2)" rel="stylesheet">
-  <link href="./loginPage/css(3)" rel="stylesheet">
-
-  <!-- Bootstrap core CSS -->
-  <link href="./loginPage/bootstrap.css" rel="stylesheet">
-
-  <!-- Font Awesome CSS -->
-  <link href="./loginPage/font-awesome.css" rel="stylesheet">
-
-  <!-- Plugins -->
-  <link href="./loginPage/magnific-popup.css" rel="stylesheet">
-  <link href="./loginPage/animations.css" rel="stylesheet">
-  <link href="./loginPage/slick.css" rel="stylesheet">
-
-  <!-- The Project's core CSS file -->
-  <!-- Use css/rtl_style.css for RTL version -->
-  <link href="./loginPage/style.css" rel="stylesheet">
-  <!-- The Project's Typography CSS file, includes used fonts -->
-  <!-- Used font for body: Roboto -->
-  <!-- Used font for headings: Raleway -->
-  <!-- Use css/rtl_typography-default.css for RTL version -->
-  <link href="./loginPage/typography-default.css" rel="stylesheet">
-  <!-- Color Scheme (In order to change the color scheme, replace the blue.css with the color scheme that you prefer) -->
-  <link href="./loginPage/light_blue.css" rel="stylesheet">
-
-  <!-- Custom css -->
-  <link href="./loginPage/custom.css" rel="stylesheet">
+  <link href="./bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="./fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+  <link href="./plugins/magnific-popup/magnific-popup.css" rel="stylesheet">
+  <link href="./plugins/rs-plugin-5/css/settings.css" rel="stylesheet">
+  <link href="./plugins/rs-plugin-5/css/layers.css" rel="stylesheet">
+  <link href="./plugins/rs-plugin-5/css/navigation.css" rel="stylesheet">
+  <link href="./css/animations.css" rel="stylesheet">
+  <link href="./plugins/slick/slick.css" rel="stylesheet">
+  <link href="./css/style.css" rel="stylesheet" >
+  <link href="./css/typography-default.css" rel="stylesheet" >
+  <link href="./css/skins/light_blue.css" rel="stylesheet">
+  <link href="./css/custom.css" rel="stylesheet">
 
 </head>
 
@@ -72,7 +53,7 @@
 
                     <!-- logo -->
                     <div id="logo" class="logo">
-                      <img src="./loginPage/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 0px;margin-left: -100px;">
+                      <img src="./images/img/Hamdule-Logo1.png" alt="" style="width: 250px;height: 55px;margin-top: 0px;margin-left: -100px;">
                     </div>
                   </div>
 
@@ -94,7 +75,7 @@
                     <nav class="navbar navbar-expand-lg navbar-light p-0">
                       <div class="navbar-brand clearfix hidden-lg-up">
                         <div id="logo-mobile" class="logo">
-                          <a href="#"><img id="logo-img-mobile" src="./loginPage/logo_light_blue.png" alt="The Project"></a>
+                          <a href="#"><img id="logo-img-mobile" src="./images/img/Hamdule-Logo1.png" alt=""></a>
                         </div>
                         <div class="site-slogan">
                         </div>
@@ -173,23 +154,20 @@
     </div>
     <!-- page-wrapper end -->
 
-    <!-- JavaScript files placed at the end of the document so the pages load faster -->
-    <!-- ================================================== -->
-    <!-- Jquery and Bootstap core js files -->
-    <script src="./loginPage/jquery.min.js.download"></script>
-    <script src="./loginPage/bootstrap.bundle.min.js.download"></script>
-    <!-- Magnific Popup javascript -->
-    <script src="./loginPage/jquery.magnific-popup.min.js.download"></script>
-    <!-- Appear javascript -->
-    <script src="./loginPage/jquery.waypoints.min.js.download"></script>
-    <script src="./loginPage/sticky.min.js.download"></script>
-    <!-- Count To javascript -->
-    <script src="./loginPage/jquery.countTo.js.download"></script>
-    <!-- Slick carousel javascript -->
-    <script src="./loginPage/slick.min.js.download"></script>
-    <!-- Initialization of Plugins -->
-    <script src="./loginPage/template.js.download"></script>
-    <!-- Custom Scripts -->
-    <script src="./loginPage/custom.js.download"></script>
+    <script src="./plugins/jquery.min.js"></script>
+	<script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="./plugins/rs-plugin-5/js/jquery.themepunch.tools.min.js"></script>
+	<script src="./plugins/rs-plugin-5/js/jquery.themepunch.revolution.min.js"></script>
+	<script src="./plugins/isotope/imagesloaded.pkgd.min.js"></script>
+	<script src="./plugins/isotope/isotope.pkgd.min.js"></script>
+	<script src="./plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+	<script src="./plugins/waypoints/jquery.waypoints.min.js"></script>
+	<script src="./plugins/waypoints/sticky.min.js"></script>
+	<script src="./plugins/countTo/jquery.countTo.js"></script>
+	<script src="./plugins/slick/slick.min.js"></script>
+	<script src="./js/template.js"></script>
+	<script src="./js/custom.js"></script>
+	<script src="./plugins/jquery.blockUI.js"></script>
+
 
   </body></html>

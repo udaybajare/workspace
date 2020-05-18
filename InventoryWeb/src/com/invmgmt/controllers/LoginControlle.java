@@ -88,9 +88,15 @@ public class LoginControlle {
 
 			Project project = projectDao.getProject(Integer.parseInt(projectIdVal));
 
-			modelAndView.addObject("projectDesc", project.getProjectDesc());
-			modelAndView.addObject("projectIdVal", projectIdVal);
-			modelAndView.addObject("projectNameVal", project.getProjectName());
+			if (!(projectIdVal.equals("") || projectIdVal.equals("0"))) {
+				modelAndView.addObject("projectDesc", project.getProjectDesc());
+				modelAndView.addObject("projectIdVal", projectIdVal);
+				modelAndView.addObject("projectNameVal", project.getProjectName());
+			} else {
+				modelAndView.addObject("projectDesc", "No Recent Project");
+				modelAndView.addObject("projectIdVal", "No Recent Project");
+				modelAndView.addObject("projectNameVal", "No Recent Project");
+			}
 		}
 
 		return modelAndView;

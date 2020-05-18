@@ -1,10 +1,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:task="http://www.springframework.org/schema/task" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans  
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
    	http://www.springframework.org/schema/context 
    	http://www.springframework.org/schema/context/spring-context-3.0.xsd
    	http://www.springframework.org/schema/mvc 
@@ -16,8 +18,7 @@
 
 	<!-- <task:annotation-driven/> -->
 	<context:annotation-config />
-	<context:component-scan base-package="com.invmgmt.*"></context:component-scan>
-
+	<context:component-scan base-package="com.invmgmt.*" />
 
 	<bean id="HandlerMapping"
 		class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
@@ -49,56 +50,52 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 
 		<!--PROD -->
-<!-- 		<property name="url"
+		<!-- <property name="url"
 			value="jdbc:mysql://inventorymgmt.ckvjglniutlo.us-east-2.rds.amazonaws.com:3306/inventoryMgmt" />
 		<property name="username" value="InvMgmtUser" />
 		<property name="password" value="InvMgmtUser9933" /> -->
-		
+
 		<!--UAT -->
 		<!-- <property name="url" value="jdbc:mysql://hamdule.cmbzdfvjyats.us-east-2.rds.amazonaws.com:3306/inventoryMgmt" 
 			/> <property name="username" value="mhamdule" /> <property name="password" 
 			value="mhamdule9933" /> -->
 
 		<!--LOCAL -->
-	<property name="url" value="jdbc:mysql://localhost:3306/inventoryMgmt" />
-		<property name="username" value="admin" />
+		<property name="url" value="jdbc:mysql://localhost:3306/inventoryMgmt" /> 
+		<property name="username" value="admin" /> 
 		<property name="password" value="admin123" />
-	</bean>
+		
+	</bean> 
 
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="com.invmgmt.entity" />
+		<bean id="sessionFactory"
+			class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+			<property name="dataSource" ref="dataSource" />
+			<property name="packagesToScan" value="com.invmgmt.entity" />
+			<property name="hibernateProperties">
+				<props>
+					<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+					<prop key="hibernate.show_sql">true</prop>
+					<prop key="hibernate.connection.autocommit">true</prop>
+					<prop key="hibernate.hbm2ddl.auto">update</prop>
+					<prop key="hibernate.show_sql">true</prop>
+				</props>
+			</property>
+		</bean>
 
-		<property name="hibernateProperties">
-			<props>
-			<!-- LOCAL -->
-				<!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop> -->
-			<!-- PROD -->	
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>				
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.connection.autocommit">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<prop key="hibernate.show_sql">true</prop>
-				<!-- <prop key="hibernate.jdbc.batch_size">5</prop> -->
-			</props>
-		</property>
-	</bean>
+		<bean id="transactionManager"
+			class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+			<property name="sessionFactory" ref="sessionFactory" />
+		</bean>
 
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+		<tx:annotation-driven proxy-target-class="true"
+			transaction-manager="transactionManager" />
 
-	<tx:annotation-driven proxy-target-class="true"
-		transaction-manager="transactionManager" />
-
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/login" />
-			<mvc:exclude-mapping path="/submit" />
-			<bean class="com.invmgmt.interceptor.SessionValidatorInterceptor" />
-		</mvc:interceptor>
-	</mvc:interceptors>
+		<mvc:interceptors>
+			<mvc:interceptor>
+				<mvc:mapping path="/**" />
+				<mvc:exclude-mapping path="/login" />
+				<mvc:exclude-mapping path="/submit" />
+				<bean class="com.invmgmt.interceptor.SessionValidatorInterceptor" />
+			</mvc:interceptor>
+		</mvc:interceptors>
 </beans>

@@ -128,9 +128,13 @@ public class InventoryDao {
 			session = sessionFactory.openSession();
 			Query query = session.createQuery(selectHql);
 
-			Object result = query.uniqueResult();
+			ArrayList<Integer> result = (ArrayList<Integer>) query.getResultList();
 
-			availableQuantity = (int) (result != null ? result : 0);
+			for(Integer qty : result)
+			{
+				availableQuantity += (int) (qty != null ? qty : 0);	
+			}
+			
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -189,9 +193,10 @@ public class InventoryDao {
 				+ "invD.inventorySpec.type = '" + inventorySpec.getType() + "' and  "
 				+ "invD.inventorySpec.manifMethod = '" + inventorySpec.getManifMethod() + "' and  "
 				+ "invD.inventorySpec.gradeOrClass = '" + inventorySpec.getGradeOrClass() + "' and  "
-				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " + "invD.inventorySpec.ends = '"
-				+ inventorySpec.getEnds() + "'  and  " + "invD.inventorySpec.assignedProject = '"
-				+ inventorySpec.getAssignedProject() + "' and invD.inventorySpec.status='"+ inventory.getInventorySpec().getStatus() +"'";
+				+ "invD.inventorySpec.size = '" + inventorySpec.getSize() + "' and  " 
+				+ "invD.inventorySpec.ends = '" + inventorySpec.getEnds() + "'  and  " 
+				+ "invD.inventorySpec.assignedProject = '" + inventorySpec.getAssignedProject() + "' and "
+				+ "invD.inventorySpec.status='"+ inventory.getInventorySpec().getStatus() +"'";
 		
 		if(noInvoiceNum)
 		{
@@ -206,7 +211,7 @@ public class InventoryDao {
 			session = sessionFactory.openSession();
 			Query query = session.createQuery(selectHql);
 
-			purchaseRate = Double.parseDouble((String) query.uniqueResult());
+			purchaseRate = Double.parseDouble((String.valueOf(((ArrayList<Integer>) query.getResultList()).get(0))));
 
 			System.out.println("PurchaseRate is : " + purchaseRate);
 		} catch (Exception ex) {

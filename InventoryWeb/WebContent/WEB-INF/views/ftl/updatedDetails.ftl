@@ -114,13 +114,13 @@
               <div class="separator-2"></div>
               <ul class="list margin-clear">
                 <li>
-                  <strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 29%;">PO Number:</strong> <span>${poNumber}</span>
+                  <strong>PO Date: </strong> <span class="text-right">${poDate}</span>  <strong style="padding-left: 19%;">PO Number:</strong> <span>${poNumber}</span>
                 </li>
                 <li>
-                  <strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 25%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span>
+                  <strong>Contact Person: </strong> <span class="text-right">${contactName}</span>  <strong style="padding-left: 15%;">Contact Number: </strong> <span class="text-right">${contactPhone}</span>
                 </li>
                 <li>
-                  <strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 20%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span>
+                  <strong>Address: </strong> <span class="text-right">${address}</span> <strong style="padding-left: 10%;">Contact Email: </strong> <span class="text-right">${contactEmail}</span>
                 </li>                    
                 <li>
                   <strong>GST #: </strong> <span class="text-right">${gstNumber}</span>
@@ -134,7 +134,7 @@
     </div>
     <!-- Update project Section START -->
     <div class="row" style="margin-left: 1%;margin-top: -1.8%;">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="pv-10 ph-10 feature-box bordered shadow text-center object-non-visible animated object-visible fadeInDownSmall __web-inspector-hide-shortcut__" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
           <div class="row">
             <h3 class="select-menu" data-toggle="modal" data-target="#createProjectModal" style="margin-left: 6%;margin-top: 3%;"> + Project Section</h3>
@@ -155,26 +155,26 @@
                       <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                         <div class="form-group has-feedback">
                           <label style="margin-left: -80%;">PO Date</label>
-                          <input type="text" name="poDate" class="form-control" value=" ">                   
+                          <input type="text" name="poDate" class="form-control" value="" required>                  
                         </div>
                       </div>
                     </div>
                     <div class="col-md-3 ">
                       <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                         <label style="margin-left: -75%;">PO Number</label>
-                        <input type="text" name="poNumber" class="form-control" value=" ">
+                        <input type="text" name="poNumber" class="form-control" value="" required>
                       </div>
                     </div>
                     <div class="col-md-3 ">
                       <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                        <label style="margin-left: -55%;">Contact Person Name</label>
-                       <input type="text" name="contactName" class="form-control">
+                       <input type="text" name="contactName" class="form-control" required>
                      </div>
                    </div>
                    <div class="col-md-3 ">
                     <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                       <label style="margin-left: -70%;">Contact Email</label>
-                      <input type="text" name="contactEmail" class="form-control">
+                      <input type="text" name="contactEmail" class="form-control" required> 
                     </div>
                   </div>
                 </div>
@@ -183,19 +183,19 @@
                   <div class="col-md-3 ">
                     <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                      <label style="margin-left: -70%;">Contact Phone</label>
-                     <input type="text" name="contactPhone" class="form-control">
+                     <input type="text" name="contactPhone" class="form-control" required>
                    </div>
                  </div>
                  <div class="col-md-3 ">
                   <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                    <label style="margin-left: -70%;">GST Number</label>
-                   <input type="text" name="gstNumber" class="form-control" value=" ">
+                   <input type="text" name="gstNumber" class="form-control" value="" required>
                  </div>
                </div>
                <div class="col-md-3 ">
                 <div class="ph-20 feature-box text-center object-non-visible animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                  <label style="margin-left: -80%;">Address</label>
-                 <input type="text" name="address" class="form-control">
+                 <input type="text" name="address" class="form-control" required>
                </div>
              </div>
 
@@ -273,25 +273,25 @@
                 <div class="col-md-3 col-sm-3" >
                  <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                   <label>Doc Name</label>
-                  <input type="text" name="dName" class="form-control" value="">
+                  <input type="text" name="dName" class="form-control" value="" required>
                 </div>
               </div>
               <div class="col-md-3 col-sm-3">
                <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
                 <label>Utility</label>
-                <input type="text" name="utility" class="form-control" value="">
+                <input type="text" name="utility" class="form-control" value="" required>
               </div>
             </div>
             <div class="col-md-3 col-sm-3">
              <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
               <label>Pressure</label>
-              <input type="text" name="pressure" class="form-control" value="">
+              <input type="text" name="pressure" class="form-control" value="" required>
             </div>
           </div>
           <div class="col-md-3 col-sm-3" style="margin-left: 0%;">
            <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
             <label>Temperature</label>
-            <input type="text" name="temperature" class="form-control" value="">
+            <input type="text" name="temperature" class="form-control" value="" required>
           </div>
         </div>
       </div>
@@ -299,24 +299,24 @@
         <div class="col-md-3 col-sm-3">
          <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
           <label>Doc Number</label>
-          <input type="text" class="form-control" name="dNo" value="" >
+          <input type="text" class="form-control" name="dNo" value="" required>
         </div>
       </div>
       <div class="col-md-3 col-sm-3">
        <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
         <label>Client</label>
-        <input type="text" name="client" class="form-control" value="${clientName}">
+        <input type="text" name="client" class="form-control" value="${clientName}" required>
       </div>
     </div>
     <div class="col-md-3 col-sm-3">
      <div class="animated object-visible fadeInDownSmall" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
       <label>Site</label>
-      <input type="text" name="site" class="form-control" value="">
+      <input type="text" name="site" class="form-control" value="" required>
     </div>
   </div>
   <div class="col-md-3 col-sm-3">
     <label class="createBOQ" style="margin-top: 1%; display: none;">BOQ Name : </label>
-    <input class="createBOQ form-control" style="display: none;" type="text" id="boqName" name="boqName" value="" project="">
+    <input class="createBOQ form-control" style="display: none;" type="text" id="boqName" name="boqName" value="" project="" required>
     <input type="hidden" name="projectId" value="${projectId}"/>
   </div>  
 </div>
@@ -325,18 +325,7 @@
 <div class="tab-content" id="tableContentDetails">  
 </div>
 <div class="row" style="margin-top: 2%;">
-  <div class="col-md-12">
-    <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100"></div>
-  </div>
-</div>
-<div class="row" style="margin-top: 2%;">
   <div class="col-md-1" align="center">
-  </div>
-  <div class="col-md-2" align="center">
-    <input type="text" class="form-control" style="margin-top: 5%;" name="newSheetName">
-  </div>
-  <div class="col-md-2" align="center">
-    <h4 class="btn btn-default" data-toggle="collapse" onClick="addNewSheet()">Add New Sheet</h4>
   </div>
   <div class="col-md-2" align="center">
     <input type="button" class="btn btn-default" name="deleteBoqButton" onclick="deleteRevision('boq');" value="Delete This BOQ">
@@ -347,7 +336,21 @@
   <div class="col-md-2" align="center">
     <button type="submit" name="generateBOQButton" class="btn btn-default generateBOQButton">Generate Quotation</button>
   </div>
-  <div class="col-md-1" align="center">
+  <span class="border border-info">
+    <div class="col-md-2" align="center">
+      <input type="text" class="form-control" style="margin-top: 5px;width: 150px;" name="newSheetName">
+    </div>
+    <div class="col-md-2" align="center">
+      <h4 class="btn btn-default" data-toggle="collapse" onClick="addNewSheet()">Add New Sheet</h4>
+    </div>
+  </span>
+  <div class="col-md-2" align="center">
+    <select class="form-control" onchange="hideOthers(this.value)" style="width: 100%;">
+      <option></option>
+      <option value="item1">Add Item</option>
+      <option value="valve1">Add Valve</option>
+      <option value="accessory1">Add Accessory</option>
+    </select>
   </div>
 </div>
 <div class="row" style="margin-top: 2%;">
@@ -356,31 +359,6 @@
   </div>
 </div>
 </form>
-<div class="row createBOQ" style="display: none;margin-top: 2%;margin-bottom: 2%;max-width:98%;">
-  <div class="col-md-4" align="center">
-    <br>
-    <h4 class="btn btn-default" data-toggle="collapse" onClick="hideOthers('item1')" data-target="#addInventory">Add Item</h4>
-  </div>
-  <div class="col-md-4" align="center">
-    <br>
-    <h4 class="btn btn-default" data-toggle="collapse" onClick="hideOthers('accessory1')" data-target="#addAccessory">Add Accessory</h4> 
-  </div>
-  <div class="col-md-4" align="center">
-    <br>
-    <h4 class="btn btn-default" data-toggle="collapse" onClick="hideOthers('valve1')" data-target="#addValve">Add Valve</h4>
-  </div>
-</div>
-<!-- <div class="row createBOQ" style="display: none;margin-top: 2%;margin-bottom: 2%;max-width:98%;">
-  <div class="col-md-4" >
-    
-  </div>
-  <div class="col-md-4" align="center">
-    
-  </div>  
-  <div class="col-md-4" align="center">
-    
-  </div>
-</div> -->
 <div class="container collapse" id="item1" style="max-width:98%;" id="addInventory">
   <div class="row createBOQ" style="display: none;">
     <div class="col-md-12 form-inline">
@@ -527,7 +505,7 @@
  </div>
 </div>
 <div class="container collapse" id="valve1" style="max-width:90%;" id="addValve">
-  <div class="row createBOQ" style="display: none;margin-left: -9%">
+  <div class="row createBOQ" style="display: none;">
     <div class="col-md-12 form-inline">
       <table class="table table-colored createBOQ rounded-circle border border-info" style="display:none;">
         <thead>
@@ -818,12 +796,11 @@
                   <h4>PO List:</h4> 
                   <select class="form-control" onchange="downloadPO($('#poList').val());" id="poList">
                     <option></option>
-                    <option value=""></option></select>
+                  </select>
 
-                  </div>  
-                  <div class="col-md-3" style="margin-top: 1.5%;">      
-                    <button type="button" onclick="generatePO();" class="btn btn-default">Generate PO</button>
-                  </div>
+                </div>  
+                <div class="col-md-3" style="margin-top: 1.5%;">      
+                  <button type="button" onclick="generatePO();" class="btn btn-default">Generate PO</button>
                 </div>
               </div>
             </div>
@@ -832,6 +809,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 </div>
 <div class="row"style="margin-left: 1%;margin-top: -1.8%;">
@@ -853,21 +831,21 @@
                  <h4>TaxInvoice List</h4>
                  <select class="form-control" onchange="downloadInvoice($('#taxInvoiceList').val());" id="taxInvoiceList">
                   <option></option>
-                  <option value=""></option>
                 </select>
               </div>
               <div class="col-md-3" style="margin-top: 1.5%;">      
-                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#payDetails" >Received Payment Details</button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#payDetails" onclick="closeOther('payDetails');">Received Payment Details</button>
               </div>
               <div class="col-md-3" style="margin-left:-3%;margin-top: 1.5%;">      
-               <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#createProjectModal5">Add Payment Details</button>
+               <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#createProjectModal5" onclick="closeOther('createProjectModal5');" >Add Payment Details</button>
              </div>
              <div class="col-md-3" style="margin-left:-6%;margin-top: 1.5%;">      
-               <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#generateInvoice" id="generateInvoiceFrNInv" >Generate Invoice for received Inventory</button>
+               <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#generateInvoice" id="generateInvoiceFrNInv" onclick="closeOther('generateInvoice');" >Generate Invoice for received Inventory</button>
              </div>
            </div>
-           <div class="collapse" id="createProjectModal5">
-            <div class="row ">
+           <div class="separator clearfix"></div>
+           <div class="collapse border border-info" id="createProjectModal5">
+            <div class="row" style="margin-top: 1.5%;">
              <div class="col-md-3" style="margin-left: 5%;">
                <label class="" style="margin-top: 1%;">Invoice</label>
                <select class="form-control" name="taxInvoiceNumber" id="taxInvoiceNumber" > 
@@ -893,7 +871,8 @@
          </div>
        </div>
      </div>
-     <div class="row collapse" id="payDetails">				
+     <div class="separator clearfix"></div>
+     <div class="collapse border border-info" id="payDetails">				
       <div class="col-md-12" style="margin-top: 1.5%;">      
         <table id="payDetailsSection" class="table table-striped table-colored">
          <thead>
@@ -913,6 +892,7 @@
       </table>
     </div>		
   </div>
+  <div class="separator clearfix"></div>
   <div class="collapse border border-info" id="generateInvoice" >
     <section class="main-container">
       <div class="container">
@@ -1000,10 +980,6 @@
        </div>
      </div>
    </form>
-   <div class="separator object-non-visible mt-10 animated object-visible fadeIn" data-animation-effect="fadeIn" data-effect-delay="100">
-   </div>
-   <div class="row" style="margin-left: -11%;">
-   </div>
  </div>
 </section>
 </div>
@@ -1067,83 +1043,41 @@
                    <tbody id="tableContentDetails">
                     ${assignedInventory}
                   </tbody>
-                </table>
-                <!-- <table class="table table-colored assignedInventorySec border border-info">
+                </table>                
+              </div> 
+            </div>
+          </div>
+          <div class="container collapse" id="citem" style="max-width:98%;" id="consumedInventory">
+            <div class="col-md-12 ">
+              <div class="table-responsive">               
+                <table class="table table-colored border border-info">
                   <thead>
                     <tr>
                      <th></th>
-                     <th>Desc 1</th>
-                     <th>Desc 2</th>
-                     <th>Desc 3</th>
-                     <th>Desc 4</th>
-                     <th>Desc 5</th>
-                     <th>Accesory Name</th>
-                     <th></th>
+                     <th>Item</th>
+                     <th>Material</th>
+                     <th>Type</th>
+                     <th>Manifacturing Method</th>
+                     <th>Class/Schedule</th>
+                     <th>Ends</th>
+                     <th>Size</th>
                      <th>Quantity</th>
                      <th>Purchase Rate</th>
                      <th>Project</th>
                      <th>Location</th>
+                     <th>Action</th>
                    </tr>
                  </thead>
-                 <tbody id="tableContentDetails">
-                  ${assignedAccessory}
+                 <tbody>
+                  ${consumedInventory}
                 </tbody>
-              </table> -->
+              </table>            
             </div> 
           </div>
         </div>
-        <div class="container collapse" id="citem" style="max-width:98%;" id="consumedInventory">
-          <div class="col-md-12 ">
-            <div class="table-responsive">               
-              <table class="table table-colored border border-info">
-                <thead>
-                  <tr>
-                   <th></th>
-                   <th>Item</th>
-                   <th>Material</th>
-                   <th>Type</th>
-                   <th>Manifacturing Method</th>
-                   <th>Class/Schedule</th>
-                   <th>Ends</th>
-                   <th>Size</th>
-                   <th>Quantity</th>
-                   <th>Purchase Rate</th>
-                   <th>Project</th>
-                   <th>Location</th>
-                   <th>Action</th>
-                 </tr>
-               </thead>
-               <tbody>
-                ${consumedInventory}
-              </tbody>
-            </table>
-            <!-- <table class="table table-colored border border-info">
-              <thead>
-                <tr>
-                 <th></th>
-                 <th>Desc 1</th>
-                 <th>Desc 2</th>
-                 <th>Desc 3</th>
-                 <th>Desc 4</th>
-                 <th>Desc 5</th>
-                 <th>Accesory Name</th>
-                 <th></th>
-                 <th>Quantity</th>
-                 <th>Purchase Rate</th>
-                 <th>Project</th>
-                 <th>Location</th>
-               </tr>
-             </thead>
-             <tbody>
-               ${consumedAccessory}
-             </tbody>
-           </table> -->
-         </div> 
-       </div>
-     </div>
-   </div>
- </div> 
-</div>
+      </div>
+    </div> 
+  </div>
 </div>
 </div>
 </div>
@@ -1197,6 +1131,7 @@
 <script src="js/template.js"></script>
 <!-- Custom Scripts -->
 <script src="js/custom.js"></script>
+<script src="js/jquery.validate.js"></script>
 
 <script>
   function hideOthers(idToBeOpen)
@@ -1274,10 +1209,11 @@
 
   function hideLoading()
   {
-    this.setTimeout($.unblockUI,1000);
-    //$.unblockUI();
+    /*this.setTimeout($.unblockUI,1000);*/
+    $.unblockUI();
 
   }
+
 </script>
 
 <script>
@@ -1356,79 +1292,96 @@
     var rate = [];
     var quantity = [];
 
-    $("input[name='baseSupplyRate']").each(function() {
+    var obj = $(thisObj);
 
-      var sRate = parseFloat($(this).val()) + parseFloat($("[name='supplyPrsnt']").val()*$(this).val()/100);
+    console.log($(thisObj).find('parentElement').find('parentElement').find('parentElement'))
+    console.log("Base count is :  "+$(thisObj).find('#inventoryDetails').find("input[name='baseSupplyRate']").length);
 
-      if(sRate % 5 != 0)
-      {
-        sRate + 5 - sRate % 5
-      }
-      rate.push(sRate);
-    });
+    var thisBaseSupplyRates = $($(obj).closest("table")[0]).find("input[name='baseSupplyRate']");
+    /*$("input[name='baseSupplyRate']").each(function() {*/
+      $(thisBaseSupplyRates).each(function() {
+        var sRate = parseFloat($(this).val()) + parseFloat($("[name='supplyPrsnt']").val()*$(this).val()/100);
 
-    var int = 0;
-    $("input[name='supplyRate']").each(function() {
-      $(this).val(rate[int]);
-      int++;
-    });
+        if(sRate % 5 != 0)
+        {
+          sRate + 5 - sRate % 5
+        }
+        rate.push(sRate);
+      });
 
-    $("input[name='quantity']").each(function() {
-     quantity.push($(this).val());
-   });
+      var thisSupplyRates = $($(obj).closest("table")[0]).find("input[name='supplyRate']");
+      var int = 0;
+      $(thisSupplyRates).each(function() {
+        $(this).val(rate[int]);
+        int++;
+      });
 
-    var i = 0;
+      var thisQuantity = $($(obj).closest("table")[0]).find("input[name='quantity']");
+      $(thisQuantity).each(function() {
+       quantity.push($(this).val());
+     });
 
-    $("input[name='supplyAmount']").each(function() {
-     console.log(rate[i]);
-     console.log(quantity[i]);
-     $(this).val(rate[i]*quantity[i]);
-     i++;
-   });
 
-  }
-</script>        
-<script>
-  function updateErectionRate(thisObj)
-  {
+      var thisSupplyAmount = $($(obj).closest("table")[0]).find("input[name='supplyAmount']");
 
-    var rate = [];
-    var quantity = [];
+      var i = 0;
+      $(thisSupplyAmount).each(function() {
+       console.log(rate[i]);
+       console.log(quantity[i]);
+       $(this).val(rate[i]*quantity[i]);
+       i++;
+     });
 
-    $("input[name='baseErectionRate']").each(function() {
-      var eRate = parseFloat($(this).val()) + parseFloat($("[name='erectionPrsnt']").val()*$(this).val()/100);
+    }
+  </script>        
+  <script>
+    function updateErectionRate(thisObj)
+    {
 
-      if(eRate % 5 != 0)
-      {
-        eRate + 5 - eRate % 5
-      }
+      var rate = [];
+      var quantity = [];
 
-      rate.push(eRate);
-    });
+      var obj = $(thisObj);
 
-    var int = 0;
-    $("input[name='erectionRate']").each(function() {
-      $(this).val(rate[int]);
-      int++;
-    });
+      var thisBaseErectionRate = $($(obj).closest("table")[0]).find("input[name='baseErectionRate']");
 
-    $("input[name='quantity']").each(function() {
-     quantity.push($(this).val());
-   });
+      $(thisBaseErectionRate).each(function() {
+        var eRate = parseFloat($(this).val()) + parseFloat($("[name='erectionPrsnt']").val()*$(this).val()/100);
 
-    var i = 0;
+        if(eRate % 5 != 0)
+        {
+          eRate + 5 - eRate % 5
+        }
 
-    $("input[name='erectionAmount']").each(function() {
-     console.log(rate[i]);
-     console.log(quantity[i]);
-     $(this).val(rate[i]*quantity[i]);
-     i++;
-   });
-  }
-</script>
+        rate.push(eRate);
+      });
 
-<script>
-  $(document).ready(function(){
+      var thisErectionRate = $($(obj).closest("table")[0]).find("input[name='erectionRate']");
+      var int = 0;
+      $(thisErectionRate).each(function() {
+        $(this).val(rate[int]);
+        int++;
+      });
+
+      var thisQuantity = $($(obj).closest("table")[0]).find("input[name='quantity']");
+      $(thisQuantity).each(function() {
+       quantity.push($(this).val());
+     });
+
+      var thisErectionAmount = $($(obj).closest("table")[0]).find("input[name='erectionAmount']");
+
+      var i = 0;
+      $(thisErectionAmount).each(function() {
+       console.log(rate[i]);
+       console.log(quantity[i]);
+       $(this).val(rate[i]*quantity[i]);
+       i++;
+     });
+    }
+  </script>
+
+  <script>
+    $(document).ready(function(){
    // we define and invoke a function
    (function(){
 
@@ -1457,7 +1410,7 @@
    })();
  });
 
-  $(document).ready(function(){
+    $(document).ready(function(){
    // we define and invoke a function
    (function(){
 
@@ -1486,7 +1439,7 @@
    })();
  });
 
-  $(document).ready(function(){
+    $(document).ready(function(){
    // we define and invoke a function
    (function(){
 
@@ -1516,7 +1469,7 @@
    })();
  });
 
-  $(document).ready(function(){
+    $(document).ready(function(){
    // we define and invoke a function
    (function(){
 
@@ -1562,7 +1515,7 @@
     }
     else
     {
-      toggleCreateBOQSec();
+      $('.createBOQ').show();
       $('.generateBOQButton').css('display','block');
       $('.inventoryTableHeader').css('display','block');  
     }    
@@ -1676,7 +1629,11 @@
        }
      }
 
-     sheetDetails = sheetDetails + $($('#tableContentInqSec').find('.tab-pane')[r]).attr('id')+','+checkedEle+',';
+     if(checkedEle>0)
+     {
+      sheetDetails = sheetDetails + $($('#tableContentInqSec').find('.tab-pane')[r]).attr('id')+','+checkedEle+',';
+     }
+     
      var eleCount = $('#tableContentInqSec input').length;
      var j;
      var k = 0;
@@ -1699,7 +1656,19 @@
         inventoryName[inventoryName.length+k] 	    = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;							      
         material[material.length+k]      	    = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;     
         type[type.length+k]               = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
-        manifacturingMethod[manifacturingMethod.length+k]= $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+
+        var tempVal = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
+
+        if(tempVal==="")
+        {
+          manifacturingMethod[manifacturingMethod.length+k] = " ";
+        }
+        else
+        {
+          manifacturingMethod[manifacturingMethod.length+k] = tempVal;
+        }
+        
+
         classOrGrade[classOrGrade.length+k]       = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
         ends[ends.length+k]               = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
         size[size.length+k]               = $($('#tableContentInqSec').find('.tab-pane')[r]).find('input')[start++].value;
@@ -1752,7 +1721,7 @@
 
   var inquiryNameList = $('.offerRevisionSection')[0].options; 
 
-  var revisionNo = 1;
+  var revisionNo = 0;
   for(var k = 0; k < inquiryNameList.length; k++)
   {
     if(inquiryNameList[k].value.startsWith('Inquiry_'+$('[name="inquiryName"]').val()))
@@ -1775,11 +1744,12 @@
 
     console.log("Appending "+inquiryName);
     $('.offerRevisionSection').append(inquiryName);
+    hideLoading();
 
-    $('#LoadingImage').hide();
+    alert('Inquiry has been sent successfully.');
   }
 });
-  hideLoading();
+  
 }
 
 function cleanArray(actual)
@@ -1912,10 +1882,10 @@ function cleanArray(actual)
     + "    <td> <input type='hidden' name='ends' value='"+ends+"'></input>"+ends+"</td>"
     + "    <td> <input type='hidden' name='size' value='"+size+"'></input>"+size+"</td>"
     + "	   <td><input class='form-control' style='width:60px;' type='text' name='quantity' value=''></input></td>"
-    + "	   <td><input class='form-control' style='width:60px;' type='text' name='baseSupplyRate' value=''></input></td>"
-    + "	   <td><input class='form-control' style='width:60px;' type='text' name='supplyRate' value=''></input></td>"
-    + "	   <td><input class='form-control' style='width:60px;' type='text' name='baseErectionRate' value=''></input></td>"
-    + "	   <td><input class='form-control' style='width:60px;' type='text' name='erectionRate' value=''></input></td>"
+    + "	   <td><input class='form-control' style='width:60px;' type='text' onchange='updateSupplyRate($(this));' name='baseSupplyRate' value=''></input></td>"
+    + "	   <td><input class='form-control' style='width:60px;' type='text' onchange='updateSupplyRate($(this));' name='supplyRate' value=''></input></td>"
+    + "	   <td><input class='form-control' style='width:60px;' type='text' onchange='updateErectionRate($(this));' name='baseErectionRate' value=''></input></td>"
+    + "	   <td><input class='form-control' style='width:60px;' type='text' onchange='updateErectionRate($(this));' name='erectionRate' value=''></input></td>"
     + "	   <td><input class='form-control' style='width:60px;' type='text' name='supplyAmount' value=''></input></td>"
     + "	   <td><input class='form-control' style='width:60px;' type='text' name='erectionAmount' value=''></input></td>";
 
@@ -2259,6 +2229,12 @@ function cleanArray(actual)
     var paymentMode = $('[name="paymentMode"]')[0].value;
     var projectId = $('[name="projectId"]')[0].value;
 
+    if(taxInvoiceNumber==="" || receivedAmount==="" || paymentMode==="")
+    {
+      alert('Please add all the details and try Again..!!');
+      return;
+    }
+
     var paymentDetailsLine = '';
 
     $.ajax({
@@ -2313,6 +2289,13 @@ function cleanArray(actual)
   $(function() {
     $('button[name=generateBOQButton]').click(function(e) {
       e.preventDefault();
+
+      if($('[name="sheetDetails"]').length===0)
+      {
+        alert('Please add atleast 1 sheet with Inventory Details and try again..!!');
+        return;
+      }
+
       var ele1 = $('[name="quantity"]');
       var length = $('#tableContentDetails').find(ele1).length;
       var stopNow = false;
@@ -2327,6 +2310,12 @@ function cleanArray(actual)
 
 
           eleLength = $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="inventoryName"]').length;
+
+          if(eleLength===0)
+          {
+            alert('Please remove the blank sheet and try again..!!');
+            return;
+          }
 
           $('#'+sheetCount[i].value).find('tbody#tableContentDetails').find('input[name="sheetDetails"]').attr('value',sheetCount[i].value.split(',')[0]+','+eleLength);
         }
@@ -2348,6 +2337,7 @@ function cleanArray(actual)
       try{
         if(!stopNow)
         {
+          $('[name="generateBOQ"]').validate();
           $('[name="generateBOQ"]').submit();
         }
       }
@@ -2484,125 +2474,131 @@ function cleanArray(actual)
      }
    }
 
-   var eleCount = $('#generateInvoiceTable input').length;
-
-   var inventoryName        = [];
-   var material             = [];
-   var type                 = [];
-   var manifacturingMethod  = [];
-   var classOrGrade         = [];
-   var ends                 = [];
-   var size                 = [];
-   var purchaseRate       = [];
-   var receivedQuantity     = [];
-   var location         = [];
-   var receivedDate         = [];
-
-   var contactName          = $('[name="contactName"]')[0].value;
-   var mobileNo           = $('[name="mobileNo"]')[0].value;
-   var addressedto1         = $('[name="addressedto1"]')[0].value;
-   var orderDate          = $('[name="orderDate"]')[0].value;
-   var emailAddress       = $('[name="emailAddress"]')[0].value;
-   var invoiceType        = $('[name="invoiceType"]')[0].value;
-   var hsnOrSac         = $('[name="hsnOrSac"]')[0].value;
-
-   var j;
-   var k = 0;
-   var n = 1;
-   for(k=0;k<selectedElements.length;k++)
+   if(selectedElements.length === 0)
    {
-
-     if(selectedElements[k] != undefined)
-     {
-      var start = 1 + 14*parseFloat(selectedElements[k]);
-
-      inventoryName[k]      = $('#generateInvoiceTable input')[start++].value;
-      material[k]       = $('#generateInvoiceTable input')[start++].value;
-      type[k]         = $('#generateInvoiceTable input')[start++].value;
-      manifacturingMethod[k]  = $('#generateInvoiceTable input')[start++].value;
-      classOrGrade[k]     = $('#generateInvoiceTable input')[start++].value;
-      ends[k]         = $('#generateInvoiceTable input')[start++].value;
-      size[k]         = $('#generateInvoiceTable input')[start++].value;
-      purchaseRate[k]     = $('#generateInvoiceTable input')[start++].value;                    
-      receivedQuantity[k]   = $('#generateInvoiceTable input')[start++].value;
-      start++;     
-      location[k]       = $('#generateInvoiceTable input')[start++].value;
-      receivedDate[k]     = $('#generateInvoiceTable input')[start++].value;
-
-    } 
+    alert('Please select an element to generate the Invoice');
+    return; 
   }
 
-  var lastArray = 3 + 20*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
+  var eleCount = $('#generateInvoiceTable input').length;
 
+  var inventoryName        = [];
+  var material             = [];
+  var type                 = [];
+  var manifacturingMethod  = [];
+  var classOrGrade         = [];
+  var ends                 = [];
+  var size                 = [];
+  var purchaseRate       = [];
+  var receivedQuantity     = [];
+  var location         = [];
+  var receivedDate         = [];
 
-  var formData = $(this).serializeArray();
+  var contactName          = $('[name="contactName"]')[0].value;
+  var mobileNo           = $('[name="mobileNo"]')[0].value;
+  var addressedto1         = $('[name="addressedto1"]')[0].value;
+  var orderDate          = $('[name="orderDate"]')[0].value;
+  var emailAddress       = $('[name="emailAddress"]')[0].value;
+  var invoiceType        = $('[name="invoiceType"]')[0].value;
+  var hsnOrSac         = $('[name="hsnOrSac"]')[0].value;
 
-  formData.push({name: 'projectId', value: $('[name="projectId"]').val()});
-  
-  var inventoryName_string = cleanArray(inventoryName);
-  formData.push({name: 'inventoryName', value: inventoryName_string});
-  var material_string = cleanArray(material);
-  formData.push({name: 'material', value: material_string});
-  var type_string = cleanArray(type);
-  formData.push({name: 'type', value: type_string});
-  var manifacturingMethod_string = cleanArray(manifacturingMethod);
-  formData.push({name: 'manifMetod', value: manifacturingMethod_string});
-  var classOrGrade_string = cleanArray(classOrGrade);
-  formData.push({name: 'classOrGrade', value: classOrGrade_string});
-  var ends_string = cleanArray(ends);
-  formData.push({name: 'ends', value: ends_string});
-  var size_string = cleanArray(size);
-  formData.push({name: 'size', value: size_string});
-  var purchaseRate_string = cleanArray(purchaseRate);
-  formData.push({name: 'purchaseRate', value: purchaseRate_string});
-  var receivedQuantity_string = cleanArray(receivedQuantity);
-  formData.push({name: 'receivedQuantity', value: receivedQuantity_string});
-  var location_string = cleanArray(location);
-  formData.push({name: 'location', value: location_string});
-  var receivedDate_string = cleanArray(receivedDate);
-  formData.push({name: 'receivedDate', value: receivedDate_string});
-  
-  formData.push({name: 'contactName', value: contactName});
-  formData.push({name: 'mobileNo', value: mobileNo});
-  formData.push({name: 'addressedto1', value: addressedto1});
-  formData.push({name: 'orderDate', value: orderDate});
-  formData.push({name: 'emailAddress', value: emailAddress});
-  formData.push({name: 'invoiceType', value: invoiceType});
-  formData.push({name: 'hsnOrSac', value: hsnOrSac});
-  
-  $.ajax({
-   url: "generateInvoice",
-   data: formData,
-   type: 'post',
-   success: function(data)
+  var j;
+  var k = 0;
+  var n = 1;
+  for(k=0;k<selectedElements.length;k++)
+  {
+
+   if(selectedElements[k] != undefined)
    {
+    var start = 1 + 14*parseFloat(selectedElements[k]);
 
-    var CheckeleCount1 = $('#generateInvoiceTable input.checkbox').length;
+    inventoryName[k]      = $('#generateInvoiceTable input')[start++].value;
+    material[k]       = $('#generateInvoiceTable input')[start++].value;
+    type[k]         = $('#generateInvoiceTable input')[start++].value;
+    manifacturingMethod[k]  = $('#generateInvoiceTable input')[start++].value;
+    classOrGrade[k]     = $('#generateInvoiceTable input')[start++].value;
+    ends[k]         = $('#generateInvoiceTable input')[start++].value;
+    size[k]         = $('#generateInvoiceTable input')[start++].value;
+    purchaseRate[k]     = $('#generateInvoiceTable input')[start++].value;                    
+    receivedQuantity[k]   = $('#generateInvoiceTable input')[start++].value;
+    start++;     
+    location[k]       = $('#generateInvoiceTable input')[start++].value;
+    receivedDate[k]     = $('#generateInvoiceTable input')[start++].value;
 
-    var selectedElements1 = [];
-    var j;
+  } 
+}
 
-    for(j=0; j < CheckeleCount1; j++)
+var lastArray = 3 + 20*parseFloat(selectedElements[parseFloat(selectedElements.length) - 1]);
+
+
+var formData = $(this).serializeArray();
+
+formData.push({name: 'projectId', value: $('[name="projectId"]').val()});
+
+var inventoryName_string = cleanArray(inventoryName);
+formData.push({name: 'inventoryName', value: inventoryName_string});
+var material_string = cleanArray(material);
+formData.push({name: 'material', value: material_string});
+var type_string = cleanArray(type);
+formData.push({name: 'type', value: type_string});
+var manifacturingMethod_string = cleanArray(manifacturingMethod);
+formData.push({name: 'manifMetod', value: manifacturingMethod_string});
+var classOrGrade_string = cleanArray(classOrGrade);
+formData.push({name: 'classOrGrade', value: classOrGrade_string});
+var ends_string = cleanArray(ends);
+formData.push({name: 'ends', value: ends_string});
+var size_string = cleanArray(size);
+formData.push({name: 'size', value: size_string});
+var purchaseRate_string = cleanArray(purchaseRate);
+formData.push({name: 'purchaseRate', value: purchaseRate_string});
+var receivedQuantity_string = cleanArray(receivedQuantity);
+formData.push({name: 'receivedQuantity', value: receivedQuantity_string});
+var location_string = cleanArray(location);
+formData.push({name: 'location', value: location_string});
+var receivedDate_string = cleanArray(receivedDate);
+formData.push({name: 'receivedDate', value: receivedDate_string});
+
+formData.push({name: 'contactName', value: contactName});
+formData.push({name: 'mobileNo', value: mobileNo});
+formData.push({name: 'addressedto1', value: addressedto1});
+formData.push({name: 'orderDate', value: orderDate});
+formData.push({name: 'emailAddress', value: emailAddress});
+formData.push({name: 'invoiceType', value: invoiceType});
+formData.push({name: 'hsnOrSac', value: hsnOrSac});
+
+$.ajax({
+ url: "generateInvoice",
+ data: formData,
+ type: 'post',
+ success: function(data)
+ {
+
+  var CheckeleCount1 = $('#generateInvoiceTable input.checkbox').length;
+
+  var selectedElements1 = [];
+  var j;
+
+  for(j=0; j < CheckeleCount1; j++)
+  {
+    if($('#generateInvoiceTable input.checkbox')[j].checked)
     {
-      if($('#generateInvoiceTable input.checkbox')[j].checked)
-      {
-       selectedElements1[j] = j;
-     }
+     selectedElements1[j] = j;
    }
+ }
 
-   var deleted = 0;
-   for(var d=0;d<selectedElements1.length;d++)
+ var deleted = 0;
+ for(var d=0;d<selectedElements1.length;d++)
+ {
+   if(selectedElements1[d] != undefined)
    {
-     if(selectedElements1[d] != undefined)
-     {
-      $('#generateInvoiceTable tr')[d-deleted].remove();
-      deleted++;
-    }
+    $('#generateInvoiceTable tr')[d-deleted].remove();
+    deleted++;
   }
+}
 
 }
 });
-  hideLoading();
+hideLoading();
 }
 
 function cleanArray(actual)
@@ -2641,6 +2637,11 @@ function cleanArray(actual)
 <script>
   function addNewSheet()
   {
+    if($('[name="newSheetName"]').val()==="")
+    {
+      alert('Please add a Sheet name..!!');
+      return;
+    }
     var sheetName = $('[name="newSheetName"]').val();
     var tab = '<li class="nav-item"><a class="nav-link '+sheetName+'" href="#'+sheetName+'" role="tab" data-toggle="tab" aria-selected="true">'+sheetName+'<i class="fa fa-times pr-2" onClick="removeSheet('+sheetName+');" style="margin-left:5px;"></i></a></li>';
 
@@ -2676,6 +2677,44 @@ function cleanArray(actual)
   }
 
 });
+</script>
+<script type="text/javascript">  
+  $(function() {
+
+    //BOQ Secsion  
+    $('#createProjectModal1').on('hidden.bs.modal', function () {
+      $($($('[name="generateBOQ"]')[0]).find('[name="sheetDetails"]')[0]).remove();
+      $($('#sheetListtableContentDetails')[0]).html('');
+      $('#tableContentDetails').html('');
+    });
+
+    //Inquiry Section
+    $('#createProjectModal2').on('hidden.bs.modal', function () {
+      $($($('[name="generateBOQ"]')[0]).find('[name="sheetDetails"]')[0]).remove();
+      $($('#sheetListtableContentInqSec')[0]).html('');
+      $('#tableContentInqSec').html('');
+    });
+
+    //PO section
+    $('#createProjectModal3').on('hidden.bs.modal', function () {
+      $($($('[name="generateBOQ"]')[0]).find('[name="sheetDetails"]')[0]).remove();
+      $($('#sheetListtableContentPOSec')[0]).html('');
+      $('#tableContentPOSec').html('');
+    });
+  });
+</script>
+<script type="text/javascript">
+  function closeOther(modalToShow)
+  {
+    if(modalToShow!=="payDetails")
+      $('#payDetails').attr('class','border border-info collapse');
+    
+    if(modalToShow!=="createProjectModal5")
+      $('#createProjectModal5').attr('class','border border-info collapse');
+    
+    if(modalToShow!=="generateInvoice")
+      $('#generateInvoice').attr('class','border border-info collapse');
+  }
 </script>
 </body>
 </html>

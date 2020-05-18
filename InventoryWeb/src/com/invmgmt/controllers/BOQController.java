@@ -261,14 +261,14 @@ public class BOQController {
 			isDeleted = "false";
 		}
 		Project project = projectDao.getProject(Integer.parseInt(projectId));
-		
+
 		ModelAndView mav = new ModelAndView("redirect:/projectDetails");
 		mav.addObject("projectId", project.getProjectId());
 		mav.addObject("projectName", project.getProjectName());
 		mav.addObject("projectDesc", project.getProjectDesc());
-		
+
 		return mav;
-		
+
 	}
 
 	@RequestMapping(value = { "/download" }, method = RequestMethod.POST)
@@ -516,7 +516,7 @@ public class BOQController {
 
 	}
 
-	private ArrayList<BOQLineData> getBOQLineDataList(String[] material, String[] type, String[] ends,
+	protected ArrayList<BOQLineData> getBOQLineDataList(String[] material, String[] type, String[] ends,
 			String[] classOrGrade, String[] inventoryName, String[] manifMethod) {
 		ArrayList<BOQLineData> boqInventoryDetails = new ArrayList<>();
 		int noOfEntries = material.length;
@@ -708,6 +708,7 @@ public class BOQController {
 		int stopIndex = 0;
 		boolean isFirstSheet = true;
 		BOQHeader header = null;
+		int index = 0;
 
 		for (int k = 0; k < sheetNameList.length; k++) {
 
@@ -723,7 +724,7 @@ public class BOQController {
 			stopIndex = startIndex + Integer.parseInt(sheetNameList[k + 1]) - 1;
 
 			int count = 0;
-			int index = 0;
+
 			int loopIndex = 0;
 
 			for (Map.Entry<BOQData, String> entry : inventoryMap.entrySet()) {
@@ -846,17 +847,21 @@ public class BOQController {
 
 		StringBuilder tableContent = new StringBuilder();
 
-		int index = 0;
-		for (Inventory inv : inventoryList) {
+		if (inventoryList != null && inventoryList.size() != 0) {
+			int index = 0;
+			for (Inventory inv : inventoryList) {
 
-			tableContent.append(inventoryUtils.createInventoryRowTable(inv, true, String.valueOf(index), false));
-			index++;
+				tableContent.append(inventoryUtils.createInventoryRowTable(inv, true, String.valueOf(index), false));
+				index++;
+			}
 		}
 
-		int accessoryNo = 0;
-		for (AccessoryDetails inv : accessoryDetailsList) {
-			tableContent.append(createInventoryRowTable(inv, String.valueOf(accessoryNo)));
-			accessoryNo++;
+		if (accessoryDetailsList != null && accessoryDetailsList.size() != 0) {
+			int accessoryNo = 0;
+			for (AccessoryDetails inv : accessoryDetailsList) {
+				tableContent.append(createInventoryRowTable(inv, String.valueOf(accessoryNo)));
+				accessoryNo++;
+			}
 		}
 
 		return tableContent.toString();
@@ -940,5 +945,4 @@ public class BOQController {
 		}
 		return inventoryList;
 	}
-
 }

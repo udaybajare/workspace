@@ -40,7 +40,7 @@ public class PaymentReminder {
 			invoiceGenerator.createInvoice(taxInvoiceDetails);
 
 			emailUtils.sendMessageWithAttachment("",taxInvoiceDetails.getEmailAddress(),
-					taxInvoiceDetails.getTaxInvoiceNo(), true, TAX_INVOICE_ATTACHMENT_NAME);
+					taxInvoiceDetails.getTaxInvoiceNo(), true, taxInvoiceDetails.getInvoiceNo());
 
 			try {
 				FileUtils.forceDelete(new File(System.getProperty("java.io.tmpdir") + "/TaxInvoice.pdf"));

@@ -35,29 +35,34 @@ public class ProjectDao {
 	@Transactional
 	public Project getProject(int projectId) {
 		Project project = new Project();
-		Session session = sessionFactory.getCurrentSession();
+		
+		try {
+			Session session = sessionFactory.getCurrentSession();
 
-		String hql = "FROM Project P WHERE P.projectId = ";
+			String hql = "FROM Project P WHERE P.projectId = ";
 
-		Query query = session.createQuery(hql + projectId);
-		List results = query.getResultList();
+			Query query = session.createQuery(hql + projectId);
+			List results = query.getResultList();
 
-		Iterator itr = results.iterator();
+			Iterator itr = results.iterator();
 
-		while (itr.hasNext()) {
-			project = (Project) itr.next();
+			while (itr.hasNext()) {
+				project = (Project) itr.next();
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		return project;
 	}
-	
+
 	@Transactional
 	public ArrayList<Project> getProject(String tag, String value) {
 		ArrayList<Project> projectList = new ArrayList<Project>();
-		
+
 		Session session = sessionFactory.getCurrentSession();
 
-		String hql = "FROM Project P WHERE P."+tag+" LIKE '%";
+		String hql = "FROM Project P WHERE P." + tag + " LIKE '%";
 
 		Query query = session.createQuery(hql + value + "%'");
 		List results = query.getResultList();
@@ -70,11 +75,11 @@ public class ProjectDao {
 
 		return projectList;
 	}
-	
+
 	@Transactional
 	public int getProjectId(String projectName) {
 		int projectId = 0;
-		
+
 		Session session = sessionFactory.getCurrentSession();
 
 		String hql = "SELECT P.projectId FROM Project P WHERE P.projectName = '";
@@ -85,7 +90,7 @@ public class ProjectDao {
 		Iterator itr = results.iterator();
 
 		while (itr.hasNext()) {
-		    projectId = ((int) itr.next());
+			projectId = ((int) itr.next());
 		}
 
 		return projectId;

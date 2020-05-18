@@ -224,29 +224,18 @@ public class OrderController {
 
 				String words[] = line.split(",");
 
-				String[] details = words[1].split(" ");
+				String[] details = words[1].split("~");
 
-				int instanceofOF = findIndex(details, "of");
-				int instanceofAS = findIndex(details, "as");
-				int instanceofEnds = findIndex(details, "Ends");
-				int instanceofsize = findIndex(details, "size");
-				int instanceofManifMethod = findIndex(details, "Method");
-
-				String inventoryNameVal = details[instanceofOF - 1];
-				String materialVal = details[0];
-
-				String typeVal = "";
-
-				for (int i = instanceofOF - 2; i > 0; i--) {
-					typeVal = details[i] + typeVal;
-				}
-
-				String manifacturingMethod = details[instanceofManifMethod + 2];
-				String gradeOrClassVal = details[instanceofAS + 1];
-				String endsVal = details[instanceofEnds + 2];
-				String sizeVal = details[instanceofsize + 1];
+				String inventoryNameVal = details[0].trim();
+				String materialVal = details[1].trim();
+				String manifacturingMethod = details[5].trim();
+				String gradeOrClassVal = details[2].trim();
+				String endsVal = details[4].trim();
+				String sizeVal = details[6].trim();
+				String typeVal = details[3].trim();
+				
 				String purchaseRate = words[3];
-				String poQuantity = words[2];
+				String poQuantity = words[2];				
 				String projectNameVal = project.getProjectName();
 
 				itemsStr = itemsStr.replace("inventoryNameVal", inventoryNameVal);

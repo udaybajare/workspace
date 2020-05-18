@@ -26,15 +26,16 @@ public class TaxInvoiceGenerator {
 
 	public void generateAndSendTaxInvoice(TaxInvoiceDetails taxInvoiceDetails, String sender) {
 
-		taxInvoiceDetailsDao.saveTaxIvoice(taxInvoiceDetails);
-
 		invoiceGenerator.createInvoice(taxInvoiceDetails);
+		emailUtils.sendMessageWithAttachment(sender, taxInvoiceDetails.getEmailAddress(),
+				taxInvoiceDetails.getTaxInvoiceNo(), false, taxInvoiceDetails.getInvoiceNo());
 
-		emailUtils.sendMessageWithAttachment(sender, taxInvoiceDetails.getEmailAddress(), taxInvoiceDetails.getTaxInvoiceNo(),
-				false, TAX_INVOICE_ATTACHMENT_NAME);
-
+		taxInvoiceDetailsDao.saveTaxIvoice(taxInvoiceDetails);
 		try {
-			FileUtils.forceDelete(new File(System.getProperty("java.io.tmpdir") + "/" + TAX_INVOICE_ATTACHMENT_NAME));
+			FileUtils.forceDelete(new File(System.getProperty("java.io.tmpdir") + "/"
+					+ taxInvoiceDetails.getInvoiceNo().replace("/", "_") + ".pdf"));
+			FileUtils.forceDelete(new File(System.getProperty("java.io.tmpdir") + "/"
+					+ taxInvoiceDetails.getInvoiceNo().replace("/", "_") + "_Annexture.xls"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

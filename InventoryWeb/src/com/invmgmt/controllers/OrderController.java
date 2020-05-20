@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.amazonaws.util.StringUtils;
 import com.invmgmt.dao.InventoryDao;
 import com.invmgmt.dao.PODetailsDao;
 import com.invmgmt.dao.ProjectDao;
@@ -42,10 +43,10 @@ public class OrderController {
 
 	@Autowired
 	ProjectDao projectDao;
-	
+
 	@Autowired
 	ProjectDetailsDao projectDetailsDao;
-	
+
 	@Autowired
 	InventoryDao inventoryDao;
 
@@ -199,13 +200,12 @@ public class OrderController {
 	@RequestMapping(value = "/getPoList", method = { RequestMethod.POST, RequestMethod.GET })
 	private @ResponseBody String getPoList(String projectName) {
 		int projectID = projectDao.getProjectId(projectName);
-		
+
 		ProjectDetails projectDetails = projectDetailsDao.getProjectDetails(projectID);
-		
-		
+
 		String poNames = inventoryUtils.getPONames(String.valueOf(projectID));
 
-		return poNames+"::"+projectDetails.toString();
+		return poNames + "::" + projectDetails.toString();
 	}
 
 	@RequestMapping(value = "/getPoDetails", method = { RequestMethod.POST, RequestMethod.GET })
@@ -233,9 +233,9 @@ public class OrderController {
 				String endsVal = details[4].trim();
 				String sizeVal = details[6].trim();
 				String typeVal = details[3].trim();
-				
+
 				String purchaseRate = words[3];
-				String poQuantity = words[2];				
+				String poQuantity = words[2];
 				String projectNameVal = project.getProjectName();
 
 				itemsStr = itemsStr.replace("inventoryNameVal", inventoryNameVal);
@@ -253,19 +253,18 @@ public class OrderController {
 			}
 		}
 
-		return rowToReturn+"::"+((PODetails)poDetailsList.get(0)).toString();
+		return rowToReturn + "::" + ((PODetails) poDetailsList.get(0)).toString();
 	}
 
 	@RequestMapping(value = "/getNoInvoiceInventory", method = RequestMethod.POST)
 	public @ResponseBody String getNoInvoiceInventory(int projectId) throws Exception {
 		String rowToReturn = "";
-		
+
 		Project project = projectDao.getProject(projectId);
 		ArrayList<Inventory> receivedInvListNoInvoice = inventoryDao.getNoInvoiceInventory(project.getProjectName());
-		
-		for (Inventory receivedInventory : receivedInvListNoInvoice) 
-		{
-			
+
+		for (Inventory receivedInventory : receivedInvListNoInvoice) {
+
 			InventorySpec invSpec = receivedInventory.getInventorySpec();
 			String itemsStr = noInvoiceInventoryRow;
 			itemsStr = itemsStr.replace("inventoryNameVal", invSpec.getInventoryName());
@@ -279,8 +278,10 @@ public class OrderController {
 			itemsStr = itemsStr.replace("projectNameVal", invSpec.getAssignedProject());
 			itemsStr = itemsStr.replace("purchaseRateVal", receivedInventory.getPurchaseRate());
 			itemsStr = itemsStr.replace("locationVal", receivedInventory.getLocation());
-			itemsStr = itemsStr.replace("receivedDateVal", (receivedInventory.getReceivedDate()==null?"":receivedInventory.getReceivedDate().substring(0,10)));
-			
+			itemsStr = itemsStr.replace("receivedDateVal",
+					(StringUtils.isNullOrEmpty(receivedInventory.getReceivedDate()) ? ""
+							: receivedInventory.getReceivedDate().substring(0, 10)));
+
 			rowToReturn = rowToReturn + itemsStr;
 		}
 
@@ -362,7 +363,7 @@ public class OrderController {
 			+ "	   <td><input type='text' class='form-control' name='quantity' value=''></input><input type='hidden' name='projectName' id='projectNm' value='projectNameVal'></td>"
 			+ "	   <td><input type='text' class='form-control' name='location' value=''></input></td>"
 			+ "	   <input type='hidden' name='status' value='assigned'>" + "    </tr>";
-	
+
 	private static final String noInvoiceInventoryRow = "	   <tr>"
 			+ "    <td> <input type=\"checkbox\" name=\"checkbox\" class=\"checkbox\" /></td>"
 			+ "    <td> <input type='hidden' name='inventoryName' value='inventoryNameVal'></input> inventoryNameVal </td>"
@@ -378,6 +379,5 @@ public class OrderController {
 			+ "	   <td> <input type='hidden' name='location' value='locationVal'></input>locationVal</td>"
 			+ "	   <td style='width:10%;'> <input type='hidden' name='receivedDate'  value='receivedDateVal'></input>receivedDateVal</td>"
 			+ "	   <input type='hidden' name='status' value='assigned'>" + "    </tr>";
-
 
 }

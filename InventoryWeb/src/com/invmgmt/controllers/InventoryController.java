@@ -547,7 +547,7 @@ public class InventoryController {
 			String projectStr, String locationStr, String quantity, String projectId, String projectName,
 			String projectDesc, String statusTo, RedirectAttributes redirectAttributes) {
 		Inventory inventory = new Inventory(new InventorySpec(inventoryStr, materialStr, typeStr, manifMethodStr,
-				gradeOrClassStr, endsStr, sizeStr, projectStr, "assigned"), purchaseRateStr, 0, locationStr, null, "");
+				gradeOrClassStr, endsStr, sizeStr, projectStr, "assigned"), purchaseRateStr, 0, locationStr, null, null);
 
 		int assignedQty = inventoryDao.getQuantityByStatus(inventory, "assigned", true);
 

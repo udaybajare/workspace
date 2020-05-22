@@ -39,6 +39,27 @@
 			}); // End Notify Plugin - The above code (from line 14) is used for demonstration purposes only
 
 		};
+		
+		var input = document.getElementsByTagName("input"); // get all the input element
+		
+		for(var i =0; i< input.length; i++)
+			{
+			input[i].addEventListener('input', resizeInput); 
+			resizeInput.call(input[i]); 			
+			}
+		
 	}); // End document ready
 
 })(jQuery);
+
+function resizeInput() {
+	if(this.value.length===0)
+		{
+		this.style.width = "20ch";
+		}
+	else
+		{
+		this.style.width = 5 + this.value.length + "ch";
+		}
+	  
+	}

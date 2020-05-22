@@ -107,9 +107,9 @@ public class TaxInvoicePDFView extends AbstractView {
 			table3.addCell(createNewCell(new Paragraph(taxInvoiceDetails.getHsnOrSac(), blackBGLB11)));
 			table3.addCell(createNewCell(new Paragraph("structural steel erection services as per attached annexure", blackBGLB11)));
 			table3.addCell(createNewCell(new Paragraph("1       		", blackBGLB11)));
-			table3.addCell(createNewCell(new Paragraph(taxInvoiceDetails.getMiscCharges(), blackBGLB11)));
+			table3.addCell(createNewCell(new Paragraph(taxInvoiceDetails.getRate(), blackBGLB11)));
 			table3.addCell(createNewCell(new Paragraph("Nos			", blackBGLB11)));
-			table3.addCell(createNewCell(new Paragraph(taxInvoiceDetails.getMiscCharges(), blackBGLB11)));
+			table3.addCell(createNewCell(new Paragraph(taxInvoiceDetails.getRate(), blackBGLB11)));
 
 			document.add(table3);
 
@@ -138,20 +138,20 @@ public class TaxInvoicePDFView extends AbstractView {
 			table4.addCell(amtInWordsValCell);
 
 			table4.addCell(createNewCell(new Paragraph("sub total:", boldBlackBGLB11)));
-			table4.addCell(createNewCell(new Paragraph(taxInvoiceDetails.getMiscCharges(), blackBGLB11)));
+			table4.addCell(createNewCell(new Paragraph(taxInvoiceDetails.getRate(), blackBGLB11)));
 			table4.addCell(createNewCell(new Paragraph("cgst 9%	 ", boldBlackBGLB11)));
 			table4.addCell(createNewCell(new Paragraph(
-					String.valueOf(Double.parseDouble(taxInvoiceDetails.getMiscCharges()) * 9 / 100), blackBGLB11)));
+					String.valueOf(Double.parseDouble(taxInvoiceDetails.getRate()) * 9 / 100), blackBGLB11)));
 			table4.addCell(createNewCell(new Paragraph("SGST 9%	 ", boldBlackBGLB11)));
 			table4.addCell(createNewCell(new Paragraph(
-					String.valueOf(Double.parseDouble(taxInvoiceDetails.getMiscCharges()) * 9 / 100), blackBGLB11)));
+					String.valueOf(Double.parseDouble(taxInvoiceDetails.getRate()) * 9 / 100), blackBGLB11)));
 			table4.addCell(createNewCell(new Paragraph("IGST 18%	 ", boldBlackBGLB11)));
 			table4.addCell(createNewCell(new Paragraph("-", blackBGLB11)));
 			table4.addCell(createNewCell(new Paragraph("total	 ", boldBlackBGLB11)));
 			table4.addCell(
 					createNewCell(new Paragraph(
-							String.valueOf(Double.parseDouble(taxInvoiceDetails.getMiscCharges())
-									+ 2 * (Double.parseDouble(taxInvoiceDetails.getMiscCharges()) * 9 / 100)),
+							String.valueOf(Double.parseDouble(taxInvoiceDetails.getRate())
+									+ 2 * (Double.parseDouble(taxInvoiceDetails.getRate()) * 9 / 100)),
 							blackBGLB11)));
 
 			document.add(table4);

@@ -50,20 +50,22 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 
 		<!--PROD -->
-		<!-- <property name="url"
+		<property name="url"
 			value="jdbc:mysql://inventorymgmt.ckvjglniutlo.us-east-2.rds.amazonaws.com:3306/inventoryMgmt" />
 		<property name="username" value="InvMgmtUser" />
-		<property name="password" value="InvMgmtUser9933" /> -->
+		<property name="password" value="InvMgmtUser9933" />
 
 		<!--UAT -->
-		<!-- <property name="url" value="jdbc:mysql://hamdule.cmbzdfvjyats.us-east-2.rds.amazonaws.com:3306/inventoryMgmt" 
-			/> <property name="username" value="mhamdule" /> <property name="password" 
-			value="mhamdule9933" /> -->
+		<!-- 
+			 <property name="url" value="jdbc:mysql://hamdule.cmbzdfvjyats.us-east-2.rds.amazonaws.com:3306/inventoryMgmt" /> 
+			 <property name="username" value="mhamdule" /> 
+			 <property name="password" value="mhamdule9933" /> 
+		-->
 
 		<!--LOCAL -->
-		<property name="url" value="jdbc:mysql://localhost:3306/inventoryMgmt" /> 
+<!-- 		<property name="url" value="jdbc:mysql://localhost:3306/inventoryMgmt" /> 
 		<property name="username" value="admin" /> 
-		<property name="password" value="admin123" />
+		<property name="password" value="admin123" /> -->
 		
 	</bean> 
 

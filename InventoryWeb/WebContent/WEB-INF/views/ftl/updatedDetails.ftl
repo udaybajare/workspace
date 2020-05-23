@@ -901,7 +901,7 @@
             <table class="table table-colored">
               <thead>
                <tr>
-                <th></th>
+                <th>#</th>
                 <th>Item</th>
                 <th>Material</th>
                 <th>Type</th>

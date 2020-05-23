@@ -40,13 +40,13 @@
 
 		};
 		
-		var input = document.getElementsByTagName("input"); // get all the input element
+		/*var input = document.getElementsByTagName("input"); // get all the input element
 		
 		for(var i =0; i< input.length; i++)
 			{
 			input[i].addEventListener('input', resizeInput); 
 			resizeInput.call(input[i]); 			
-			}
+			}*/
 		
 	}); // End document ready
 

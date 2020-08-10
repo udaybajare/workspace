@@ -43,8 +43,7 @@ public class EmailUtils {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost("smtp.gmail.com");
 		// mailSender.setPort(25);
-		mailSender.setUsername("ProjectInvManager@gmail.com");
-		mailSender.setPassword("ProjectInvManager12");
+		
 
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol", "smtp");
